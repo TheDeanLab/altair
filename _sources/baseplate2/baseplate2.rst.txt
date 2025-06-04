@@ -1,4 +1,4 @@
-.. _design-home:
+.. _aslmbaseplate-home:
 
 ##############
 Altair Baseplate 2

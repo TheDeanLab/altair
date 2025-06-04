@@ -50,6 +50,7 @@ To meet these growing demands, we aim to develop simplified optical systems that
    physical_assembly/physical_assembly
    system_characterization/system_characterization
    imaging/imaging
+   baseplate2/baseplate2
    future/index
 
 

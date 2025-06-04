@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Future Releases &mdash; altair  documentation</title>
+  <title>Altair Baseplate 2 &mdash; altair  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -22,7 +22,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Altair Baseplate 2" href="../baseplate2/baseplate2.html" /> 
+    <link rel="next" title="Future Releases" href="../future/index.html" />
+    <link rel="prev" title="Imaging Process" href="../imaging/imaging.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,8 +56,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../physical_assembly/physical_assembly.html">Microscope Assembly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../system_characterization/system_characterization.html">System Characterization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../imaging/imaging.html">Imaging Process</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair Baseplate 2</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Future Releases</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Altair Baseplate 2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#zemax-simulation-setup-process">Zemax Simulation Setup Process</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
 </ul>
 
         </div>
@@ -73,9 +78,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Future Releases</li>
+      <li class="breadcrumb-item active">Altair Baseplate 2</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/future/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/baseplate2/baseplate2.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -83,26 +88,57 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="future-releases">
-<span id="future-home"></span><h1>Future Releases<a class="headerlink" href="#future-releases" title="Permalink to this heading"></a></h1>
-<p>The development of <strong>Altair</strong> is an ongoing effort, with future iterations aimed at increasing both <strong>complexity and capability</strong> to support volumetric imaging across a diverse range of specimens and experimental contexts. Each implementation will be <strong>versioned</strong> and accompanied by comprehensive documentation, ensuring that researchers can <strong>replicate and modify</strong> the system at a fraction of the cost of commercial alternatives. To foster <strong>open development and community-driven innovation</strong>, we encourage users to <strong>request features and provide feedback</strong> publicly via
-<a class="reference external" href="https://github.com/TheDeanLab/altair/issues">Altair GitHub Issues</a>.</p>
-<p>The projected design roadmap includes:</p>
-<ul class="simple">
-<li><p><strong>Sample-scanning light-sheet microscope</strong> for imaging cells on glass coverslips.</p></li>
-<li><p><strong>Sample-scanning Axially Swept Light-Sheet Microscope (ASLM).</strong></p></li>
-<li><p><strong>Laser-scanning Axially Swept Light-Sheet Microscope.</strong></p></li>
-<li><p><strong>Sample-scanning Oblique Plane Microscope (OPM).</strong></p></li>
-<li><p><strong>Laser-scanning Oblique Plane Microscope.</strong></p></li>
-</ul>
-<p>Beyond these core designs, we aim to develop <strong>modular additions</strong> that extend Altair’s functionality, including <strong>optogenetic stimulation</strong> for targeted cellular activation and <strong>multiplexed imaging</strong> for simultaneous readouts of multiple probes. Through this iterative approach, Altair will continue evolving as a <strong>highly adaptable, cost-effective, and open-source platform</strong> for cutting-edge volumetric imaging.</p>
+  <section id="altair-baseplate-2">
+<span id="design-home"></span><h1>Altair Baseplate 2<a class="headerlink" href="#altair-baseplate-2" title="Permalink to this heading"></a></h1>
+<hr class="docutils" />
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>The second iteration of our Altair LSFM baseplate incorporates 3 different microscope configurations:</dt><dd><ol class="arabic simple">
+<li><p>Traditional Sample-Scanning SPIM</p></li>
+<li><p>Sample-Scanning Axially-Swept Light Sheet Microscope (ASLM)</p></li>
+<li><p>Sample-Scanning Cleared-Tissue ASLM (CTASLM)</p></li>
+</ol>
+</dd>
+</dl>
+<p>Where each of these microscope paths incorporate as many of the same elements as possible between them, such that
+switching or upgrading between these modes is as accessible as possible and doesn’t require repurchasing all
+components along their respective illumination paths.</p>
+<p>The primary distinction between ASLM/CTASLM and our SPIM paths is the incorporation of a remote focusing objective (RFO)
+system into the illumination path itself. The RFO system essentially allows the light sheet focus to be swept across
+the full field of view (FoV) of your imaging sensor, in comparison to the traditional SPIM system which is limited to a
+thin line profile on the imaging sensor. More information on ASLM can be found <a class="reference external" href="https://www.nature.com/articles/s41596-022-00706-6">here</a>.</p>
+<figure class="align-center" id="id1">
+<img alt="Images showing the ability of the RFO in ASLM to sweep the light sheet focus across a camera FoV" src="../_images/ASLMIntro.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1:</strong> (Left) A schematic of how the focus of the light sheet is swept and synced with the rolling shutter</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>of an associated camera system in ASLM. (Right) Two different images taken where the top image is taken without
+utilizing the RFO and the bottom is utilizing the RFO, where when it’s utilized the beam is able to be swept across
+the full FoV of the image.</p>
+</section>
+<hr class="docutils" />
+<section id="zemax-simulation-setup-process">
+<h2>Zemax Simulation Setup Process<a class="headerlink" href="#zemax-simulation-setup-process" title="Permalink to this heading"></a></h2>
+<p>With our chosen lenses in mind, we can download Zemax files associated with each lens directly from Thorlabs website
+and set up our simulation.</p>
+<figure class="align-center" id="id2">
+<img alt="Setup of the Zemax simulations" src="../_images/Atlair_ASLM_Path.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 2:</strong> Setup of the ASLM-based Zemax simulations, where the forward and reverse paths from the RFO are</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>unfurled to a single path.</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../baseplate2/baseplate2.html" class="btn btn-neutral float-left" title="Altair Baseplate 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../imaging/imaging.html" class="btn btn-neutral float-left" title="Imaging Process" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../future/index.html" class="btn btn-neutral float-right" title="Future Releases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

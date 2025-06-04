@@ -46,7 +46,7 @@ cylindrical lens as the element that forms our light sheet profile itself. Powel
 lenses that are known to produce line profiles with consistent and uniform intensity. When utilized in light-sheet
 imaging, these lenses essentially help provide a more uniform intensity of illumination across the full FoV of the
 imaging sensor when compared to cylindrically formed light-sheets which feature more of a gaussian intensity
-distribution associated with them. More information on Powell lenses can be found at Laserline Optics website `here <https://www.laserlineoptics.com/powell_primer.html`_.
+distribution associated with them. More information on Powell lenses can be found at `Laserline Optics <https://www.laserlineoptics.com/powell_primer.html`_.
 
 
 ----------------
@@ -57,6 +57,16 @@ ______________________________
 
 With our chosen lenses in mind, we can download Zemax files associated with each lens directly from Thorlabs website
 and set up our simulation.
+
+Mapping between RFO and ILO
+
+Selection of lenses
+
+Split between ASLM and CTASLM Systems
+
+Baseplate design
+
+
 
 .. figure:: Images/Atlair_ASLM_Path.png
     :align: center

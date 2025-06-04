@@ -28,9 +28,9 @@ thin line profile on the imaging sensor. More information on ASLM can be found `
     :alt: Images showing the ability of the RFO in ASLM to sweep the light sheet focus across a camera FoV
 
     **Figure 1:** (Left) A schematic of how the focus of the light sheet is swept and synced with the rolling shutter
-    of an associated camera system in ASLM. (Right) Two different images taken where the top image is taken without
-    utilizing the RFO and the bottom is utilizing the RFO, where when it's utilized the beam is able to be swept across
-    the full FoV of the image.
+        of an associated camera system in ASLM. (Right) Two different images taken where the top image is taken without
+        utilizing the RFO and the bottom is utilizing the RFO, where when it's utilized the beam is able to be swept across
+        the full FoV of the image.
 
 ----------------
 
@@ -46,7 +46,7 @@ and set up our simulation.
     :alt: Setup of the Zemax simulations
 
     **Figure 2:** Setup of the ASLM-based Zemax simulations, where the forward and reverse paths from the RFO are
-    unfurled to a single path.
+        unfurled to a single path.
 
 
 

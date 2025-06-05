@@ -73,32 +73,34 @@ these ALSM-based systems would look like is shown below in Figure (3).
          - Lens Description
          - Link
        * - L1
-         - L2
-         - L3
-         - L4
-         - L5
-         - L6
-         - L7
-         - RFO
-         - ILO
-       * - Powell Lens - LOCP-8.9R20-2.0
+         - Powell Lens LOCP-8.9R20-2.0
+         - https://www.laserlineoptics.com/store/product/powell-lens/
+       * - L2
          - Achromatic Doublet f = 30 mm
-         - Achromatic Doublet f = 80 mm
-         - Achromatic Doublet f = 75 mm
-         - Achromatic Doublet f = 300 mm
-         - Tube Lens f = 200 mm
-         - Tube Lens f = 200 mm
-         - Remote Focus Objective TL15X-2P, EFL = 13.3 mm
-         - Illumination Objective TL20X-MPL, EFL = 10 mm
-       * - https://www.laserlineoptics.com/store/product/powell-lens/
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-030-A
+       * - L3
+         - Achromatic Doublet f = 80 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-080-A
+       * - L4
+         - Achromatic Doublet f = 75 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-075-A
+       * - L5
+         - Achromatic Doublet f = 300 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-300-A
+       * - L6
+         - Tube Lens f = 200 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=TTL200-A
+       * - L7
+         - Tube Lens f = 200 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=TTL200-A
+       * - RFO
+         - Remote Focus Objective TL15X-2P, EFL = 13.3 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=TL15X-2P
+       * - ILO
+         - Illumination Objective TL20X-MPL, EFL = 10 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=TL20X-MPL
+
+
 
 Mapping between RFO and ILO
 

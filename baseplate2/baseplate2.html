@@ -19,6 +19,7 @@
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -59,6 +60,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Altair ALSM/CTASLM Baseplate</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#zemax-simulation-setup-process">Zemax Simulation Setup Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adapting-for-ctaslm">Adapting for CTASLM</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
@@ -137,13 +139,29 @@ distribution associated with them. More information on Powell lenses can be foun
 <p>Similarly to our methods used for designing our first iteration of our baseplate (link to page), we first start by
 using basic magnification equations to select theoretical focal lengths of lenses that would be needed along our
 illumination path to form a light sheet with our desired physical characteristics. A basic schematic of what one of
-these ALSM-based systems would look like is shown below in Figure (3).</p>
+these powell-lens-based ALSM systems would look like is shown below in Figure (2).</p>
 <figure class="align-center" id="id2">
 <img alt="Schematic of the ASLM illumination path design" src="../_images/Altair_ASLM_Schematic.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> Schematic of the ASLM illumination path design.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 2:</strong> Schematic of the ASLM illumination path design.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
+<p>Of note in the design process is the careful considerations in abberation-prevention in a remote focusing system is to
+ensure mapping the magnification of the remote focus objective (RFO) to that of the illumination objective (ILO). In
+our case our chosen illumination objective is the Thorlabs TL20X-MPL and our remote focus objective is the Thorlabs
+TL15X-2P.</p>
+<p>Because our RFO and ILO utilize different immersion media (n = 1 for the RFO, n = 1.33 for the ILO), we rely on our
+lens choices for L6 and L7 to ensure the magnification from sample space to remote space is equal to the ratio of
+these two refractive indices for our immersion media:</p>
+<div class="math notranslate nohighlight">
+\[M = \frac{f_{\text{L7}}}{f_{\text{ILO}}}*\frac{f_{\text{RFO}}}{f_{\text{L6}}}\]</div>
+<p>Where using our values for our chosen objectives this becomes:</p>
+<div class="math notranslate nohighlight">
+\[1.33 = \frac{f_{\text{L7}}}{10 \text{mm}}*\frac{13.3 \text{mm}}{f_{\text{L6}}}\]</div>
+<p>Leaving us with the relation between the focal lengths of L6 and L7 as</p>
+<div class="math notranslate nohighlight">
+\[\frac{f_{\text{L7}}}{f_{\text{L6}}} = 1\]</div>
+<p>With that relationship solidified, we then moved forward with selecting our lenses in our illumination path as follows:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Lens #</p></th>
@@ -190,16 +208,23 @@ these ALSM-based systems would look like is shown below in Figure (3).</p>
 </tr>
 </tbody>
 </table>
-<p>Mapping between RFO and ILO</p>
-<p>Selection of lenses</p>
-<p>Split between ASLM and CTASLM Systems</p>
-<p>Baseplate design</p>
+<p>With the lenses selected, we then moved forward with the simulation and optimization of our illumination path in
+Zemax Opticstudio. Due to the way in which the blackbox files we utilize associated with the objective in our system
+are designed, we structured our simulation in a way that essentially unfurled the forward and reverse paths of our
+system to all be in a single direction, where our reverse path is essentially mirrored with respect to our forward
+path. This setup is shown below in Figure 3.</p>
 <figure class="align-center" id="id3">
 <img alt="Setup of the Zemax simulations" src="../_images/Atlair_ASLM_Path.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 2:</strong> Conceptual setup of the ASLM-based Zemax simulations.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 3:</strong> Conceptual setup of the ASLM-based Zemax simulations.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
+</section>
+<hr class="docutils" />
+<section id="adapting-for-ctaslm">
+<h2>Adapting for CTASLM<a class="headerlink" href="#adapting-for-ctaslm" title="Permalink to this heading"></a></h2>
+<p>Split between ASLM and CTASLM Systems</p>
+<p>Baseplate design</p>
 </section>
 </section>
 

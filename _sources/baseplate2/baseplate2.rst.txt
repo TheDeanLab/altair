@@ -58,13 +58,40 @@ ______________________________
 Similarly to our methods used for designing our first iteration of our baseplate (link to page), we first start by
 using basic magnification equations to select theoretical focal lengths of lenses that would be needed along our
 illumination path to form a light sheet with our desired physical characteristics. A basic schematic of what one of
-these ALSM-based systems would look like is shown below in Figure (3).
+these powell-lens-based ALSM systems would look like is shown below in Figure (2).
 
 .. figure:: Images/Altair_ASLM_Schematic.png
     :align: center
     :alt: Schematic of the ASLM illumination path design
 
-    **Figure 1:** Schematic of the ASLM illumination path design.
+    **Figure 2:** Schematic of the ASLM illumination path design.
+
+Of note in the design process is the careful considerations in abberation-prevention in a remote focusing system is to
+ensure mapping the magnification of the remote focus objective (RFO) to that of the illumination objective (ILO). In
+our case our chosen illumination objective is the Thorlabs TL20X-MPL and our remote focus objective is the Thorlabs
+TL15X-2P.
+
+Because our RFO and ILO utilize different immersion media (n = 1 for the RFO, n = 1.33 for the ILO), we rely on our
+lens choices for L6 and L7 to ensure the magnification from sample space to remote space is equal to the ratio of
+these two refractive indices for our immersion media:
+
+.. math::
+
+   M = \frac{f_{\text{L7}}}{f_{\text{ILO}}}*\frac{f_{\text{RFO}}}{f_{\text{L6}}}
+
+Where using our values for our chosen objectives this becomes:
+
+.. math::
+
+   1.33 = \frac{f_{\text{L7}}}{10 \text{mm}}*\frac{13.3 \text{mm}}{f_{\text{L6}}}
+
+Leaving us with the relation between the focal lengths of L6 and L7 as
+
+.. math::
+
+   \frac{f_{\text{L7}}}{f_{\text{L6}}} = 1
+
+With that relationship solidified, we then moved forward with selecting our lenses in our illumination path as follows:
 
 .. list-table::
        :header-rows: 1
@@ -100,23 +127,30 @@ these ALSM-based systems would look like is shown below in Figure (3).
          - Illumination Objective TL20X-MPL, EFL = 10 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=TL20X-MPL
 
+With the lenses selected, we then moved forward with the simulation and optimization of our illumination path in
+Zemax Opticstudio. Due to the way in which the blackbox files we utilize associated with the objective in our system
+are designed, we structured our simulation in a way that essentially unfurled the forward and reverse paths of our
+system to all be in a single direction, where our reverse path is essentially mirrored with respect to our forward
+path. This setup is shown below in Figure 3.
+
+.. figure:: Images/Atlair_ASLM_Path.png
+    :align: center
+    :alt: Setup of the Zemax simulations
+
+    **Figure 3:** Conceptual setup of the ASLM-based Zemax simulations.
+
+----------------
 
 
-Mapping between RFO and ILO
-
-Selection of lenses
-
+Adapting for CTASLM
+______________________________
 Split between ASLM and CTASLM Systems
 
 Baseplate design
 
 
 
-.. figure:: Images/Atlair_ASLM_Path.png
-    :align: center
-    :alt: Setup of the Zemax simulations
 
-    **Figure 2:** Conceptual setup of the ASLM-based Zemax simulations.
 
 
 

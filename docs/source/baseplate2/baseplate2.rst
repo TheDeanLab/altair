@@ -77,13 +77,13 @@ these two refractive indices for our immersion media:
 
 .. math::
 
-   M = \frac{f_{\text{L7}}}{f_{\text{ILO}}}*\frac{f_{\text{RFO}}}{f_{\text{L6}}}
+   M = \frac{f_{\text{L7}}}{f_{\text{ILO}}} * \frac{f_{\text{RFO}}}{f_{\text{L6}}}
 
 Where using our values for our chosen objectives this becomes:
 
 .. math::
 
-   1.33 = \frac{f_{\text{L7}}}{10 \text{mm}}*\frac{13.3 \text{mm}}{f_{\text{L6}}}
+   1.33 = \frac{f_{\text{L7}}}{10} * \frac{13.3}{f_{\text{L6}}}
 
 Leaving us with the relation between the focal lengths of L6 and L7 as
 
@@ -139,18 +139,41 @@ path. This setup is shown below in Figure 3.
 
     **Figure 3:** Conceptual setup of the ASLM-based Zemax simulations.
 
-----------------
+We optimized our system similar in method to how we optimized our first system (link to page), where the general
+process is placing in each component individually into the simulation and optimizing for either collimation or
+focusing in a particular direction before adding in the subsequent element. In this first optimization process,
+the offset of the RFO was set to be 0, such that the reverse path reflection point was the exact focus position of
+the RFO. After this optimization process, the resulting full-width half-maximums (FWHMs) of our light sheet widths
+were found to be:
 
+.. list-table::
+       :header-rows: 1
 
-Adapting for CTASLM
+       * - Wavelength
+         - FWHM
+       * - :math:`\lambda` = 488 nm
+         - ~196 nm
+       * - :math:`\lambda` = 560 nm
+         - ~211 nm
+       * - :math:`\lambda` = 640 nm
+         - ~234 nm
+
+In order to account for the
+
+------------------------------
+Adapting for CT-ASLM
 ______________________________
-Split between ASLM and CTASLM Systems
 
-Baseplate design
+In order to allow for a wider variety of biological structures to be studied in our systems, we adapted aspects of
+our ASLM design detailed above to be for
 
+------------------------------
+Incorporating SPIM
+______________________________
 
-
-
+------------------------------
+Final Baseplate Design
+______________________________
 
 
 

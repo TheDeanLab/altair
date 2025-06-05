@@ -60,7 +60,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Altair ALSM/CTASLM Baseplate</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#zemax-simulation-setup-process">Zemax Simulation Setup Process</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#adapting-for-ctaslm">Adapting for CTASLM</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
@@ -154,10 +153,10 @@ TL15X-2P.</p>
 lens choices for L6 and L7 to ensure the magnification from sample space to remote space is equal to the ratio of
 these two refractive indices for our immersion media:</p>
 <div class="math notranslate nohighlight">
-\[M = \frac{f_{\text{L7}}}{f_{\text{ILO}}}*\frac{f_{\text{RFO}}}{f_{\text{L6}}}\]</div>
+\[M = \frac{f_{\text{L7}}}{f_{\text{ILO}}} * \frac{f_{\text{RFO}}}{f_{\text{L6}}}\]</div>
 <p>Where using our values for our chosen objectives this becomes:</p>
 <div class="math notranslate nohighlight">
-\[1.33 = \frac{f_{\text{L7}}}{10 \text{mm}}*\frac{13.3 \text{mm}}{f_{\text{L6}}}\]</div>
+\[1.33 = \frac{f_{\text{L7}}}{10} * \frac{13.3}{f_{\text{L6}}}\]</div>
 <p>Leaving us with the relation between the focal lengths of L6 and L7 as</p>
 <div class="math notranslate nohighlight">
 \[\frac{f_{\text{L7}}}{f_{\text{L6}}} = 1\]</div>
@@ -219,12 +218,33 @@ path. This setup is shown below in Figure 3.</p>
 <p><span class="caption-text"><strong>Figure 3:</strong> Conceptual setup of the ASLM-based Zemax simulations.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
-</section>
-<hr class="docutils" />
-<section id="adapting-for-ctaslm">
-<h2>Adapting for CTASLM<a class="headerlink" href="#adapting-for-ctaslm" title="Permalink to this heading"></a></h2>
-<p>Split between ASLM and CTASLM Systems</p>
-<p>Baseplate design</p>
+<p>We optimized our system similar in method to how we optimized our first system (link to page), where the general
+process is placing in each component individually into the simulation and optimizing for either collimation or
+focusing in a particular direction before adding in the subsequent element. In this first optimization process,
+the offset of the RFO was set to be 0, such that the reverse path reflection point was the exact focus position of
+the RFO. After this optimization process, the resulting full-width half-maximums (FWHMs) of our light sheet widths
+were found to be:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Wavelength</p></th>
+<th class="head"><p>FWHM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 488 nm</p></td>
+<td><p>~196 nm</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 560 nm</p></td>
+<td><p>~211 nm</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 640 nm</p></td>
+<td><p>~234 nm</p></td>
+</tr>
+</tbody>
+</table>
+<p>In order to account for the</p>
+<p>In order to allow for a wider variety of biological structures to be studied in our systems, we adapted aspects of
+our ASLM design detailed above to be for</p>
 </section>
 </section>
 

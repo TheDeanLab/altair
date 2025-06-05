@@ -60,6 +60,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Altair ALSM/CTASLM Baseplate</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#zemax-simulation-setup-process">Zemax Simulation Setup Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adapting-for-ct-aslm">Adapting for CT-ASLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#incorporating-spim">Incorporating SPIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#final-baseplate-design">Final Baseplate Design</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
@@ -224,7 +227,7 @@ focusing in a particular direction before adding in the subsequent element. In t
 the offset of the RFO was set to be 0, such that the reverse path reflection point was the exact focus position of
 the RFO. After this optimization process, the resulting full-width half-maximums (FWHMs) of our light sheet widths
 were found to be:</p>
-<table class="docutils align-default">
+<table class="docutils align-center">
 <thead>
 <tr class="row-odd"><th class="head"><p>Wavelength</p></th>
 <th class="head"><p>FWHM</p></th>
@@ -232,19 +235,81 @@ were found to be:</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 488 nm</p></td>
-<td><p>~196 nm</p></td>
+<td><p>~392 nm</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 560 nm</p></td>
-<td><p>~211 nm</p></td>
+<td><p>~422 nm</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 640 nm</p></td>
-<td><p>~234 nm</p></td>
+<td><p>~468 nm</p></td>
 </tr>
 </tbody>
 </table>
 <p>In order to account for the</p>
+</section>
+<hr class="docutils" />
+<section id="adapting-for-ct-aslm">
+<h2>Adapting for CT-ASLM<a class="headerlink" href="#adapting-for-ct-aslm" title="Permalink to this heading"></a></h2>
 <p>In order to allow for a wider variety of biological structures to be studied in our systems, we adapted aspects of
 our ASLM design detailed above to be for</p>
+<p>Our illumination and detection objectives for our CT-ASLM system are changed to both be ASI 54-12-8 Multi-immersion
+objectives, which are designed to be able to withstand being immersed in media like refractive-index matching media
+such as BABB. The illumination objective has a different effective focal length than that of the TL20X-MPL objective
+used in our standard ASLM configuration, so we need to revisit our choice of lenses for L6 and L7:</p>
+<div class="math notranslate nohighlight">
+\[1.45 = \frac{f_{\text{L7}}}{8.4} * \frac{13.3}{f_{\text{L6}}}\]</div>
+<p>Where our new relationship between L6 and L7 becomes:</p>
+<div class="math notranslate nohighlight">
+\[\frac{f_{\text{L7}}}{f_{\text{L6}}} = 0.9167\]</div>
+<p>Based on this relationship, we chose L7 to be f = 180 mm and L6 to be f = 200 mm, and used the equivalent tube lenses
+from Thorlabs that match these (TTL180-A and TTL200-A, respectively).</p>
+<p>Re-optimizing the system with our new illumination objective and L7 with a sample immersion media of n = 1.56 yielded
+the following FWHM of our end light sheet widths:</p>
+<p>Custom sample chamber for CTASLM</p>
+<table class="docutils align-center">
+<thead>
+<tr class="row-odd"><th class="head"><p>Wavelength</p></th>
+<th class="head"><p>FWHM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 488 nm</p></td>
+<td><p>~300 nm</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 560 nm</p></td>
+<td><p>~324 nm</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 640 nm</p></td>
+<td><p>~356 nm</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="incorporating-spim">
+<h2>Incorporating SPIM<a class="headerlink" href="#incorporating-spim" title="Permalink to this heading"></a></h2>
+<table class="docutils align-center">
+<thead>
+<tr class="row-odd"><th class="head"><p>Wavelength</p></th>
+<th class="head"><p>FWHM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 488 nm</p></td>
+<td><p>~390 nm</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 560 nm</p></td>
+<td><p>~416 nm</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lambda\)</span> = 640 nm</p></td>
+<td><p>~454 nm</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="final-baseplate-design">
+<h2>Final Baseplate Design<a class="headerlink" href="#final-baseplate-design" title="Permalink to this heading"></a></h2>
 </section>
 </section>
 

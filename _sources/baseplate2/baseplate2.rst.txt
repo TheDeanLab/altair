@@ -55,8 +55,50 @@ distribution associated with them. More information on Powell lenses can be foun
 Zemax Simulation Setup Process
 ______________________________
 
-With our chosen lenses in mind, we can download Zemax files associated with each lens directly from Thorlabs website
-and set up our simulation.
+Similarly to our methods used for designing our first iteration of our baseplate (link to page), we first start by
+using basic magnification equations to select theoretical focal lengths of lenses that would be needed along our
+illumination path to form a light sheet with our desired physical characteristics. A basic schematic of what one of
+these ALSM-based systems would look like is shown below in Figure (3).
+
+.. figure:: Images/Altair_ASLM_Schematic.png
+    :align: center
+    :alt: Schematic of the ASLM illumination path design
+
+    **Figure 1:** Schematic of the ASLM illumination path design.
+
+.. list-table::
+       :header-rows: 1
+
+       * - Lens #
+         - Lens Description
+         - Link
+       * - L1
+         - L2
+         - L3
+         - L4
+         - L5
+         - L6
+         - L7
+         - RFO
+         - ILO
+       * - Powell Lens - LOCP-8.9R20-2.0
+         - Achromatic Doublet f = 30 mm
+         - Achromatic Doublet f = 80 mm
+         - Achromatic Doublet f = 75 mm
+         - Achromatic Doublet f = 300 mm
+         - Tube Lens f = 200 mm
+         - Tube Lens f = 200 mm
+         - Remote Focus Objective TL15X-2P, EFL = 13.3 mm
+         - Illumination Objective TL20X-MPL, EFL = 10 mm
+       * - https://www.laserlineoptics.com/store/product/powell-lens/
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-030-A
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-080-A
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-075-A
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-300-A
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=TTL200-A
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=TTL200-A
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=TL15X-2P
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=TL20X-MPL
 
 Mapping between RFO and ILO
 

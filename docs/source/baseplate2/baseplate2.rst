@@ -147,33 +147,93 @@ the RFO. After this optimization process, the resulting full-width half-maximums
 were found to be:
 
 .. list-table::
+       :align: center
        :header-rows: 1
 
        * - Wavelength
          - FWHM
        * - :math:`\lambda` = 488 nm
-         - ~196 nm
+         - ~392 nm
        * - :math:`\lambda` = 560 nm
-         - ~211 nm
+         - ~422 nm
        * - :math:`\lambda` = 640 nm
-         - ~234 nm
+         - ~468 nm
 
 In order to account for the
 
-------------------------------
+----------------
+
+
 Adapting for CT-ASLM
 ______________________________
 
 In order to allow for a wider variety of biological structures to be studied in our systems, we adapted aspects of
 our ASLM design detailed above to be for
 
-------------------------------
+Our illumination and detection objectives for our CT-ASLM system are changed to both be ASI 54-12-8 Multi-immersion
+objectives, which are designed to be able to withstand being immersed in media like refractive-index matching media
+such as BABB. The illumination objective has a different effective focal length than that of the TL20X-MPL objective
+used in our standard ASLM configuration, so we need to revisit our choice of lenses for L6 and L7:
+
+.. math::
+
+   1.45 = \frac{f_{\text{L7}}}{8.4} * \frac{13.3}{f_{\text{L6}}}
+
+Where our new relationship between L6 and L7 becomes:
+
+.. math::
+
+   \frac{f_{\text{L7}}}{f_{\text{L6}}} = 0.9167
+
+Based on this relationship, we chose L7 to be f = 180 mm and L6 to be f = 200 mm, and used the equivalent tube lenses
+from Thorlabs that match these (TTL180-A and TTL200-A, respectively).
+
+Re-optimizing the system with our new illumination objective and L7 with a sample immersion media of n = 1.56 yielded
+the following FWHM of our end light sheet widths:
+
+Custom sample chamber for CTASLM
+
+.. list-table::
+       :align: center
+       :header-rows: 1
+
+       * - Wavelength
+         - FWHM
+       * - :math:`\lambda` = 488 nm
+         - ~300 nm
+       * - :math:`\lambda` = 560 nm
+         - ~324 nm
+       * - :math:`\lambda` = 640 nm
+         - ~356 nm
+
+
+----------------
+
+
 Incorporating SPIM
 ______________________________
 
-------------------------------
+.. list-table::
+       :align: center
+       :header-rows: 1
+
+       * - Wavelength
+         - FWHM
+       * - :math:`\lambda` = 488 nm
+         - ~390 nm
+       * - :math:`\lambda` = 560 nm
+         - ~416 nm
+       * - :math:`\lambda` = 640 nm
+         - ~454 nm
+
+
+
+----------------
+
+
 Final Baseplate Design
 ______________________________
+
 
 
 

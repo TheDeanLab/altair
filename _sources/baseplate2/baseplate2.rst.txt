@@ -159,7 +159,40 @@ were found to be:
        * - :math:`\lambda` = 640 nm
          - ~468 nm
 
-In order to account for the
+In order to see how the remote focusing unit would function within our illumination path, we took our
+initially-optimized path and inserted an additional offset at the focus of the RFO (the inflection point between the
+forward and reverse paths), with the goal of seeing if we would be able to shift the focus position of our beam
+across our 266 micron imaging FoV. Our process is essentially as follows:
+
+    1. Insert desired RFO offset
+    2. Re-optimize the simulation for the focus position of the illumination objective (all wavelengths weighted
+       together) to get a general focus location for the new light sheet.
+    3. Individually re-optimize the focus position of the illumination objective for a single wavelength using a
+       dummy surface
+    4. Use Huygen's PSF analysis to observe the properties of the light sheet at the focus
+    5. Repeat Steps 3&4 for each wavelength, and 1&2 for each RFO offset distance
+
+The results from this process for our ASLM configuration are shown below in Figure 4, where we track the focus
+position for each wavelength as we increase the RFO offset to 150 um. From this, we saw that by adjusting the RFO
+offset, we were able to sweep our light sheet focus up to roughly ~225 um in a single direction. By adjusting the RFO
+offset both in a positive and negative direction this would allow us to cover our full imaging FoV easily.
+
+.. figure:: Images/ASLM_RFOOffset.png
+    :align: center
+    :alt: ASLM RFO Simulations
+
+    **Figure 4:** Results from our Zemax simulations of the light sheet focus offset from adjusting the RFO offset
+
+In addition, we tracked how the FWHM cross-sectional profile of our beam changed as we adjusted the RFO offset to
+make sure it stayed consistent as it would be swept across our image FoV, shown in Figure 5. From these, it can be
+seen that even up to our largest RFO offset, our beam waist stays consistent in size across all wavelengths.
+
+.. figure:: Images/ASLM_ProfileAll.png
+    :align: center
+    :alt: ASLM FWHM Simulations
+
+    **Figure 4:** Results from our Zemax simulations of the light sheet FWHM's from adjusting the RFO offset
+
 
 ----------------
 

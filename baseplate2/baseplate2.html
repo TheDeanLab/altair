@@ -133,7 +133,7 @@ cylindrical lens as the element that forms our light sheet profile itself. Powel
 lenses that are known to produce line profiles with consistent and uniform intensity. When utilized in light-sheet
 imaging, these lenses essentially help provide a more uniform intensity of illumination across the full FoV of the
 imaging sensor when compared to cylindrically formed light-sheets which feature more of a gaussian intensity
-distribution associated with them. More information on Powell lenses can be found at <a href="#id4"><span class="problematic" id="id5">`Laserline Optics &lt;https://www.laserlineoptics.com/powell_primer.html`_</span></a>.</p>
+distribution associated with them. More information on Powell lenses can be found at <a href="#id6"><span class="problematic" id="id7">`Laserline Optics &lt;https://www.laserlineoptics.com/powell_primer.html`_</span></a>.</p>
 </section>
 <hr class="docutils" />
 <section id="zemax-simulation-setup-process">
@@ -245,7 +245,40 @@ were found to be:</p>
 </tr>
 </tbody>
 </table>
-<p>In order to account for the</p>
+<p>In order to see how the remote focusing unit would function within our illumination path, we took our
+initially-optimized path and inserted an additional offset at the focus of the RFO (the inflection point between the
+forward and reverse paths), with the goal of seeing if we would be able to shift the focus position of our beam
+across our 266 micron imaging FoV. Our process is essentially as follows:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Insert desired RFO offset</p></li>
+<li><p>Re-optimize the simulation for the focus position of the illumination objective (all wavelengths weighted
+together) to get a general focus location for the new light sheet.</p></li>
+<li><p>Individually re-optimize the focus position of the illumination objective for a single wavelength using a
+dummy surface</p></li>
+<li><p>Use Huygen’s PSF analysis to observe the properties of the light sheet at the focus</p></li>
+<li><p>Repeat Steps 3&amp;4 for each wavelength, and 1&amp;2 for each RFO offset distance</p></li>
+</ol>
+</div></blockquote>
+<p>The results from this process for our ASLM configuration are shown below in Figure 4, where we track the focus
+position for each wavelength as we increase the RFO offset to 150 um. From this, we saw that by adjusting the RFO
+offset, we were able to sweep our light sheet focus up to roughly ~225 um in a single direction. By adjusting the RFO
+offset both in a positive and negative direction this would allow us to cover our full imaging FoV easily.</p>
+<figure class="align-center" id="id4">
+<img alt="ASLM RFO Simulations" src="../_images/ASLM_RFOOffset.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 4:</strong> Results from our Zemax simulations of the light sheet focus offset from adjusting the RFO offset</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>In addition, we tracked how the FWHM cross-sectional profile of our beam changed as we adjusted the RFO offset to
+make sure it stayed consistent as it would be swept across our image FoV, shown in Figure 5. From these, it can be
+seen that even up to our largest RFO offset, our beam waist stays consistent in size across all wavelengths.</p>
+<figure class="align-center" id="id5">
+<img alt="ASLM FWHM Simulations" src="../_images/ASLM_ProfileAll.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 4:</strong> Results from our Zemax simulations of the light sheet FWHM’s from adjusting the RFO offset</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
 </section>
 <hr class="docutils" />
 <section id="adapting-for-ct-aslm">

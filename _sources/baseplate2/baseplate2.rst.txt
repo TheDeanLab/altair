@@ -291,11 +291,36 @@ Custom sample chamber for CTASLM
 Incorporating SPIM
 ______________________________
 
-.. figure:: Images/Atlair_SPIM_Schematic.png
+.. figure:: Images/Altair_SPIM_Schematic.png
     :align: center
     :alt: Setup of the SPIM Zemax simulations
 
-    **Figure 3:** Conceptual setup of the SPIM-based Zemax simulations.
+    **Figure 8:** Conceptual setup of the SPIM-based Zemax simulations.
+
+.. list-table::
+       :header-rows: 1
+
+       * - Lens #
+         - Lens Description
+         - Link
+       * - L1
+         - Powell Lens LOCP-8.9R20-2.0
+         - https://www.laserlineoptics.com/store/product/powell-lens/
+       * - L2
+         - Achromatic Doublet f = 30 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-030-A
+       * - L3
+         - Achromatic Doublet f = 80 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-080-A
+       * - L4
+         - Achromatic Doublet f = 75 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-075-A
+       * - L5
+         - Achromatic Doublet f = 300 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-300-A
+       * - ILO
+         - Illumination Objective TL20X-MPL, EFL = 10 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=TL20X-MPL
 
 .. list-table::
        :align: center
@@ -314,7 +339,7 @@ ______________________________
     :align: center
     :alt: SPIM FWHM Simulations
 
-    **Figure 7:** SPIM Results from our Zemax simulations of the light sheet FWHM's for different wavelengths
+    **Figure 9:** SPIM Results from our Zemax simulations of the light sheet FWHM's for different wavelengths
 
 ----------------
 
@@ -322,6 +347,11 @@ ______________________________
 Final Baseplate Design
 ______________________________
 
+.. figure:: Images/Baseplate_Configurations.png
+    :align: center
+    :alt: Baseplate Configurations
+
+    **Figure 10:** Available microscope builds possible with our single baseplate
 
 
 

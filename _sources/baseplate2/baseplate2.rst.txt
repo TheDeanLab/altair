@@ -191,7 +191,7 @@ seen that even up to our largest RFO offset, our beam waist stays consistent in 
     :align: center
     :alt: ASLM FWHM Simulations
 
-    **Figure 4:** Results from our Zemax simulations of the light sheet FWHM's from adjusting the RFO offset
+    **Figure 5:** Results from our Zemax simulations of the light sheet FWHM's from adjusting the RFO offset
 
 
 ----------------
@@ -219,7 +219,41 @@ Where our new relationship between L6 and L7 becomes:
    \frac{f_{\text{L7}}}{f_{\text{L6}}} = 0.9167
 
 Based on this relationship, we chose L7 to be f = 180 mm and L6 to be f = 200 mm, and used the equivalent tube lenses
-from Thorlabs that match these (TTL180-A and TTL200-A, respectively).
+from Thorlabs that match these (TTL180-A and TTL200-A, respectively). Our path elements for the CTASLM then becomes:
+
+.. list-table::
+       :header-rows: 1
+
+       * - Lens #
+         - Lens Description
+         - Link
+       * - L1
+         - Powell Lens LOCP-8.9R20-2.0
+         - https://www.laserlineoptics.com/store/product/powell-lens/
+       * - L2
+         - Achromatic Doublet f = 30 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-030-A
+       * - L3
+         - Achromatic Doublet f = 80 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-080-A
+       * - L4
+         - Achromatic Doublet f = 75 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-075-A
+       * - L5
+         - Achromatic Doublet f = 300 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-300-A
+       * - L6
+         - Tube Lens f = 200 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=TTL200-A
+       * - L7
+         - Tube Lens f = 180 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=TTL180-A
+       * - RFO
+         - Remote Focus Objective TL15X-2P, EFL = 13.3 mm
+         - https://www.thorlabs.com/thorproduct.cfm?partnumber=TL15X-2P
+       * - ILO
+         - Illumination Objective ASI 54-12-8 Multi-immersion Objective, EFL = 8.4 mm
+         - https://asiimaging.com/docs/multi-immersion_objectives
 
 Re-optimizing the system with our new illumination objective and L7 with a sample immersion media of n = 1.56 yielded
 the following FWHM of our end light sheet widths:
@@ -239,12 +273,29 @@ Custom sample chamber for CTASLM
        * - :math:`\lambda` = 640 nm
          - ~356 nm
 
+.. figure:: Images/CTASLM_RFOOffset.png
+    :align: center
+    :alt: CT-ASLM RFO Simulations
+
+    **Figure 6:** Results from our Zemax simulations of the light sheet focus offset from adjusting the RFO offset
+
+.. figure:: Images/CTASLM_ProfileAll.png
+    :align: center
+    :alt: CT-ASLM FWHM Simulations
+
+    **Figure 7:** CT-ASLM Results from our Zemax simulations of the light sheet FWHM's from adjusting the RFO offset
 
 ----------------
 
 
 Incorporating SPIM
 ______________________________
+
+.. figure:: Images/Atlair_SPIM_Schematic.png
+    :align: center
+    :alt: Setup of the SPIM Zemax simulations
+
+    **Figure 3:** Conceptual setup of the SPIM-based Zemax simulations.
 
 .. list-table::
        :align: center
@@ -259,7 +310,11 @@ ______________________________
        * - :math:`\lambda` = 640 nm
          - ~454 nm
 
+.. figure:: Images/SPIM_ProfileAll.png
+    :align: center
+    :alt: SPIM FWHM Simulations
 
+    **Figure 7:** SPIM Results from our Zemax simulations of the light sheet FWHM's for different wavelengths
 
 ----------------
 

@@ -46,7 +46,7 @@ cylindrical lens as the element that forms our light sheet profile itself. Powel
 lenses that are known to produce line profiles with consistent and uniform intensity. When utilized in light-sheet
 imaging, these lenses essentially help provide a more uniform intensity of illumination across the full FoV of the
 imaging sensor when compared to cylindrically formed light-sheets which feature more of a gaussian intensity
-distribution associated with them. More information on Powell lenses can be found at `Laserline Optics <https://www.laserlineoptics.com/powell_primer.html`_.
+distribution associated with them. More information on Powell lenses can be found at `Laserline Optics <https://www.laserlineoptics.com/powell_primer.html>`_.
 
 
 ----------------
@@ -201,7 +201,10 @@ Adapting for CT-ASLM
 ______________________________
 
 In order to allow for a wider variety of biological structures to be studied in our systems, we adapted aspects of
-our ASLM design detailed above to be for
+our ASLM design detailed above to be optimized for imaging cleared or expanded tissue or bone samples, in a
+configuration known as cleared-tissue ASLM (CT-ASLM). These samples require a different type of immersion media
+compared to the water (n=1.33) used in traditional ALSM, where typically liquids like BABB (n=1.56) can be used to
+match the refractive index of the cleared samples.
 
 Our illumination and detection objectives for our CT-ASLM system are changed to both be ASI 54-12-8 Multi-immersion
 objectives, which are designed to be able to withstand being immersed in media like refractive-index matching media
@@ -291,6 +294,9 @@ Custom sample chamber for CTASLM
 Incorporating SPIM
 ______________________________
 
+In addition to ASLM and CT-ASLM, we also wanted to update our original SPIM design used in our first baseplate
+iteration to use a Powell lens approach.
+
 .. figure:: Images/Altair_SPIM_Schematic.png
     :align: center
     :alt: Setup of the SPIM Zemax simulations
@@ -346,6 +352,22 @@ ______________________________
 
 Final Baseplate Design
 ______________________________
+
+With our illumination paths for SPIM, ASLM, and CT-ASLM optimized we felt like incorporating multiple illumination
+paths together on the same baseplate would provide a number of benefits over having individual baseplates for each
+configuration. Firstly, as all of our illumination paths were designed to utilize the same starting elements (Powell
+lens through L5), having the illumination paths on the same baseplate allows for straightforward switching between
+imaging modes. This could serve as an accessible way for labs to test light-sheet imaging in their research via the
+lower-cost SPIM configuration, and then decide later that they would like to upgrade to the capabilities of an ASLM
+or CT-ASLM system where they only need to buy the additional components and plug them into the same baseplate. It
+this configuration also allows for the straightforward switching between ASLM and CT-ASLM capabilities by swapping
+L7, the illumination objective, and the sample chamber used.
+
+Going through the same process we detailed for our first baseplate iteration (insert link), we determined the
+locations where holes on our baseplate would need to be to correctly position the optical components of all three of
+our potential illumination paths. Our final baseplate design for our second iteration of Altair is shown below in
+Figure 10.
+
 
 .. figure:: Images/Baseplate_Configurations.png
     :align: center

@@ -321,6 +321,44 @@ aligned vertically with each other.
 
 ---------------
 
+Ordering Custom Parts from Xometry
+^^^^^^^^^^^^^^^^^^
+
+We utilize a number of different custom fabricated elements in our completed system, . There are a number of
+different companies available for this, and we opted for Xometry. The basic ordering process we go through is as
+follows:
+
+    1. Begin by creating an account with Xometry
+        .. figure:: Images/Xometry1.png
+            :align: center
+            :alt: Xometry Ordering Process 1
+    2. Start a quote by uploading your desired file (in .stp format)
+        .. figure:: Images/Xometry2.png
+            :align: center
+            :alt: Xometry Ordering Process 2
+    3. Edit the configuration
+        .. figure:: Images/Xometry3.png
+            :align: center
+            :alt: Xometry Ordering Process 3
+    4. Adjust the fabrication process to be CNC machining
+        .. figure:: Images/Xometry4.png
+            :align: center
+            :alt: Xometry Ordering Process 4
+    5. Select Aluminum 6061-T6x as the material for machining
+        .. figure:: Images/Xometry5.png
+            :align: center
+            :alt: Xometry Ordering Process 5
+    6. Adjust the finish to be bead blasted
+        .. figure:: Images/Xometry6.png
+            :align: center
+            :alt: Xometry Ordering Process 6
+    7. If you have a part that uses threads or tapped holes select that option and upload associated pdf drawings
+        .. figure:: Images/Xometry7.png
+            :align: center
+            :alt: Xometry Ordering Process 7
+
+---------------
+
 Mounting Lenses
 ^^^^^^^^^^^^^^^
 

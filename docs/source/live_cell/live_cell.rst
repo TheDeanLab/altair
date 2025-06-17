@@ -31,7 +31,7 @@ chamber. The other large change is that of additional large hoods around each of
 designed for heating pads to be able to be wrapped around them to apply indirect air heating to the objectives.
 
 
-.. figure:: Images/thermocoupleassembly.png
+.. figure:: Images/thermocouple_assembly.png
     :align: center
     :alt: Live-Cell Sample Chamber
 
@@ -90,7 +90,7 @@ ______________________
 Thermocouple Adapter Assembly
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Thermocouples often come without the neccessary adapter placed on the end of their wiring to connect them to a
+Thermocouples often come without the necessary adapter placed on the end of their wiring to connect them to a
 temperature controller. Below in Figure 2 we show the general process to attaching one of these adapters to the two
 thermocouple wires:
 
@@ -102,7 +102,7 @@ thermocouple wires:
     7. Place the outer shell element back on the adapter and screw both screws into place on it.
 
 
-.. figure:: Images/thermocoupleassembly.png
+.. figure:: Images/thermocouple_assembly.png
     :align: center
     :alt: Thermocouple Assembly
 
@@ -114,7 +114,7 @@ Heater Adapter Assembly
 ^^^^^^^^^^^^^^^^^^^^^
 
 
-.. figure:: Images/thermocoupleassembly.png
+.. figure:: Images/thermocouple_assembly.png
     :align: center
     :alt: Heater Adapter Assembly
 

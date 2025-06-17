@@ -94,12 +94,12 @@ Thermocouples often come without the necessary adapter placed on the end of thei
 temperature controller. Below in Figure 2 we show the general process to attaching one of these adapters to the two
 thermocouple wires:
 
-1. Unscrew the screws on the outer shell of the adapter.
-2. Remove the outer shell element of the adapter.
-3. Unscrew the inner screws over both terminals of the adapter enough such that the metal plates can be lifted (4).
-5. Place the ends of the thermocouple wires beneath the metal plates of each terminal (red = -, white = +).
-6. Screw the inner terminal screws tight.
-7. Place the outer shell element back on the adapter and screw both screws into place on it.
+1 - Unscrew the screws on the outer shell of the adapter.
+2 - Remove the outer shell element of the adapter.
+3 - Unscrew the inner screws over both terminals of the adapter enough such that the metal plates can be lifted (4).
+5 - Place the ends of the thermocouple wires beneath the metal plates of each terminal (red = -, white = +).
+6 - Screw the inner terminal screws tight.
+7 - Place the outer shell element back on the adapter and screw both screws into place on it.
 
 
 .. figure:: Images/thermocouple_assembly.png
@@ -113,6 +113,17 @@ thermocouple wires:
 Heater Adapter Assembly
 ^^^^^^^^^^^^^^^^^^^^^
 
+The heaters we utilize also lack the necessary adapter placed on the end of their wiring to connect them to a
+temperature controller. Below in Figure 3 we show the general process to attaching one of these adapters to the two
+heater unit wires:
+
+1 - Unscrew the screws on the side of the adapter with the prongs sticking out
+2 - Remove the inner element of the adapter.
+3 - Unscrew the side screws over the gold and silver terminals on the inner element
+4 - Ensure that the plates within the terminals of the inner element are able to move
+5 - Thread the heater wires through the center hole of the detached front side of the adapter
+6 - Insert one heater wire into the silver terminal and one into the gold terminal and secure them by tightening the side screws.
+7 - Place the two adapter elements together, aligning the three screws on the inner element with the respective holes on the outer element, and tighten all the screws
 
 .. figure:: Images/heateradapter_assembly.png
     :align: center

@@ -356,6 +356,7 @@ follows:
         .. figure:: Images/Xometry7.png
             :align: center
             :alt: Xometry Ordering Process 7
+    8. Select shipping details and checkout
 
 ---------------
 

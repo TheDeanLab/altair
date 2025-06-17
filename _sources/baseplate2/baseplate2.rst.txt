@@ -375,5 +375,14 @@ Figure 10.
 
     **Figure 10:** Available microscope builds possible with our single baseplate
 
+----------------
 
 
+Baseplate Assembly
+______________________________
+
+.. figure:: Images/BaseplatePostHeight.png
+    :align: center
+    :alt: Baseplate Configurations
+
+    **Figure 11:** Baseplate post heights and locations for each imaging configuration

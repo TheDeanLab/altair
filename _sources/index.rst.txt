@@ -51,6 +51,7 @@ To meet these growing demands, we aim to develop simplified optical systems that
    system_characterization/system_characterization
    imaging/imaging
    baseplate2/baseplate2
+   live_cell/live_cell
    future/index
 
 

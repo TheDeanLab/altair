@@ -100,8 +100,9 @@ thermocouple wires:
 
     1. Unscrew the screws on the outer shell of the adapter.
     2. Remove the outer shell element of the adapter.
-    3. Unscrew the inner screws over both terminals of the adapter enough such that the metal plates can be lifted (4).
-    5. Place the ends of the thermocouple wires beneath the metal plates of each terminal (red = -, white = +).
+    3. Unscrew the inner screws over both terminals
+    4. Ensure that the inner screws are undone enough such that the metal plates underneath can be lifted.
+    5. Place the ends of the thermocouple wires beneath the metal plates of each terminal where red = - & white = +.
     6. Screw the inner terminal screws tight.
     7. Place the outer shell element back on the adapter and screw both screws into place on it.
 

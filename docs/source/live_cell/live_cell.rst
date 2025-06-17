@@ -93,12 +93,14 @@ Thermocouple Adapter Assembly
 Thermocouples often come without the neccessary adapter placed on the end of their wiring to connect them to a
 temperature controller. Below in Figure 2 we show the general process to attaching one of these adapters to the two
 thermocouple wires:
+
     1. Unscrew the screws on the outer shell of the adapter.
     2. Remove the outer shell element of the adapter.
     3. Unscrew the inner screws over both terminals of the adapter enough such that the metal plates can be lifted (4).
     5. Place the ends of the thermocouple wires beneath the metal plates of each terminal (red = -, white = +).
     6. Screw the inner terminal screws tight.
     7. Place the outer shell element back on the adapter and screw both screws into place on it.
+
 
 .. figure:: Images/thermocoupleassembly.png
     :align: center

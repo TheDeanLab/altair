@@ -4,8 +4,10 @@
 Live-Cell Imaging
 ###############
 
+______________________________
+
 Sample Chamber Design
-^^^^^^^^^^^^^^^^^^^^^^
+______________________________
 
 In addition to fixed-cell imaging, there are also a variety of live-cell imaging applications where observing the
 evolution or behavior of a cell over time can be valuable. To be able to perform live-cell imaging, the most
@@ -41,7 +43,7 @@ designed for heating pads to be able to be wrapped around them to apply indirect
 -------------
 
 Parts List
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+______________________________
 
 Similarly to our philosophy when trying to source all of our components in our system from as few distinct vendors as
 possible, we sourced all of the heating elements for this system directly from Mcmaster Carr. There are ceratinly
@@ -87,19 +89,21 @@ assembly based on the following components:
 Live-Cell Imaging Full Assembly
 ______________________
 
+______________________________
+
 Thermocouple Adapter Assembly
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+______________________________
 
 Thermocouples often come without the necessary adapter placed on the end of their wiring to connect them to a
 temperature controller. Below in Figure 2 we show the general process to attaching one of these adapters to the two
 thermocouple wires:
 
-1 - Unscrew the screws on the outer shell of the adapter.
-2 - Remove the outer shell element of the adapter.
-3 - Unscrew the inner screws over both terminals of the adapter enough such that the metal plates can be lifted (4).
-5 - Place the ends of the thermocouple wires beneath the metal plates of each terminal (red = -, white = +).
-6 - Screw the inner terminal screws tight.
-7 - Place the outer shell element back on the adapter and screw both screws into place on it.
+    1. Unscrew the screws on the outer shell of the adapter.
+    2. Remove the outer shell element of the adapter.
+    3. Unscrew the inner screws over both terminals of the adapter enough such that the metal plates can be lifted (4).
+    5. Place the ends of the thermocouple wires beneath the metal plates of each terminal (red = -, white = +).
+    6. Screw the inner terminal screws tight.
+    7. Place the outer shell element back on the adapter and screw both screws into place on it.
 
 
 .. figure:: Images/thermocouple_assembly.png
@@ -111,19 +115,22 @@ thermocouple wires:
 -------------
 
 Heater Adapter Assembly
-^^^^^^^^^^^^^^^^^^^^^
+______________________________
 
 The heaters we utilize also lack the necessary adapter placed on the end of their wiring to connect them to a
-temperature controller. Below in Figure 3 we show the general process to attaching one of these adapters to the two
-heater unit wires:
+temperature controller. It also should be noted that for the heater elements, the two wires associated with them are
+unpolarized. Below in Figure 3 we show the general process to attaching one of these adapters to the two heater unit
+wires:
 
-1 - Unscrew the screws on the side of the adapter with the prongs sticking out
-2 - Remove the inner element of the adapter.
-3 - Unscrew the side screws over the gold and silver terminals on the inner element
-4 - Ensure that the plates within the terminals of the inner element are able to move
-5 - Thread the heater wires through the center hole of the detached front side of the adapter
-6 - Insert one heater wire into the silver terminal and one into the gold terminal and secure them by tightening the side screws.
-7 - Place the two adapter elements together, aligning the three screws on the inner element with the respective holes on the outer element, and tighten all the screws
+    1. Unscrew the screws on the side of the adapter with the prongs sticking out
+    2. Remove the inner element of the adapter.
+    3. Unscrew the side screws over the gold and silver terminals on the inner element
+    4. Ensure that the plates within the terminals of the inner element are able to move
+    5. Thread the heater wires through the center hole of the detached front side of the adapter
+    6. Insert one heater wire into the silver terminal and one into the gold terminal and secure them by tightening
+       the side screws.
+    7. Place the two adapter elements together, aligning the three screws on the inner element with the respective
+       holes on the outer element, and tighten all the screws
 
 .. figure:: Images/heateradapter_assembly.png
     :align: center
@@ -134,20 +141,20 @@ heater unit wires:
 -------------
 
 Placing O-rings in the Sample Chamber
-^^^^^^^^^^^^^^^^^^^^^
+______________________________
 
 -------------
 
 Placement of the Heating Pads on the Sample Chamber
-^^^^^^^^^^^^^^^^^^^^^
+______________________________
 
 -------------
 
 Temperature Controller Assembly
-^^^^^^^^^^^^^^^^^^^^^
+______________________________
 
 -------------
 
 Temperature Controller Settings
-^^^^^^^^^^^^^^^^^^^^^
+______________________________
 

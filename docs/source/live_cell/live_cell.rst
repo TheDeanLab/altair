@@ -33,8 +33,9 @@ chamber. The other large change is that of additional large hoods around each of
 designed for heating pads to be able to be wrapped around them to apply indirect air heating to the objectives.
 
 
-.. figure:: Images/livecellchamber.png
+.. figure:: Images/livecellchamber2.png
     :align: center
+    :width: 800px
     :alt: Live-Cell Sample Chamber
 
     **Figure 1** Our custom live-cell sample chamber

@@ -193,11 +193,35 @@ to be as efficient as possible with them.The general assembly process is as foll
 
 -------------
 
-Temperature Controller Assembly
+Temperature Controller Assembly and Settings
 ______________________________
 
--------------
+With the individual components of our heating assembly prepared, the full assembly of the system is straightforward.
+There is some variation in terms of if one opts to use 3 threaded thermocouples or a combination of one dual-probe
+thermocouple and one threaded thermocouple, but in principle both configurations are valid and will yield the same
+system properties. In our case, we began by testing the dual-probe + 1 threaded thermocouple system which is
+reflected in our figure below. Our general process is as follows:
 
-Temperature Controller Settings
-______________________________
+    1. Mount the sample chamber and position it such that both objectives are able to enter the chamber
+       (more detailed setup on aligning the objectives and positioning them can be found on our Microscope Assembly
+       page).
+    2. Place chosen thermocouples into position in one of the 4 threaded thermocouple holes on the top of the sample
+       chamber. We chose the dual-probe thermocouple to simultaneously control the heating of both objectives, so we
+       placed it in the hole between the two objective ports. For our threaded thermocouple we chose it to correspond
+       to our larger heating pad on the exterior of the chamber walls, and placed it in the corner that was closest to
+       where we were able to physically place our individual controller for it.
+    3. Plug the thermocouple adapters for each thermocouple into their respective ports on their temperature
+       controllers. In our case we had our two-bay controller for our two objective ports, and the one-bay controller
+       for the larger exterior heating pad.
+    4. Plug the heating pad modules into the outlets on the back of the controllers corresponding to their respective
+       ports
+    5. Plug the temperature controllers into an outlet and turn on the power
+    6. Using the two middle arrow buttons on the temperature controller display, adjust the temperature to the
+       desired value. The controller will take temperature values from the thermocouples and automatically heat the
+       heating pads accordingly to match the set value.
 
+.. figure:: Images/ControllerConfig.png
+    :align: center
+    :alt: Assembly and Setting of the temperature controllers
+
+    **Figure 6:** Final Assembly and Setting of the Temperature Controllers

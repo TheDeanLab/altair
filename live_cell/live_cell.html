@@ -65,8 +65,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#heater-adapter-assembly">Heater Adapter Assembly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#placing-o-rings-in-the-sample-chamber">Placing O-rings in the Sample Chamber</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#placement-of-the-heating-pads-on-the-sample-chamber">Placement of the Heating Pads on the Sample Chamber</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#temperature-controller-assembly">Temperature Controller Assembly</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#temperature-controller-settings">Temperature Controller Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#temperature-controller-assembly-and-settings">Temperature Controller Assembly and Settings</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
@@ -288,12 +287,40 @@ such that the wires are pointed towards the direction your heating controller wi
 </figure>
 </section>
 <hr class="docutils" />
-<section id="temperature-controller-assembly">
-<h2>Temperature Controller Assembly<a class="headerlink" href="#temperature-controller-assembly" title="Permalink to this heading"></a></h2>
-</section>
-<hr class="docutils" />
-<section id="temperature-controller-settings">
-<h2>Temperature Controller Settings<a class="headerlink" href="#temperature-controller-settings" title="Permalink to this heading"></a></h2>
+<section id="temperature-controller-assembly-and-settings">
+<h2>Temperature Controller Assembly and Settings<a class="headerlink" href="#temperature-controller-assembly-and-settings" title="Permalink to this heading"></a></h2>
+<p>With the individual components of our heating assembly prepared, the full assembly of the system is straightforward.
+There is some variation in terms of if one opts to use 3 threaded thermocouples or a combination of one dual-probe
+thermocouple and one threaded thermocouple, but in principle both configurations are valid and will yield the same
+system properties. In our case, we began by testing the dual-probe + 1 threaded thermocouple system which is
+reflected in our figure below. Our general process is as follows:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Mount the sample chamber and position it such that both objectives are able to enter the chamber
+(more detailed setup on aligning the objectives and positioning them can be found on our Microscope Assembly
+page).</p></li>
+<li><p>Place chosen thermocouples into position in one of the 4 threaded thermocouple holes on the top of the sample
+chamber. We chose the dual-probe thermocouple to simultaneously control the heating of both objectives, so we
+placed it in the hole between the two objective ports. For our threaded thermocouple we chose it to correspond
+to our larger heating pad on the exterior of the chamber walls, and placed it in the corner that was closest to
+where we were able to physically place our individual controller for it.</p></li>
+<li><p>Plug the thermocouple adapters for each thermocouple into their respective ports on their temperature
+controllers. In our case we had our two-bay controller for our two objective ports, and the one-bay controller
+for the larger exterior heating pad.</p></li>
+<li><p>Plug the heating pad modules into the outlets on the back of the controllers corresponding to their respective
+ports</p></li>
+<li><p>Plug the temperature controllers into an outlet and turn on the power</p></li>
+<li><p>Using the two middle arrow buttons on the temperature controller display, adjust the temperature to the
+desired value. The controller will take temperature values from the thermocouples and automatically heat the
+heating pads accordingly to match the set value.</p></li>
+</ol>
+</div></blockquote>
+<figure class="align-center" id="id6">
+<img alt="Assembly and Setting of the temperature controllers" src="../_images/ControllerConfig.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 6:</strong> Final Assembly and Setting of the Temperature Controllers</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
 </section>
 </section>
 

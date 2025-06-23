@@ -170,6 +170,27 @@ grooves are first coated with vacuum grease in the following process:
 Placement of the Heating Pads on the Sample Chamber
 ______________________________
 
+The placement of heating pads on the chamber is a straightforward process, particularly with the adhesive-backed pads
+we detailed in our parts list. In the application process, a general consideration should be made as to the
+direction the wires from the thermocouple are pointed in, as the actual wire lengths are relatively short you want
+to be as efficient as possible with them.The general assembly process is as follows:
+
+    1. Remove protective backing for the 5x1" ultrathin heat sheet
+    2. Wrap the 5x1" heat sheet carefully around the exterior of the smaller port on the sample chamber, oriented
+       such that the wires are pointed towards the direction your heating controller will be.
+    3. Remove protective backing for the 2x5" heat sheet
+    4. Wrap the 2x5" heat sheet carefully around the exterior sides of the sample chamber with no ports on them,
+       oriented such that the wires are pointed towards the direction of your heating controller.
+    5. Remove protective backing for the 6x1" ultrathin heat sheet
+    6. Wrap the 6x1" heat sheet carefully around the exterior of the larger port on the sample chamber, oriented
+       such that the wires are pointed towards the direction your heating controller will be.
+
+.. figure:: Images/HeatingPadPlacement.png
+    :align: center
+    :alt: Preparation and Placement of Heating Pads on the Sample Chamber
+
+    **Figure 5:** Preparation and Placement of Heating Pads on the Sample Chamber
+
 -------------
 
 Temperature Controller Assembly

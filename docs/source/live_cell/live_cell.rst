@@ -145,6 +145,26 @@ wires:
 Placing O-rings in the Sample Chamber
 ______________________________
 
+In order to ensure a watertight seal around our objectives, both of our objective ports feature two sets of o-rings
+surrounding their circumference. For our smaller port associated with the TL20X-MPL objective, we use oil-resistant
+Buna-N O-Rings with 11/16" inner diameter (ID) and 13/16" outer diameter (OD). For the larger port associated with
+the Nikon 20X objective, we used Buna o-rings with roughly 1.3" ID and 1.7" OD. These o-rings and their associated
+grooves are first coated with vacuum grease in the following process:
+
+    1. Unscrew vacuum grease container
+    2. Using either a finger or a cotton-tipped applicator, apply a layer of vacuum grease into and around the grooves
+       on both ports
+    3. Put more vacuum grease on the cotton-tipped applicator
+    4. Using a finger or cotton-tipped applicator, take an o-ring and coat it fully in the vacuum grease.
+    5. Place the o-ring in the appropriate groove using a finger or tweezers to help ensure it sits within the groove
+    6. Repeat steps 3-5 for all 4 o-ring grooves in the chamber
+
+.. figure:: Images/OringPlacement.png
+    :align: center
+    :alt: Preparation and Placement of O-rings in the Sample Chamber
+
+    **Figure 4:** Preparation and Placement of O-rings in the Sample Chamber
+
 -------------
 
 Placement of the Heating Pads on the Sample Chamber

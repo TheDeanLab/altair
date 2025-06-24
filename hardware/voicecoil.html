@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remote Focus Actuator &mdash; altair  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            altair
+              <img src="../_static/compass.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/background.html">Overview of Subcellular Light-Sheet Microscope Technologies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design_principles/required_software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Room and Hardware Considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design_principles/design_process.html">Design Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physical_assembly/physical_assembly.html">Microscope Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system_characterization/system_characterization.html">System Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imaging/imaging.html">Imaging Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ALSM/CTASLM Baseplate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../live_cell/live_cell.html">Live-Cell Imaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">altair</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Remote Focus Actuator</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/hardware/voicecoil.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="remote-focus-actuator">
+<span id="voicecoil-home"></span><h1>Remote Focus Actuator<a class="headerlink" href="#remote-focus-actuator" title="Permalink to this heading"></a></h1>
+<p>In Axially Swept Light-Sheet Microscopy (ASLM), axial scanning is achieved by driving a mirror placed at the focus of a remote objective. To maintain high-fidelity imaging, the remote focus actuator must precisely synchronize its motion with the rolling shutter of the camera. However, designing for speed and accuracy involves trade-offs. As the stroke of the actuator increases, its mechanical bandwidth decreases, limiting the maximum acquisition rate for large field of view imaging. Similarly, higher scan frequencies tend to reduce the scan amplitude and introduce phase delays, which can degrade image quality, especially at the edges of the field of view. Therefore, it is crucial to select an actuator that balances these factors effectively.</p>
+<p>Early implementations of ASLM used piezoelectric actuators, but modern systems often employ voice coil actuators for improved performance. We have tested two commercially available systems: the LFA2004 from Equipment Solutions and the Blink from Thorlabs. The LFA2004 is reliable, easy to configure, and sufficient for most imaging applications, while the Blink offers higher performance at the cost of greater complexity and sensitivity to tuning. For most users, we recommend the LFA2004.</p>
+<p>When ordering the LFA2004, we typically request the stage configured with the SCA814 amplifier and SPS15 power supply. For standard ASLM configurations, we recommend tuning the system for a ~2 gram mirror with a 30µm sawtooth waveform (90% duty cycle). The factory can preconfigure the unit to accept an analog position command by default (servo active). If oscillation or high-frequency noise is observed when the servo is engaged, you can fine-tune the control loop via the RS232 interface by adjusting the “A” and “B” parameters. A common stable configuration is A 40 20 and B 80 5, though slight adjustments may be necessary depending on your optical load and mechanical setup.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Dean Lab, UT Southwestern Medical Center.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

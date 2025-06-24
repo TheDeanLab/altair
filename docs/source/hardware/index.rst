@@ -21,5 +21,6 @@ information, some of which is provided simply as educational resources.
    table.rst
    computer.rst
    lasers.rst
+   voicecoil.rst
 
 

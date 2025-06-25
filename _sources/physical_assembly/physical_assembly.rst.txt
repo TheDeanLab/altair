@@ -322,7 +322,7 @@ aligned vertically with each other.
 ---------------
 
 Ordering Custom Parts from Xometry
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We utilize a number of different custom fabricated elements in our completed system, . There are a number of
 different companies available for this, and we opted for Xometry. The basic ordering process we go through is as

@@ -1,10 +1,8 @@
 .. _aslmbaseplate-home:
 
-##############
+############################
 Altair ALSM/CTASLM Baseplate
-##############
-
----------------
+############################
 
 Overview
 ______________________
@@ -49,7 +47,7 @@ imaging sensor when compared to cylindrically formed light-sheets which feature 
 distribution associated with them. More information on Powell lenses can be found at `Laserline Optics <https://www.laserlineoptics.com/powell_primer.html>`_.
 
 
-----------------
+------------------------------
 
 
 Zemax Simulation Setup Process
@@ -194,11 +192,11 @@ seen that even up to our largest RFO offset, our beam waist stays consistent in 
     **Figure 5:** Results from our Zemax simulations of the light sheet FWHM's from adjusting the RFO offset
 
 
-----------------
+--------------------
 
 
 Adapting for CT-ASLM
-______________________________
+____________________
 
 In order to allow for a wider variety of biological structures to be studied in our systems, we adapted aspects of
 our ASLM design detailed above to be optimized for imaging cleared or expanded tissue or bone samples, in a
@@ -288,11 +286,11 @@ Custom sample chamber for CTASLM
 
     **Figure 7:** CT-ASLM Results from our Zemax simulations of the light sheet FWHM's from adjusting the RFO offset
 
-----------------
+------------------
 
 
 Incorporating SPIM
-______________________________
+__________________
 
 In addition to ASLM and CT-ASLM, we also wanted to update our original SPIM design used in our first baseplate
 iteration to use a Powell lens approach.
@@ -347,11 +345,11 @@ iteration to use a Powell lens approach.
 
     **Figure 9:** SPIM Results from our Zemax simulations of the light sheet FWHM's for different wavelengths
 
-----------------
+----------------------
 
 
 Final Baseplate Design
-______________________________
+______________________
 
 With our illumination paths for SPIM, ASLM, and CT-ASLM optimized we felt like incorporating multiple illumination
 paths together on the same baseplate would provide a number of benefits over having individual baseplates for each
@@ -375,11 +373,11 @@ Figure 10.
 
     **Figure 10:** Available microscope builds possible with our single baseplate
 
-----------------
+------------------
 
 
 Baseplate Assembly
-______________________________
+__________________
 
 .. figure:: Images/BaseplatePostHeight.png
     :align: center

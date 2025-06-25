@@ -1,13 +1,11 @@
 .. _livecellimaging-home:
 
-##################
+#################
 Live-Cell Imaging
-##################
-
-______________________________
+#################
 
 Sample Chamber Design
-______________________________
+_____________________
 
 In addition to fixed-cell imaging, there are also a variety of live-cell imaging applications where observing the
 evolution or behavior of a cell over time can be valuable. To be able to perform live-cell imaging, the most
@@ -41,10 +39,10 @@ designed for heating pads to be able to be wrapped around them to apply indirect
     **Figure 1** Our custom live-cell sample chamber
 
 
--------------
+----------
 
 Parts List
-______________________________
+__________
 
 Similarly to our philosophy when trying to source all of our components in our system from as few distinct vendors as
 possible, we sourced all of the heating elements for this system directly from Mcmaster Carr. There are ceratinly
@@ -85,15 +83,15 @@ assembly based on the following components:
          - Heating pad to wrap around detection objective port
 
 
-----------------------------------
+-------------------------------
 
 Live-Cell Imaging Full Assembly
-__________________________________
+_______________________________
 
-______________________________
+_____________________________
 
 Thermocouple Adapter Assembly
-______________________________
+_____________________________
 
 Thermocouples often come without the necessary adapter placed on the end of their wiring to connect them to a
 temperature controller. Below in Figure 2 we show the general process to attaching one of these adapters to the two
@@ -114,10 +112,10 @@ thermocouple wires:
 
     **Figure 2:** Thermocouple adapter assembly process
 
-------------------------------
+-----------------------
 
 Heater Adapter Assembly
-______________________________
+_______________________
 
 The heaters we utilize also lack the necessary adapter placed on the end of their wiring to connect them to a
 temperature controller. It also should be noted that for the heater elements, the two wires associated with them are
@@ -140,10 +138,10 @@ wires:
 
     **Figure 3:** Heater adapter assembly process
 
---------------------------------------
+-------------------------------------
 
 Placing O-rings in the Sample Chamber
-______________________________________
+_____________________________________
 
 In order to ensure a watertight seal around our objectives, both of our objective ports feature two sets of o-rings
 surrounding their circumference. For our smaller port associated with the TL20X-MPL objective, we use oil-resistant
@@ -165,10 +163,10 @@ grooves are first coated with vacuum grease in the following process:
 
     **Figure 4:** Preparation and Placement of O-rings in the Sample Chamber
 
----------------------------------------------------------
+---------------------------------------------------
 
 Placement of the Heating Pads on the Sample Chamber
-_______________________________________________________
+___________________________________________________
 
 The placement of heating pads on the chamber is a straightforward process, particularly with the adhesive-backed pads
 we detailed in our parts list. In the application process, a general consideration should be made as to the
@@ -191,10 +189,10 @@ to be as efficient as possible with them.The general assembly process is as foll
 
     **Figure 5:** Preparation and Placement of Heating Pads on the Sample Chamber
 
-------------------------------------------------
+--------------------------------------------
 
 Temperature Controller Assembly and Settings
-________________________________________________
+____________________________________________
 
 With the individual components of our heating assembly prepared, the full assembly of the system is straightforward.
 There is some variation in terms of if one opts to use 3 threaded thermocouples or a combination of one dual-probe

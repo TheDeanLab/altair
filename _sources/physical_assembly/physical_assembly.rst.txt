@@ -4,8 +4,6 @@
 Microscope Assembly
 ###################
 
----------------
-
 Parts List and Cost
 ___________________
 

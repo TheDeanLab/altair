@@ -45,7 +45,7 @@ ______________________________
 As a demonstration of Altair's biological imaging capabilities, we prepared and imaged mouse embryonic fibroblast
 (MEF) cells, where multiple subcellular structures were stained for 4 different channels corresponding to the
 excitation wavelengths of our laser source (405 nm, 488 nm, 561 nm, 638 nm). The staining protocol described in our
-`initial Altair-LSFM paper <https://www.biorxiv.org/content/10.1101/2025.04.08.647739v1>`_ was
+`initial Altair-LSFM paper <https://elifesciences.org/reviewed-preprints/106910v1>`_ was
 optimized for visualization of the nucleus (DAPI, 405 nm, cyan channel), microtubules (488 nm,
 gray channel), actin filaments (561 nm, gold channel), and the Golgi apparatus of the MEF cells (638 nm, magenta
 channel).

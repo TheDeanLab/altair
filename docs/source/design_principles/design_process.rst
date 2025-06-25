@@ -4,8 +4,6 @@
 Design Process
 ##############
 
----------------
-
 Initial Lens Selection
 ______________________
 

@@ -96,7 +96,7 @@ Installation and Access
 
 **navigate** is **open-source** and publicly available on GitHub. Installation instructions, along with
 comprehensive documentation, can be found here:
-`navigate Installation Guide <https://thedeanlab.github.io/navigate/software_installation.html>`_
+`navigate Installation Guide <https://thedeanlab.github.io/navigate/01_getting_started/02_software_installation/02_software_installation.html>`_
 
 ---------------
 

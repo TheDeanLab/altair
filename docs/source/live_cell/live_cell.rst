@@ -88,10 +88,8 @@ assembly based on the following components:
 Live-Cell Imaging Full Assembly
 _______________________________
 
-_____________________________
-
 Thermocouple Adapter Assembly
-_____________________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Thermocouples often come without the necessary adapter placed on the end of their wiring to connect them to a
 temperature controller. Below in Figure 2 we show the general process to attaching one of these adapters to the two
@@ -115,7 +113,7 @@ thermocouple wires:
 -----------------------
 
 Heater Adapter Assembly
-_______________________
+^^^^^^^^^^^^^^^^^^^^^^^
 
 The heaters we utilize also lack the necessary adapter placed on the end of their wiring to connect them to a
 temperature controller. It also should be noted that for the heater elements, the two wires associated with them are
@@ -141,7 +139,7 @@ wires:
 -------------------------------------
 
 Placing O-rings in the Sample Chamber
-_____________________________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In order to ensure a watertight seal around our objectives, both of our objective ports feature two sets of o-rings
 surrounding their circumference. For our smaller port associated with the TL20X-MPL objective, we use oil-resistant
@@ -166,7 +164,7 @@ grooves are first coated with vacuum grease in the following process:
 ---------------------------------------------------
 
 Placement of the Heating Pads on the Sample Chamber
-___________________________________________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The placement of heating pads on the chamber is a straightforward process, particularly with the adhesive-backed pads
 we detailed in our parts list. In the application process, a general consideration should be made as to the
@@ -192,7 +190,7 @@ to be as efficient as possible with them.The general assembly process is as foll
 --------------------------------------------
 
 Temperature Controller Assembly and Settings
-____________________________________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 With the individual components of our heating assembly prepared, the full assembly of the system is straightforward.
 There is some variation in terms of if one opts to use 3 threaded thermocouples or a combination of one dual-probe

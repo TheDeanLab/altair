@@ -53,7 +53,7 @@ distribution associated with them. More information on Powell lenses can be foun
 Zemax Simulation Setup Process
 ______________________________
 
-Similarly to our methods used for designing our first iteration of our baseplate (link to page), we first start by
+Similarly to our methods used for designing our `first iteration of our baseplate <https://thedeanlab.github.io/altair/design_principles/design_process.html>`_, we first start by
 using basic magnification equations to select theoretical focal lengths of lenses that would be needed along our
 illumination path to form a light sheet with our desired physical characteristics. A basic schematic of what one of
 these powell-lens-based ALSM systems would look like is shown below in Figure (2).
@@ -137,7 +137,7 @@ path. This setup is shown below in Figure 3.
 
     **Figure 3:** Conceptual setup of the ASLM-based Zemax simulations.
 
-We optimized our system similar in method to how we optimized our first system (link to page), where the general
+We optimized our system similar in method to how we `optimized our first system <https://thedeanlab.github.io/altair/design_principles/design_process.html>`_, where the general
 process is placing in each component individually into the simulation and optimizing for either collimation or
 focusing in a particular direction before adding in the subsequent element. In this first optimization process,
 the offset of the RFO was set to be 0, such that the reverse path reflection point was the exact focus position of
@@ -361,7 +361,7 @@ or CT-ASLM system where they only need to buy the additional components and plug
 this configuration also allows for the straightforward switching between ASLM and CT-ASLM capabilities by swapping
 L7, the illumination objective, and the sample chamber used.
 
-Going through the same process we detailed for our first baseplate iteration (insert link), we determined the
+Going through the same process we detailed for our first baseplate iteration `our first baseplate iteration <https://thedeanlab.github.io/altair/design_principles/design_process.html>`_, we determined the
 locations where holes on our baseplate would need to be to correctly position the optical components of all three of
 our potential illumination paths. Our final baseplate design for our second iteration of Altair is shown below in
 Figure 10.

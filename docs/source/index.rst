@@ -37,6 +37,7 @@ To meet these growing demands, we aim to develop simplified optical systems that
     **Licensing Note:** These design materials are freely available to academic and non-profit users for research and educational purposes. Commercial or for-profit entities must obtain a license before use; please contact the `Office of Technology Development <https://www.utsouthwestern.edu/about-us/administrative-offices/technology-development/>`_ for more information.
 
 --------
+
 .. toctree::
    :caption: Table of Contents
    :maxdepth: 2

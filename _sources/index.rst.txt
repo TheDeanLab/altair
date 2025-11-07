@@ -38,7 +38,7 @@ To meet these growing demands, we aim to develop simplified optical systems that
 
 --------
 .. toctree::
-   :caption: Altair-ASLM/CTASLM/SPIM v1
+   :caption: Table of Contents
    :maxdepth: 2
 
    introduction/introduction

@@ -39,7 +39,7 @@ To meet these growing demands, we aim to develop simplified optical systems that
 --------
 
 .. toctree::
-   :caption: Table of Contents
+   :caption: Altair-SPIM v1 Table of Contents
    :maxdepth: 2
 
    introduction/introduction
@@ -50,10 +50,20 @@ To meet these growing demands, we aim to develop simplified optical systems that
    physical_assembly/physical_assembly
    system_characterization/system_characterization
    imaging/imaging
-   baseplate2/baseplate2
    live_cell/live_cell
    future/index
 
+.. toctree::
+   :caption: Altair-ASLM/CTASLM/SPIM v1 Table of Contents
+   :maxdepth: 2
+
+   introduction/introduction
+   introduction/background
+   design_principles/required_software
+   hardware/index.rst
+   baseplate2/baseplate2
+   live_cell/live_cell
+   future/index
 
 
 **Authors**

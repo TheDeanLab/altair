@@ -221,3 +221,27 @@ reflected in our figure below. Our general process is as follows:
     :alt: Assembly and Setting of the temperature controllers
 
     **Figure 6:** Final Assembly and Setting of the Temperature Controllers
+
+-------------------------------
+
+Live-Cell Imaging Examples
+_______________________________
+
+As a demonstration of the live cell imaging capabilities of our first Altair-LSFM baseplate iteration, we imaged
+dual-channel retinal pigment epithelial (RPE) cells.
+
+.. figure:: Images/Colored_Invert_Scalebar.gif
+    :align: center
+    :alt: Assembly and Setting of the temperature controllers
+
+    **Figure 7:** Final Assembly and Setting of the Temperature Controllers
+
+We also show
+
+.. figure:: Images/LiveCellStills.png
+    :align: center
+    :alt: Assembly and Setting of the temperature controllers
+
+    **Figure 8:** Stills from our live cell video showing actively migrating retinal pignment epithelial (RPE) cells,
+showing vimentin (blue) and microtubules (orange). The series comprises of 50 frames; representative time points are
+displayed.

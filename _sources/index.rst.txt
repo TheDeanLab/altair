@@ -45,13 +45,13 @@ To meet these growing demands, we aim to develop simplified optical systems that
    introduction/introduction
    introduction/background
    design_principles/required_software
+   hardware/index.rst
    future/index
 
 .. toctree::
    :caption: Altair-SPIM v1
    :maxdepth: 2
 
-   hardware/index.rst
    design_principles/design_process
    physical_assembly/physical_assembly
    system_characterization/system_characterization
@@ -70,8 +70,10 @@ To meet these growing demands, we aim to develop simplified optical systems that
 
 **Authors**
 ============
-Dr. John Haug performed all simulations, design, testing, and validation of Altair. Seweryn Gałecki provided
-cells for testing imaging performance and assisted in their visualization. Dr. Kevin Dean oversaw and provided feedback on all research operations. This project also benefited from valuable feedback from the **Dean, Fiolka, and Danuser labs** at **UTSW**.
+Dr. John Haug performed all simulations, design, testing, and validation of Altair. Seweryn Gałecki and Hsin-Yu Lin
+provided cells for testing imaging performance and assisted in their visualization. Xiaoding Wang for assistance in
+imaging and software performance. Dr. Kevin Dean oversaw and provided feedback on all research operations. This
+project also benefited from valuable feedback from the **Dean, Fiolka, and Danuser labs** at **UTSW**.
 
 **Acknowledgements**
 ====================

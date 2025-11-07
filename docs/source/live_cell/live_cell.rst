@@ -228,7 +228,10 @@ Live-Cell Imaging Examples
 _______________________________
 
 As a demonstration of the live cell imaging capabilities of our first Altair-LSFM baseplate iteration, we imaged
-dual-channel retinal pigment epithelial (RPE) cells.
+dual-channel retinal pigment epithelial (RPE) cells with the microtubules and vimentin tagged with GFP and TagRFP-T,
+respectively. Images were acquired over a ~30 minute time period, where 50 frames were taken for both channels. Shown
+in Figures 7 and 8 below, the cells exhibited robust motility, where vimentin and microtubule structures are
+reorganized over the course of the timelapse.
 
 .. figure:: Images/Colored_Invert_Scalebar.gif
     :align: center
@@ -236,12 +239,10 @@ dual-channel retinal pigment epithelial (RPE) cells.
 
     **Figure 7:** Final Assembly and Setting of the Temperature Controllers
 
-We also show
-
 .. figure:: Images/LiveCellStills.png
     :align: center
     :alt: Assembly and Setting of the temperature controllers
 
     **Figure 8:** Stills from our live cell video showing actively migrating retinal pignment epithelial (RPE) cells,
-showing vimentin (blue) and microtubules (orange). The series comprises of 50 frames; representative time points are
-displayed.
+    showing vimentin (blue) and microtubules (orange). The series comprises of 50 frames; representative time points are
+    displayed.

@@ -1,8 +1,8 @@
 .. _aslmbaseplatealignment-home:
 
-############################
-Altair ALSM/CTASLM Baseplate
-############################
+###############################
+ALSM/CTASLM Baseplate Alignment
+###############################
 
 Overview
 ______________________

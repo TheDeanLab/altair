@@ -64,7 +64,7 @@ To meet these growing demands, we aim to develop simplified optical systems that
    :maxdepth: 2
 
    baseplate2/baseplate2
-
+   baseplate2_alignment/baseplate2_alignment
 
 
 

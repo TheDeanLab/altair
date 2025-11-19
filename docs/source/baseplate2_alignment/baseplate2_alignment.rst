@@ -1,4 +1,4 @@
-.. _aslmbaseplatealignment-home:
+.. _aslmbpalignment-home:
 
 ###############################
 ALSM/CTASLM Baseplate Alignment
@@ -10,11 +10,11 @@ ______________________
 For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
 our first iteration, but should still be a straightforward step-by-step process.
 
-------------------------------
+-------------------------
 
 
 Step 1: Laser Collimation
-______________________________
+_________________________
 
 When first assembling the system, ensuring proper output collimation from the fiber laser source is critical. There are multiple checks that one can take for this step, but we utilize a combination of a `shear-plate interferometer <https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=2970>`_ and two pinhole apertures placed at opposite ends along the length of the baseplate. Shear-plate interferometers are designed to split and interfere an input beam of coherent light, such that when the beam is collimated there are interference fringes aligned vertically with a reference line. The fiber laser collimator we used for this system is the `Thorlabs CFC11A-A <https://www.thorlabs.com/thorproduct.cfm?partnumber=CFC11A-A>`_, which features an adjustable barrel which controls the position of collimation optics within the element.
 
@@ -25,45 +25,45 @@ The basic assembly process involves first inserting and fixing the CFC11A-A into
     :alt: Shear Plate interferometer and collimator lens
     :width: 60%
 
-    **Figure 4:** Shear Plate interferometer and collimator lens
+    **Figure 1:** Shear Plate interferometer and collimator lens
 
-------------------------------
+----------------------
 
 
 Step 2: Beam Walking 1
-______________________________
+______________________
 
 Test Text
 
-.. figure:: Images/PCBaseplateV2_LaserAlignment1.png
+.. figure:: Images/PCBaseplateV2LaserAlignment1.png
     :align: center
     :alt: Beam Walking 1
 
     **Figure 2:** Beam Walking 1
 
-------------------------------
+----------------------
 
 
 Step 3: Beam Walking 2
-______________________________
+______________________
 
 Test Text
 
-.. figure:: Images/PCBaseplateV2_LaserAlignment2.png
+.. figure:: Images/PCBaseplateV2LaserAlignment2.png
     :align: center
     :alt: Beam Walking 2
 
     **Figure 3:** Beam Walking 2
 
-------------------------------
+----------------------
 
 
 Step 4: Beam Walking 3
-______________________________
+______________________
 
 Test Text
 
-.. figure:: Images/PCBaseplateV2_LaserAlignment3.png
+.. figure:: Images/PCBaseplateV2LaserAlignment3.png
     :align: center
     :alt: Beam Walking 3
 
@@ -77,35 +77,35 @@ ______________________________
 
 Test Text
 
-.. figure:: Images/PCBaseplateV2_BSAlignment1.png
+.. figure:: Images/PCBaseplateV2BSAlignment1.png
     :align: center
     :alt: Beamsplitter Alignment
 
     **Figure 5:** Beamsplitter Alignment
 
-------------------------------
+----------------------
 
 
 Step 6: Beam Walking 4
-______________________________
+______________________
 
 Test Text
 
-.. figure:: Images/PCBaseplateV2_LaserAlignment4.png
+.. figure:: Images/PCBaseplateV2LaserAlignment4.png
     :align: center
     :alt: Beam Walking 4
 
     **Figure 6:** Beam Walking 4
 
-------------------------------
+----------------------
 
 
 Step 7: Beam Walking 5
-______________________________
+______________________
 
 Test Text
 
-.. figure:: Images/PCBaseplateV2_LaserAlignment5.png
+.. figure:: Images/PCBaseplateV2LaserAlignment5.png
     :align: center
     :alt: Beam Walking 5
 

@@ -23,9 +23,9 @@ The basic assembly process involves first inserting and fixing the CFC11A-A into
 .. figure:: Images/LaserAlignment1.png
     :align: center
     :alt: Shear Plate interferometer and collimator lens
-    :width: 60%
 
     **Figure 1:** Shear Plate interferometer and collimator lens
+
 
 ----------------------
 
@@ -41,6 +41,7 @@ Test Text
 
     **Figure 2:** Beam Walking 1
 
+
 ----------------------
 
 
@@ -54,6 +55,7 @@ Test Text
     :alt: Beam Walking 2
 
     **Figure 3:** Beam Walking 2
+
 
 ----------------------
 
@@ -69,6 +71,7 @@ Test Text
 
     **Figure 4:** Beam Walking 3
 
+
 ------------------------------
 
 
@@ -82,6 +85,7 @@ Test Text
     :alt: Beamsplitter Alignment
 
     **Figure 5:** Beamsplitter Alignment
+
 
 ----------------------
 
@@ -97,6 +101,7 @@ Test Text
 
     **Figure 6:** Beam Walking 4
 
+
 ----------------------
 
 
@@ -110,3 +115,5 @@ Test Text
     :alt: Beam Walking 5
 
     **Figure 7:** Beam Walking 5
+
+

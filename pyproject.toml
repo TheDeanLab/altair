@@ -16,7 +16,7 @@ classifiers = [
 requires-python = ">=3.9.7"
 dependencies = []
 
-[dependency-groups]
+[project.optional-dependencies]
 docs = [
     "latexmk",
     "numpydoc",

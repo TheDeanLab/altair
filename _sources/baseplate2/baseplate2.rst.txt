@@ -44,7 +44,7 @@ cylindrical lens as the element that forms our light sheet profile itself. Powel
 lenses that are known to produce line profiles with consistent and uniform intensity. When utilized in light-sheet
 imaging, these lenses essentially help provide a more uniform intensity of illumination across the full FoV of the
 imaging sensor when compared to cylindrically formed light-sheets which feature more of a gaussian intensity
-distribution associated with them. More information on Powell lenses can be found at `Laserline Optics <https://www.laserlineoptics.com/powell_primer.html>`_.
+distribution associated with them. More information on Powell lenses can be found at `Laserline Optics <https://laserlineoptics.com/pages/buyers-guide>`_.
 
 
 ------------------------------
@@ -99,7 +99,7 @@ With that relationship solidified, we then moved forward with selecting our lens
          - Link
        * - L1
          - Powell Lens LOCP-8.9R20-2.0
-         - https://www.laserlineoptics.com/store/product/powell-lens/
+         - https://laserlineoptics.com/products/powell-lens-20-degree?variant=44313730809890
        * - L2
          - Achromatic Doublet f = 30 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-030-A
@@ -230,7 +230,7 @@ from Thorlabs that match these (TTL180-A and TTL200-A, respectively). Our path e
          - Link
        * - L1
          - Powell Lens LOCP-8.9R20-2.0
-         - https://www.laserlineoptics.com/store/product/powell-lens/
+         - https://laserlineoptics.com/products/powell-lens-20-degree?variant=44313730809890
        * - L2
          - Achromatic Doublet f = 30 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-030-A
@@ -309,7 +309,7 @@ iteration to use a Powell lens approach.
          - Link
        * - L1
          - Powell Lens LOCP-8.9R20-2.0
-         - https://www.laserlineoptics.com/store/product/powell-lens/
+         - https://laserlineoptics.com/products/powell-lens-20-degree?variant=44313730809890
        * - L2
          - Achromatic Doublet f = 30 mm
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=AC254-030-A

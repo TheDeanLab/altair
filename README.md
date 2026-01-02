@@ -12,6 +12,8 @@ altair
 </h3>
 </h1>
 
+[![DOI](https://zenodo.org/badge/796858312.svg)](https://doi.org/10.5281/zenodo.18060763)
+
 **Altair** aims to democratize high-resolution light-sheet fluorescence microscopy. By combining **modular optomechanics**, **cutting-edge lens simulations**, and **intelligent software**, **Altair** enables the rapid assembly of light-sheet fluorescence microscopes that deliver ~235 nm lateral and ~465 nm axial resolution in a user-friendly package.
 
 ## Motivation

@@ -21,7 +21,7 @@ wheels = [
 name = "altair"
 source = { editable = "." }
 
-[package.dev-dependencies]
+[package.optional-dependencies]
 docs = [
     { name = "latexmk" },
     { name = "livereload" },
@@ -38,22 +38,21 @@ docs = [
 ]
 
 [package.metadata]
-
-[package.metadata.requires-dev]
-docs = [
-    { name = "latexmk" },
-    { name = "livereload" },
-    { name = "nbconvert" },
-    { name = "numpydoc" },
-    { name = "pydata-sphinx-theme", specifier = "==0.10.0rc2" },
-    { name = "pyyaml" },
-    { name = "sphinx", specifier = "<6.0.0" },
-    { name = "sphinx-copybutton" },
-    { name = "sphinx-design" },
-    { name = "sphinx-issues" },
-    { name = "sphinx-rtd-theme" },
-    { name = "sphinx-toolbox" },
+requires-dist = [
+    { name = "latexmk", marker = "extra == 'docs'" },
+    { name = "livereload", marker = "extra == 'docs'" },
+    { name = "nbconvert", marker = "extra == 'docs'" },
+    { name = "numpydoc", marker = "extra == 'docs'" },
+    { name = "pydata-sphinx-theme", marker = "extra == 'docs'", specifier = "==0.10.0rc2" },
+    { name = "pyyaml", marker = "extra == 'docs'" },
+    { name = "sphinx", marker = "extra == 'docs'", specifier = "<6.0.0" },
+    { name = "sphinx-copybutton", marker = "extra == 'docs'" },
+    { name = "sphinx-design", marker = "extra == 'docs'" },
+    { name = "sphinx-issues", marker = "extra == 'docs'" },
+    { name = "sphinx-rtd-theme", marker = "extra == 'docs'" },
+    { name = "sphinx-toolbox", marker = "extra == 'docs'" },
 ]
+provides-extras = ["docs"]
 
 [[package]]
 name = "apeye"
@@ -1622,6 +1621,8 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/42/cd/85b422d24ee2096eaf6faa360c95ef9bdb59097d19b9624cebce4dd9bc2a/ruamel.yaml.clib-0.2.14-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:808c7190a0fe7ae7014c42f73897cf8e9ef14ff3aa533450e51b1e72ec5239ad", size = 725028, upload-time = "2025-09-22T19:51:19.782Z" },
     { url = "https://files.pythonhosted.org/packages/4d/ac/99e6e0ea2584f84f447069d0187fe411e9b5deb7e3ddecda25001cfc7a95/ruamel.yaml.clib-0.2.14-cp39-cp39-win32.whl", hash = "sha256:6d5472f63a31b042aadf5ed28dd3ef0523da49ac17f0463e10fda9c4a2773352", size = 100915, upload-time = "2025-09-22T19:51:21.764Z" },
     { url = "https://files.pythonhosted.org/packages/5d/8d/846e43369658958c99d959bb7774136fff9210f9017d91a4277818ceafbf/ruamel.yaml.clib-0.2.14-cp39-cp39-win_amd64.whl", hash = "sha256:8dd3c2cc49caa7a8d64b67146462aed6723a0495e44bf0aa0a2e94beaa8432f6", size = 118706, upload-time = "2025-09-22T19:51:20.878Z" },
+    { url = "https://files.pythonhosted.org/packages/e7/cd/150fdb96b8fab27fe08d8a59fe67554568727981806e6bc2677a16081ec7/ruamel_yaml_clib-0.2.14-cp314-cp314-win32.whl", hash = "sha256:9b4104bf43ca0cd4e6f738cb86326a3b2f6eef00f417bd1e7efb7bdffe74c539", size = 102394, upload-time = "2025-11-14T21:57:36.703Z" },
+    { url = "https://files.pythonhosted.org/packages/bd/e6/a3fa40084558c7e1dc9546385f22a93949c890a8b2e445b2ba43935f51da/ruamel_yaml_clib-0.2.14-cp314-cp314-win_amd64.whl", hash = "sha256:13997d7d354a9890ea1ec5937a219817464e5cc344805b37671562a401ca3008", size = 122673, upload-time = "2025-11-14T21:57:38.177Z" },
 ]
 
 [[package]]

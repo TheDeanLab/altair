@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Computer Specifications &mdash; altair  documentation</title>
+  <title>Acquisition Computer &mdash; altair  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -54,8 +54,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Room and Hardware Considerations</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="room_preparation.html">Preparation of the Imaging Room</a></li>
 <li class="toctree-l2"><a class="reference internal" href="table.html">Optical Table</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Computer Specifications</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#standard-build">Standard Build</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Acquisition Computer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#standard-specifications">Standard Specifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuring-power-management-settings">Configuring Power Management Settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#protocol-windows-configuration">Protocol: Windows configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#protocol-bios-uefi-configuration">Protocol: BIOS/UEFI configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommended-bios-settings-with-1-line-descriptions">Recommended BIOS settings (with 1-line descriptions)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="lasers.html">Laser Sources</a></li>
@@ -93,7 +100,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Room and Hardware Considerations</a></li>
-      <li class="breadcrumb-item active">Computer Specifications</li>
+      <li class="breadcrumb-item active">Acquisition Computer</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/hardware/computer.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -103,8 +110,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="computer-specifications">
-<span id="computer-home"></span><h1>Computer Specifications<a class="headerlink" href="#computer-specifications" title="Permalink to this heading"></a></h1>
+  <section id="acquisition-computer">
+<span id="computer-home"></span><h1>Acquisition Computer<a class="headerlink" href="#acquisition-computer" title="Permalink to this heading"></a></h1>
 <p>Modern scientific cameras are capable of capturing images at very high frame rates.
 For example, the Orca-Lightning from Hamamatsu, when imaging a region of interest of
 4608x128, can image at 2203 frames per second, totalling 1.3 terapixel per second. It
@@ -130,8 +137,8 @@ components, such as frame grabbers.</p></li>
 high-speed components.</p></li>
 </ul>
 <hr class="docutils" />
-<section id="standard-build">
-<h2>Standard Build<a class="headerlink" href="#standard-build" title="Permalink to this heading"></a></h2>
+<section id="standard-specifications">
+<h2>Standard Specifications<a class="headerlink" href="#standard-specifications" title="Permalink to this heading"></a></h2>
 <p>A general build for a imaging computer is as follows:</p>
 <ul class="simple">
 <li><p>Windows 10 Pro. This is the most common operating system for scientific imaging
@@ -159,6 +166,172 @@ learn more, we recommend reading
 <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/34845388/">Moore et al. 2021</a>, and
 <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/37428210/">Moore et al. 2023</a>.</p>
 </div>
+</section>
+<hr class="docutils" />
+<section id="configuring-power-management-settings">
+<h2>Configuring Power Management Settings<a class="headerlink" href="#configuring-power-management-settings" title="Permalink to this heading"></a></h2>
+<p>On modern platforms, the <em>computer’s</em> power management configuration (Windows power plan, chipset/firmware drivers, and BIOS/UEFI power features) can materially affect throughput, latency, and run-to-run stability. By properly configuring the computer, navigate will operate more deterministically and at higher performance. Below is a step-by-step guide to optimize these settings.</p>
+<section id="protocol-windows-configuration">
+<h3>Protocol: Windows configuration<a class="headerlink" href="#protocol-windows-configuration" title="Permalink to this heading"></a></h3>
+<section id="update-baseline-software-and-firmware">
+<h4>1. Update baseline software and firmware<a class="headerlink" href="#update-baseline-software-and-firmware" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Ensure the system is on a supported Windows release (Windows 10/11 or Windows Server).</p></li>
+<li><p>Apply your vendor’s recommended BIOS/BMC/firmware updates (Supermicro/HPE/Dell/etc.).</p></li>
+<li><p>Reboot after firmware updates.</p></li>
+</ol>
+</section>
+<section id="set-windows-to-a-performance-focused-power-mode">
+<h4>2. Set Windows to a performance-focused power mode<a class="headerlink" href="#set-windows-to-a-performance-focused-power-mode" title="Permalink to this heading"></a></h4>
+<p><strong>General Power Settings</strong> - We recommend setting Windows to a performance-oriented power plan to minimize power-saving features that can impact performance. This includes the high performance plan or, where available, the ultimate performance plan. To change these settings via the GUI, navigate to:
+Control Panel → Power Options → select <strong>High performance</strong> (or <strong>Ultimate Performance</strong>).</p>
+<p><strong>Minimum Processor Settings</strong> - Additionally, adjust the processor power management settings to ensure the CPU operates at full performance when plugged in. Set both the minimum and maximum processor states to 100% and disable PCI Express Link State Power Management. This can be done via:
+Control Panel → Power Options → Change plan settings → Advanced power settings:</p>
+</section>
+<section id="install-chipset-platform-drivers-including-intel-management-engine">
+<h4>3. Install chipset platform drivers (including Intel Management Engine)<a class="headerlink" href="#install-chipset-platform-drivers-including-intel-management-engine" title="Permalink to this heading"></a></h4>
+<p>The Intel Management Engine (ME) provides platform management
+capabilities independent of the OS. Install the latest ME drivers, which can be found
+<a class="reference external" href="https://www.intel.com/content/www/us/en/download/682431/intel-management-engine-drivers-for-windows-10-and-windows-11.html">https://www.intel.com/content/www/us/en/download/682431/intel-management-engine-drivers-for-windows-10-and-windows-11.html</a></p>
+<ol class="arabic simple">
+<li><p>Install your <strong>vendor chipset driver bundle</strong> (preferred for servers/workstations).</p></li>
+<li><p>Install the <strong>Intel Management Engine Interface (MEI)</strong> driver package (vendor-supplied).</p></li>
+<li><p>Reboot.</p></li>
+</ol>
+<p><strong>Confirm MEI is installed:</strong>
+Device Manager → System devices → look for <strong>Intel(R) Management Engine Interface</strong>.</p>
+</section>
+<section id="optional-windows-update-cpu-chipset-related-driver-updates">
+<h4>4. Optional Windows Update: CPU/chipset-related driver updates<a class="headerlink" href="#optional-windows-update-cpu-chipset-related-driver-updates" title="Permalink to this heading"></a></h4>
+<p>Windows can deliver additional driver updates through <strong>Optional updates</strong>.</p>
+<p>Settings → Windows Update → Advanced options → Optional updates → Driver updates</p>
+</section>
+</section>
+<section id="protocol-bios-uefi-configuration">
+<h3>Protocol: BIOS/UEFI configuration<a class="headerlink" href="#protocol-bios-uefi-configuration" title="Permalink to this heading"></a></h3>
+<p>The exact BIOS menu paths vary by vendor and CPU generation, but the concepts are consistent.</p>
+<section id="numa-and-node-interleaving">
+<h4>1. NUMA and Node Interleaving<a class="headerlink" href="#numa-and-node-interleaving" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Disable Node Interleaving</strong> (recommended for modern NUMA-aware OSes).
+When enabled, firmware interleaves memory across sockets and presents a UMA-like view,
+which typically reduces NUMA locality benefits.</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Some platforms do not expose an explicit <strong>Node Interleaving</strong> toggle (or it is hidden
+when the platform defaults to NUMA mode). In that case, verify NUMA is active in the OS
+(multiple NUMA nodes visible) and proceed with the remaining power settings.</p>
+</div>
+</section>
+<section id="power-and-idle-state-controls-c-states-p-states">
+<h4>2. Power and idle-state controls (C-states, P-states)<a class="headerlink" href="#power-and-idle-state-controls-c-states-p-states" title="Permalink to this heading"></a></h4>
+<p>These settings are commonly found under:</p>
+<p>Advanced → Advanced CPU Configuration → Advanced Power Management Configuration</p>
+<p>The intent is:</p>
+<ul class="simple">
+<li><p>Keep <strong>Turbo + P-states enabled</strong> (fast frequency scaling).</p></li>
+<li><p>Disable <strong>deep core/package C-states</strong> (avoid wake-up latency and jitter).</p></li>
+<li><p>Disable <strong>autonomous hardware power management</strong> (keep behavior deterministic).</p></li>
+</ul>
+</section>
+</section>
+<section id="recommended-bios-settings-with-1-line-descriptions">
+<h3>Recommended BIOS settings (with 1-line descriptions)<a class="headerlink" href="#recommended-bios-settings-with-1-line-descriptions" title="Permalink to this heading"></a></h3>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">BIOS settings reference (performance mode)</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 28.0%" />
+<col style="width: 18.0%" />
+<col style="width: 54.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting (location)</p></th>
+<th class="head"><p>Recommended</p></th>
+<th class="head"><p>What it does (1 line)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CPU P State Control</strong> (APM)</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>AVX P1</p></td>
+<td><p>Nominal</p></td>
+<td><p>Controls the target performance state under heavy AVX; <em>Nominal</em> avoids extra down-binning beyond platform defaults.</p></td>
+</tr>
+<tr class="row-even"><td><p>SpeedStep (P-states)</p></td>
+<td><p>Enabled</p></td>
+<td><p>Enables OS-managed frequency/voltage scaling (fast ramp-up without sleeping).</p></td>
+</tr>
+<tr class="row-odd"><td><p>EIST PSD Function</p></td>
+<td><p>HW_ALL</p></td>
+<td><p>Uses hardware assistance for P-state transitions across all cores for responsiveness.</p></td>
+</tr>
+<tr class="row-even"><td><p>Turbo Mode</p></td>
+<td><p>Enabled</p></td>
+<td><p>Allows boosting above base frequency when power/thermals permit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Hardware PM State Control</strong> (APM)</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Hardware P-States (HWP)</p></td>
+<td><p>Disabled</p></td>
+<td><p>Prevents the CPU from autonomously selecting performance states (keeps policy deterministic).</p></td>
+</tr>
+<tr class="row-odd"><td><p>Autonomous PM</p></td>
+<td><p>Disabled</p></td>
+<td><p>Disables out-of-band autonomous power decisions that can introduce variability.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CPU C State Control</strong> (APM)</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Enable Monitor MWAIT</p></td>
+<td><p>Disabled</p></td>
+<td><p>Disables MWAIT-based idle entry hints that can lead to deeper idle behavior.</p></td>
+</tr>
+<tr class="row-even"><td><p>CPU C1 Auto Demotion</p></td>
+<td><p>Disabled</p></td>
+<td><p>Prevents automatic demotion from shallow idle (C1) into deeper C-states.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPU C6 Report</p></td>
+<td><p>Disabled</p></td>
+<td><p>Hides C6 from the OS, preventing deep core sleep selection.</p></td>
+</tr>
+<tr class="row-even"><td><p>Enhanced Halt State (C1E)</p></td>
+<td><p>Disabled</p></td>
+<td><p>Disables C1E voltage/frequency drop behavior that can add wake latency/jitter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Package C State Control</strong> (APM)</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Package C State</p></td>
+<td><p>Disabled</p></td>
+<td><p>Prevents the entire socket/package from entering deep idle (high wake latency).</p></td>
+</tr>
+<tr class="row-odd"><td><p>Package C State Limit</p></td>
+<td><p>C0/C1</p></td>
+<td><p>Caps package idle to shallow states only (best for consistent multi-socket performance).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/powercfg-command-line-options">Microsoft powercfg documentation</a></p></li>
+<li><p><a class="reference external" href="https://support.microsoft.com/en-us/windows/automatically-get-recommended-and-updated-hardware-drivers-0549a8d9-4842-8acb-75fa-a6faadb62507">Recommended hardware drivers</a></p></li>
+<li><p><a class="reference external" href="https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/hardware/power/power-performance-tuning">Windows power and performance tuning</a></p></li>
+<li><p><a class="reference external" href="https://learn.microsoft.com/en-us/windows-hardware/drivers/dashboard/understanding-windows-update-automatic-and-optional-rules-for-driver-distribution">Understanding automatic and optional updates</a></p></li>
+<li><p><a class="reference external" href="https://www.intel.com/content/www/us/en/support/articles/000008927/software/chipset-software.html">Intel Management Engine overview</a></p></li>
+<li><p><a class="reference external" href="https://edc.intel.com/content/www/us/en/design/products/ethernet/appnote-perf-tuning-guide-700-series-linux/%E2%80%8Bc-state-control/">C-state guidance - Part 1</a></p></li>
+<li><p><a class="reference external" href="https://www.cisco.com/c/en/us/products/collateral/servers-unified-computing/ucs-c-series-rack-servers/bios-tuning-guide-ucs-m8-intel-xeon-wp.html">C-state guidance - Part 2</a></p></li>
+<li><p><a class="reference external" href="https://frankdenneman.nl/2010/12/28/node-interleaving-enable-or-disable">Node interleaving background</a></p></li>
+</ul>
+</section>
 </section>
 </section>
 

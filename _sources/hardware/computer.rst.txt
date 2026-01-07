@@ -1,7 +1,7 @@
 .. _computer-home:
 
 ###############################
-Computer Specifications
+Acquisition Computer
 ###############################
 
 Modern scientific cameras are capable of capturing images at very high frame rates.
@@ -30,8 +30,8 @@ includes several convenient features, including:
 
 ---------------
 
-Standard Build
-______________
+Standard Specifications
+_______________________
 
 A general build for a imaging computer is as follows:
 
@@ -59,4 +59,153 @@ A general build for a imaging computer is as follows:
     learn more, we recommend reading
     `Moore et al. 2021 <https://pubmed.ncbi.nlm.nih.gov/34845388/>`_, and
     `Moore et al. 2023 <https://pubmed.ncbi.nlm.nih.gov/37428210/>`_.
+
+-------------
+
+Configuring Power Management Settings
+_____________________________________
+
+On modern platforms, the *computer's* power management configuration (Windows power plan, chipset/firmware drivers, and BIOS/UEFI power features) can materially affect throughput, latency, and run-to-run stability. By properly configuring the computer, navigate will operate more deterministically and at higher performance. Below is a step-by-step guide to optimize these settings.
+
+Protocol: Windows configuration
+------------------------------------
+
+1. Update baseline software and firmware
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Ensure the system is on a supported Windows release (Windows 10/11 or Windows Server).
+#. Apply your vendor's recommended BIOS/BMC/firmware updates (Supermicro/HPE/Dell/etc.).
+#. Reboot after firmware updates.
+
+2. Set Windows to a performance-focused power mode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**General Power Settings** - We recommend setting Windows to a performance-oriented power plan to minimize power-saving features that can impact performance. This includes the high performance plan or, where available, the ultimate performance plan. To change these settings via the GUI, navigate to:
+Control Panel → Power Options → select **High performance** (or **Ultimate Performance**).
+
+**Minimum Processor Settings** - Additionally, adjust the processor power management settings to ensure the CPU operates at full performance when plugged in. Set both the minimum and maximum processor states to 100% and disable PCI Express Link State Power Management. This can be done via:
+Control Panel → Power Options → Change plan settings → Advanced power settings:
+
+3. Install chipset platform drivers (including Intel Management Engine)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Intel Management Engine (ME) provides platform management
+capabilities independent of the OS. Install the latest ME drivers, which can be found
+https://www.intel.com/content/www/us/en/download/682431/intel-management-engine-drivers-for-windows-10-and-windows-11.html
+
+#. Install your **vendor chipset driver bundle** (preferred for servers/workstations).
+#. Install the **Intel Management Engine Interface (MEI)** driver package (vendor-supplied).
+#. Reboot.
+
+**Confirm MEI is installed:**
+Device Manager → System devices → look for **Intel(R) Management Engine Interface**.
+
+4. Optional Windows Update: CPU/chipset-related driver updates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Windows can deliver additional driver updates through **Optional updates**.
+
+Settings → Windows Update → Advanced options → Optional updates → Driver updates
+
+Protocol: BIOS/UEFI configuration
+---------------------------------
+
+The exact BIOS menu paths vary by vendor and CPU generation, but the concepts are consistent.
+
+1. NUMA and Node Interleaving
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* **Disable Node Interleaving** (recommended for modern NUMA-aware OSes).
+  When enabled, firmware interleaves memory across sockets and presents a UMA-like view,
+  which typically reduces NUMA locality benefits.
+
+.. important::
+   Some platforms do not expose an explicit **Node Interleaving** toggle (or it is hidden
+   when the platform defaults to NUMA mode). In that case, verify NUMA is active in the OS
+   (multiple NUMA nodes visible) and proceed with the remaining power settings.
+
+2. Power and idle-state controls (C-states, P-states)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+These settings are commonly found under:
+
+Advanced → Advanced CPU Configuration → Advanced Power Management Configuration
+
+The intent is:
+
+* Keep **Turbo + P-states enabled** (fast frequency scaling).
+* Disable **deep core/package C-states** (avoid wake-up latency and jitter).
+* Disable **autonomous hardware power management** (keep behavior deterministic).
+
+Recommended BIOS settings (with 1-line descriptions)
+----------------------------------------------------
+
+.. list-table:: BIOS settings reference (performance mode)
+   :header-rows: 1
+   :widths: 28 18 54
+
+   * - Setting (location)
+     - Recommended
+     - What it does (1 line)
+   * - **CPU P State Control** (APM)
+     -
+     -
+   * - AVX P1
+     - Nominal
+     - Controls the target performance state under heavy AVX; *Nominal* avoids extra down-binning beyond platform defaults.
+   * - SpeedStep (P-states)
+     - Enabled
+     - Enables OS-managed frequency/voltage scaling (fast ramp-up without sleeping).
+   * - EIST PSD Function
+     - HW_ALL
+     - Uses hardware assistance for P-state transitions across all cores for responsiveness.
+   * - Turbo Mode
+     - Enabled
+     - Allows boosting above base frequency when power/thermals permit.
+   * - **Hardware PM State Control** (APM)
+     -
+     -
+   * - Hardware P-States (HWP)
+     - Disabled
+     - Prevents the CPU from autonomously selecting performance states (keeps policy deterministic).
+   * - Autonomous PM
+     - Disabled
+     - Disables out-of-band autonomous power decisions that can introduce variability.
+   * - **CPU C State Control** (APM)
+     -
+     -
+   * - Enable Monitor MWAIT
+     - Disabled
+     - Disables MWAIT-based idle entry hints that can lead to deeper idle behavior.
+   * - CPU C1 Auto Demotion
+     - Disabled
+     - Prevents automatic demotion from shallow idle (C1) into deeper C-states.
+   * - CPU C6 Report
+     - Disabled
+     - Hides C6 from the OS, preventing deep core sleep selection.
+   * - Enhanced Halt State (C1E)
+     - Disabled
+     - Disables C1E voltage/frequency drop behavior that can add wake latency/jitter.
+   * - **Package C State Control** (APM)
+     -
+     -
+   * - Package C State
+     - Disabled
+     - Prevents the entire socket/package from entering deep idle (high wake latency).
+   * - Package C State Limit
+     - C0/C1
+     - Caps package idle to shallow states only (best for consistent multi-socket performance).
+
+
+References
+----------
+
+* `Microsoft powercfg documentation <https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/powercfg-command-line-options>`_
+* `Recommended hardware drivers <https://support.microsoft.com/en-us/windows/automatically-get-recommended-and-updated-hardware-drivers-0549a8d9-4842-8acb-75fa-a6faadb62507>`_
+* `Windows power and performance tuning <https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/hardware/power/power-performance-tuning>`_
+* `Understanding automatic and optional updates <https://learn.microsoft.com/en-us/windows-hardware/drivers/dashboard/understanding-windows-update-automatic-and-optional-rules-for-driver-distribution>`_
+* `Intel Management Engine overview <https://www.intel.com/content/www/us/en/support/articles/000008927/software/chipset-software.html>`_
+* `C-state guidance - Part 1 <https://edc.intel.com/content/www/us/en/design/products/ethernet/appnote-perf-tuning-guide-700-series-linux/%E2%80%8Bc-state-control/>`_
+* `C-state guidance - Part 2 <https://www.cisco.com/c/en/us/products/collateral/servers-unified-computing/ucs-c-series-rack-servers/bios-tuning-guide-ucs-m8-intel-xeon-wp.html>`_
+* `Node interleaving background <https://frankdenneman.nl/2010/12/28/node-interleaving-enable-or-disable>`_
 

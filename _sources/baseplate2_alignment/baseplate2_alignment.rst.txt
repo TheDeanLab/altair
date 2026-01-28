@@ -29,6 +29,11 @@ Then using a UV flashlight, cure the resin to secure the mirror in place.
 
 **Step 2: Secure the PY004 onto the baseplate**
 
+Depending on if you're planning on the cylindrical or the powell lens illumination paths, there will be a different
+set of threaded holes to fix the PY004 onto the baseplate with, highlighted in the image below. The large 3-hole
+pattern on the top of the PY004 should align directly with the three threaded holes on the baseplate. Screw 1/4"
+screws into these holes to secure the PY004 in place.
+
 .. figure:: Images/assembly/VoicecoilBaseplateHoles.png
     :align: center
     :alt: Holes on the baseplate where the PY004 should be screwed into
@@ -38,6 +43,9 @@ Then using a UV flashlight, cure the resin to secure the mirror in place.
 
 **Step 3: Secure the voicecoil to PY004 adapter onto the PY004**
 
+Using 1/4" screws in the 4 holes on the adapter, tighten the screws until the adapter is secured in place onto the
+PY004.
+
 .. figure:: Images/assembly/VoiceCoilAssembly2.png
     :align: center
     :alt: placing the mirror into the voicecoil
@@ -46,11 +54,14 @@ Then using a UV flashlight, cure the resin to secure the mirror in place.
 
 **Step 4: Secure the voicecoil to the adapter using the front screw holes**
 
+Using 8/32" screws, secure the voicecoil onto the front of the adapter using the two thru-holes on the front of the
+adapter.
+
 .. figure:: Images/assembly/VoiceCoilAssembly.png
     :align: center
     :alt: placing the mirror into the voicecoil
 
-    **Figure 4:** Placing the mirror into the voicecoil hole
+    **Figure 4:** Completed voicecoil assembly
 
 -------------------------
 
@@ -208,20 +219,24 @@ ______________________
 
 **Section Goal: Adjust the RFO offset in navigate such that it’s collimated between the beamsplitter and L6 and L7 and the ILO.**
 
-Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)
+Now adjust the RFO offset in navigate (leaving the amplitude at 0 for now), until the light between the beamsplitter
+and L6 and L7 and the ILO is collimated. The available range should be between 1 to 10, with the optimal value
+varying for each system, for our initial system this value was around 5. 
 
 .. figure:: Images/alignment/waveformparameters.png
     :align: center
-    :alt: Beam Walking 5
+    :alt: waveform parameters panel in navigate
 
-    **Figure 8:** Beam Walking 5
+    **Figure 8:** The Waveform Parameters panel in navigate.
 
 ----------------------
 
 Step 9: Add In Lenses
 ______________________
 
-**Section Goal: Add in the rest of the lenses into the illumination path.**
+**Section Goal: Add in the rest of the non-Powell lenses into the illumination path.**
+
+Install L1, L2, L3, and L4 into their respective B1S holders, and then screw those holders into their correct
 
 If beam is no longer centered on the RFO, Remove the RFO from the path, and focused on adjusting the tip/tilt of the
 voicecoil mirror to have the return beam be centered on both the first TL mount after the beamsplitter on the return

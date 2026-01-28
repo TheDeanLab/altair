@@ -33,7 +33,17 @@ The basic assembly process involves first inserting and fixing the CFC11A-A into
 Step 2: Beam Walking 1
 ______________________
 
-Test Text
+**Section Goal: Ensure that the beam is traveling parallel to the baseplate surface and through the center of all
+mounted elements up to the RFO location (part 1).**
+
+With the beam properly collimated, we can begin the series of steps to walk the beam such that it is both centered on
+all of our optical elements as well as runs parallel to the surface of the baseplate. Then place one 2.5” Polaris
+post at these three locations: the hole corresponding to the Powell lens, the hole corresponding to L4, and the hole
+corresponding to the remote focus objective (RFO) location. Then place 1XY mounts on each of those 2.5” Polaris Posts
+. Then screw SM1-threaded adjustable irises (`SM1D12 <https://www.thorlabs.com/thorproduct
+.cfm?partnumber=SM1D12>`_) into those 1XY Mounts.
+Then place a 1” mirror in a Polaris B1F mount and mount it on a 3” optical post in the 45 degree oriented mounting position on the board as shown in the image below.
+With the irises and mirror in place, this step becomes and iterative process of adjusting the XY and Tip/Tilt of the laser K1XY mount until the beam passes through the center of all irises and roughly onto the center of the mirror. As a general direction, starting with the irises opened more and then steadily closing them further as you refine the tip/tilt and XY of the K1XY is recommended. If adjusting the tip/tilt of the K1XY becomes a bit overwhelming, it might be helpful to screw all of the tip/tilt knobs on the mount fully in, such that the starting point that you’re working from should be roughly flat (perpendicular to the surface of the baseplate).
 
 .. figure:: Images/PCBaseplateV2LaserAlignment1.png
     :align: center

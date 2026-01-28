@@ -46,7 +46,9 @@ To meet these growing demands, we aim to develop simplified optical systems that
    introduction/background
    design_principles/required_software
    hardware/index.rst
+   getting_started/getting_started.rst
    future/index
+
 
 .. toctree::
    :caption: Altair-SPIM v1

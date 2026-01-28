@@ -1,10 +1,60 @@
 .. _aslmbpalignment-home:
 
-###############################
-ALSM/CTASLM Baseplate Alignment
-###############################
+##########################################
+ALSM/CTASLM Baseplate Assembly & Alignment
+##########################################
 
-Overview
+Assembly Overview
+______________________
+
+For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
+our first iteration, but should still be a straightforward step-by-step process.
+
+-------------------------
+
+Voicecoil Assembly
+______________________
+
+**Step 1: Fixing the mirror into the voicecoil**
+
+Start by taking a 0.5" mirror and fixing it into the central hole on our voicecoil using UV-cured resin adhesive
+. Apply a thin layer of liquid resin to the back of the mirror, and place the mirror in the central voicecoil hole.
+Then using a UV flashlight, cure the resin to secure the mirror in place.
+
+.. figure:: Images/assembly/vcmirrorplacement.png
+    :align: center
+    :alt: placing the mirror into the voicecoil
+
+    **Figure 1:** Placing the mirror into the voicecoil hole
+
+**Step 2: Secure the PY004 onto the baseplate**
+
+.. figure:: Images/assembly/VoicecoilBaseplateHoles.png
+    :align: center
+    :alt: Holes on the baseplate where the PY004 should be screwed into
+
+    **Figure 2:** Location of the holes used to secure the PY004 onto the baseplate depending on if you're doing an
+    powell or cylindrical lens system
+
+**Step 3: Secure the voicecoil to PY004 adapter onto the PY004**
+
+.. figure:: Images/assembly/VoiceCoilAssembly2.png
+    :align: center
+    :alt: placing the mirror into the voicecoil
+
+    **Figure 3:** Placement of the voicecoil adapter on the PY004
+
+**Step 4: Secure the voicecoil to the adapter using the front screw holes**
+
+.. figure:: Images/assembly/VoiceCoilAssembly.png
+    :align: center
+    :alt: placing the mirror into the voicecoil
+
+    **Figure 4:** Placing the mirror into the voicecoil hole
+
+-------------------------
+
+Alignment Overview
 ______________________
 
 For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
@@ -20,7 +70,7 @@ When first assembling the system, ensuring proper output collimation from the fi
 
 The basic assembly process involves first inserting and fixing the CFC11A-A into a Thorlabs AD15S2 adapter, which allows it to then be mounted into a 2.5" Polaris K1XY mount. This assembly is then mounted onto the respective Polaris post at the start of the baseplate. The fiber laser source is then able to be directly mounted into the CFC11A-A, making sure that the protrusion on the fiber wire aligns with the open section of the CFC11A-A port. The basic process of ensuring collimation then involves turning on the laser source, and placing the shear-plate interferometer such that the input port aligns with the output of the laser unit. Then, by slowly adjusting the barrel of the CFC11A-A and observing the interference fringe orientations along the top display of the interferometer, one is able to adjust the beam until it is properly collimated.
 
-.. figure:: Images/LaserAlignment1.png
+.. figure:: Images/alignment/LaserAlignment1.png
     :align: center
     :alt: Shear Plate interferometer and collimator lens
 
@@ -45,7 +95,7 @@ corresponding to the remote focus objective (RFO) location. Then place 1XY mount
 Then place a 1” mirror in a Polaris B1F mount and mount it on a 3” optical post in the 45 degree oriented mounting position on the board as shown in the image below.
 With the irises and mirror in place, this step becomes and iterative process of adjusting the XY and Tip/Tilt of the laser K1XY mount until the beam passes through the center of all irises and roughly onto the center of the mirror. As a general direction, starting with the irises opened more and then steadily closing them further as you refine the tip/tilt and XY of the K1XY is recommended. If adjusting the tip/tilt of the K1XY becomes a bit overwhelming, it might be helpful to screw all of the tip/tilt knobs on the mount fully in, such that the starting point that you’re working from should be roughly flat (perpendicular to the surface of the baseplate).
 
-.. figure:: Images/PCBaseplateV2LaserAlignment1.png
+.. figure:: Images/alignment/PCBaseplateV2LaserAlignment1.png
     :align: center
     :alt: Beam Walking 1
 
@@ -58,9 +108,19 @@ With the irises and mirror in place, this step becomes and iterative process of 
 Step 3: Beam Walking 2
 ______________________
 
-Test Text
+**Section Goal: Ensure that the beam is centered on the galvo and K1S4 mirror, and that it travels parallel to the
+baseplate surface and through the center of all mounted elements up to the RFO location (part 2).**
 
-.. figure:: Images/PCBaseplateV2LaserAlignment2.png
+Next, assemble and add in the resonant galvo and the K1S4 mirror directly underneath it. Then replace the post of the
+45 degree B1F mirror to be 2” instead of 3”. Then place two 1XY mounts on 1.5” posts, one at the location of the RFO
+and one at the location of L5. Then place and screw in the PY004 onto the baseplate and then mount the voicecoil
+adapter on top as shown below (have graphic that shows the location of the voicecoil mount on the PY004). Then mount
+the voicecoil (Link assembling voicecoil section) onto the adapter, making sure the side with the mirror is facing
+towards the beam path.
+The iteration flow here will be to adjust the tilt of the resonant galvo until the beam is centered on the K1S4 mirror underneath it, and then adjust the tip/tilt of the K1S4 mirror until the beam is centered on the B1F mirror and the two irises after.
+Then adjust the tip/tilt on the PY004 of the voicecoil until the back-reflected beam spot passes through the irises on it’s return path.
+
+.. figure:: Images/alignment/PCBaseplateV2LaserAlignment2.png
     :align: center
     :alt: Beam Walking 2
 
@@ -73,9 +133,11 @@ Test Text
 Step 4: Beam Walking 3
 ______________________
 
-Test Text
+**Section Goal: Place the beamsplitter in the system, ensure it’s oriented correctly.**
 
-.. figure:: Images/PCBaseplateV2LaserAlignment3.png
+Assemble the beamsplitter, it’s mount, and the 1.75” Polaris post it rests on, and mount it on it’s corresponding hole (show the orientation of the beamsplitter). Ensure that the beamsplitter is oriented such that the beam is passing through both sides (you can use pinholes to irises for this step, they should screw into the SM1 threading on the beamsplitter).
+
+.. figure:: Images/alignment/PCBaseplateV2LaserAlignment3.png
     :align: center
     :alt: Beam Walking 3
 
@@ -85,12 +147,15 @@ Test Text
 ------------------------------
 
 
-Step 5: Beamsplitter Alignment
+Step 5: Optional Beamsplitter Alignment
 ______________________________
 
-Test Text
+**Section Goal: Use the alternative laser launch hole (have graphic) to ensure that test beam goes straight through the
+beamsplitter return path to the center of the ILO.**
 
-.. figure:: Images/PCBaseplateV2BSAlignment1.png
+Mount three Polaris 1XY units on 1.5” posts along the return path at the location of L6, L7, and the illumination objective (ILO), respectively. Then mount a 1.5” post and Polaris 1XY unit on the hole denoted for the alternative laser launch. Screw the laser (Thorlabs CPS532) into the Polaris 1XY mount. With each of the 1XY Mounts roughly centered in both X and Y, ensure that the laser beam passes through the center of all elements using a frosted pinhole or iris installed in them.
+
+.. figure:: Images/alignment/PCBaseplateV2BSAlignment1.png
     :align: center
     :alt: Beamsplitter Alignment
 
@@ -103,9 +168,16 @@ Test Text
 Step 6: Beam Walking 4
 ______________________
 
-Test Text
+**Section Goal: Install polarizers and ensure that the beam is traveling properly on its return path through the
+beamsplitter.**
 
-.. figure:: Images/PCBaseplateV2LaserAlignment4.png
+rotate the 1/2 waveplate to make the beam as bright as possible in the direction of the RFO, then adjust 1/4 wave plate to make the beam as bright as possible on the return path in the direction of the ILO (have graphic)
+
+Ensure that the return beam properly travels back through the beamsplitter and down the path to the ILO. Adjust tip/tilt of voicecoil mirror to manipulate the direction of the beam.
+
+Establishes a ground-truth beam position for the next step where we add in the RFO.
+
+.. figure:: Images/alignment/PCBaseplateV2LaserAlignment4.png
     :align: center
     :alt: Beam Walking 4
 
@@ -118,12 +190,72 @@ Test Text
 Step 7: Beam Walking 5
 ______________________
 
-Test Text
+**Section Goal: Add in RFO, do initial alignment.**
 
-.. figure:: Images/PCBaseplateV2LaserAlignment5.png
+Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)
+
+.. figure:: Images/alignment/PCBaseplateV2LaserAlignment5.png
     :align: center
     :alt: Beam Walking 5
 
     **Figure 7:** Beam Walking 5
+
+----------------------
+
+
+Step 8: RFO Offset
+______________________
+
+**Section Goal: Adjust the RFO offset in navigate such that it’s collimated between the beamsplitter and L6 and L7 and the ILO.**
+
+Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)
+
+.. figure:: Images/alignment/waveformparameters.png
+    :align: center
+    :alt: Beam Walking 5
+
+    **Figure 8:** Beam Walking 5
+
+----------------------
+
+Step 9: Add In Lenses
+______________________
+
+**Section Goal: Add in the rest of the lenses into the illumination path.**
+
+If beam is no longer centered on the RFO, Remove the RFO from the path, and focused on adjusting the tip/tilt of the
+voicecoil mirror to have the return beam be centered on both the first TL mount after the beamsplitter on the return
+path as well as the ILO objective mount (using irises or frosted pinholes)
+
+Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)
+
+Then add in TL1 and TL#2, adjust the rotation and XY of TL2 to make the beam on the ILO centered again, use shear plate and change VC offset to get beam re-collimated
+Using the re-collimated offset position as the baseline, adjusted the detection path (ensuring it’s as perpendicular as can be to the illumination path), and primarily adjusted TL1 and TL2 XY’s to center the beam as much as possible on the back of the ILO
+
+
+
+----------------------
+
+Step 10: Install Detection Path
+______________________
+
+**Section Goal: Assemble/incorporate detection path into the setup, ensure it’s centered on the beam by using the
+chamber filled with water and fluorescein.**
+
+Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)
+
+
+
+-----------------------
+
+
+Various Troubleshooting
+_______________________
+
+**Section Goal: Mitigate any issues in the system.**
+
+**Optimizing Lens Placement/Orientation Using Backreflections**
+
+**Optimizing Powell Lens Placement**
 
 

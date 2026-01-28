@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ALSM/CTASLM Baseplate Alignment &mdash; altair  documentation</title>
+  <title>ALSM/CTASLM Baseplate Assembly &amp; Alignment &mdash; altair  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduction/background.html">Overview of Subcellular Light-Sheet Microscope Technologies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../design_principles/required_software.html">Software</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../hardware/index.html">Room and Hardware Considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Altair-SPIM v1</span></p>
@@ -64,15 +65,21 @@
 <p class="caption" role="heading"><span class="caption-text">Altair-ASLM/CTASLM/SPIM v1</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ALSM/CTASLM Baseplate</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">ALSM/CTASLM Baseplate Alignment</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ALSM/CTASLM Baseplate Assembly &amp; Alignment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#assembly-overview">Assembly Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#voicecoil-assembly">Voicecoil Assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alignment-overview">Alignment Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-1-laser-collimation">Step 1: Laser Collimation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-2-beam-walking-1">Step 2: Beam Walking 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-3-beam-walking-2">Step 3: Beam Walking 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-4-beam-walking-3">Step 4: Beam Walking 3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-5-beamsplitter-alignment">Step 5: Beamsplitter Alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-5-optional-beamsplitter-alignment">Step 5: Optional Beamsplitter Alignment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-6-beam-walking-4">Step 6: Beam Walking 4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-7-beam-walking-5">Step 7: Beam Walking 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-8-rfo-offset">Step 8: RFO Offset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-9-add-in-lenses">Step 9: Add In Lenses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-10-install-detection-path">Step 10: Install Detection Path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#various-troubleshooting">Various Troubleshooting</a></li>
 </ul>
 </li>
 </ul>
@@ -91,7 +98,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">ALSM/CTASLM Baseplate Alignment</li>
+      <li class="breadcrumb-item active">ALSM/CTASLM Baseplate Assembly &amp; Alignment</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/baseplate2_alignment/baseplate2_alignment.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -101,10 +108,52 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="alsm-ctaslm-baseplate-alignment">
-<span id="aslmbpalignment-home"></span><h1>ALSM/CTASLM Baseplate Alignment<a class="headerlink" href="#alsm-ctaslm-baseplate-alignment" title="Permalink to this heading"></a></h1>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+  <section id="alsm-ctaslm-baseplate-assembly-alignment">
+<span id="aslmbpalignment-home"></span><h1>ALSM/CTASLM Baseplate Assembly &amp; Alignment<a class="headerlink" href="#alsm-ctaslm-baseplate-assembly-alignment" title="Permalink to this heading"></a></h1>
+<section id="assembly-overview">
+<h2>Assembly Overview<a class="headerlink" href="#assembly-overview" title="Permalink to this heading"></a></h2>
+<p>For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
+our first iteration, but should still be a straightforward step-by-step process.</p>
+</section>
+<hr class="docutils" />
+<section id="voicecoil-assembly">
+<h2>Voicecoil Assembly<a class="headerlink" href="#voicecoil-assembly" title="Permalink to this heading"></a></h2>
+<p><strong>Step 1: Fixing the mirror into the voicecoil</strong></p>
+<p>Start by taking a 0.5” mirror and fixing it into the central hole on our voicecoil using UV-cured resin adhesive
+. Apply a thin layer of liquid resin to the back of the mirror, and place the mirror in the central voicecoil hole.
+Then using a UV flashlight, cure the resin to secure the mirror in place.</p>
+<figure class="align-center" id="id1">
+<img alt="placing the mirror into the voicecoil" src="../_images/vcmirrorplacement.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1:</strong> Placing the mirror into the voicecoil hole</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Step 2: Secure the PY004 onto the baseplate</strong></p>
+<figure class="align-center" id="id2">
+<img alt="Holes on the baseplate where the PY004 should be screwed into" src="../_images/VoicecoilBaseplateHoles.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 2:</strong> Location of the holes used to secure the PY004 onto the baseplate depending on if you’re doing an
+powell or cylindrical lens system</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Step 3: Secure the voicecoil to PY004 adapter onto the PY004</strong></p>
+<figure class="align-center" id="id3">
+<img alt="placing the mirror into the voicecoil" src="../_images/VoiceCoilAssembly2.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 3:</strong> Placement of the voicecoil adapter on the PY004</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Step 4: Secure the voicecoil to the adapter using the front screw holes</strong></p>
+<figure class="align-center" id="id4">
+<img alt="placing the mirror into the voicecoil" src="../_images/VoiceCoilAssembly.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 4:</strong> Placing the mirror into the voicecoil hole</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<hr class="docutils" />
+<section id="alignment-overview">
+<h2>Alignment Overview<a class="headerlink" href="#alignment-overview" title="Permalink to this heading"></a></h2>
 <p>For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
 our first iteration, but should still be a straightforward step-by-step process.</p>
 </section>
@@ -113,10 +162,10 @@ our first iteration, but should still be a straightforward step-by-step process.
 <h2>Step 1: Laser Collimation<a class="headerlink" href="#step-1-laser-collimation" title="Permalink to this heading"></a></h2>
 <p>When first assembling the system, ensuring proper output collimation from the fiber laser source is critical. There are multiple checks that one can take for this step, but we utilize a combination of a <a class="reference external" href="https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=2970">shear-plate interferometer</a> and two pinhole apertures placed at opposite ends along the length of the baseplate. Shear-plate interferometers are designed to split and interfere an input beam of coherent light, such that when the beam is collimated there are interference fringes aligned vertically with a reference line. The fiber laser collimator we used for this system is the <a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=CFC11A-A">Thorlabs CFC11A-A</a>, which features an adjustable barrel which controls the position of collimation optics within the element.</p>
 <p>The basic assembly process involves first inserting and fixing the CFC11A-A into a Thorlabs AD15S2 adapter, which allows it to then be mounted into a 2.5” Polaris K1XY mount. This assembly is then mounted onto the respective Polaris post at the start of the baseplate. The fiber laser source is then able to be directly mounted into the CFC11A-A, making sure that the protrusion on the fiber wire aligns with the open section of the CFC11A-A port. The basic process of ensuring collimation then involves turning on the laser source, and placing the shear-plate interferometer such that the input port aligns with the output of the laser unit. Then, by slowly adjusting the barrel of the CFC11A-A and observing the interference fringe orientations along the top display of the interferometer, one is able to adjust the beam until it is properly collimated.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center" id="id5">
 <img alt="Shear Plate interferometer and collimator lens" src="../_images/LaserAlignment1.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> Shear Plate interferometer and collimator lens</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> Shear Plate interferometer and collimator lens</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -132,67 +181,121 @@ corresponding to the remote focus objective (RFO) location. Then place 1XY mount
 . Then screw SM1-threaded adjustable irises (<a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=SM1D12">SM1D12</a>) into those 1XY Mounts.
 Then place a 1” mirror in a Polaris B1F mount and mount it on a 3” optical post in the 45 degree oriented mounting position on the board as shown in the image below.
 With the irises and mirror in place, this step becomes and iterative process of adjusting the XY and Tip/Tilt of the laser K1XY mount until the beam passes through the center of all irises and roughly onto the center of the mirror. As a general direction, starting with the irises opened more and then steadily closing them further as you refine the tip/tilt and XY of the K1XY is recommended. If adjusting the tip/tilt of the K1XY becomes a bit overwhelming, it might be helpful to screw all of the tip/tilt knobs on the mount fully in, such that the starting point that you’re working from should be roughly flat (perpendicular to the surface of the baseplate).</p>
-<figure class="align-center" id="id2">
+<figure class="align-center" id="id6">
 <img alt="Beam Walking 1" src="../_images/PCBaseplateV2LaserAlignment1.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 2:</strong> Beam Walking 1</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 2:</strong> Beam Walking 1</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <hr class="docutils" />
 <section id="step-3-beam-walking-2">
 <h2>Step 3: Beam Walking 2<a class="headerlink" href="#step-3-beam-walking-2" title="Permalink to this heading"></a></h2>
-<p>Test Text</p>
-<figure class="align-center" id="id3">
+<p><strong>Section Goal: Ensure that the beam is centered on the galvo and K1S4 mirror, and that it travels parallel to the
+baseplate surface and through the center of all mounted elements up to the RFO location (part 2).</strong></p>
+<p>Next, assemble and add in the resonant galvo and the K1S4 mirror directly underneath it. Then replace the post of the
+45 degree B1F mirror to be 2” instead of 3”. Then place two 1XY mounts on 1.5” posts, one at the location of the RFO
+and one at the location of L5. Then place and screw in the PY004 onto the baseplate and then mount the voicecoil
+adapter on top as shown below (have graphic that shows the location of the voicecoil mount on the PY004). Then mount
+the voicecoil (Link assembling voicecoil section) onto the adapter, making sure the side with the mirror is facing
+towards the beam path.
+The iteration flow here will be to adjust the tilt of the resonant galvo until the beam is centered on the K1S4 mirror underneath it, and then adjust the tip/tilt of the K1S4 mirror until the beam is centered on the B1F mirror and the two irises after.
+Then adjust the tip/tilt on the PY004 of the voicecoil until the back-reflected beam spot passes through the irises on it’s return path.</p>
+<figure class="align-center" id="id7">
 <img alt="Beam Walking 2" src="../_images/PCBaseplateV2LaserAlignment2.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 3:</strong> Beam Walking 2</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 3:</strong> Beam Walking 2</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <hr class="docutils" />
 <section id="step-4-beam-walking-3">
 <h2>Step 4: Beam Walking 3<a class="headerlink" href="#step-4-beam-walking-3" title="Permalink to this heading"></a></h2>
-<p>Test Text</p>
-<figure class="align-center" id="id4">
+<p><strong>Section Goal: Place the beamsplitter in the system, ensure it’s oriented correctly.</strong></p>
+<p>Assemble the beamsplitter, it’s mount, and the 1.75” Polaris post it rests on, and mount it on it’s corresponding hole (show the orientation of the beamsplitter). Ensure that the beamsplitter is oriented such that the beam is passing through both sides (you can use pinholes to irises for this step, they should screw into the SM1 threading on the beamsplitter).</p>
+<figure class="align-center" id="id8">
 <img alt="Beam Walking 3" src="../_images/PCBaseplateV2LaserAlignment3.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 4:</strong> Beam Walking 3</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 4:</strong> Beam Walking 3</span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <hr class="docutils" />
-<section id="step-5-beamsplitter-alignment">
-<h2>Step 5: Beamsplitter Alignment<a class="headerlink" href="#step-5-beamsplitter-alignment" title="Permalink to this heading"></a></h2>
-<p>Test Text</p>
-<figure class="align-center" id="id5">
+<section id="step-5-optional-beamsplitter-alignment">
+<h2>Step 5: Optional Beamsplitter Alignment<a class="headerlink" href="#step-5-optional-beamsplitter-alignment" title="Permalink to this heading"></a></h2>
+<p><strong>Section Goal: Use the alternative laser launch hole (have graphic) to ensure that test beam goes straight through the
+beamsplitter return path to the center of the ILO.</strong></p>
+<p>Mount three Polaris 1XY units on 1.5” posts along the return path at the location of L6, L7, and the illumination objective (ILO), respectively. Then mount a 1.5” post and Polaris 1XY unit on the hole denoted for the alternative laser launch. Screw the laser (Thorlabs CPS532) into the Polaris 1XY mount. With each of the 1XY Mounts roughly centered in both X and Y, ensure that the laser beam passes through the center of all elements using a frosted pinhole or iris installed in them.</p>
+<figure class="align-center" id="id9">
 <img alt="Beamsplitter Alignment" src="../_images/PCBaseplateV2BSAlignment1.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 5:</strong> Beamsplitter Alignment</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 5:</strong> Beamsplitter Alignment</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <hr class="docutils" />
 <section id="step-6-beam-walking-4">
 <h2>Step 6: Beam Walking 4<a class="headerlink" href="#step-6-beam-walking-4" title="Permalink to this heading"></a></h2>
-<p>Test Text</p>
-<figure class="align-center" id="id6">
+<p><strong>Section Goal: Install polarizers and ensure that the beam is traveling properly on its return path through the
+beamsplitter.</strong></p>
+<p>rotate the 1/2 waveplate to make the beam as bright as possible in the direction of the RFO, then adjust 1/4 wave plate to make the beam as bright as possible on the return path in the direction of the ILO (have graphic)</p>
+<p>Ensure that the return beam properly travels back through the beamsplitter and down the path to the ILO. Adjust tip/tilt of voicecoil mirror to manipulate the direction of the beam.</p>
+<p>Establishes a ground-truth beam position for the next step where we add in the RFO.</p>
+<figure class="align-center" id="id10">
 <img alt="Beam Walking 4" src="../_images/PCBaseplateV2LaserAlignment4.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 6:</strong> Beam Walking 4</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 6:</strong> Beam Walking 4</span><a class="headerlink" href="#id10" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <hr class="docutils" />
 <section id="step-7-beam-walking-5">
 <h2>Step 7: Beam Walking 5<a class="headerlink" href="#step-7-beam-walking-5" title="Permalink to this heading"></a></h2>
-<p>Test Text</p>
-<figure class="align-center" id="id7">
+<p><strong>Section Goal: Add in RFO, do initial alignment.</strong></p>
+<p>Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)</p>
+<figure class="align-center" id="id11">
 <img alt="Beam Walking 5" src="../_images/PCBaseplateV2LaserAlignment5.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 7:</strong> Beam Walking 5</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 7:</strong> Beam Walking 5</span><a class="headerlink" href="#id11" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
+</section>
+<hr class="docutils" />
+<section id="step-8-rfo-offset">
+<h2>Step 8: RFO Offset<a class="headerlink" href="#step-8-rfo-offset" title="Permalink to this heading"></a></h2>
+<p><strong>Section Goal: Adjust the RFO offset in navigate such that it’s collimated between the beamsplitter and L6 and L7 and the ILO.</strong></p>
+<p>Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)</p>
+<figure class="align-center" id="id12">
+<img alt="Beam Walking 5" src="../_images/waveformparameters.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 8:</strong> Beam Walking 5</span><a class="headerlink" href="#id12" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<hr class="docutils" />
+<section id="step-9-add-in-lenses">
+<h2>Step 9: Add In Lenses<a class="headerlink" href="#step-9-add-in-lenses" title="Permalink to this heading"></a></h2>
+<p><strong>Section Goal: Add in the rest of the lenses into the illumination path.</strong></p>
+<p>If beam is no longer centered on the RFO, Remove the RFO from the path, and focused on adjusting the tip/tilt of the
+voicecoil mirror to have the return beam be centered on both the first TL mount after the beamsplitter on the return
+path as well as the ILO objective mount (using irises or frosted pinholes)</p>
+<p>Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)</p>
+<p>Then add in TL1 and TL#2, adjust the rotation and XY of TL2 to make the beam on the ILO centered again, use shear plate and change VC offset to get beam re-collimated
+Using the re-collimated offset position as the baseline, adjusted the detection path (ensuring it’s as perpendicular as can be to the illumination path), and primarily adjusted TL1 and TL2 XY’s to center the beam as much as possible on the back of the ILO</p>
+</section>
+<hr class="docutils" />
+<section id="step-10-install-detection-path">
+<h2>Step 10: Install Detection Path<a class="headerlink" href="#step-10-install-detection-path" title="Permalink to this heading"></a></h2>
+<p><strong>Section Goal: Assemble/incorporate detection path into the setup, ensure it’s centered on the beam by using the
+chamber filled with water and fluorescein.</strong></p>
+<p>Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)</p>
+</section>
+<hr class="docutils" />
+<section id="various-troubleshooting">
+<h2>Various Troubleshooting<a class="headerlink" href="#various-troubleshooting" title="Permalink to this heading"></a></h2>
+<p><strong>Section Goal: Mitigate any issues in the system.</strong></p>
+<p><strong>Optimizing Lens Placement/Orientation Using Backreflections</strong></p>
+<p><strong>Optimizing Powell Lens Placement</strong></p>
 </section>
 </section>
 

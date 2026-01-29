@@ -22,16 +22,13 @@ cylindrical configurations will follow a similar process.
 
 .. carousel::
    :height: 848px
-   :interval: 4000
    :loop:
 
    .. figure:: Images/assembly/PCBaseplateV2_CASLM_DecoupledBS.png
-      :alt: First image
 
       Caption for the first image
 
    .. figure:: Images/assembly/PCBaseplateV2_CCTASLM2.png
-      :alt: Second image
 
       Caption for the second image
 
@@ -65,6 +62,7 @@ secure the lens in place.
       <video controls style="width:100%; max-width:800px;">
         <source src="Videos/Assembly/PowellAD9F.mp4" type="video/mp4">
       </video>
+
 
 **Step 2: Install the LRM1 rotation Mount into the Polaris 1XY**
 **Step 3: Install the LNR25M onto the Baseplate**

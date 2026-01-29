@@ -24,11 +24,11 @@ cylindrical configurations will follow a similar process.
    :height: 848px
    :loop:
 
-   .. figure:: Images/assembly/PCBaseplateV2_CASLM_DecoupledBS.png
+   .. figure:: Images/assembly/PCBaseplateV2CASLMDecoupledBS.png
 
       Caption for the first image
 
-   .. figure:: Images/assembly/PCBaseplateV2_CCTASLM2.png
+   .. figure:: Images/assembly/PCBaseplateV2CCTASLM2.png
 
       Caption for the second image
 
@@ -56,11 +56,10 @@ smaller side of the AD9F is flush with the flat face of the Powell lens. Use the
 secure the lens in place.
 
 .. card:: System Demo
-
    .. raw:: html
 
-      <video controls style="width:100%; max-width:800px;">
-        <source src="Videos/Assembly/PowellAD9F.mp4" type="video/mp4">
+      <video controls style="width:100%; max-width:361px;">
+        <source src="Videos/assembly/PowellAD9F.mp4" type="video/mp4">
       </video>
 
 

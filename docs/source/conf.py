@@ -41,6 +41,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx_toolbox.collapse",
     "sphinx.ext.autosectionlabel",
+    "sphinx.ext.design"
 ]
 
 autosectionlabel_prefix_document = True

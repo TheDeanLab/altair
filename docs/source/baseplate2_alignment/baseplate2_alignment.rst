@@ -20,7 +20,7 @@ lens to form the light sheet (ASLM, CT-ASLM), and 3 using a Powell lens to form 
 . Our primary focus in this section will be the construction and alignment of the Powell lens configurations, but the
 cylindrical configurations will follow a similar process.
 
-.. carousel::
+.. sd-carousel::
    :height: 848px
    :loop:
 

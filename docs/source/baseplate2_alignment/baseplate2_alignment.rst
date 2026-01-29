@@ -25,17 +25,25 @@ cylindrical configurations will follow a similar process.
    <div id="arrow-carousel" style="position:relative; max-width:800px; margin:auto; text-align:center;">
      <!-- Slides -->
      <div class="carousel-slide">
-       <img src="../_static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png" style="width:100%;" />
-       <div class="carousel-caption">Caption for Image 1</div>
+       <img src="../_static/baseplate2_alignment/assembly/images/PowellASLM.png" style="width:100%;" />
+       <div class="carousel-caption">Powell ASLM</div>
      </div>
      <div class="carousel-slide" style="display:none;">
-       <img src="../_static/baseplate2_alignment/assembly/images/PCBaseplateV2CASLMDecoupledBS.png" style="width:100%;
+       <img src="../_static/baseplate2_alignment/assembly/images/PowellCTASLM.png" style="width:100%;
        " />
-       <div class="carousel-caption">Caption for Image 2</div>
+       <div class="carousel-caption">Powell CT-ASLM</div>
      </div>
      <div class="carousel-slide" style="display:none;">
-       <img src="../_static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png" style="width:100%;" />
-       <div class="carousel-caption">Caption for Image 3</div>
+       <img src="../_static/baseplate2_alignment/assembly/images/PowellSPIM.png" style="width:100%;" />
+       <div class="carousel-caption">Powell SPIM</div>
+     </div>
+     <div class="carousel-slide" style="display:none;">
+       <img src="../_static/baseplate2_alignment/assembly/images/CylASLM.png" style="width:100%;" />
+       <div class="carousel-caption">Cylindrical ASLM</div>
+     </div>
+     <div class="carousel-slide" style="display:none;">
+       <img src="../_static/baseplate2_alignment/assembly/images/CylCTASLM.png" style="width:100%;" />
+       <div class="carousel-caption">Cylindrical CT-ASLM</div>
      </div>
 
      <!-- Left/Right Arrows -->
@@ -88,6 +96,12 @@ Here we show a breakdown of all the holes on the baseplate in terms of what conf
 (Figure 1), the elements corresponding to each hole (Figure 2), and the post height corresponding to those holes. It
 should be noted that we include a couple additional holes on the baseplate for alternative component mounting schemes
 (Figure 2).
+
+.. figure:: Images/assembly/BaseplateLabels.png
+    :align: center
+    :alt: Labeled Baseplate Holes
+
+    **Figure 2:** Labeled baseplate holes
 
 -------------------------
 

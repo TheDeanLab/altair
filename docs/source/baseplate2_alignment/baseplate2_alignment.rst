@@ -20,17 +20,39 @@ lens to form the light sheet (ASLM, CT-ASLM), and 3 using a Powell lens to form 
 . Our primary focus in this section will be the construction and alignment of the Powell lens configurations, but the
 cylindrical configurations will follow a similar process.
 
-.. sd-carousel::
-   :height: 848px
-   :loop:
+.. raw:: html
 
-   .. figure:: _static/baseplate2_alignment/assembly/images/PCBaseplateV2CASLMDecoupledBS.png
+   <div id="arrow-carousel" style="position:relative; width:900px; margin:auto;">
+     <img src="_static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png" style="width:100%" />
+     <img src="_static/baseplate2_alignment/assembly/images/PCBaseplateV2CASLMDecoupledBS.png" style="width:100%; display:none" />
 
-      Caption for the first image
+     <!-- Left arrow -->
+     <button onclick="prevSlide()"
+             style="position:absolute; top:50%; left:0; transform:translateY(-50%); font-size:24px;">&#10094;</button>
 
-   .. figure:: _static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png
+     <!-- Right arrow -->
+     <button onclick="nextSlide()"
+             style="position:absolute; top:50%; right:0; transform:translateY(-50%); font-size:24px;">&#10095;</button>
+   </div>
 
-      Caption for the second image
+   <script>
+   let current = 0;
+   const slides = document.querySelectorAll("#arrow-carousel img");
+
+   function showSlide(index) {
+       slides.forEach((s,i) => s.style.display = (i===index ? "block" : "none"));
+   }
+
+   function nextSlide() {
+       current = (current + 1) % slides.length;
+       showSlide(current);
+   }
+
+   function prevSlide() {
+       current = (current - 1 + slides.length) % slides.length;
+       showSlide(current);
+   }
+   </script>
 
 
 -------------------------
@@ -59,7 +81,7 @@ secure the lens in place.
 
    .. raw:: html
 
-      <video controls style="width:100%; max-width:361px;">
+      <video controls style="width:100%;">
         <source src="_static/baseplate2_alignment/assembly/videos/PowellAD9F.mp4" type="video/mp4">
       </video>
 

@@ -103,6 +103,7 @@ secure the lens in place.
 
 .. card:: Powell Lens into AD9F Assembly
    :align: center
+
    .. raw:: html
 
       <video controls style="width:50%;">

@@ -12,6 +12,69 @@ our first iteration, but should still be a straightforward step-by-step process.
 
 -------------------------
 
+Note on Available Configurations
+______________________
+
+The current iteration of the baseplate provides 5 different possible imaging configurations: 2 using a cylindrical
+lens to form the light sheet (ASLM, CT-ASLM), and 3 using a Powell lens to form the light sheet (SPIM, ASLM, CT-ASLM)
+. Our primary focus in this section will be the construction and alignment of the Powell lens configurations, but the
+cylindrical configurations will follow a similar process.
+
+.. carousel::
+   :height: 848px
+   :interval: 4000
+   :loop:
+
+   .. figure:: Images/assembly/PCBaseplateV2_CASLM_DecoupledBS.png
+      :alt: First image
+
+      Caption for the first image
+
+   .. figure:: Images/assembly/PCBaseplateV2_CCTASLM2.png
+      :alt: Second image
+
+      Caption for the second image
+
+
+-------------------------
+
+Breakdown of Baseplate Holes
+______________________
+
+Here we show a breakdown of all the holes on the baseplate in terms of what configuration they're designed for
+(Figure 1), the elements corresponding to each hole (Figure 2), and the post height corresponding to those holes. It
+should be noted that we include a couple additional holes on the baseplate for alternative component mounting schemes
+(Figure 2).
+
+-------------------------
+
+Powell Lens Assembly
+______________________
+
+**Step 1: Fixing the Powell lens into the AD9F Mount**
+
+For the first step, get a piece of optical tissue paper and the AD9F and Powell lens. Place the flat face of the
+Powell lens onto the tissue paper, and then place the AD9F onto the Powell lens such that the front surface of the
+smaller side of the AD9F is flush with the flat face of the Powell lens. Use the two mounting screws on the AD9F to
+secure the lens in place.
+
+.. card:: System Demo
+
+   .. raw:: html
+
+      <video controls style="width:100%; max-width:800px;">
+        <source src="Videos/Assembly/PowellAD9F.mp4" type="video/mp4">
+      </video>
+
+**Step 2: Install the LRM1 rotation Mount into the Polaris 1XY**
+**Step 3: Install the LNR25M onto the Baseplate**
+**Step 4: Fix the 1" Polaris Post onto the LNR25M to Polaris adapter**
+**Step 5: Install the LNR25M to Polaris adapter onto the LNR25M**
+**Step 6: Fix the Polaris 1XY onto the 1" Polaris post**
+**Step 7: Screw in the AD9F into the LRM1 mount until it's fully threaded**
+
+-------------------------
+
 Voicecoil Assembly
 ______________________
 
@@ -221,7 +284,7 @@ ______________________
 
 Now adjust the RFO offset in navigate (leaving the amplitude at 0 for now), until the light between the beamsplitter
 and L6 and L7 and the ILO is collimated. The available range should be between 1 to 10, with the optimal value
-varying for each system, for our initial system this value was around 5. 
+varying for each system, for our initial system this value was around 5.
 
 .. figure:: Images/alignment/waveformparameters.png
     :align: center

@@ -7,6 +7,7 @@
   <title>ALSM/CTASLM Baseplate Assembly &amp; Alignment &mdash; altair  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
 
   
   <!--[if lt IE 9]>
@@ -19,6 +20,7 @@
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/design-tabs.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -67,6 +69,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ALSM/CTASLM Baseplate</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ALSM/CTASLM Baseplate Assembly &amp; Alignment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#assembly-overview">Assembly Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#note-on-available-configurations">Note on Available Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#breakdown-of-baseplate-holes">Breakdown of Baseplate Holes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#powell-lens-assembly">Powell Lens Assembly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#voicecoil-assembly">Voicecoil Assembly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#alignment-overview">Alignment Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-1-laser-collimation">Step 1: Laser Collimation</a></li>
@@ -114,6 +119,45 @@
 <h2>Assembly Overview<a class="headerlink" href="#assembly-overview" title="Permalink to this heading"></a></h2>
 <p>For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
 our first iteration, but should still be a straightforward step-by-step process.</p>
+</section>
+<hr class="docutils" />
+<section id="note-on-available-configurations">
+<h2>Note on Available Configurations<a class="headerlink" href="#note-on-available-configurations" title="Permalink to this heading"></a></h2>
+<p>The current iteration of the baseplate provides 5 different possible imaging configurations: 2 using a cylindrical
+lens to form the light sheet (ASLM, CT-ASLM), and 3 using a Powell lens to form the light sheet (SPIM, ASLM, CT-ASLM)
+. Our primary focus in this section will be the construction and alignment of the Powell lens configurations, but the
+cylindrical configurations will follow a similar process.</p>
+</section>
+<hr class="docutils" />
+<section id="breakdown-of-baseplate-holes">
+<h2>Breakdown of Baseplate Holes<a class="headerlink" href="#breakdown-of-baseplate-holes" title="Permalink to this heading"></a></h2>
+<p>Here we show a breakdown of all the holes on the baseplate in terms of what configuration they’re designed for
+(Figure 1), the elements corresponding to each hole (Figure 2), and the post height corresponding to those holes. It
+should be noted that we include a couple additional holes on the baseplate for alternative component mounting schemes
+(Figure 2).</p>
+</section>
+<hr class="docutils" />
+<section id="powell-lens-assembly">
+<h2>Powell Lens Assembly<a class="headerlink" href="#powell-lens-assembly" title="Permalink to this heading"></a></h2>
+<p><strong>Step 1: Fixing the Powell lens into the AD9F Mount</strong></p>
+<p>For the first step, get a piece of optical tissue paper and the AD9F and Powell lens. Place the flat face of the
+Powell lens onto the tissue paper, and then place the AD9F onto the Powell lens such that the front surface of the
+smaller side of the AD9F is flush with the flat face of the Powell lens. Use the two mounting screws on the AD9F to
+secure the lens in place.</p>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+System Demo</div>
+<video controls style="width:100%; max-width:800px;">
+  <source src="Videos/Assembly/PowellAD9F.mp4" type="video/mp4">
+</video></div>
+</div>
+<p><strong>Step 2: Install the LRM1 rotation Mount into the Polaris 1XY</strong>
+<strong>Step 3: Install the LNR25M onto the Baseplate</strong>
+<strong>Step 4: Fix the 1” Polaris Post onto the LNR25M to Polaris adapter</strong>
+<strong>Step 5: Install the LNR25M to Polaris adapter onto the LNR25M</strong>
+<strong>Step 6: Fix the Polaris 1XY onto the 1” Polaris post</strong>
+<strong>Step 7: Screw in the AD9F into the LRM1 mount until it’s fully threaded</strong></p>
 </section>
 <hr class="docutils" />
 <section id="voicecoil-assembly">

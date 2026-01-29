@@ -25,15 +25,16 @@ cylindrical configurations will follow a similar process.
    <div id="arrow-carousel" style="position:relative; max-width:800px; margin:auto; text-align:center;">
      <!-- Slides -->
      <div class="carousel-slide">
-       <img src="_static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png" style="width:100%;" />
+       <img src="../_static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png" style="width:100%;" />
        <div class="carousel-caption">Caption for Image 1</div>
      </div>
      <div class="carousel-slide" style="display:none;">
-       <img src="_static/baseplate2_alignment/assembly/images/PCBaseplateV2CASLMDecoupledBS.png" style="width:100%;" />
+       <img src="../_static/baseplate2_alignment/assembly/images/PCBaseplateV2CASLMDecoupledBS.png" style="width:100%;
+       " />
        <div class="carousel-caption">Caption for Image 2</div>
      </div>
      <div class="carousel-slide" style="display:none;">
-       <img src="_static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png" style="width:100%;" />
+       <img src="../_static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png" style="width:100%;" />
        <div class="carousel-caption">Caption for Image 3</div>
      </div>
 
@@ -104,8 +105,8 @@ secure the lens in place.
 
    .. raw:: html
 
-      <video controls style="width:100%;">
-        <source src="../_static/videos/PowellAD9F.mp4" type="video/mp4">
+      <video controls style="width:50%;">
+        <source src="../_static/baseplate2_alignment/assembly/videos/PowellAD9F.mp4" type="video/mp4">
         your browser doesn't support video
       </video>
 

@@ -93,15 +93,23 @@ Breakdown of Baseplate Holes
 ______________________
 
 Here we show a breakdown of all the holes on the baseplate in terms of what configuration they're designed for
-(Figure 1), the elements corresponding to each hole (Figure 2), and the post height corresponding to those holes. It
-should be noted that we include a couple additional holes on the baseplate for alternative component mounting schemes
-(Figure 2).
+(Figure 1),the post height corresponding to those holes (Figure 1), and the elements corresponding to each hole
+(Figure 2). It should be noted that we include a couple additional holes on the baseplate for alternative component
+mounting schemes (Figure 2). Figure 2 also shows the orientation that each of the lenses should be in within the
+setup, where for the TTL tube lenses the orientation is shown based on the direction of the TTL labeling on the
+lenses themselves.
+
+.. figure:: Images/assembly/BaseplatePostHeightCylindricalPowellCombined.png
+    :align: center
+    :alt: Labeled Baseplate Holes
+
+    **Figure 1:** Labeled baseplate holes based on post height (left) and configuration (right)
 
 .. figure:: Images/assembly/BaseplateLabels.png
     :align: center
     :alt: Labeled Baseplate Holes
 
-    **Figure 2:** Labeled baseplate holes
+    **Figure 2:** Labeled baseplate holes based on what component is placed at each hole
 
 -------------------------
 
@@ -116,7 +124,6 @@ smaller side of the AD9F is flush with the flat face of the Powell lens. Use the
 secure the lens in place.
 
 .. card:: Powell Lens into AD9F Assembly
-   :align: center
 
    .. raw:: html
 
@@ -254,7 +261,9 @@ Alignment Overview
 ______________________
 
 For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
-our first iteration, but should still be a straightforward step-by-step process.
+our first iteration, but should still be a straightforward step-by-step process. To make things a little bit easier,
+the system is first aligned and optimized without the presence of some of the lenses (L1, L2, L3, L4 for the Powell
+lens configurations), and then the rest of the lenses are added in and the system is recalibrated.
 
 -------------------------
 

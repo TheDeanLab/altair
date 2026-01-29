@@ -15,9 +15,6 @@ our first iteration, but should still be a straightforward step-by-step process.
 Note on Available Configurations
 ______________________
 
-.. card::
-   this card should render
-
 The current iteration of the baseplate provides 5 different possible imaging configurations: 2 using a cylindrical
 lens to form the light sheet (ASLM, CT-ASLM), and 3 using a Powell lens to form the light sheet (SPIM, ASLM, CT-ASLM)
 . Our primary focus in this section will be the construction and alignment of the Powell lens configurations, but the
@@ -59,6 +56,7 @@ smaller side of the AD9F is flush with the flat face of the Powell lens. Use the
 secure the lens in place.
 
 .. card:: System Demo
+
    .. raw:: html
 
       <video controls style="width:100%; max-width:361px;">

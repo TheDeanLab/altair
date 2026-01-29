@@ -101,8 +101,8 @@ Powell lens onto the tissue paper, and then place the AD9F onto the Powell lens 
 smaller side of the AD9F is flush with the flat face of the Powell lens. Use the two mounting screws on the AD9F to
 secure the lens in place.
 
-.. card:: System Demo
-
+.. card:: Powell Lens into AD9F Assembly
+   :align: center
    .. raw:: html
 
       <video controls style="width:50%;">
@@ -113,15 +113,72 @@ secure the lens in place.
 
 **Step 2: Install the LRM1 rotation Mount into the Polaris 1XY**
 
+Screw the threaded portion of the LRM1 into the threaded hole on the Polaris 1XY until the back surface of the LRM1
+is flush with the front of the 1XY.
+
+.. figure:: Images/assembly/LRM1into1XY.png
+    :align: center
+    :alt: Screwing the LRM1 into the 1XY
+
+    **Figure 1:** Screwing the LRM1 into the 1XY
+
 **Step 3: Install the LNR25M onto the Baseplate**
+
+There are a variety of holes on the baseplate that one can use to fix the LNR25M in place. In the graphic below, the
+two holes in red on the top of the LNR25M allow you to thread 1/4-20 screws directly through the LNR25M into the
+threaded holes on the baseplate below. There are also two 3 mm-diameter dowel pins on the bottom of the LNR25M that
+have corresponding holes on the baseplate in blue. Finally, there are three holes on the baseplate in yellow that
+correspond to threaded holes on the bottom of the LNR25M, 1/4-20 screws can be used to secure the LNR25M through
+these holes the same way that one would fix the other Polaris posts on the baseplate in place.
+
+.. figure:: Images/assembly/LNR25MontoBaseplate.png
+    :align: center
+    :alt: placing the LNR25M onto the baseplate
+
+    **Figure 2:** placing the LNR25M onto the baseplate
 
 **Step 4: Fix the 1" Polaris Post onto the LNR25M to Polaris adapter**
 
+Then take the LNR25M to Polaris adapter and using the same 2 mm dowel pins and 1/4-20 screws that the other Polaris
+posts in the system use, fix the 1" Polaris post onto the adapter by screwing in a 1/4-20 screw from the bottom of
+the adapter into the post.
+
+.. figure:: Images/assembly/P1onLNR25Adapter.png
+    :align: center
+    :alt: placing the 1" Polaris Post onto the LNR25M Adapter
+
+    **Figure 3:** placing the 1" Polaris Post onto the LNR25M Adapter
+
 **Step 5: Install the LNR25M to Polaris adapter onto the LNR25M**
+
+Then using the four holes on the top of the adapter surrounding the 1" post, place 1/4-20 screws in those holes and
+screw them into the top of the LNR25M
+
+.. figure:: Images/assembly/P1onLNR25AdapteronLNR25.png
+    :align: center
+    :alt: placing the LNR25M Adapter onto the LNR25
+
+    **Figure 4:** placing the LNR25M Adapter onto the LNR25
 
 **Step 6: Fix the Polaris 1XY onto the 1" Polaris post**
 
+Using a 8-32 screw and the 2 mm dowel pins, fix the Polaris 1XY onto the top of the 1" Polaris post assembly.
+
+.. figure:: Images/assembly/PowellLNR25MLRM1.png
+    :align: center
+    :alt: Fixing the Polaris 1XY onto the 1" Polaris Post
+
+    **Figure 5:** Fixing the Polaris 1XY onto the 1" Polaris Post
+
 **Step 7: Screw in the AD9F into the LRM1 mount until it's fully threaded**
+
+Finally, screw in the AD9F fully into the LRM1 mount threading.
+
+.. figure:: Images/assembly/PowellLNR25M.png
+    :align: center
+    :alt: Threading the AD9F into the LRM1 mount
+
+    **Figure 6:** Threading the AD9F into the LRM1 mount
 
 -------------------------
 

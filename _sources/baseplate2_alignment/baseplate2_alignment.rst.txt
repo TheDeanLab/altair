@@ -22,38 +22,61 @@ cylindrical configurations will follow a similar process.
 
 .. raw:: html
 
-   <div id="arrow-carousel" style="position:relative; width:900px; margin:auto;">
-     <img src="_static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png" style="width:100%" />
-     <img src="_static/baseplate2_alignment/assembly/images/PCBaseplateV2CASLMDecoupledBS.png" style="width:100%; display:none" />
+   <div id="arrow-carousel" style="position:relative; max-width:800px; margin:auto; text-align:center;">
+     <!-- Slides -->
+     <div class="carousel-slide">
+       <img src="_static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png" style="width:100%;" />
+       <div class="carousel-caption">Caption for Image 1</div>
+     </div>
+     <div class="carousel-slide" style="display:none;">
+       <img src="_static/baseplate2_alignment/assembly/images/PCBaseplateV2CASLMDecoupledBS.png" style="width:100%;" />
+       <div class="carousel-caption">Caption for Image 2</div>
+     </div>
+     <div class="carousel-slide" style="display:none;">
+       <img src="_static/baseplate2_alignment/assembly/images/PCBaseplateV2CCTASLM2.png" style="width:100%;" />
+       <div class="carousel-caption">Caption for Image 3</div>
+     </div>
 
-     <!-- Left arrow -->
+     <!-- Left/Right Arrows -->
      <button onclick="prevSlide()"
-             style="position:absolute; top:50%; left:0; transform:translateY(-50%); font-size:24px;">&#10094;</button>
-
-     <!-- Right arrow -->
+             style="position:absolute; top:50%; left:0; transform:translateY(-50%); font-size:30px; background:none; border:none; cursor:pointer;">&#10094;</button>
      <button onclick="nextSlide()"
-             style="position:absolute; top:50%; right:0; transform:translateY(-50%); font-size:24px;">&#10095;</button>
+             style="position:absolute; top:50%; right:0; transform:translateY(-50%); font-size:30px; background:none; border:none; cursor:pointer;">&#10095;</button>
    </div>
 
+   <style>
+     .carousel-caption {
+         background-color: rgba(0,0,0,0.5);
+         color: white;
+         padding: 5px;
+         position: absolute;
+         bottom: 0;
+         width: 100%;
+         text-align: center;
+         font-size: 14px;
+     }
+   </style>
+
    <script>
-   let current = 0;
-   const slides = document.querySelectorAll("#arrow-carousel img");
+     let currentSlide = 0;
+     const slides = document.querySelectorAll("#arrow-carousel .carousel-slide");
 
-   function showSlide(index) {
-       slides.forEach((s,i) => s.style.display = (i===index ? "block" : "none"));
-   }
+     function showSlide(index) {
+         slides.forEach((slide, i) => {
+             slide.style.display = (i === index ? "block" : "none");
+         });
+     }
 
-   function nextSlide() {
-       current = (current + 1) % slides.length;
-       showSlide(current);
-   }
+     function nextSlide() {
+         currentSlide = (currentSlide + 1) % slides.length;
+         showSlide(currentSlide);
+     }
 
-   function prevSlide() {
-       current = (current - 1 + slides.length) % slides.length;
-       showSlide(current);
-   }
+     function prevSlide() {
+         currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+         showSlide(currentSlide);
+     }
    </script>
-
 
 -------------------------
 
@@ -82,7 +105,7 @@ secure the lens in place.
    .. raw:: html
 
       <video controls style="width:100%;">
-        <source src="_static/baseplate2_alignment/assembly/videos/PowellAD9F.mp4" type="video/mp4">
+        <source src="_static/videos/PowellAD9F.mp4" type="video/mp4">
       </video>
 
 

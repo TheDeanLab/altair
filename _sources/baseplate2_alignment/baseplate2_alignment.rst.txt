@@ -106,6 +106,7 @@ secure the lens in place.
 
       <video controls style="width:100%;">
         <source src="_static/videos/PowellAD9F.mp4" type="video/mp4">
+        your browser doesn't support video
       </video>
 
 

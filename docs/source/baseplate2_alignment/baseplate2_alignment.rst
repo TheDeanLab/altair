@@ -116,6 +116,13 @@ lenses themselves.
 Powell Lens Assembly
 ______________________
 
+Our newest illumination path configurations utilize a Powell lens as the element that forms the light sheet profile
+itself instead of a cylindrical lens. Our mounting scheme for the Powell lens offers control over all 3 axes (x, y,
+and z), where the Polaris 1XY Mount covers x and y and the LNR25M covers z. We found that outside of the Polaris 1XY
+for centering the powell lens precisely on the beam, due to tolerances of the Powell lens from laserline we use, we
+also needed to adjust the distance between the Powell lens and L2 to have our physical system align with our
+simulations.
+
 **Step 1: Fixing the Powell lens into the AD9F Mount**
 
 For the first step, get a piece of optical tissue paper and the AD9F and Powell lens. Place the flat face of the
@@ -430,7 +437,7 @@ ______________________
 
 **Section Goal: Add in the rest of the non-Powell lenses into the illumination path.**
 
-Install L1, L2, L3, and L4 into their respective B1S holders, and then screw those holders into their correct
+Install L2, L3, L4, and L5 into their respective B1S holders, and then screw those holders into their correct
 
 If beam is no longer centered on the RFO, Remove the RFO from the path, and focused on adjusting the tip/tilt of the
 voicecoil mirror to have the return beam be centered on both the first TL mount after the beamsplitter on the return
@@ -453,6 +460,21 @@ chamber filled with water and fluorescein.**
 
 Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)
 
+----------------------
+
+Step 11: Optimize System Light-Sheet Performance
+______________________
+
+**Section Goal: Optimize navigate parameters and XY offsets of RFO, L6, L7, and ILO to verify the system is working.**
+
+----------------------
+
+Step 12: Add in Powell Lens
+______________________
+
+**Section Goal: Incorporate Powell Lens, do a final fine-tuning alignment of system elements.**
+
+Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)
 
 
 -----------------------
@@ -467,4 +489,28 @@ _______________________
 
 **Optimizing Powell Lens Placement**
 
+The placement of the Powell lens in the optical path takes a bit of fine-tuning compared to some of the other lenses
+in our system. The lens itself is particularly sensitive to displacements in x and y, where if it's off it is easily
+visible in the profile of the beam on the front surfaces of the lenses that follow. Using the beam profile on the
+front of L2 as an example, when the Powell lens has a vertical (y) displacement, the beam profile starts to take on
+more of the conical shape instead of the more rectangular or pill-shaped profile from our simulations.
+
+.. figure:: Images/alignment/PowellLensPositioningProfile.png
+    :align: center
+    :alt: Potential profiles of misaligned powell lens beams
+
+    **Figure 1:** Potential misaligned Powell lens beam profiles on the front surface of L2
+
+In addition, due to tolerances with the Powell lenses we use in simulation compared to the physical ones purchased,
+there can be an additional z offset needed between the Powell lens and L2 for the beam profile to match simulations. In
+our particular case, we found that having an additional 2.6 mm spacing between the Powell lens and L2 made the rest
+of the system follow closely with our simulations, but this value might be different for different Powell lenses. We
+found this optimized spacing value by observing the beam profile on the front of L2 and L4, comparing it to
+simulated profiles in the same locations, and iteratively adjusting the LNR25M dial until the profiles matched closely.
+
+.. figure:: Images/alignment/L1L3PowellProfiles.png
+    :align: center
+    :alt: Example profiles at L2 and L4 front surfaces
+
+    **Figure 2:** Example profiles at L2 and L4 front surfaces used to optimize z-displacement of L1
 

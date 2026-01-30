@@ -269,7 +269,7 @@ ______________________
 
 For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
 our first iteration, but should still be a straightforward step-by-step process. To make things a little bit easier,
-the system is first aligned and optimized without the presence of some of the lenses (L1, L2, L3, L4 for the Powell
+the system is first aligned and optimized without the presence of some of the lenses (L1, L2, L3, L4, L5 for the Powell
 lens configurations), and then the rest of the lenses are added in and the system is recalibrated.
 
 -------------------------

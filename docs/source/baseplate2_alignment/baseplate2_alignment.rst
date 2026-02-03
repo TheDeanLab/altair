@@ -376,7 +376,6 @@ adjustments will be made afterwards:
     :align: center
     :alt: Example of our setup for securing the translation stage to breadboard adapter onto our detection path
           baseplate
-    :width: 300px
 
     **Figure 12:** Setup for securing the translation stage to breadboard adapter onto our detection path baseplate
 

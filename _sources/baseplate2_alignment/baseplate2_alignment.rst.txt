@@ -362,7 +362,7 @@ Assemble the beamsplitter, it’s mount, and the 1.75” Polaris post it rests o
 Step 5: Optional Beamsplitter Alignment
 ______________________________
 
-**Section Goal: Use the alternative laser launch hole (have graphic) to ensure that test beam goes straight through the
+**Section Goal: Use the alternative laser launch hole to ensure that test beam goes straight through the
 beamsplitter return path to the center of the ILO.**
 
 Mount three Polaris 1XY units on 1.5” posts along the return path at the location of L6, L7, and the illumination objective (ILO), respectively. Then mount a 1.5” post and Polaris 1XY unit on the hole denoted for the alternative laser launch. Screw the laser (Thorlabs CPS532) into the Polaris 1XY mount. With each of the 1XY Mounts roughly centered in both X and Y, ensure that the laser beam passes through the center of all elements using a frosted pinhole or iris installed in them.
@@ -383,11 +383,15 @@ ______________________
 **Section Goal: Install polarizers and ensure that the beam is traveling properly on its return path through the
 beamsplitter.**
 
-rotate the 1/2 waveplate to make the beam as bright as possible in the direction of the RFO, then adjust 1/4 wave plate to make the beam as bright as possible on the return path in the direction of the ILO (have graphic)
+Start by threading an LRM1 rotation mount into both the side of the beamsplitter facing the RFO and the side opposite
+facing L5. Then thread the half-waveplate into the L5 side and the quarter-waveplate into the RFO side.
+
+Rotate the half-waveplate to make the beam as bright as possible in the direction of the RFO, then adjust the
+quarter-waveplate to make the beam as bright as possible on the return path in the direction of the ILO.
 
 Ensure that the return beam properly travels back through the beamsplitter and down the path to the ILO. Adjust tip/tilt of voicecoil mirror to manipulate the direction of the beam.
 
-Establishes a ground-truth beam position for the next step where we add in the RFO.
+This establishes a ground-truth beam position for the next step where we add in the RFO.
 
 .. figure:: Images/alignment/PCBaseplateV2LaserAlignment4.png
     :align: center
@@ -418,11 +422,17 @@ Added RFO back in, then adjusted the XY on the mount for the RFO until the back 
 Step 8: RFO Offset
 ______________________
 
-**Section Goal: Adjust the RFO offset in navigate such that it’s collimated between the beamsplitter and L6 and L7 and the ILO.**
+**Section Goal: Install L6 and L7, Adjust the RFO offset in navigate such that it’s collimated between the beamsplitter
+and L6 and L7 and the ILO.**
 
-Now adjust the RFO offset in navigate (leaving the amplitude at 0 for now), until the light between the beamsplitter
-and L6 and L7 and the ILO is collimated. The available range should be between 1 to 10, with the optimal value
-varying for each system, for our initial system this value was around 5.
+Start by installing SM1A2 threading adapters onto the Polaris 1XY mounts corresponding to L6 and L7. Then thread both
+L6 and L7 into their respective mounts, such that the Thorlabs label on them is on the side farthest away from the
+1XY mounts, shown above in the "Breakdown of Baseplate Holes" section.
+
+With a shear-plate interferometer placed between the beamsplitter and L6 (and then L7 and the ILO), adjust the RFO
+offset in navigate (leaving the amplitude at 0 for now) until the light between the beamsplitter and L6 and L7 and
+the ILO is collimated. The available range should be between 1 to 10, with the optimal value varying for each system,
+for our initial system this value was around 5.
 
 .. figure:: Images/alignment/waveformparameters.png
     :align: center
@@ -449,7 +459,6 @@ Then add in TL1 and TL#2, adjust the rotation and XY of TL2 to make the beam on 
 Using the re-collimated offset position as the baseline, adjusted the detection path (ensuring it’s as perpendicular as can be to the illumination path), and primarily adjusted TL1 and TL2 XY’s to center the beam as much as possible on the back of the ILO
 
 
-
 ----------------------
 
 Step 10: Install Detection Path
@@ -457,8 +466,6 @@ ______________________
 
 **Section Goal: Assemble/incorporate detection path into the setup, ensure it’s centered on the beam by using the
 chamber filled with water and fluorescein.**
-
-Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)
 
 ----------------------
 
@@ -473,8 +480,6 @@ Step 12: Add in Powell Lens
 ______________________
 
 **Section Goal: Incorporate Powell Lens, do a final fine-tuning alignment of system elements.**
-
-Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)
 
 
 -----------------------

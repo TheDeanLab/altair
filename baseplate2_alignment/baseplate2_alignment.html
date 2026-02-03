@@ -69,12 +69,15 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ALSM/CTASLM Baseplate</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ALSM/CTASLM Baseplate Assembly &amp; Alignment</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#assembly-overview">Assembly Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#note-on-available-configurations">Note on Available Configurations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#breakdown-of-baseplate-holes">Breakdown of Baseplate Holes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#powell-lens-assembly">Powell Lens Assembly</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#voicecoil-assembly">Voicecoil Assembly</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#detection-path-assembly">Detection Path Assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assembly">Assembly</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#assembly-overview">Assembly Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#powell-lens-assembly">Powell Lens Assembly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#voicecoil-assembly">Voicecoil Assembly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#detection-path-assembly">Detection Path Assembly</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#alignment">Alignment</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#alignment-overview">Alignment Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#step-1-laser-collimation">Step 1: Laser Collimation</a></li>
@@ -123,11 +126,6 @@
              
   <section id="alsm-ctaslm-baseplate-assembly-alignment">
 <span id="aslmbpalignment-home"></span><h1>ALSM/CTASLM Baseplate Assembly &amp; Alignment<a class="headerlink" href="#alsm-ctaslm-baseplate-assembly-alignment" title="Permalink to this heading"></a></h1>
-<section id="assembly-overview">
-<h2>Assembly Overview<a class="headerlink" href="#assembly-overview" title="Permalink to this heading"></a></h2>
-<p>For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
-our first iteration, but should still be a straightforward step-by-step process.</p>
-</section>
 <hr class="docutils" />
 <section id="note-on-available-configurations">
 <h2>Note on Available Configurations<a class="headerlink" href="#note-on-available-configurations" title="Permalink to this heading"></a></h2>
@@ -222,8 +220,16 @@ lenses themselves.</p>
 </figure>
 </section>
 <hr class="docutils" />
+<section id="assembly">
+<h2>Assembly<a class="headerlink" href="#assembly" title="Permalink to this heading"></a></h2>
+<section id="assembly-overview">
+<h3>Assembly Overview<a class="headerlink" href="#assembly-overview" title="Permalink to this heading"></a></h3>
+<p>For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
+our first iteration, but should still be a straightforward step-by-step process.</p>
+</section>
+<hr class="docutils" />
 <section id="powell-lens-assembly">
-<h2>Powell Lens Assembly<a class="headerlink" href="#powell-lens-assembly" title="Permalink to this heading"></a></h2>
+<h3>Powell Lens Assembly<a class="headerlink" href="#powell-lens-assembly" title="Permalink to this heading"></a></h3>
 <p>Our newest illumination path configurations utilize a Powell lens as the element that forms the light sheet profile
 itself instead of a cylindrical lens. Our mounting scheme for the Powell lens offers control over all 3 axes (x, y,
 and z), where the Polaris 1XY Mount covers x and y and the LNR25M covers z. We found that outside of the Polaris 1XY
@@ -304,7 +310,7 @@ screw them into the top of the LNR25M</p>
 </section>
 <hr class="docutils" />
 <section id="voicecoil-assembly">
-<h2>Voicecoil Assembly<a class="headerlink" href="#voicecoil-assembly" title="Permalink to this heading"></a></h2>
+<h3>Voicecoil Assembly<a class="headerlink" href="#voicecoil-assembly" title="Permalink to this heading"></a></h3>
 <p><strong>Step 1: Fixing the mirror into the voicecoil</strong></p>
 <p>Start by taking a 0.5” mirror and fixing it into the central hole on our voicecoil using UV-cured resin adhesive
 . Apply a thin layer of liquid resin to the back of the mirror, and place the mirror in the central voicecoil hole.
@@ -348,7 +354,7 @@ adapter.</p>
 </section>
 <hr class="docutils" />
 <section id="detection-path-assembly">
-<h2>Detection Path Assembly<a class="headerlink" href="#detection-path-assembly" title="Permalink to this heading"></a></h2>
+<h3>Detection Path Assembly<a class="headerlink" href="#detection-path-assembly" title="Permalink to this heading"></a></h3>
 <p>Our detection path consists of our Nikon N25X-APO-MP detection objective, Hamamatsu ORCA Flash4.0 V3 Camera, ASI
 C60-TUBE-400 tube lens, and ASI FW-0002-8 8-position filter wheel unit. These components are mounted together and
 affixed onto an ASI LS-100-AMCCH translation stage for focus control. We currently use a prototype detection path
@@ -485,6 +491,7 @@ lens and attach all associated wires to the camera, filter wheel, and translatio
 clearance between the front of the tube lens and the sample chamber to screw in the detection objective, the
 translation stage might need to be wired up first and translated backwards manually using either navigate or the
 Tiger Control Panel software.</p>
+</section>
 </section>
 <hr class="docutils" />
 <section id="alignment">

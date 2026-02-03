@@ -4,16 +4,10 @@
 ALSM/CTASLM Baseplate Assembly & Alignment
 ##########################################
 
-Assembly Overview
-______________________
-
-For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
-our first iteration, but should still be a straightforward step-by-step process.
-
--------------------------
+--------------------------------
 
 Note on Available Configurations
-______________________
+________________________________
 
 The current iteration of the baseplate provides 5 different possible imaging configurations: 2 using a cylindrical
 lens to form the light sheet (ASLM, CT-ASLM), and 3 using a Powell lens to form the light sheet (SPIM, ASLM, CT-ASLM)
@@ -87,10 +81,10 @@ cylindrical configurations will follow a similar process.
      }
    </script>
 
--------------------------
+----------------------------
 
 Breakdown of Baseplate Holes
-______________________
+____________________________
 
 Here we show a breakdown of all the holes on the baseplate in terms of what configuration they're designed for
 (Figure 1),the post height corresponding to those holes (Figure 1), and the elements corresponding to each hole
@@ -111,10 +105,23 @@ lenses themselves.
 
     **Figure 2:** Labeled baseplate holes based on what component is placed at each hole
 
+--------
+
+Assembly
+________
+
+
+Assembly Overview
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
+our first iteration, but should still be a straightforward step-by-step process.
+
+
 -------------------------
 
 Powell Lens Assembly
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Our newest illumination path configurations utilize a Powell lens as the element that forms the light sheet profile
 itself instead of a cylindrical lens. Our mounting scheme for the Powell lens offers control over all 3 axes (x, y,
@@ -209,10 +216,10 @@ Finally, screw in the AD9F fully into the LRM1 mount threading.
 
     **Figure 6:** Threading the AD9F into the LRM1 mount
 
--------------------------
+------------------
 
 Voicecoil Assembly
-______________________
+^^^^^^^^^^^^^^^^^^
 
 **Step 1: Fixing the mirror into the voicecoil**
 
@@ -262,10 +269,10 @@ adapter.
 
     **Figure 4:** Completed voicecoil assembly
 
--------------------------
+-----------------------
 
 Detection Path Assembly
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Our detection path consists of our Nikon N25X-APO-MP detection objective, Hamamatsu ORCA Flash4.0 V3 Camera, ASI
 C60-TUBE-400 tube lens, and ASI FW-0002-8 8-position filter wheel unit. These components are mounted together and
@@ -392,23 +399,23 @@ clearance between the front of the tube lens and the sample chamber to screw in 
 translation stage might need to be wired up first and translated backwards manually using either navigate or the
 Tiger Control Panel software.
 
--------------------------
+---------
 
 Alignment
-______________________
+_________
 
 Alignment Overview
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 
 For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
 our first iteration, but should still be a straightforward step-by-step process. To make things a little bit easier,
 the system is first aligned and optimized without the presence of some of the lenses (L1, L2, L3, L4, L5 for the Powell
 lens configurations), and then the rest of the lenses are added in and the system is recalibrated.
 
----------------
+-------------------------
 
 Step 1: Laser Collimation
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 When first assembling the system, ensuring proper output collimation from the fiber laser source is critical. There are multiple checks that one can take for this step, but we utilize a combination of a `shear-plate interferometer <https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=2970>`_ and two pinhole apertures placed at opposite ends along the length of the baseplate. Shear-plate interferometers are designed to split and interfere an input beam of coherent light, such that when the beam is collimated there are interference fringes aligned vertically with a reference line. The fiber laser collimator we used for this system is the `Thorlabs CFC11A-A <https://www.thorlabs.com/thorproduct.cfm?partnumber=CFC11A-A>`_, which features an adjustable barrel which controls the position of collimation optics within the element.
 
 The basic assembly process involves first inserting and fixing the CFC11A-A into a Thorlabs AD15S2 adapter, which allows it to then be mounted into a 2.5" Polaris K1XY mount. This assembly is then mounted onto the respective Polaris post at the start of the baseplate. The fiber laser source is then able to be directly mounted into the CFC11A-A, making sure that the protrusion on the fiber wire aligns with the open section of the CFC11A-A port. The basic process of ensuring collimation then involves turning on the laser source, and placing the shear-plate interferometer such that the input port aligns with the output of the laser unit. Then, by slowly adjusting the barrel of the CFC11A-A and observing the interference fringe orientations along the top display of the interferometer, one is able to adjust the beam until it is properly collimated.
@@ -420,10 +427,10 @@ The basic assembly process involves first inserting and fixing the CFC11A-A into
     **Figure 1:** Shear Plate interferometer and collimator lens
 
 
----------------
+----------------------
 
 Step 2: Beam Walking 1
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Ensure that the beam is traveling parallel to the baseplate surface and through the center of all
 mounted elements up to the RFO location (part 1).**
@@ -445,10 +452,10 @@ With the irises and mirror in place, this step becomes and iterative process of 
 
 
 
----------------
+----------------------
 
 Step 3: Beam Walking 2
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Ensure that the beam is centered on the galvo and K1S4 mirror, and that it travels parallel to the
 baseplate surface and through the center of all mounted elements up to the RFO location (part 2).**
@@ -470,10 +477,10 @@ Then adjust the tip/tilt on the PY004 of the voicecoil until the back-reflected 
 
 
 
----------------
+----------------------
 
 Step 4: Beam Walking 3
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Place the beamsplitter in the system, ensure it’s oriented correctly.**
 
@@ -486,7 +493,7 @@ Assemble the beamsplitter, it’s mount, and the 1.75” Polaris post it rests o
     **Figure 4:** Beam Walking 3
 
 
----------------
+---------------------------------------
 
 Step 5: Optional Beamsplitter Alignment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -504,10 +511,10 @@ Mount three Polaris 1XY units on 1.5” posts along the return path at the locat
 
 
 
----------------
+----------------------
 
 Step 6: Beam Walking 4
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Install polarizers and ensure that the beam is traveling properly on its return path through the
 beamsplitter.**
@@ -529,10 +536,10 @@ This establishes a ground-truth beam position for the next step where we add in 
     **Figure 6:** Beam Walking 4
 
 
----------------
+----------------------
 
 Step 7: Beam Walking 5
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Add in RFO, do initial alignment.**
 
@@ -545,10 +552,10 @@ Added RFO back in, then adjusted the XY on the mount for the RFO until the back 
     **Figure 7:** Beam Walking 5
 
 
----------------
+------------------
 
 Step 8: RFO Offset
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Install L6 and L7, Adjust the RFO offset in navigate such that it’s collimated between the beamsplitter
 and L6 and L7 and the ILO.**
@@ -568,10 +575,10 @@ for our initial system this value was around 5.
 
     **Figure 8:** The Waveform Parameters panel in navigate.
 
----------------
+---------------------
 
 Step 9: Add In Lenses
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Add in the rest of the non-Powell lenses into the illumination path.**
 
@@ -587,27 +594,27 @@ Then add in TL1 and TL#2, adjust the rotation and XY of TL2 to make the beam on 
 Using the re-collimated offset position as the baseline, adjusted the detection path (ensuring it’s as perpendicular as can be to the illumination path), and primarily adjusted TL1 and TL2 XY’s to center the beam as much as possible on the back of the ILO
 
 
----------------
+-------------------------------
 
 Step 10: Install Detection Path
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Assemble/incorporate detection path into the setup, ensure it’s centered on the beam by using the
 chamber filled with water and fluorescein.**
 
 
----------------
+------------------------------------------------
 
 Step 11: Optimize System Light-Sheet Performance
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Optimize navigate parameters and XY offsets of RFO, L6, L7, and ILO to verify the system is working.**
 
 
----------------
+---------------------------
 
 Step 12: Add in Powell Lens
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Incorporate Powell Lens, do a final fine-tuning alignment of system elements.**
 

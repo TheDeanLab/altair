@@ -405,7 +405,7 @@ our first iteration, but should still be a straightforward step-by-step process.
 the system is first aligned and optimized without the presence of some of the lenses (L1, L2, L3, L4, L5 for the Powell
 lens configurations), and then the rest of the lenses are added in and the system is recalibrated.
 
-
+---------------
 
 Step 1: Laser Collimation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -420,7 +420,7 @@ The basic assembly process involves first inserting and fixing the CFC11A-A into
     **Figure 1:** Shear Plate interferometer and collimator lens
 
 
-
+---------------
 
 Step 2: Beam Walking 1
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -445,7 +445,7 @@ With the irises and mirror in place, this step becomes and iterative process of 
 
 
 
-
+---------------
 
 Step 3: Beam Walking 2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -470,7 +470,7 @@ Then adjust the tip/tilt on the PY004 of the voicecoil until the back-reflected 
 
 
 
-
+---------------
 
 Step 4: Beam Walking 3
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -486,7 +486,7 @@ Assemble the beamsplitter, it’s mount, and the 1.75” Polaris post it rests o
     **Figure 4:** Beam Walking 3
 
 
-
+---------------
 
 Step 5: Optional Beamsplitter Alignment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -504,7 +504,7 @@ Mount three Polaris 1XY units on 1.5” posts along the return path at the locat
 
 
 
-
+---------------
 
 Step 6: Beam Walking 4
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -529,7 +529,7 @@ This establishes a ground-truth beam position for the next step where we add in 
     **Figure 6:** Beam Walking 4
 
 
-
+---------------
 
 Step 7: Beam Walking 5
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -545,7 +545,7 @@ Added RFO back in, then adjusted the XY on the mount for the RFO until the back 
     **Figure 7:** Beam Walking 5
 
 
-
+---------------
 
 Step 8: RFO Offset
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -568,7 +568,7 @@ for our initial system this value was around 5.
 
     **Figure 8:** The Waveform Parameters panel in navigate.
 
-
+---------------
 
 Step 9: Add In Lenses
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -587,7 +587,7 @@ Then add in TL1 and TL#2, adjust the rotation and XY of TL2 to make the beam on 
 Using the re-collimated offset position as the baseline, adjusted the detection path (ensuring it’s as perpendicular as can be to the illumination path), and primarily adjusted TL1 and TL2 XY’s to center the beam as much as possible on the back of the ILO
 
 
-
+---------------
 
 Step 10: Install Detection Path
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -596,6 +596,7 @@ Step 10: Install Detection Path
 chamber filled with water and fluorescein.**
 
 
+---------------
 
 Step 11: Optimize System Light-Sheet Performance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -603,6 +604,7 @@ Step 11: Optimize System Light-Sheet Performance
 **Section Goal: Optimize navigate parameters and XY offsets of RFO, L6, L7, and ILO to verify the system is working.**
 
 
+---------------
 
 Step 12: Add in Powell Lens
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

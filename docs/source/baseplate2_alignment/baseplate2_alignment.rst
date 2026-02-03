@@ -395,6 +395,60 @@ clearance between the front of the tube lens and the sample chamber to screw in 
 translation stage might need to be wired up first and translated backwards manually using either navigate or the
 Tiger Control Panel software.
 
+-----------------------------
+
+Assembling the Sample Chamber
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In order to ensure a watertight seal around our objectives, both of our objective ports feature two sets of o-rings
+surrounding their circumference. For our smaller port associated with the TL20X-MPL objective, we use oil-resistant
+Buna-N O-Rings with 11/16" inner diameter (ID) and 13/16" outer diameter (OD). For the larger port associated with
+the Nikon 20X objective, we used Buna o-rings with roughly 1.3" ID and 1.7" OD. These o-rings and their associated
+grooves are first coated with vacuum grease in the following process:
+
+    1. Unscrew vacuum grease container
+    2. Using either a finger or a cotton-tipped applicator, apply a layer of vacuum grease into and around the grooves
+       on both ports
+    3. Put more vacuum grease on the cotton-tipped applicator
+    4. Using a finger or cotton-tipped applicator, take an o-ring and coat it fully in the vacuum grease.
+    5. Place the o-ring in the appropriate groove using a finger or tweezers to help ensure it sits within the groove
+    6. Repeat steps 3-5 for all 4 o-ring grooves in the chamber
+
+.. figure:: Images/assembly/OringPlacement.png
+    :align: center
+    :alt: Preparation and Placement of O-rings in the Sample Chamber
+
+    **Figure 4:** Preparation and Placement of O-rings in the Sample Chamber
+
+Then with the o-rings in place, if you're using a sample chamber variant that offers two detection path
+configurations (traditional orthogonal and transmissive), install a gasket and gasket retainer on the transmissive
+port:
+
+    1. Cut a gasket sheet into a roughly 2x1.5" rectangle gasket section.
+    2. Place the gasket onto the gasket retainer, poke a marker through the 4 holes on the gasket retainer to mark
+       where the screw holes will be.
+    3. Use scissors or another tool to make cuts at each of the 4 marked locations on the gasket, such that a 4-40"
+       screw is able to pass through them.
+    4. Align the gasket over the gasket retainer and place 4 4-40" screws into each of the holes such that the
+       threading pokes out from the gasket side.
+    5. Align the gasket assembly screws with the sample chamber transmissive port threaded holes, fully screw in the
+       screws into the sample chamber holes.
+
+.. figure:: Images/assembly/Gasket.png
+    :align: center
+    :alt: Preparing the gasket and retainer
+
+    **Figure 4:** Preparation and Placement of the gasket and gasket retainer on the sample chamber
+
+Now fix 4 2.5" posts onto the corresponding holes on the detection path baseplate, and then secure the sample chamber
+onto those posts using the four 8-32" holes on the base of the sample chamber.
+
+.. figure:: Images/assembly/gasket3.png
+    :align: center
+    :alt: Fixing the sample chamber onto posts
+
+    **Figure 4:** Placement of sample chamber assembly onto detection path posts.
+
 ---------
 
 Alignment
@@ -597,6 +651,10 @@ Step 10: Install Detection Path
 
 **Section Goal: Assemble/incorporate detection path into the setup, ensure it’s centered on the beam by using the
 chamber filled with water and fluorescein.**
+
+First `assemble the detection path <https://thedeanlab.github.io/altair/baseplate2_alignment/baseplate2_alignment
+.html#detection-path-assembly>`_.
+
 
 
 ------------------------------------------------

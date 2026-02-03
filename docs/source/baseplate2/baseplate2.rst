@@ -39,7 +39,7 @@ different illumination wavelengths (488 nm, 560 nm, and 640 nm), whereas our fir
 specifically for 488 nm. This should improve the overall quality of imaging between the different excitation
 wavelengths used in various fluorescent tags.
 
-In addition to the aforementioned upgrades, this iteration of Altair also utilizes a Powell lens instead of a
+In addition to the aforementioned upgrades, this iteration of Altair also allows for a Powell lens instead of a
 cylindrical lens as the element that forms our light sheet profile itself. Powell lenses are a specialized variant of
 lenses that are known to produce line profiles with consistent and uniform intensity. When utilized in light-sheet
 imaging, these lenses essentially help provide a more uniform intensity of illumination across the full FoV of the
@@ -372,15 +372,3 @@ Figure 10.
     :alt: Baseplate Configurations
 
     **Figure 10:** Available microscope builds possible with our single baseplate
-
-------------------
-
-
-Baseplate Assembly
-__________________
-
-.. figure:: Images/BaseplatePostHeight.png
-    :align: center
-    :alt: Baseplate Configurations
-
-    **Figure 11:** Baseplate post heights and locations for each imaging configuration

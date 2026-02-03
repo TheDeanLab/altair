@@ -627,6 +627,8 @@ _______________________
 Optimizing Lens Placement/Orientation Using Backreflections
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+--------------------------------
+
 Optimizing Powell Lens Placement
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

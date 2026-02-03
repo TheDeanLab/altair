@@ -110,7 +110,6 @@ lenses themselves.
 Assembly
 ________
 
-
 Assembly Overview
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -625,11 +624,11 @@ Step 12: Add in Powell Lens
 Various Troubleshooting
 _______________________
 
-**Section Goal: Mitigate any issues in the system.**
+Optimizing Lens Placement/Orientation Using Backreflections
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Optimizing Lens Placement/Orientation Using Backreflections**
-
-**Optimizing Powell Lens Placement**
+Optimizing Powell Lens Placement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The placement of the Powell lens in the optical path takes a bit of fine-tuning compared to some of the other lenses
 in our system. The lens itself is particularly sensitive to displacements in x and y, where if it's off it is easily

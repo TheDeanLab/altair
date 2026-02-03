@@ -296,7 +296,7 @@ The assembly of the detection path begins with the translation stage and it's as
     4. Fix the adapter onto the translation stage by screwing M6 screws into the recesses aligned with the
        translation stage holes.
 
-.. figure:: Images/TSBBAdapter.png
+.. figure:: Images/assembly/TSBBAdapter.png
     :align: center
     :alt: Schematic of the translation stage breadboard adapter
 
@@ -310,7 +310,7 @@ of the tube lens adapter onto the top of the translation stage:
     2. Align the Recess holes on the adapter with the holes on the top of the translation stage.
     3. Fix the adapter onto the translation stage by screwing M6 screws into the aligned recess holes
 
-.. figure:: Images/TubeAdapter.png
+.. figure:: Images/assembly/TubeAdapter.png
     :align: center
     :alt: Schematic of the tube lens to translation stage adapter
 
@@ -322,7 +322,7 @@ Next, we'll focus on assembling the tube lens and filter wheel:
        screw ports
     2. With the adapter fixed, now screw the 400 mm tube lens into the adapter.
 
-.. figure:: Images/FW.png
+.. figure:: Images/assembly/FW.png
     :align: center
     :alt: Schematic of the filter wheel port for the tube lens
 
@@ -333,7 +333,7 @@ In order to fix our detection objective onto the tube lens, we must first prepar
     2. Using the screws on the top of the extension piece, fix the threaded sleeve in place
     3. Insert/screw the extension piece into the front of the tube lens.
 
-.. figure:: Images/Threadadapter.png
+.. figure:: Images/assembly/Threadadapter.png
     :align: center
     :alt: Showcase of the screws used to secure the thread adapter for the tube lens
 
@@ -351,7 +351,7 @@ The tube lens assembly is now ready to be fixed onto the translation stage assem
        more can be used for extra security if desired.
     5. Screw a washer onto each of the screws until they're secured against the bottom lip of the adapter.
 
-.. figure:: Images/tubelens2.png
+.. figure:: Images/assembly/tubelens2.png
     :align: center
     :alt: Example of tube lens mounted in the corresponding adapter
 
@@ -372,7 +372,7 @@ adjustments will be made afterwards:
        of washers here).
 
 
-.. figure:: Images/spacers.png
+.. figure:: Images/assembly/spacers.png
     :align: center
     :alt: Example of our setup for securing the translation stage to breadboard adapter onto our detection path
           baseplate
@@ -386,7 +386,7 @@ With the assembly fixed in place, the camera can then be screwed into the filter
     3. Slowly adjust the camera tilt until the top surface is leveled (we use a bubble leveling tool for this, shown
        below)
 
-.. figure:: Images/Camerarotation.png
+.. figure:: Images/assembly/Camerarotation.png
     :align: center
     :alt: Mounting of the camera
 
@@ -618,11 +618,11 @@ Step 12: Add in Powell Lens
 **Section Goal: Incorporate Powell Lens, do a final fine-tuning alignment of system elements.**
 
 
------------------------
+---------------
 
 
-Various Troubleshooting
-_______________________
+Troubleshooting
+_______________
 
 Optimizing Lens Placement/Orientation Using Backreflections
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

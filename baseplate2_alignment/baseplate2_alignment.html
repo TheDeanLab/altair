@@ -74,19 +74,23 @@
 <li class="toctree-l2"><a class="reference internal" href="#breakdown-of-baseplate-holes">Breakdown of Baseplate Holes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#powell-lens-assembly">Powell Lens Assembly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#voicecoil-assembly">Voicecoil Assembly</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#alignment-overview">Alignment Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-1-laser-collimation">Step 1: Laser Collimation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-2-beam-walking-1">Step 2: Beam Walking 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-3-beam-walking-2">Step 3: Beam Walking 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-4-beam-walking-3">Step 4: Beam Walking 3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-5-optional-beamsplitter-alignment">Step 5: Optional Beamsplitter Alignment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-6-beam-walking-4">Step 6: Beam Walking 4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-7-beam-walking-5">Step 7: Beam Walking 5</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-8-rfo-offset">Step 8: RFO Offset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-9-add-in-lenses">Step 9: Add In Lenses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-10-install-detection-path">Step 10: Install Detection Path</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-11-optimize-system-light-sheet-performance">Step 11: Optimize System Light-Sheet Performance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-12-add-in-powell-lens">Step 12: Add in Powell Lens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detection-path-assembly">Detection Path Assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alignment">Alignment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#alignment-overview">Alignment Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-laser-collimation">Step 1: Laser Collimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-beam-walking-1">Step 2: Beam Walking 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-beam-walking-2">Step 3: Beam Walking 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-beam-walking-3">Step 4: Beam Walking 3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-5-optional-beamsplitter-alignment">Step 5: Optional Beamsplitter Alignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-6-beam-walking-4">Step 6: Beam Walking 4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-7-beam-walking-5">Step 7: Beam Walking 5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-8-rfo-offset">Step 8: RFO Offset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-9-add-in-lenses">Step 9: Add In Lenses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-10-install-detection-path">Step 10: Install Detection Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-11-optimize-system-light-sheet-performance">Step 11: Optimize System Light-Sheet Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-12-add-in-powell-lens">Step 12: Add in Powell Lens</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#various-troubleshooting">Various Troubleshooting</a></li>
 </ul>
 </li>
@@ -343,28 +347,168 @@ adapter.</p>
 </figure>
 </section>
 <hr class="docutils" />
+<section id="detection-path-assembly">
+<h2>Detection Path Assembly<a class="headerlink" href="#detection-path-assembly" title="Permalink to this heading"></a></h2>
+<p>Our detection path consists of our Nikon N25X-APO-MP detection objective, Hamamatsu ORCA Flash4.0 V3 Camera, ASI
+C60-TUBE-400 tube lens, and ASI FW-0002-8 8-position filter wheel unit. These components are mounted together and
+affixed onto an ASI LS-100-AMCCH translation stage for focus control. We currently use a prototype detection path
+baseplate (available here) as a mounting stage for these elements and the sample chamber; however, this additional
+baseplate is still undergoing design iterations and is not critical for a functional detection path.</p>
+<p>We utilize two additional custom adapter elements in the construction of the detection path: a shell casing around
+the tube lens that mounts to the translation stage and an adapter for the translation stage to mount it to an optical
+breadboard table. The height thicknesses of these elements were chosen such that the height of the detection
+objective center should match that of the illumination objective (which with the 1.5” tall posts our illumination
+baseplate rests on is 4.75” above the optical table surface). These elements can be custom machined if desired;
+however, we have found 3D printed PLA variants to perform their functions effectively as well.</p>
+<p>The assembly of the detection path begins with the translation stage and it’s associated breadboard adapter
+(available here in two variants, based on whether or not one is using the 0.5” thick detection path baseplate):</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Turn the translation stage upside-down</p></li>
+<li><p>Place the breadboard adapter upside-down on top of the inverted translation stage (such that the raised
+platform of the adapter is touching the bottom side of the translation stage)</p></li>
+<li><p>Align the recesses on the bottom of the adapter with the holes on the bottom of the translation stage</p></li>
+<li><p>Fix the adapter onto the translation stage by screwing M6 screws into the recesses aligned with the
+translation stage holes.</p></li>
+</ol>
+</div></blockquote>
+<figure class="align-center" id="id13">
+<img alt="Schematic of the translation stage breadboard adapter" src="baseplate2_alignment/Images/TSBBAdapter.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 7:</strong> Schematic of the translation stage breadboard adapter</span><a class="headerlink" href="#id13" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>The next step is flipping the translation stage assembly right side up again, and then fixing the first of two halves
+of the tube lens adapter onto the top of the translation stage:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Place the tube lens adapter half onto the top of the translation stage such that the block with two sets of
+five recessed holes is touching the top of the translation stage.</p></li>
+<li><p>Align the Recess holes on the adapter with the holes on the top of the translation stage.</p></li>
+<li><p>Fix the adapter onto the translation stage by screwing M6 screws into the aligned recess holes</p></li>
+</ol>
+</div></blockquote>
+<figure class="align-center" id="id14">
+<img alt="Schematic of the tube lens to translation stage adapter" src="baseplate2_alignment/Images/TubeAdapter.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 8:</strong> Schematic of the tube lens to translation stage adapter</span><a class="headerlink" href="#id14" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Next, we’ll focus on assembling the tube lens and filter wheel:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Take the MIM to Filter wheel adapter and fix it onto the front port of the filter wheel using the associated
+screw ports</p></li>
+<li><p>With the adapter fixed, now screw the 400 mm tube lens into the adapter.</p></li>
+</ol>
+</div></blockquote>
+<figure class="align-center" id="id15">
+<img alt="Schematic of the filter wheel port for the tube lens" src="baseplate2_alignment/Images/FW.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 9:</strong> Schematic of the filter wheel port for the tube lens</span><a class="headerlink" href="#id15" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<dl class="simple">
+<dt>In order to fix our detection objective onto the tube lens, we must first prepare an extension and threading adapter:</dt><dd><ol class="arabic simple">
+<li><p>Take the C60-EXT-15 15 mm Tube extension piece and place the RAO-0051 M32x0.75 threaded sleeve inside</p></li>
+<li><p>Using the screws on the top of the extension piece, fix the threaded sleeve in place</p></li>
+<li><p>Insert/screw the extension piece into the front of the tube lens.</p></li>
+</ol>
+</dd>
+</dl>
+<figure class="align-center" id="id16">
+<img alt="Showcase of the screws used to secure the thread adapter for the tube lens" src="baseplate2_alignment/Images/Threadadapter.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 10:</strong> Showcase of the screws used to secure the thread adapter for the tube lens</span><a class="headerlink" href="#id16" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<dl class="simple">
+<dt>The tube lens assembly is now ready to be fixed onto the translation stage assembly:</dt><dd><ol class="arabic simple">
+<li><p>Place the tube lens assembly such that the tube lens lies within the curved region of the tube lens adapter</p></li>
+<li><p>While there isn’t an exact science to the relative placement of the tube within the adapter, try to position
+it such that more of the tube is extended out on the side where the objective will be mounted (our setup is shown
+below for reference).</p></li>
+<li><p>Place the second half of the tube lens adapter such that the curved side fits onto the lube lens and position
+it such that the holes of both halves of the adapter align with each other.</p></li>
+<li><p>Using your choice of either M6 or 1/4”-20 screws and associated washers/nuts, place the screws with a washer
+placed on them first into the aligned holes of the adapter. We used 4 of the adapter holes on each side, but
+more can be used for extra security if desired.</p></li>
+<li><p>Screw a washer onto each of the screws until they’re secured against the bottom lip of the adapter.</p></li>
+</ol>
+</dd>
+</dl>
+<figure class="align-center" id="id17">
+<img alt="Example of tube lens mounted in the corresponding adapter" src="baseplate2_alignment/Images/tubelens2.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 11:</strong> Example of tube lens mounted in the corresponding adapter</span><a class="headerlink" href="#id17" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>The detection path assembly can now be fixed into place onto either the detection path baseplate or the optical
+table, keep in mind this process is meant to essentially place the unit in the ballpark of where it should be, finer
+adjustments will be made afterwards:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Using the mounting holes on the translation stage assembly, place the assembly such that the edge of the
+translation stage adapter facing the illumination path is roughly 9-10” away from the location of the
+illumination objective.</p></li>
+<li><p>Using the adjacent edge of the translation stage adapter (the one that should be perpendicular to the
+orientation of the illumination path), try to align the side of the adapter with the mounting hole of the
+illumination objective.</p></li>
+<li><p>Screw the translation stage adapter into either the optical table to the detection path baseplate (we
+recommend using <a class="reference external" href="https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=851">Thorlabs 1” Spacers</a> in place
+of washers here).</p></li>
+</ol>
+</div></blockquote>
+<figure class="align-center" id="id18">
+<a class="reference internal image-reference" href="baseplate2_alignment/Images/spacers.png"><img alt="Example of our setup for securing the translation stage to breadboard adapter onto our detection path baseplate" src="baseplate2_alignment/Images/spacers.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 12:</strong> Setup for securing the translation stage to breadboard adapter onto our detection path baseplate</span><a class="headerlink" href="#id18" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<dl class="simple">
+<dt>With the assembly fixed in place, the camera can then be screwed into the filter wheel:</dt><dd><ol class="arabic simple">
+<li><p>Align the front thread of the camera with the back port of the filter wheel</p></li>
+<li><p>Screw the camera into the filter wheel until there is resistance</p></li>
+<li><p>Slowly adjust the camera tilt until the top surface is leveled (we use a bubble leveling tool for this, shown
+below)</p></li>
+</ol>
+</dd>
+</dl>
+<figure class="align-center" id="id19">
+<img alt="Mounting of the camera" src="baseplate2_alignment/Images/Camerarotation.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 13:</strong> Mounting of the camera</span><a class="headerlink" href="#id19" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>The final steps to to assemble the detection path are to screw the detection objective into the front of the tube
+lens and attach all associated wires to the camera, filter wheel, and translation stage. If there’s not enough
+clearance between the front of the tube lens and the sample chamber to screw in the detection objective, the
+translation stage might need to be wired up first and translated backwards manually using either navigate or the
+Tiger Control Panel software.</p>
+</section>
+<hr class="docutils" />
+<section id="alignment">
+<h2>Alignment<a class="headerlink" href="#alignment" title="Permalink to this heading"></a></h2>
 <section id="alignment-overview">
-<h2>Alignment Overview<a class="headerlink" href="#alignment-overview" title="Permalink to this heading"></a></h2>
+<h3>Alignment Overview<a class="headerlink" href="#alignment-overview" title="Permalink to this heading"></a></h3>
 <p>For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
 our first iteration, but should still be a straightforward step-by-step process. To make things a little bit easier,
 the system is first aligned and optimized without the presence of some of the lenses (L1, L2, L3, L4, L5 for the Powell
 lens configurations), and then the rest of the lenses are added in and the system is recalibrated.</p>
 </section>
-<hr class="docutils" />
 <section id="step-1-laser-collimation">
-<h2>Step 1: Laser Collimation<a class="headerlink" href="#step-1-laser-collimation" title="Permalink to this heading"></a></h2>
+<h3>Step 1: Laser Collimation<a class="headerlink" href="#step-1-laser-collimation" title="Permalink to this heading"></a></h3>
 <p>When first assembling the system, ensuring proper output collimation from the fiber laser source is critical. There are multiple checks that one can take for this step, but we utilize a combination of a <a class="reference external" href="https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=2970">shear-plate interferometer</a> and two pinhole apertures placed at opposite ends along the length of the baseplate. Shear-plate interferometers are designed to split and interfere an input beam of coherent light, such that when the beam is collimated there are interference fringes aligned vertically with a reference line. The fiber laser collimator we used for this system is the <a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=CFC11A-A">Thorlabs CFC11A-A</a>, which features an adjustable barrel which controls the position of collimation optics within the element.</p>
 <p>The basic assembly process involves first inserting and fixing the CFC11A-A into a Thorlabs AD15S2 adapter, which allows it to then be mounted into a 2.5” Polaris K1XY mount. This assembly is then mounted onto the respective Polaris post at the start of the baseplate. The fiber laser source is then able to be directly mounted into the CFC11A-A, making sure that the protrusion on the fiber wire aligns with the open section of the CFC11A-A port. The basic process of ensuring collimation then involves turning on the laser source, and placing the shear-plate interferometer such that the input port aligns with the output of the laser unit. Then, by slowly adjusting the barrel of the CFC11A-A and observing the interference fringe orientations along the top display of the interferometer, one is able to adjust the beam until it is properly collimated.</p>
-<figure class="align-center" id="id13">
+<figure class="align-center" id="id20">
 <img alt="Shear Plate interferometer and collimator lens" src="../_images/LaserAlignment1.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> Shear Plate interferometer and collimator lens</span><a class="headerlink" href="#id13" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> Shear Plate interferometer and collimator lens</span><a class="headerlink" href="#id20" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-<hr class="docutils" />
 <section id="step-2-beam-walking-1">
-<h2>Step 2: Beam Walking 1<a class="headerlink" href="#step-2-beam-walking-1" title="Permalink to this heading"></a></h2>
+<h3>Step 2: Beam Walking 1<a class="headerlink" href="#step-2-beam-walking-1" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Ensure that the beam is traveling parallel to the baseplate surface and through the center of all
 mounted elements up to the RFO location (part 1).</strong></p>
 <p>With the beam properly collimated, we can begin the series of steps to walk the beam such that it is both centered on
@@ -374,16 +518,15 @@ corresponding to the remote focus objective (RFO) location. Then place 1XY mount
 . Then screw SM1-threaded adjustable irises (<a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=SM1D12">SM1D12</a>) into those 1XY Mounts.
 Then place a 1” mirror in a Polaris B1F mount and mount it on a 3” optical post in the 45 degree oriented mounting position on the board as shown in the image below.
 With the irises and mirror in place, this step becomes and iterative process of adjusting the XY and Tip/Tilt of the laser K1XY mount until the beam passes through the center of all irises and roughly onto the center of the mirror. As a general direction, starting with the irises opened more and then steadily closing them further as you refine the tip/tilt and XY of the K1XY is recommended. If adjusting the tip/tilt of the K1XY becomes a bit overwhelming, it might be helpful to screw all of the tip/tilt knobs on the mount fully in, such that the starting point that you’re working from should be roughly flat (perpendicular to the surface of the baseplate).</p>
-<figure class="align-center" id="id14">
+<figure class="align-center" id="id21">
 <img alt="Beam Walking 1" src="../_images/PCBaseplateV2LaserAlignment1.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 2:</strong> Beam Walking 1</span><a class="headerlink" href="#id14" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 2:</strong> Beam Walking 1</span><a class="headerlink" href="#id21" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-<hr class="docutils" />
 <section id="step-3-beam-walking-2">
-<h2>Step 3: Beam Walking 2<a class="headerlink" href="#step-3-beam-walking-2" title="Permalink to this heading"></a></h2>
+<h3>Step 3: Beam Walking 2<a class="headerlink" href="#step-3-beam-walking-2" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Ensure that the beam is centered on the galvo and K1S4 mirror, and that it travels parallel to the
 baseplate surface and through the center of all mounted elements up to the RFO location (part 2).</strong></p>
 <p>Next, assemble and add in the resonant galvo and the K1S4 mirror directly underneath it. Then replace the post of the
@@ -394,41 +537,38 @@ the voicecoil (Link assembling voicecoil section) onto the adapter, making sure 
 towards the beam path.
 The iteration flow here will be to adjust the tilt of the resonant galvo until the beam is centered on the K1S4 mirror underneath it, and then adjust the tip/tilt of the K1S4 mirror until the beam is centered on the B1F mirror and the two irises after.
 Then adjust the tip/tilt on the PY004 of the voicecoil until the back-reflected beam spot passes through the irises on it’s return path.</p>
-<figure class="align-center" id="id15">
+<figure class="align-center" id="id22">
 <img alt="Beam Walking 2" src="../_images/PCBaseplateV2LaserAlignment2.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 3:</strong> Beam Walking 2</span><a class="headerlink" href="#id15" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 3:</strong> Beam Walking 2</span><a class="headerlink" href="#id22" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-<hr class="docutils" />
 <section id="step-4-beam-walking-3">
-<h2>Step 4: Beam Walking 3<a class="headerlink" href="#step-4-beam-walking-3" title="Permalink to this heading"></a></h2>
+<h3>Step 4: Beam Walking 3<a class="headerlink" href="#step-4-beam-walking-3" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Place the beamsplitter in the system, ensure it’s oriented correctly.</strong></p>
 <p>Assemble the beamsplitter, it’s mount, and the 1.75” Polaris post it rests on, and mount it on it’s corresponding hole (show the orientation of the beamsplitter). Ensure that the beamsplitter is oriented such that the beam is passing through both sides (you can use pinholes to irises for this step, they should screw into the SM1 threading on the beamsplitter).</p>
-<figure class="align-center" id="id16">
+<figure class="align-center" id="id23">
 <img alt="Beam Walking 3" src="../_images/PCBaseplateV2LaserAlignment3.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 4:</strong> Beam Walking 3</span><a class="headerlink" href="#id16" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 4:</strong> Beam Walking 3</span><a class="headerlink" href="#id23" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-<hr class="docutils" />
 <section id="step-5-optional-beamsplitter-alignment">
-<h2>Step 5: Optional Beamsplitter Alignment<a class="headerlink" href="#step-5-optional-beamsplitter-alignment" title="Permalink to this heading"></a></h2>
+<h3>Step 5: Optional Beamsplitter Alignment<a class="headerlink" href="#step-5-optional-beamsplitter-alignment" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Use the alternative laser launch hole to ensure that test beam goes straight through the
 beamsplitter return path to the center of the ILO.</strong></p>
 <p>Mount three Polaris 1XY units on 1.5” posts along the return path at the location of L6, L7, and the illumination objective (ILO), respectively. Then mount a 1.5” post and Polaris 1XY unit on the hole denoted for the alternative laser launch. Screw the laser (Thorlabs CPS532) into the Polaris 1XY mount. With each of the 1XY Mounts roughly centered in both X and Y, ensure that the laser beam passes through the center of all elements using a frosted pinhole or iris installed in them.</p>
-<figure class="align-center" id="id17">
+<figure class="align-center" id="id24">
 <img alt="Beamsplitter Alignment" src="../_images/PCBaseplateV2BSAlignment1.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 5:</strong> Beamsplitter Alignment</span><a class="headerlink" href="#id17" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 5:</strong> Beamsplitter Alignment</span><a class="headerlink" href="#id24" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-<hr class="docutils" />
 <section id="step-6-beam-walking-4">
-<h2>Step 6: Beam Walking 4<a class="headerlink" href="#step-6-beam-walking-4" title="Permalink to this heading"></a></h2>
+<h3>Step 6: Beam Walking 4<a class="headerlink" href="#step-6-beam-walking-4" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Install polarizers and ensure that the beam is traveling properly on its return path through the
 beamsplitter.</strong></p>
 <p>Start by threading an LRM1 rotation mount into both the side of the beamsplitter facing the RFO and the side opposite
@@ -437,28 +577,26 @@ facing L5. Then thread the half-waveplate into the L5 side and the quarter-wavep
 quarter-waveplate to make the beam as bright as possible on the return path in the direction of the ILO.</p>
 <p>Ensure that the return beam properly travels back through the beamsplitter and down the path to the ILO. Adjust tip/tilt of voicecoil mirror to manipulate the direction of the beam.</p>
 <p>This establishes a ground-truth beam position for the next step where we add in the RFO.</p>
-<figure class="align-center" id="id18">
+<figure class="align-center" id="id25">
 <img alt="Beam Walking 4" src="../_images/PCBaseplateV2LaserAlignment4.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 6:</strong> Beam Walking 4</span><a class="headerlink" href="#id18" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 6:</strong> Beam Walking 4</span><a class="headerlink" href="#id25" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-<hr class="docutils" />
 <section id="step-7-beam-walking-5">
-<h2>Step 7: Beam Walking 5<a class="headerlink" href="#step-7-beam-walking-5" title="Permalink to this heading"></a></h2>
+<h3>Step 7: Beam Walking 5<a class="headerlink" href="#step-7-beam-walking-5" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Add in RFO, do initial alignment.</strong></p>
 <p>Added RFO back in, then adjusted the XY on the mount for the RFO until the back reflections from the RFO were aligned (same method, put a pinhole card behind RFO and center the pinhole on the beam)</p>
-<figure class="align-center" id="id19">
+<figure class="align-center" id="id26">
 <img alt="Beam Walking 5" src="../_images/PCBaseplateV2LaserAlignment5.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 7:</strong> Beam Walking 5</span><a class="headerlink" href="#id19" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 7:</strong> Beam Walking 5</span><a class="headerlink" href="#id26" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-<hr class="docutils" />
 <section id="step-8-rfo-offset">
-<h2>Step 8: RFO Offset<a class="headerlink" href="#step-8-rfo-offset" title="Permalink to this heading"></a></h2>
+<h3>Step 8: RFO Offset<a class="headerlink" href="#step-8-rfo-offset" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Install L6 and L7, Adjust the RFO offset in navigate such that it’s collimated between the beamsplitter
 and L6 and L7 and the ILO.</strong></p>
 <p>Start by installing SM1A2 threading adapters onto the Polaris 1XY mounts corresponding to L6 and L7. Then thread both
@@ -468,16 +606,15 @@ L6 and L7 into their respective mounts, such that the Thorlabs label on them is 
 offset in navigate (leaving the amplitude at 0 for now) until the light between the beamsplitter and L6 and L7 and
 the ILO is collimated. The available range should be between 1 to 10, with the optimal value varying for each system,
 for our initial system this value was around 5.</p>
-<figure class="align-center" id="id20">
+<figure class="align-center" id="id27">
 <img alt="waveform parameters panel in navigate" src="../_images/waveformparameters.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 8:</strong> The Waveform Parameters panel in navigate.</span><a class="headerlink" href="#id20" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 8:</strong> The Waveform Parameters panel in navigate.</span><a class="headerlink" href="#id27" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-<hr class="docutils" />
 <section id="step-9-add-in-lenses">
-<h2>Step 9: Add In Lenses<a class="headerlink" href="#step-9-add-in-lenses" title="Permalink to this heading"></a></h2>
+<h3>Step 9: Add In Lenses<a class="headerlink" href="#step-9-add-in-lenses" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Add in the rest of the non-Powell lenses into the illumination path.</strong></p>
 <p>Install L2, L3, L4, and L5 into their respective B1S holders, and then screw those holders into their correct</p>
 <p>If beam is no longer centered on the RFO, Remove the RFO from the path, and focused on adjusting the tip/tilt of the
@@ -487,21 +624,19 @@ path as well as the ILO objective mount (using irises or frosted pinholes)</p>
 <p>Then add in TL1 and TL#2, adjust the rotation and XY of TL2 to make the beam on the ILO centered again, use shear plate and change VC offset to get beam re-collimated
 Using the re-collimated offset position as the baseline, adjusted the detection path (ensuring it’s as perpendicular as can be to the illumination path), and primarily adjusted TL1 and TL2 XY’s to center the beam as much as possible on the back of the ILO</p>
 </section>
-<hr class="docutils" />
 <section id="step-10-install-detection-path">
-<h2>Step 10: Install Detection Path<a class="headerlink" href="#step-10-install-detection-path" title="Permalink to this heading"></a></h2>
+<h3>Step 10: Install Detection Path<a class="headerlink" href="#step-10-install-detection-path" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Assemble/incorporate detection path into the setup, ensure it’s centered on the beam by using the
 chamber filled with water and fluorescein.</strong></p>
 </section>
-<hr class="docutils" />
 <section id="step-11-optimize-system-light-sheet-performance">
-<h2>Step 11: Optimize System Light-Sheet Performance<a class="headerlink" href="#step-11-optimize-system-light-sheet-performance" title="Permalink to this heading"></a></h2>
+<h3>Step 11: Optimize System Light-Sheet Performance<a class="headerlink" href="#step-11-optimize-system-light-sheet-performance" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Optimize navigate parameters and XY offsets of RFO, L6, L7, and ILO to verify the system is working.</strong></p>
 </section>
-<hr class="docutils" />
 <section id="step-12-add-in-powell-lens">
-<h2>Step 12: Add in Powell Lens<a class="headerlink" href="#step-12-add-in-powell-lens" title="Permalink to this heading"></a></h2>
+<h3>Step 12: Add in Powell Lens<a class="headerlink" href="#step-12-add-in-powell-lens" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Incorporate Powell Lens, do a final fine-tuning alignment of system elements.</strong></p>
+</section>
 </section>
 <hr class="docutils" />
 <section id="various-troubleshooting">
@@ -514,10 +649,10 @@ in our system. The lens itself is particularly sensitive to displacements in x a
 visible in the profile of the beam on the front surfaces of the lenses that follow. Using the beam profile on the
 front of L2 as an example, when the Powell lens has a vertical (y) displacement, the beam profile starts to take on
 more of the conical shape instead of the more rectangular or pill-shaped profile from our simulations.</p>
-<figure class="align-center" id="id21">
+<figure class="align-center" id="id28">
 <img alt="Potential profiles of misaligned powell lens beams" src="../_images/PowellLensPositioningProfile.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> Potential misaligned Powell lens beam profiles on the front surface of L2</span><a class="headerlink" href="#id21" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> Potential misaligned Powell lens beam profiles on the front surface of L2</span><a class="headerlink" href="#id28" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>In addition, due to tolerances with the Powell lenses we use in simulation compared to the physical ones purchased,
@@ -526,10 +661,10 @@ our particular case, we found that having an additional 2.6 mm spacing between t
 of the system follow closely with our simulations, but this value might be different for different Powell lenses. We
 found this optimized spacing value by observing the beam profile on the front of L2 and L4, comparing it to
 simulated profiles in the same locations, and iteratively adjusting the LNR25M dial until the profiles matched closely.</p>
-<figure class="align-center" id="id22">
+<figure class="align-center" id="id29">
 <img alt="Example profiles at L2 and L4 front surfaces" src="../_images/L1L3PowellProfiles.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 2:</strong> Example profiles at L2 and L4 front surfaces used to optimize z-displacement of L1</span><a class="headerlink" href="#id22" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 2:</strong> Example profiles at L2 and L4 front surfaces used to optimize z-displacement of L1</span><a class="headerlink" href="#id29" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>

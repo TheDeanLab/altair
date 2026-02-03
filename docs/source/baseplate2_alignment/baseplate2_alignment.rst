@@ -264,20 +264,151 @@ adapter.
 
 -------------------------
 
-Alignment Overview
+Detection Path Assembly
 ______________________
+
+Our detection path consists of our Nikon N25X-APO-MP detection objective, Hamamatsu ORCA Flash4.0 V3 Camera, ASI
+C60-TUBE-400 tube lens, and ASI FW-0002-8 8-position filter wheel unit. These components are mounted together and
+affixed onto an ASI LS-100-AMCCH translation stage for focus control. We currently use a prototype detection path
+baseplate (available here) as a mounting stage for these elements and the sample chamber; however, this additional
+baseplate is still undergoing design iterations and is not critical for a functional detection path.
+
+We utilize two additional custom adapter elements in the construction of the detection path: a shell casing around
+the tube lens that mounts to the translation stage and an adapter for the translation stage to mount it to an optical
+breadboard table. The height thicknesses of these elements were chosen such that the height of the detection
+objective center should match that of the illumination objective (which with the 1.5" tall posts our illumination
+baseplate rests on is 4.75" above the optical table surface). These elements can be custom machined if desired;
+however, we have found 3D printed PLA variants to perform their functions effectively as well.
+
+The assembly of the detection path begins with the translation stage and it's associated breadboard adapter
+(available here in two variants, based on whether or not one is using the 0.5" thick detection path baseplate):
+
+    1. Turn the translation stage upside-down
+    2. Place the breadboard adapter upside-down on top of the inverted translation stage (such that the raised
+       platform of the adapter is touching the bottom side of the translation stage)
+    3. Align the recesses on the bottom of the adapter with the holes on the bottom of the translation stage
+    4. Fix the adapter onto the translation stage by screwing M6 screws into the recesses aligned with the
+       translation stage holes.
+
+.. figure:: Images/TSBBAdapter.png
+    :align: center
+    :alt: Schematic of the translation stage breadboard adapter
+
+    **Figure 7:** Schematic of the translation stage breadboard adapter
+
+The next step is flipping the translation stage assembly right side up again, and then fixing the first of two halves
+of the tube lens adapter onto the top of the translation stage:
+
+    1. Place the tube lens adapter half onto the top of the translation stage such that the block with two sets of
+       five recessed holes is touching the top of the translation stage.
+    2. Align the Recess holes on the adapter with the holes on the top of the translation stage.
+    3. Fix the adapter onto the translation stage by screwing M6 screws into the aligned recess holes
+
+.. figure:: Images/TubeAdapter.png
+    :align: center
+    :alt: Schematic of the tube lens to translation stage adapter
+
+    **Figure 8:** Schematic of the tube lens to translation stage adapter
+
+Next, we'll focus on assembling the tube lens and filter wheel:
+
+    1. Take the MIM to Filter wheel adapter and fix it onto the front port of the filter wheel using the associated
+       screw ports
+    2. With the adapter fixed, now screw the 400 mm tube lens into the adapter.
+
+.. figure:: Images/FW.png
+    :align: center
+    :alt: Schematic of the filter wheel port for the tube lens
+
+    **Figure 9:** Schematic of the filter wheel port for the tube lens
+
+In order to fix our detection objective onto the tube lens, we must first prepare an extension and threading adapter:
+    1. Take the C60-EXT-15 15 mm Tube extension piece and place the RAO-0051 M32x0.75 threaded sleeve inside
+    2. Using the screws on the top of the extension piece, fix the threaded sleeve in place
+    3. Insert/screw the extension piece into the front of the tube lens.
+
+.. figure:: Images/Threadadapter.png
+    :align: center
+    :alt: Showcase of the screws used to secure the thread adapter for the tube lens
+
+    **Figure 10:** Showcase of the screws used to secure the thread adapter for the tube lens
+
+The tube lens assembly is now ready to be fixed onto the translation stage assembly:
+    1. Place the tube lens assembly such that the tube lens lies within the curved region of the tube lens adapter
+    2. While there isn't an exact science to the relative placement of the tube within the adapter, try to position
+       it such that more of the tube is extended out on the side where the objective will be mounted (our setup is shown
+       below for reference).
+    3. Place the second half of the tube lens adapter such that the curved side fits onto the lube lens and position
+       it such that the holes of both halves of the adapter align with each other.
+    4. Using your choice of either M6 or 1/4"-20 screws and associated washers/nuts, place the screws with a washer
+       placed on them first into the aligned holes of the adapter. We used 4 of the adapter holes on each side, but
+       more can be used for extra security if desired.
+    5. Screw a washer onto each of the screws until they're secured against the bottom lip of the adapter.
+
+.. figure:: Images/tubelens2.png
+    :align: center
+    :alt: Example of tube lens mounted in the corresponding adapter
+
+    **Figure 11:** Example of tube lens mounted in the corresponding adapter
+
+The detection path assembly can now be fixed into place onto either the detection path baseplate or the optical
+table, keep in mind this process is meant to essentially place the unit in the ballpark of where it should be, finer
+adjustments will be made afterwards:
+
+    1. Using the mounting holes on the translation stage assembly, place the assembly such that the edge of the
+       translation stage adapter facing the illumination path is roughly 9-10" away from the location of the
+       illumination objective.
+    2. Using the adjacent edge of the translation stage adapter (the one that should be perpendicular to the
+       orientation of the illumination path), try to align the side of the adapter with the mounting hole of the
+       illumination objective.
+    3. Screw the translation stage adapter into either the optical table to the detection path baseplate (we
+       recommend using `Thorlabs 1" Spacers <https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=851>`_ in place
+       of washers here).
+
+
+.. figure:: Images/spacers.png
+    :align: center
+    :alt: Example of our setup for securing the translation stage to breadboard adapter onto our detection path
+          baseplate
+    :width: 300px
+
+    **Figure 12:** Setup for securing the translation stage to breadboard adapter onto our detection path baseplate
+
+With the assembly fixed in place, the camera can then be screwed into the filter wheel:
+    1. Align the front thread of the camera with the back port of the filter wheel
+    2. Screw the camera into the filter wheel until there is resistance
+    3. Slowly adjust the camera tilt until the top surface is leveled (we use a bubble leveling tool for this, shown
+       below)
+
+.. figure:: Images/Camerarotation.png
+    :align: center
+    :alt: Mounting of the camera
+
+    **Figure 13:** Mounting of the camera
+
+The final steps to to assemble the detection path are to screw the detection objective into the front of the tube
+lens and attach all associated wires to the camera, filter wheel, and translation stage. If there's not enough
+clearance between the front of the tube lens and the sample chamber to screw in the detection objective, the
+translation stage might need to be wired up first and translated backwards manually using either navigate or the
+Tiger Control Panel software.
+
+-------------------------
+
+Alignment
+______________________
+
+Alignment Overview
+^^^^^^^^^^^^^^^^^^^^
 
 For the second iteration of our Altair baseplate system, the construction and alignment process is more involved than
 our first iteration, but should still be a straightforward step-by-step process. To make things a little bit easier,
 the system is first aligned and optimized without the presence of some of the lenses (L1, L2, L3, L4, L5 for the Powell
 lens configurations), and then the rest of the lenses are added in and the system is recalibrated.
 
--------------------------
 
 
 Step 1: Laser Collimation
-_________________________
-
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 When first assembling the system, ensuring proper output collimation from the fiber laser source is critical. There are multiple checks that one can take for this step, but we utilize a combination of a `shear-plate interferometer <https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=2970>`_ and two pinhole apertures placed at opposite ends along the length of the baseplate. Shear-plate interferometers are designed to split and interfere an input beam of coherent light, such that when the beam is collimated there are interference fringes aligned vertically with a reference line. The fiber laser collimator we used for this system is the `Thorlabs CFC11A-A <https://www.thorlabs.com/thorproduct.cfm?partnumber=CFC11A-A>`_, which features an adjustable barrel which controls the position of collimation optics within the element.
 
 The basic assembly process involves first inserting and fixing the CFC11A-A into a Thorlabs AD15S2 adapter, which allows it to then be mounted into a 2.5" Polaris K1XY mount. This assembly is then mounted onto the respective Polaris post at the start of the baseplate. The fiber laser source is then able to be directly mounted into the CFC11A-A, making sure that the protrusion on the fiber wire aligns with the open section of the CFC11A-A port. The basic process of ensuring collimation then involves turning on the laser source, and placing the shear-plate interferometer such that the input port aligns with the output of the laser unit. Then, by slowly adjusting the barrel of the CFC11A-A and observing the interference fringe orientations along the top display of the interferometer, one is able to adjust the beam until it is properly collimated.
@@ -289,11 +420,10 @@ The basic assembly process involves first inserting and fixing the CFC11A-A into
     **Figure 1:** Shear Plate interferometer and collimator lens
 
 
-----------------------
 
 
 Step 2: Beam Walking 1
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Ensure that the beam is traveling parallel to the baseplate surface and through the center of all
 mounted elements up to the RFO location (part 1).**
@@ -314,11 +444,11 @@ With the irises and mirror in place, this step becomes and iterative process of 
     **Figure 2:** Beam Walking 1
 
 
-----------------------
+
 
 
 Step 3: Beam Walking 2
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Ensure that the beam is centered on the galvo and K1S4 mirror, and that it travels parallel to the
 baseplate surface and through the center of all mounted elements up to the RFO location (part 2).**
@@ -339,11 +469,11 @@ Then adjust the tip/tilt on the PY004 of the voicecoil until the back-reflected 
     **Figure 3:** Beam Walking 2
 
 
-----------------------
+
 
 
 Step 4: Beam Walking 3
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Place the beamsplitter in the system, ensure it’s oriented correctly.**
 
@@ -356,11 +486,10 @@ Assemble the beamsplitter, it’s mount, and the 1.75” Polaris post it rests o
     **Figure 4:** Beam Walking 3
 
 
-------------------------------
 
 
 Step 5: Optional Beamsplitter Alignment
-______________________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Use the alternative laser launch hole to ensure that test beam goes straight through the
 beamsplitter return path to the center of the ILO.**
@@ -374,11 +503,11 @@ Mount three Polaris 1XY units on 1.5” posts along the return path at the locat
     **Figure 5:** Beamsplitter Alignment
 
 
-----------------------
+
 
 
 Step 6: Beam Walking 4
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Install polarizers and ensure that the beam is traveling properly on its return path through the
 beamsplitter.**
@@ -400,11 +529,10 @@ This establishes a ground-truth beam position for the next step where we add in 
     **Figure 6:** Beam Walking 4
 
 
-----------------------
 
 
 Step 7: Beam Walking 5
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Add in RFO, do initial alignment.**
 
@@ -416,11 +544,11 @@ Added RFO back in, then adjusted the XY on the mount for the RFO until the back 
 
     **Figure 7:** Beam Walking 5
 
-----------------------
+
 
 
 Step 8: RFO Offset
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Install L6 and L7, Adjust the RFO offset in navigate such that it’s collimated between the beamsplitter
 and L6 and L7 and the ILO.**
@@ -440,10 +568,10 @@ for our initial system this value was around 5.
 
     **Figure 8:** The Waveform Parameters panel in navigate.
 
-----------------------
+
 
 Step 9: Add In Lenses
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Add in the rest of the non-Powell lenses into the illumination path.**
 
@@ -459,25 +587,25 @@ Then add in TL1 and TL#2, adjust the rotation and XY of TL2 to make the beam on 
 Using the re-collimated offset position as the baseline, adjusted the detection path (ensuring it’s as perpendicular as can be to the illumination path), and primarily adjusted TL1 and TL2 XY’s to center the beam as much as possible on the back of the ILO
 
 
-----------------------
+
 
 Step 10: Install Detection Path
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Assemble/incorporate detection path into the setup, ensure it’s centered on the beam by using the
 chamber filled with water and fluorescein.**
 
-----------------------
+
 
 Step 11: Optimize System Light-Sheet Performance
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Optimize navigate parameters and XY offsets of RFO, L6, L7, and ILO to verify the system is working.**
 
-----------------------
+
 
 Step 12: Add in Powell Lens
-______________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Section Goal: Incorporate Powell Lens, do a final fine-tuning alignment of system elements.**
 

@@ -4,10 +4,8 @@
 ALSM/CTASLM Baseplate Assembly & Alignment
 ##########################################
 
---------------------------------
-
-Note on Available Configurations
-________________________________
+Available Configurations
+________________________
 
 The current iteration of the baseplate provides 5 different possible imaging configurations: 2 using a cylindrical
 lens to form the light sheet (ASLM, CT-ASLM), and 3 using a Powell lens to form the light sheet (SPIM, ASLM, CT-ASLM)

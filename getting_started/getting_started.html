@@ -55,7 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../design_principles/required_software.html">Software</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../hardware/index.html">Room and Hardware Considerations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#navigate-setup">Navigate Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-setup">Hardware Setup</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
@@ -101,10 +101,39 @@
              
   <section id="getting-started">
 <span id="gettingstarted-home"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h1>
-<section id="navigate-setup">
-<h2>Navigate Setup<a class="headerlink" href="#navigate-setup" title="Permalink to this heading"></a></h2>
-<p>Test Text</p>
-</section>
+<p>In order to be able to control stage positions (which are used for focus and sample positioning), toggle lasers, trigger cameras, and so on,
+you first need to set up a connection to your hardware. This guide will walk you through the steps necessary to get your system up and running.</p>
+<section id="hardware-setup">
+<h2>Hardware Setup<a class="headerlink" href="#hardware-setup" title="Permalink to this heading"></a></h2>
+<p>Unlike other microscopy systems, Altair simplifies control by having only one controller - one apparatus to trigger and drive all necessary devices.
+This is Applied Scientific Instrumentation’s Tiger Controller, a modular controller with customizable control cards.
+Our solution calls for a tiger controller with the following cards:
+-       TGCOM - allows Joystick control and serial communication from computer
+-       3 Stage control cards - (X/Y, Z/F, M/N)
+-       2 DAC4 cards - Analog signal generators
+-       TGPLC - Programmable Logic Controller which provides for custom timing
+-       FW-1000 - Filter Wheel Control
+The order of these cards within the controller does not matter.
+The software to run the controller is <a class="reference external" href="https://thedeanlab.github.io/navigate/index.html">navigate</a>.
+Navigate supports many microscope configurations, where each configuration is defined by a configuration file.
+The provided configuration file will delineate the following configuration:</p>
+<p>The stage control card specified for PLC outputs 3 and 4 is the stage that is used for Z-stacks.
+This allows stage feedback to dictate when the sample is ready for an image.
+In our configuration, the X hardware stage corresponds to the Z stage within the software.
+This can be changed to match your stage setup by editing the following part of the configuration file:</p>
+<details class="summary-configuration-file">
+<summary>Configuration File</summary><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">microscopes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">microscope_name</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">stage</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">hardware</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ASI</span>
+<span class="w">            </span><span class="nt">serial_number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">001</span>
+<span class="w">            </span><span class="nt">axes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">x</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">y</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">z</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">f</span><span class="p p-Indicator">]</span><span class="w">          </span><span class="c1"># software stages</span>
+<span class="w">            </span><span class="nt">axes_mapping</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">X</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Y</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Z</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">F</span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># hardware stages</span>
+</pre></div>
+</div>
+</details></section>
 </section>
 
 

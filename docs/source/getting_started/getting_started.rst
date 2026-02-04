@@ -13,19 +13,25 @@ ______________________
 Unlike other microscopy systems, Altair simplifies control by having only one controller - one apparatus to trigger and drive all necessary devices. 
 This is Applied Scientific Instrumentation's Tiger Controller, a modular controller with customizable control cards.
 Our solution calls for a tiger controller with the following cards:
+
 - 	TGCOM - allows Joystick control and serial communication from computer
+
 -	3 Stage control cards - (X/Y, Z/F, M/N)
+
 -	2 DAC4 cards - Analog signal generators
+
 -	TGPLC - Programmable Logic Controller which provides for custom timing
+
 -	FW-1000 - Filter Wheel Control
+
 The order of these cards within the controller does not matter.
 The software to run the controller is `navigate <https://thedeanlab.github.io/navigate/index.html>`_.
 Navigate supports many microscope configurations, where each configuration is defined by a configuration file.
 The provided configuration file will delineate the following configuration:
 
-=====  ============================
+=========  ============================
 **Axis**   **Device**
-=====  ============================
+=========  ============================
 **A**      Remote Focus Voice Coil
 **B**      Galvanometer
 **H**      405 nm Laser (Analog)
@@ -40,7 +46,7 @@ The provided configuration file will delineate the following configuration:
 **6**      488 nm Laser (Digital)
 **7**      561 nm Laser (Digital)
 **8**      638 nm Laser (Digital)
-=====  ============================
+=========  ============================
 
 
 The stage control card specified for PLC outputs 3 and 4 is the stage that is used for Z-stacks. 

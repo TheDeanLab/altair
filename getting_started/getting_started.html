@@ -101,19 +101,19 @@
              
   <section id="getting-started">
 <span id="gettingstarted-home"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h1>
-<p>In order to be able to control stage positions (which are used for focus and sample positioning), toggle lasers, trigger cameras, and so on,
+<p>In order to be able to control stage positions, toggle lasers, trigger cameras, and so on,
 you first need to set up a connection to your hardware. This guide will walk you through the steps necessary to get your system up and running.</p>
 <section id="hardware-setup">
 <h2>Hardware Setup<a class="headerlink" href="#hardware-setup" title="Permalink to this heading"></a></h2>
 <p>Unlike other microscopy systems, Altair simplifies control by having only one controller - one apparatus to trigger and drive all necessary devices.
-This is Applied Scientific Instrumentation’s Tiger Controller, a modular controller with customizable control cards.
-Our solution calls for a tiger controller with the following cards:</p>
+This is Applied Scientific Instrumentation’s <a class="reference external" href="https://www.asiimaging.com/controllers/tiger-controller/">Tiger Controller</a>,
+a modular controller with customizable control cards. Our solution calls for a tiger controller with the following cards:</p>
 <ul class="simple">
-<li><p>TGCOM - allows Joystick control and serial communication from computer</p></li>
+<li><p><a class="reference external" href="https://asiimaging.com/docs/tg1000_info#description">TGCOM</a> - allows Joystick control and serial communication from computer</p></li>
 <li><p>3 Stage control cards - (X/Y, Z/F, M/N)</p></li>
-<li><p>2 DAC4 cards - Analog signal generators</p></li>
-<li><p>TGPLC - Programmable Logic Controller which provides for custom timing</p></li>
-<li><p>FW-1000 - Filter Wheel Control</p></li>
+<li><p>2 <a class="reference external" href="https://asiimaging.com/docs/tggalvo">DAC4</a> cards - Analog signal generators</p></li>
+<li><p><a class="reference external" href="https://asiimaging.com/docs/tiger_programmable_logic_card">TGPLC</a> - Programmable Logic Controller which provides for custom timing</p></li>
+<li><p><a class="reference external" href="https://asiimaging.com/docs/fw_1000">FW-1000</a>- Filter Wheel Control</p></li>
 </ul>
 <p>The order of these cards within the controller does not matter.
 The software to run the controller is <a class="reference external" href="https://thedeanlab.github.io/navigate/index.html">navigate</a>.
@@ -123,54 +123,54 @@ The provided configuration file will delineate the following configuration:</p>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Axis</strong></p></th>
 <th class="head"><p><strong>Device</strong></p></th>
+<th class="head"><p><strong>Axis</strong></p></th>
+<th class="head"><p><strong>Device</strong></p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>A</strong></p></td>
 <td><p>Remote Focus Voice Coil</p></td>
+<td><p><strong>1</strong></p></td>
+<td><p>Camera Trigger</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>B</strong></p></td>
 <td><p>Galvanometer</p></td>
+<td><p><strong>2</strong></p></td>
+<td><p>Laser Shutter</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>C</strong></p></td>
+<td><p>Remote Focus Reference</p></td>
+<td><p><strong>3</strong></p></td>
+<td><p>Stage In*</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>D</strong></p></td>
+<td><p>Not Used</p></td>
+<td><p><strong>4</strong></p></td>
+<td><p>Stage Out*</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>H</strong></p></td>
 <td><p>405 nm Laser (Analog)</p></td>
+<td><p><strong>5</strong></p></td>
+<td><p>405 nm Laser (Digital)</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>I</strong></p></td>
 <td><p>488 nm Laser (Analog)</p></td>
+<td><p><strong>6</strong></p></td>
+<td><p>488 nm Laser (Digital)</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>J</strong></p></td>
 <td><p>561 nm Laser (Analog)</p></td>
+<td><p><strong>7</strong></p></td>
+<td><p>561 nm Laser (Digital)</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>K</strong></p></td>
 <td><p>638 nm Laser (Analog)</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>1</strong></p></td>
-<td><p>Camera Trigger</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>2</strong></p></td>
-<td><p>Laser Shutter</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>3</strong></p></td>
-<td><p>Stage In</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>4</strong></p></td>
-<td><p>Stage Out</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>5</strong></p></td>
-<td><p>405 nm Laser (Digital)</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>6</strong></p></td>
-<td><p>488 nm Laser (Digital)</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>7</strong></p></td>
-<td><p>561 nm Laser (Digital)</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>8</strong></p></td>
+<td><p><strong>8</strong></p></td>
 <td><p>638 nm Laser (Digital)</p></td>
 </tr>
 </tbody>
 </table>
-<p>The stage control card specified for PLC outputs 3 and 4 is the stage that is used for Z-stacks.
+<p><a href="#id1"><span class="problematic" id="id2">*</span></a>The stage control card specified for PLC outputs 3 and 4 is the stage that is used for Z-stacks.
 This allows stage feedback to dictate when the sample is ready for an image.
 In our configuration, the X hardware stage corresponds to the Z stage within the software.
 This can be changed to match your stage setup by editing the following part of the configuration file:</p>

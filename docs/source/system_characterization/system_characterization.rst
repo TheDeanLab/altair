@@ -7,7 +7,7 @@ System Characterization
 Beam Characterization and PSF Analysis
 ________________________________________
 
-To characterize our constructed system, we first image the generated light-sheet using the sample chamber transmission configuration shown below, where the illumination objective is placed directly in front of the detection objective. The image of our light sheet is shown in (a) below, where the cross-sectional profile of the light-sheet is shown in (b) and reveals a z-FWHM of ~0.415 um.
+To characterize our constructed system, we first image the generated light sheet using the sample chamber transmission configuration shown below, where the illumination objective is placed directly in front of the detection objective. The image of our light sheet is shown in (a) below, where the cross-sectional profile of the light sheet is shown in (b) and reveals a z-FWHM of ~0.415 µm.
 
 .. figure:: Images/SC_Beam_Characterization_Scalebarfixed.png
     :align: center
@@ -19,7 +19,7 @@ To characterize the resolution of our system, we utilize 100 nm YG Fluorescent B
 
 .. note:: **Affixation protocol for 100 nm beads**
 
-    1. Assemble petri dish, coverslip, and 5mM concentration (3-Aminopropyl)triethoxysilane (APTS)
+    1. Assemble a petri dish, coverslip, and 5 mM concentration of (3-Aminopropyl)triethoxysilane (APTS)
     2. Put 5 mm coverslip in petri dish
     3. Apply ~100 microliters of (3-Aminopropyl)triethoxysilane (APTS) on top of coverslip
     4. Allow APTS to incubate for ~10-30 minutes
@@ -29,7 +29,7 @@ To characterize the resolution of our system, we utilize 100 nm YG Fluorescent B
        beads to adhere to the coverslip
     7. Wash lightly afterwards with DI water
 
-After affixation, the beads are then imaged, the results of which are shown below. The PSF of an isolated bead is shown below in (a-c), where each image is a different orthogonal perspective of the bead's intensity distribution, and provide us insight into the resolution of our system in each orthogonal direction. We then provide Gaussian-fitted distributions of the FWHM of the population of fluorescent beads across a given z-stack in (d), both before and after applying deconvolution procedures. Prior to deconvolution, the average FWHM values across the bead population were 328 in x, 330 nm in y, and 464 nm in z. After deconvolution with PetaKit5D, these values improved to 235.5 nm in x, 233.5 nm in your, and 350.4 in z.
+After affixation, the beads are imaged, and the results are shown below. The PSF of an isolated bead is shown in (a-c), where each image is a different orthogonal perspective of the bead's intensity distribution and provides insight into the resolution of our system in each orthogonal direction. We then provide Gaussian-fitted distributions of the FWHM of the fluorescent bead population across a given z-stack in (d), both before and after applying deconvolution procedures. Prior to deconvolution, the average FWHM values across the bead population were 328 nm in x, 330 nm in y, and 464 nm in z. After deconvolution with PetaKit5D, these values improved to 235.5 nm in x, 233.5 nm in y, and 350.4 nm in z.
 
 .. figure:: Images/SC_PSF_Characterization.png
     :align: center
@@ -59,4 +59,3 @@ nucleus, well-defined perinuclear Golgi structures, well-resolved stress fibers 
     :alt: Analysis of MEF Cells
 
     **Figure 3:** Analysis of MEF Cells
-

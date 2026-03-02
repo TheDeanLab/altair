@@ -22,9 +22,9 @@ floor.
 Table Thickness
 -------------------
 We typically purchase tables with an 18" thickness. In theory, thicker tables better
-dampen vibrations arising from on the table itself, including fans from cameras,
+dampen vibrations arising on the table itself, including fans from cameras,
 voice coils, stages, etc. Practically, in our experience, the table thickness helps
-mitigate vibrations arising from the building itself as well. 
+mitigate vibrations arising from the building itself as well.
 
 ---------------
 
@@ -56,14 +56,15 @@ Vibration Damping
 -------------------
 Many vibration damping systems actually amplify vibrations at low frequencies, which
 are common building-associated vibrations. To mitigate this, we recommend using a
-tuned damping system. TMC provides and UltraDamp series of isolation systems that
+tuned damping system. TMC provides an UltraDamp series of isolation systems that can
+reduce low-frequency vibration amplification.
 
 ---------------
 
 Table Installation
 -------------------
 We recommend following the manufacturer’s instructions for installing the table.
-Importantly the frame, and the table top should be level in order to achieve the best
+Importantly, the frame and the tabletop should be level in order to achieve the best
 performance. Given the weight of the table, it is likely that professional
 installation will be required.
 

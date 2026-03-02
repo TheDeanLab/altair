@@ -8,7 +8,7 @@ altair
 />
 
 <h3 align="center">
-	Cost-Effective, Open-Source, Light-Sheet Microscopy Solutions for Sub-Cellular Imaging.
+	Cost-Effective, Open-Source, Light-Sheet Microscopy Solutions for Subcellular Imaging.
 </h3>
 </h1>
 
@@ -18,7 +18,7 @@ altair
 
 **Altair** aims to democratize high-resolution light-sheet fluorescence microscopy. By combining **modular optomechanics**, **cutting-edge lens simulations**, and **intelligent software**, **Altair** enables the rapid assembly of high-performance light-sheet microscopes in a user-friendly package.
 
-As reported in our eLife publication, Altair-LSFM is a high-resolution, sample-scanning light-sheet microscope that uses an in-silico optimized optical train and a custom-machined baseplate to simplify alignment. In bead-based benchmarking, Altair-LSFM achieved average FWHM values of 328 nm (x), 330 nm (y), and 464 nm (z) before deconvolution, improving to 235.5 nm (x), 233.5 nm (y), and 350.4 nm (z) after deconvolution across a 266 um field of view.
+As reported in our eLife publication, Altair-LSFM is a high-resolution, sample-scanning light-sheet microscope that uses an in-silico optimized optical train and a custom-machined baseplate to simplify alignment. In bead-based benchmarking, Altair-LSFM achieved average FWHM values of 328 nm (x), 330 nm (y), and 464 nm (z) before deconvolution, improving to 235.5 nm (x), 233.5 nm (y), and 350.4 nm (z) after deconvolution across a 266 µm field of view.
 
 ## Publication
 
@@ -36,7 +36,7 @@ Cellular behavior is orchestrated by diverse signaling mechanisms that often hin
 
 The overarching goal is to provide a **modular, cost-effective 3D light-sheet microscope** that:
 - Can be assembled with minimal prior optics expertise.
-- Delivers ~235 nm lateral and ~350 nm axial resolution after deconvolution (~328/330 nm in XY and ~464 nm in Z before deconvolution) across a 266 um field of view.
+- Delivers ~235 nm lateral and ~350 nm axial resolution after deconvolution (~328/330 nm in XY and ~464 nm in Z before deconvolution) across a 266 µm field of view.
 - Seamlessly integrates with our user-friendly, **intelligent imaging software** [navigate](https://github.com/TheDeanLab/navigate).
 - Streamlines data acquisition, drastically reducing barriers to cutting-edge microscopy.
 
@@ -47,15 +47,15 @@ The overarching goal is to provide a **modular, cost-effective 3D light-sheet mi
    - Thorough **tolerance analysis** to maintain alignment and resolution in non-specialist environments.
 
 2. **Rugged Mechanical Design**  
-   - **Computer aided design (CAD) with Autodesk Inventor** for stress testing and mechanical reliability.
+   - **Computer-aided design (CAD) with Autodesk Inventor** for stress testing and mechanical reliability.
    - **Xometry** manufacturing ensures precision component fabrication.
    - **Dowel pins** and **Thorlabs Polaris mounts** allow reproducible alignment of optical elements.
 
 3. **Easy-to-Source Components**  
    - Optics primarily sourced from **Thorlabs**, with **Polaris mounts** for stable positioning.
-   - Motion control solutions (X, Y, Z, Focus, Sample Scanning) from **Applied Scientific Instrumentation**.
+   - Motion control solutions (X, Y, Z, focus, sample scanning) from **Applied Scientific Instrumentation**.
    - Open-hardware ethos with minimal custom parts to reduce cost and wait times.
-   - Detailed step-by-step assembly instructions,
+   - Detailed step-by-step assembly instructions.
 
 4. **Intuitive Control Software**  
    - Built to interface seamlessly with [navigate](https://github.com/TheDeanLab/navigate).
@@ -79,5 +79,5 @@ The overarching goal is to provide a **modular, cost-effective 3D light-sheet mi
 
 ## Funding
 
-- **UTSW-UNC Center for Cell Signaling Analysis**  NIH NIGMS RM1GM145399
-- **Center for Metastatic Tumor Imaging**  NIH NCI U54CA268072
+- **UTSW-UNC Center for Cell Signaling Analysis** NIH NIGMS RM1GM145399
+- **Center for Metastatic Tumor Imaging** NIH NCI U54CA268072

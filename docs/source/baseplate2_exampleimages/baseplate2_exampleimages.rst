@@ -1,7 +1,7 @@
 .. _aslmimages-home:
 
 ##########################################
-ALSM/CTASLM Baseplate Example Images
+ASLM/CTASLM Baseplate Example Images
 ##########################################
 
 Fluorescent Collagen

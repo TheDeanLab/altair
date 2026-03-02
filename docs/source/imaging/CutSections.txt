@@ -23,7 +23,7 @@ properties panel as follows:
     :align: center
     :alt: Properties Panel for our system
 
-With the properties panel adjusted, the next step is to open the rescaling panel in ImageJ (Image-> Scale). In this
+With the properties panel adjusted, the next step is to open the rescaling panel in ImageJ (Image -> Scale). In this
 panel, the relative ratios of each of the pixel sizes to each other needs to be established. As an example for our
 system, our x and y pixel sizes are the same at 130 nm and our z-step size :math:`\delta _z` is 98.5 nm. The ratio
 between these values is roughly 0.757, so our rescaling panel looks like the following:
@@ -33,7 +33,7 @@ between these values is roughly 0.757, so our rescaling panel looks like the fol
     :alt: Rescaling Panel for our system
 
 After selecting OK, ImageJ will then rescale the dimensions of the image stack relative to the values entered in the
-rescaling panel. In our case, there would be no adjustments to x or y, but z would be rescaled from it's original
+rescaling panel. In our case, there would be no adjustments to x or y, but z would be rescaled from its original
 value.
 
 .. image:: Images/HighlightofRescale.png

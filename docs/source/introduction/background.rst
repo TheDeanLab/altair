@@ -3,7 +3,7 @@ Overview of Subcellular Light-Sheet Microscope Technologies
 ###########################################################
 
 
-Light-sheet fluorescence microscopy (LSFM) has undergone significant advancements, leading to the development of specialized approaches tailored for **subcellular-resolution imaging**. These methods balance **resolution, field of view, optical sectioning, and phototoxicity** to accommodate different biological applications. Below, we provide an overview of existing high-resolution light-sheet microscope technologies, their strengths, and their limitations.
+Light-sheet fluorescence microscopy (LSFM) has undergone significant advancements, leading to the development of specialized approaches tailored for **subcellular-resolution imaging**. These methods balance **resolution, field of view, optical sectioning, and phototoxicity** to accommodate different biological applications. Below, we provide an overview of existing high-resolution light-sheet microscope technologies, their strengths, and limitations.
 
 -----------------------
 
@@ -11,7 +11,7 @@ Light-sheet fluorescence microscopy (LSFM) has undergone significant advancement
 Lattice Light-Sheet Microscopy (LLSM)
 -------------------------------------
 
-Lattice Light-Sheet Microscopy (LLSM) employs a **superposition of propagation-invariant beams** to generate a structured light-sheet that theoretically maintains a **narrow beam waist** over extended distances. However, in practice, these beams introduce **sidelobes** that increase with beam length, contributing to **out-of-focus blur** and degrading image contrast and resolution. As a result, LLSM is most effective for **small fields of view (~25µm)**, making it ideal for imaging **adherent cells and epithelial monolayers**.
+Lattice Light-Sheet Microscopy (LLSM) employs a **superposition of propagation-invariant beams** to generate a structured light-sheet that theoretically maintains a **narrow beam waist** over extended distances. However, in practice, these beams introduce **sidelobes** that increase with beam length, contributing to **out-of-focus blur** and degrading image contrast and resolution. As a result, LLSM is most effective for **small fields of view (~25 µm)**, making it ideal for imaging **adherent cells and epithelial monolayers**.
 
 A key limitation of LLSM is its reliance on a **spatial light modulator (SLM)** to sculpt its illumination beams. While this enables fine control over the excitation profile, it also introduces significant drawbacks:
 - **Limited Multicolor Excitation** – The SLM prevents simultaneous multicolor excitation, making LLSM suboptimal for **multiplexed biosensor imaging**.
@@ -96,7 +96,7 @@ Despite its advantages, OPM suffers from **anisotropic resolution** and often re
 +------------------------------+----------------------------------------------------+--------------------------------------------------+
 | **Microscope Type**          | **Strengths**                                      | **Limitations**                                  |
 +------------------------------+----------------------------------------------------+--------------------------------------------------+
-| **LLSM**                     | - High-resolution for small samples                | - Limited field of view (~25µm)                  |
+| **LLSM**                     | - High-resolution for small samples                | - Limited field of view (~25 µm)                 |
 |                              | - Excellent optical sectioning                     | - Incompatible with multicolor excitation        |
 |                              |                                                    | - Low light throughput (~2.4%)                   |
 |                              |                                                    | - Requires high-power lasers                     |
@@ -119,4 +119,3 @@ Despite its advantages, OPM suffers from **anisotropic resolution** and often re
 |                              | - High-speed volumetric imaging                    | - Requires computational post-processing         |
 |                              | - Compatible with conventional sample mounting     | - Axial resolution degrades with depth           |
 +------------------------------+----------------------------------------------------+--------------------------------------------------+
-

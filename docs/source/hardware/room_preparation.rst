@@ -10,7 +10,7 @@ A common question that we get is how to set up the room for imaging. This sectio
 
 Power Outlets
 -------------------
-The first thing to consider is the power outlets. For most imaging systems, you will need standard 120V outlets. If you plan on having a Ti-Sapphire laser, then 240V outlets are likely necessary. We typically like to have power strips on the walls, so that you have plenty to choose from.
+The first thing to consider is the power outlets. For most imaging systems, you will need standard 120 V outlets. If you plan on having a Ti-Sapphire laser, then 240 V outlets are likely necessary. We typically like to have power strips on the walls, so that you have plenty to choose from.
 
 ---------------
 
@@ -59,7 +59,6 @@ Make sure that the room is not near any external sources of vibration. This can 
 Water Damage
 ------------
 Also consider worst-case scenarios such as a water leak from the room above. If there is a significant risk that the fire sprinkler system could go off, then you may want to consider mechanisms of protecting the electronics and optics from water damage.
-
 
 
 

@@ -31,7 +31,7 @@ Computer-Aided Design
 =====================
 
 For the design of custom parts and the baseplate, we used **Autodesk Inventor**. Academic licenses for Autodesk
-products are available free of charge on their `website <https://www.autodesk.com/education/edu-software/overview?sorting=featured&filters=individual>`_.
+products are available free of charge through the Autodesk Education program.
 
 To ensure **Autodesk Inventor** correctly locates and manages the CAD files, it is necessary to set up a **new project**
 and define the workspace. We recommend following these steps:
@@ -96,7 +96,7 @@ Installation and Access
 
 **navigate** is **open-source** and publicly available on GitHub. Installation instructions, along with
 comprehensive documentation, can be found here:
-`navigate Installation Guide <https://thedeanlab.github.io/navigate/01_getting_started/02_software_installation/02_software_installation.html>`_
+`navigate Documentation <https://thedeanlab.github.io/navigate/>`_
 
 ---------------
 
@@ -123,4 +123,3 @@ here: `PetaKit5D GitHub Repository <https://github.com/abcucberkeley/PetaKit5D>`
    petabyte-scale light sheet microscopy data.* **Nat Methods.** 2024 Dec;21(12):2342-2352.
    doi: `10.1038/s41592-024-02475-4 <https://doi.org/10.1038/s41592-024-02475-4>`_.
    PMID: `39420143 <https://pubmed.ncbi.nlm.nih.gov/39420143/>`_, PMCID: PMC11621031.
-

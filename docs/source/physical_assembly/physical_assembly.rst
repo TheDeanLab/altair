@@ -7,7 +7,7 @@ Microscope Assembly
 Parts List and Cost
 ___________________
 
-A breakdown of all components used in Altair, and the approximate cost are included in the collapsable sections below:
+A breakdown of all components used in Altair, and the approximate cost, is included in the collapsible sections below:
 
 .. collapse:: Illumination Path
 
@@ -86,12 +86,12 @@ A breakdown of all components used in Altair, and the approximate cost are inclu
        * - SM1A12
          - Thorlabs
          - Illumination Objective Mounting
-       * - 1-Axis 4kHz Resonant Galvo and Servo
+       * - 1-Axis 4 kHz Resonant Galvo and Servo
          - Novanta
          - Galvo Mirror
        * - TGPOW-12-3
          - ASI
-         - Galvo Low Noise Power Supply +12V 3A
+         - Galvo Low Noise Power Supply +12 V 3 A
        * - Polaris B1F
          - Thorlabs
          - Mount for Mirror 2
@@ -161,16 +161,16 @@ A breakdown of all components used in Altair, and the approximate cost are inclu
        * - C13440-20CU
          - Hamamatsu
          - ORCA Flash4.0 V3 Camera
-       * - Semrock Brightline Filter 605/15-25nm
+       * - Semrock Brightline Filter 605/15-25 nm
          - IDEX
          - Filter
-       * - Semrock Brightline Filter 445/20nm
+       * - Semrock Brightline Filter 445/20 nm
          - IDEX
          - Filter
        * - Semrock Brightline Filter 676/29 nm
          - IDEX
          - Filter
-       * - Semrock Brightline Filter 529/24-25nm
+       * - Semrock Brightline Filter 529/24-25 nm
          - IDEX
          - Filter
 
@@ -224,11 +224,11 @@ A breakdown of all components used in Altair, and the approximate cost are inclu
        * - Angle Bracket Adapter
          - Xometry
          - Mounting the piezo to ASI translation stages at an angle
-       * - 5mm Coverslip Holder
+       * - 5 mm Coverslip Holder
          - Xometry
          - Sample holder for 5 mm Coverslips
-       * - 5mm Coverslip Holder Adapter
-         - Xomtery
+       * - 5 mm Coverslip Holder Adapter
+         - Xometry
          - Adapter to mount coverslip holder onto KBT1X1T linearly
 
 .. collapse:: Shared Equipment
@@ -322,7 +322,7 @@ aligned vertically with each other.
 Ordering Custom Parts from Xometry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We utilize a number of different custom fabricated elements in our completed system, . There are a number of
+We utilize a number of different custom fabricated elements in our completed system. There are a number of
 different companies available for this, and we opted for Xometry. The basic ordering process we go through is as
 follows:
 
@@ -342,7 +342,7 @@ follows:
         .. figure:: Images/Xometry4.png
             :align: center
             :alt: Xometry Ordering Process 4
-    5. Select Aluminum 6061-T6x as the material for machining
+    5. Select Aluminum 6061-T6 as the material for machining
         .. figure:: Images/Xometry5.png
             :align: center
             :alt: Xometry Ordering Process 5
@@ -350,7 +350,7 @@ follows:
         .. figure:: Images/Xometry6.png
             :align: center
             :alt: Xometry Ordering Process 6
-    7. If you have a part that uses threads or tapped holes select that option and upload associated pdf drawings
+    7. If you have a part that uses threads or tapped holes, select that option and upload associated PDF drawings
         .. figure:: Images/Xometry7.png
             :align: center
             :alt: Xometry Ordering Process 7
@@ -391,8 +391,7 @@ The basic assembly process involves first inserting and fixing the CFC11A-A into
 
     **Figure 4:** Shear Plate interferometer and collimator lens
 
-With the beam collimated, the process of beam alignment involves adjusting the position control knobs on the K1XY to have the beam pass through two pinhole apertures along the optical path. The height of the initial laser output is designed to be at 3.75" above the top surface of the baseplate, so selecting appropriate post heights for the apertures such that their centers rest at 3.75" is essential. In our case, we use `Thorlabs ID12 <https://www.thorlabs.com/thorproduct.cfm?partnumber=ID12>`_ pinhole apertures, so using a post height of 3.25" will ensure that they are at the proper height for alignment. We designed a `custom ID12 to Polaris adapter <https://github
-.com/TheDeanLab/altair/tree/main/downloads/common/cad>`_ to ensure the aperture is at the proper height and properly aligned along the designated Polaris axis. When using this method, the ID12 to Polaris Adapters can just be directly mounted onto the holes designated for L1 and the Illumination Objective, depicted below, to cover the length of the baseplate. With the pinholes placed, the process becomes iterative by making small adjustments on the K1XY tip/tilt knobs and XY position screws until the beam passes through both pinholes.
+With the beam collimated, the process of beam alignment involves adjusting the position control knobs on the K1XY to have the beam pass through two pinhole apertures along the optical path. The height of the initial laser output is designed to be at 3.75" above the top surface of the baseplate, so selecting appropriate post heights for the apertures such that their centers rest at 3.75" is essential. In our case, we use `Thorlabs ID12 <https://www.thorlabs.com/thorproduct.cfm?partnumber=ID12>`_ pinhole apertures, so using a post height of 3.25" will ensure that they are at the proper height for alignment. We designed a `custom ID12 to Polaris adapter <https://github.com/TheDeanLab/altair/tree/main/downloads/common/cad>`_ to ensure the aperture is at the proper height and properly aligned along the designated Polaris axis. When using this method, the ID12 to Polaris adapters can be mounted directly onto the holes designated for L1 and the illumination objective, depicted below, to cover the length of the baseplate. With the pinholes placed, the process becomes iterative by making small adjustments on the K1XY tip/tilt knobs and XY position screws until the beam passes through both pinholes.
 
 .. figure:: Images/LaserAlignment2.png
     :align: center
@@ -405,15 +404,15 @@ With the beam collimated, the process of beam alignment involves adjusting the p
 Mounting of Optic Posts
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-After ensuring basic collimation and alignment of the laser system, the next step is mounting the appropriate polaris
+After ensuring basic collimation and alignment of the laser system, the next step is mounting the appropriate Polaris
 post size for each optical element in the system. The overall breakdown of which size posts went with each hole
 location is listed below. Where holes (3), (4), and (10) are placements for optional elements in the system. (3) is
 meant for the placement of an adjustable pinhole aperture, where the same ID12 to Polaris Adapter system used in
-the alignment step can be placed. Otherwise a 0.5" post holder can be placed here, and then the ID12 or ones pinhole
+the alignment step can be placed. Otherwise a 0.5" post holder can be placed here, and then the ID12 or one's pinhole
 aperture of choice can be mounted on a 0.5" post. (4) is dedicated placement for an electronic shutter in the event
 that the laser being used for the system isn't directly controlled via a computer, and helps to ensure that laser
 light is not photobleaching a sample unless imaging is taking place. (10) is dedicated space for a neutral density
-(ND) filter, in the event that the power of the laser used needs additional reduction not directly addressable
+(ND) filter, in the event that the power of the laser used needs additional reduction not directly controlled
 through the laser controls itself.
 
 .. figure:: Images/PostHeightBreakdown_Updated.png
@@ -466,7 +465,7 @@ objective center should match that of the illumination objective (which with the
 baseplate rests on is 4.75" above the optical table surface). These elements can be custom machined if desired;
 however, we have found 3D printed PLA variants to perform their functions effectively as well.
 
-The assembly of the detection path begins with the translation stage and it's associated breadboard adapter
+The assembly of the detection path begins with the translation stage and its associated breadboard adapter
 (available here in two variants, based on whether or not one is using the 0.5" thick detection path baseplate):
 
     1. Turn the translation stage upside-down
@@ -487,7 +486,7 @@ of the tube lens adapter onto the top of the translation stage:
 
     1. Place the tube lens adapter half onto the top of the translation stage such that the block with two sets of
        five recessed holes is touching the top of the translation stage.
-    2. Align the Recess holes on the adapter with the holes on the top of the translation stage.
+    2. Align the recess holes on the adapter with the holes on the top of the translation stage.
     3. Fix the adapter onto the translation stage by screwing M6 screws into the aligned recess holes
 
 .. figure:: Images/TubeAdapter.png
@@ -524,7 +523,7 @@ The tube lens assembly is now ready to be fixed onto the translation stage assem
     2. While there isn't an exact science to the relative placement of the tube within the adapter, try to position
        it such that more of the tube is extended out on the side where the objective will be mounted (our setup is shown
        below for reference).
-    3. Place the second half of the tube lens adapter such that the curved side fits onto the lube lens and position
+    3. Place the second half of the tube lens adapter such that the curved side fits onto the tube lens and position
        it such that the holes of both halves of the adapter align with each other.
     4. Using your choice of either M6 or 1/4"-20 screws and associated washers/nuts, place the screws with a washer
        placed on them first into the aligned holes of the adapter. We used 4 of the adapter holes on each side, but
@@ -538,7 +537,7 @@ The tube lens assembly is now ready to be fixed onto the translation stage assem
     **Figure 11:** Example of tube lens mounted in the corresponding adapter
 
 The detection path assembly can now be fixed into place onto either the detection path baseplate or the optical
-table, keep in mind this process is meant to essentially place the unit in the ballpark of where it should be, finer
+table. Keep in mind this process is meant to place the unit roughly where it should be; finer
 adjustments will be made afterwards:
 
     1. Using the mounting holes on the translation stage assembly, place the assembly such that the edge of the
@@ -547,7 +546,7 @@ adjustments will be made afterwards:
     2. Using the adjacent edge of the translation stage adapter (the one that should be perpendicular to the
        orientation of the illumination path), try to align the side of the adapter with the mounting hole of the
        illumination objective.
-    3. Screw the translation stage adapter into either the optical table to the detection path baseplate (we
+    3. Screw the translation stage adapter into either the optical table or the detection path baseplate (we
        recommend using `Thorlabs 1" Spacers <https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=851>`_ in place
        of washers here).
 
@@ -572,7 +571,7 @@ With the assembly fixed in place, the camera can then be screwed into the filter
 
     **Figure 13:** Mounting of the camera
 
-The final steps to to assemble the detection path are to screw the detection objective into the front of the tube
+The final steps to assemble the detection path are to screw the detection objective into the front of the tube
 lens and attach all associated wires to the camera, filter wheel, and translation stage. If there's not enough
 clearance between the front of the tube lens and the sample chamber to screw in the detection objective, the
 translation stage might need to be wired up first and translated backwards manually using either navigate or the
@@ -585,16 +584,16 @@ Tiger Control Panel software.
 Detection Path Positioning
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To position the detection path correctly, there's two primary steps: Initially ensuring the detection objective slides into the correct port on the fixed sample chamber and then ensuring that the light sheet is centered in the FoV of the camera, typically done by putting  fluorescein into the water-filled chamber.
+To position the detection path correctly, there are two primary steps: first ensuring the detection objective slides into the correct port on the fixed sample chamber, and then ensuring that the light sheet is centered in the FOV of the camera, typically done by adding fluorescein into the water-filled chamber.
 
 **Step 1: Ensuring the detection objective slides into the sample chamber port**
     1. It's recommended to start with your detection path translation stage set far enough back such that there is anywhere from 0.5-1" or more of space between the front of the detection objective and the sample chamber.
-    2. Within navigate or the Tiger Controller software, start to slowly move the objective forward (initially increments of 1000 um should be okay, but as the objective approaches the port the distance should be significantly lowered to 100 um or below to ensure the objective isn't damaged).
+    2. Within navigate or the Tiger Controller software, start to slowly move the objective forward (initially, increments of 1000 µm should be okay, but as the objective approaches the port the distance should be significantly lowered to 100 µm or below to ensure the objective isn't damaged).
     3. If the objective isn't centered properly, the screws/nuts on the translation stage to breadboard adapter (see figure 12) can be loosened slightly and the detection path assembly can be carefully positioned horizontally, taking care that the unit isn't tilted at an angle going into the objective port, and then re-tightened.
 
-Once the detection objective properly translates into it's port, the tilt alignment can be further refined by slowly translating the detection objective forward towards the illumination objective, taking great care that they don't touch each other. If there is a significant tilt in the detection path compared to the illumination path, it should be fairly evident in the diagonal space between the objectives (ideally it should look roughly equal in width between the two objectives). As example of the relative position of our objectives when the detection objective is properly placed at the focus of the illumination objective is shown below to give a visual reference for users.
+Once the detection objective properly translates into its port, the tilt alignment can be further refined by slowly translating the detection objective forward toward the illumination objective, taking great care that they don't touch each other. If there is a significant tilt in the detection path compared to the illumination path, it should be fairly evident in the diagonal space between the objectives (ideally, it should look roughly equal in width between the two objectives). An example of the relative position of our objectives when the detection objective is properly placed at the focus of the illumination objective is shown below to give a visual reference for users.
 
-Once the position of the detection objective is acceptable, further refinement of it's position can be done by first filling the chamber with water and then adding roughly ~100 microliters of f fluorescein into the chamber. Fluorescein  is useful as a visualization tool to be able to see the beam coming out of the illumination objective with the naked eye. With fluorescein in the chamber, the position of the detection objective can be translated to align with the focus of the beam itself (shown below)
+Once the position of the detection objective is acceptable, further refinement of its position can be done by first filling the chamber with water and then adding roughly ~100 µL of fluorescein into the chamber. Fluorescein is useful as a visualization tool to see the beam coming out of the illumination objective with the naked eye. With fluorescein in the chamber, the position of the detection objective can be translated to align with the focus of the beam itself (shown below).
 
 .. figure:: Images/objectivealignment.png
     :align: center
@@ -604,12 +603,12 @@ Once the position of the detection objective is acceptable, further refinement o
 
 
 **Step 2: Focus refinement**
-    With the detection objective roughly in the correct location, further refinement is done by turning on the camera and imaging the fluorescein light-sheet to find the focus by adjusting the focus translation stage in small increments (50 microns for large movements, 1-5 microns for small movements). The goals during this step are to ensure that the detection objective focus is at the focus of the illumination objective, to make sure the light-sheet focus is centered on the image FoV from the camera, and that the light-sheet is aligned vertically in the image FoV.
+    With the detection objective roughly in the correct location, further refinement is done by turning on the camera and imaging the fluorescein light sheet to find the focus by adjusting the focus translation stage in small increments (50 µm for large movements, 1-5 µm for small movements). The goals during this step are to ensure that the detection objective focus is at the focus of the illumination objective, to make sure the light-sheet focus is centered on the image FOV from the camera, and that the light sheet is aligned vertically in the image FOV.
 
     Finding the focus is often something that just comes with experience of using the system itself; however, here are some general methods to follow that can help get one's bearings:
-        1. In general, as the detection objective approaches the light sheet focus, an envelope of light should start to appear (see below), ideally this envelope will be horizontal across the FoV. If it horizontal or has some tilt to it, adjusting the tip/tilt of the 45 degree mirror and the rotation of the cylindrical lens. In addition, ideally this envelope will be centered vertically in the FoV, which can be set by adjusting the y adjustment screw on the illumination objective mount.
-        2. Towards the focus location, a dark vertical region with horizontal striations should appear. Once this region is visible, using small translation distances (~1 um or finer) to find the position that makes both the vertical region and horizontal striations look as sharp as possible should be done.
-        3. If the dark region isn't centered on the image FoV, adjusting the x and y adjustment screws on the illumination objective mount and making slight horizontal translations on the detection path can help.
+        1. In general, as the detection objective approaches the light-sheet focus, an envelope of light should start to appear (see below). Ideally, this envelope will be horizontal across the FOV. If it is not horizontal or has some tilt, adjust the tip/tilt of the 45 degree mirror and the rotation of the cylindrical lens. In addition, this envelope should ideally be centered vertically in the FOV, which can be set by adjusting the y adjustment screw on the illumination objective mount.
+        2. Toward the focus location, a dark vertical region with horizontal striations should appear. Once this region is visible, use small translation distances (~1 µm or finer) to find the position that makes both the vertical region and horizontal striations look as sharp as possible.
+        3. If the dark region isn't centered on the image FOV, adjusting the x and y adjustment screws on the illumination objective mount and making slight horizontal translations on the detection path can help.
         4. In general doing these adjustments in small increments is helpful, as once adjustments to the various elements may require readjusting the focus translation stage position to keep track of the focus.
 
 .. figure:: Images/FocusFinding.png
@@ -631,14 +630,14 @@ _____________
 Visualization of Axes Mapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In our system we have 5 different translation stages at work: the standard x,y, and z axes, an additional stage along the z axis to control the focus of the detection path (f), and and axis associated with the piezo positioned such that its normal is 60.5 degrees away from the y-axis.
+In our system we have 5 different translation stages at work: the standard x, y, and z axes, an additional stage along the z axis to control the focus of the detection path (f), and an axis associated with the piezo positioned such that its normal is 60.5 degrees away from the y-axis.
 
 .. figure:: Images/PhysicalAxesMaps.png
     :align: center
-    :alt: Layout of how the axis of the system are mapped
+    :alt: Layout of how the axes of the system are mapped
     :width: 220px
 
-    **Figure 16:** Layout of how the axis of the system are mapped
+    **Figure 16:** Layout of how the axes of the system are mapped
 
 .. note:: **Coordinate System Differences**
 
@@ -661,9 +660,7 @@ In our system we have 5 different translation stages at work: the standard x,y, 
 The Piezo Angle Mount
 ^^^^^^^^^^^^^^^^^^^^^
 
-We designed a custom angled mount for our `Piezoconcept HS1 piezo <https://piezoconcept-store.squarespace
-.com/1-axis/p/hs1>`_ in order to be able to scan our sample easily between our two objectives by translating a single motorized unit (in this case the piezo), instead of having to calculate and program the movement of two translation stages in tandem for both the y and z directions. The anatomy of our angled mount is broken down in the figure below, where there are four translation stage mounting holes to attach the unit to an ASI translation stage, nine Piezo mounting holes that correspond to the mounting scheme of our piezo unit, as well as four through-holes and a window for ease of access for the mounting process. We provide the CAD files for this mount `here <https://github
-.com/TheDeanLab/altair/tree/main/downloads/common/cad>`_, and have had success in using both 3D printed and aluminum machined versions of the unit. It's recommended to first mount the angle mount onto the translation stage unit before mounting the piezo on the angle mount to ensure access to all the through-holes.
+We designed a custom angled mount for our `PiezoConcept HS1 piezo <https://piezoconcept-store.squarespace.com/1-axis/p/hs1>`_ in order to scan our sample easily between our two objectives by translating a single motorized unit (in this case the piezo), instead of having to calculate and program the movement of two translation stages in tandem for both the y and z directions. The anatomy of our angled mount is broken down in the figure below, where there are four translation-stage mounting holes to attach the unit to an ASI translation stage, nine piezo mounting holes that correspond to the mounting scheme of our piezo unit, as well as four through-holes and a window for ease of access for the mounting process. We provide the CAD files for this mount `here <https://github.com/TheDeanLab/altair/tree/main/downloads/common/cad>`_, and have had success using both 3D-printed and aluminum-machined versions of the unit. It is recommended to first mount the angle mount onto the translation-stage unit before mounting the piezo on the angle mount to ensure access to all through-holes.
 
 .. figure:: Images/AnglemountAnatomy.png
     :align: center
@@ -704,7 +701,7 @@ Assembling the Magnetic Sample Mount
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-As a safeguard for the risk of the sample crashing into either the illumination or detection objective during sample positioning or imaging, we opted to incorporate a magnetic mount for our sample holder. We use a Thorlabs KBT1X1T and KBB1X1 as our magnetic mount pair, and then mount our sample holder onto the KBT1X1T using a  `custom adapter <https://github.com/TheDeanLab/altair/tree/main/downloads/common/cad>`_. The KBB1X1 is affixed to the piezo using an M2.5 screw, and using a small leveling tool (shown below) during this step is helpful to ensure that the magnetic base is mounted as level as possible for the imaging process.
+As a safeguard against the sample crashing into either the illumination or detection objective during sample positioning or imaging, we opted to incorporate a magnetic mount for our sample holder. We use a Thorlabs KBT1X1T and KBB1X1 as our magnetic mount pair, and then mount our sample holder onto the KBT1X1T using a `custom adapter <https://github.com/TheDeanLab/altair/tree/main/downloads/common/cad>`_. The KBB1X1 is affixed to the piezo using an M2.5 screw, and using a small leveling tool (shown below) during this step is helpful to ensure that the magnetic base is mounted as level as possible for the imaging process.
 
 .. figure:: Images/MagneticMountSampleHolder.png
     :align: center
@@ -726,7 +723,7 @@ Wiring Diagram
 
 
 Our complete microscope assembly features a variety of different optoelectrical and optomechanical elements. These
-elements are primary controlled via our NI DAQ (PXIe-6738) or our ASI Tiger Controller (TG16-BASIC), which are then
+elements are primarily controlled via our NI DAQ (PXIe-6738) or our ASI Tiger Controller (TG16-BASIC), which are then
 controlled via navigate during the imaging process. The diagram below depicts how these elements are wired together,
 as well as an individual pinout designation table for the pin configurations we used on our DAQ.
 
@@ -753,7 +750,7 @@ those wires into the EXT IN input on the Tiger controller panel corresponding to
     :align: center
     :alt: How to find the Device Pinout panel
 
-    **Figure 22:** How to find the Device Pinout panel in NI MAXX.
+    **Figure 22:** How to find the Device Pinout panel in NI MAX.
 
 Plug the piezo cable into the PIEZO input on the Tiger controller panel corresponding to the piezo, and verify the range of the piezo in the Tiger Controller software:
 
@@ -774,8 +771,8 @@ Plug the piezo cable into the PIEZO input on the Tiger controller panel correspo
    25 P 4 350um RANGE:N-4
 
 
-This tells us that our Piezo (Panel 5/Q) corresponded to P1 or a 100 um range, but ASI requires the piezo needed to be
-set to  a 50 um range to be able to be initialized instead. To change this, we used the command ``5 cca x = 34`` and
+This tells us that our piezo (Panel 5/Q) corresponded to P1, or a 100 µm range, but ASI requires the piezo to be
+set to a 50 µm range to be initialized. To change this, we used the command ``5 cca x = 34`` and
 power cycled the controller. Once the controller was powered back on, we verified the range again with the ``5 cca x?``
 
 .. code-block:: none
@@ -798,27 +795,27 @@ Now we can see that the piezo is set to the correct range (Pf). With that verifi
     :align: center
     :alt: How to find the Test Panels panel
 
-    **Figure 23:** How to find the Test Panels panel in NI MAXX.
+    **Figure 23:** How to find the Test Panels panel in NI MAX.
 
 | 3. Set the voltage mode to sinewave generation.
 | 4. Set the voltage range to be between 0 to 10 V.
-| 5. Set the frequency to a desired value (we ended up setting it pretty high at 10000 Hz for ease of viewing on the oscilloscope).
+| 5. Set the frequency to a desired value (we ended up setting it relatively high at 10,000 Hz for ease of viewing on the oscilloscope).
 
 .. figure:: Images/TestPanelConfiguration.png
     :align: center
     :alt: How to find the Test Panels panel.
 
-    **Figure 24:** How to generate analog output voltages with NI MAXX for testing purposes.
+    **Figure 24:** How to generate analog output voltages with NI MAX for testing purposes.
 
 With the voltage output of the PCI board verified, plug the PCI Board voltage cable output back into the EXT IN slot and
 verify that the position output of the Piezo reads similarly on the oscilloscope:
 
-    1. Plug a BNC Cable into the SENSOR OUT connection on the tiger controller panel.
+    1. Plug a BNC cable into the SENSOR OUT connection on the Tiger controller panel.
     2. Plug the other end of that cable into the oscilloscope.
     3. Verify that a sinewave output is seen on the oscilloscope.
 
 If the PCI Board voltage is working as intended but the piezo position output doesn't seem to work, try ensuring that
-the piezo is set in `External Input mode, and not Controller Input mode <https://asiimaging.com/docs/commands/pm>`_:
+the piezo is set in `External Input mode and not Controller Input mode <https://asiimaging.com/docs/commands/pm>`_:
 
     1. Use the ``PM Q?`` (Our piezo corresponds to Q) command:
         - the output was ``Q = 0`` originally, telling us that it's in Controller Input mode

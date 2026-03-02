@@ -74,9 +74,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Altair-ASLM/CTASLM/SPIM v1</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ALSM/CTASLM Baseplate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ALSM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ALSM/CTASLM Baseplate Example Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ASLM/CTASLM Baseplate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ASLM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ASLM/CTASLM Baseplate Example Images</a></li>
 </ul>
 
         </div>
@@ -145,9 +145,9 @@ restrict illumination primarily to the focal plane of interest, minimizing photo
 maximizing imaging efficiency. Additionally, by leveraging highly sensitive scientific cameras
 (e.g., 4×10<sup>6</sup> pixels), LSFM enables massively parallelized image acquisition—recording
 entire planes in a single exposure rather than scanning point-by-point.</p>
-<p>For instance, a typical laser scanning confocal microscope requires <strong>~4.16s</strong> to acquire
-a <strong>2048 × 2048</strong> voxel image, given a voxel dwell time of <strong>1µs</strong>. In contrast, an LSFM can
-image the same region in just <strong>~5ms</strong>, an <strong>832-fold</strong> increase in speed, all while maintaining a
+<p>For instance, a typical laser scanning confocal microscope requires <strong>~4.16 s</strong> to acquire
+a <strong>2048 × 2048</strong> voxel image, given a voxel dwell time of <strong>1 µs</strong>. In contrast, an LSFM can
+image the same region in just <strong>~5 ms</strong>, an <strong>832-fold</strong> increase in speed, all while maintaining a
 <strong>5,000-fold longer</strong> per-voxel dwell time. This extended dwell time enables improved signal
 accumulation, lower laser power requirements, and a significantly improved signal-to-noise
 ratio (SNR). As a result, LSFM is uniquely suited for long-term volumetric imaging at high
@@ -158,7 +158,7 @@ spatiotemporal resolution while reducing photodamage.</p>
 image formation at any given moment during an imaging process. In <strong>laser scanning confocal microscopy</strong>,
 only a single point is illuminated at a time, resulting in a <strong>low duty cycle</strong> and requiring compensatory increases in laser
 power to maintain signal. In contrast, <strong>light-sheet fluorescence microscopy (LSFM)</strong> illuminates and images an entire plane at once,
-yielding a <strong>duty cycle</strong> that approaches 100%, enabling drastically reduced laser powers that reduce phototoxicity, .</p>
+yielding a <strong>duty cycle</strong> that approaches 100%, enabling drastically reduced laser powers that reduce phototoxicity.</p>
 </aside>
 <hr class="docutils" />
 </section>
@@ -174,8 +174,8 @@ reliability of 3D imaging:</p>
 <li><p><strong>Nyquist Sampling in Space and Time:</strong>
 To faithfully capture dynamic processes, the event of interest must be <strong>Nyquist sampled</strong> in both
 spatial and temporal dimensions. For example, the GTPase cycle times of Rho, Rac, and Cdc42 can be
-as short as 5s, necessitating volumetric acquisitions at <span class="math notranslate nohighlight">\(\leq\)</span> 2.5s per volume with a spatial resolution
-of <strong>&lt;500nm</strong>. Furthermore, resolution should ideally be <strong>isotropic or nearly isotropic</strong> to prevent
+as short as 5 s, necessitating volumetric acquisitions at <span class="math notranslate nohighlight">\(\leq\)</span> 2.5 s per volume with a spatial resolution
+of <strong>&lt;500 nm</strong>. Furthermore, resolution should ideally be <strong>isotropic or nearly isotropic</strong> to prevent
 morphology-dependent intensity artifacts—particularly for signaling events at the plasma membrane.</p></li>
 <li><p><strong>Multicolor Excitation and Detection:</strong>
 To enable multiplexed cellular readouts, the microscope must support <strong>simultaneous multicolor imaging</strong>
@@ -191,7 +191,7 @@ out-of-focus excitation are crucial for maintaining live-cell viability.</p></li
 When imaging dynamic processes in <strong>extracellular matrix environments</strong> (where cells can migrate in
 any direction) or within a <strong>developing embryo</strong>, the microscope must provide a sufficiently <strong>large field
 of view (FOV)</strong>—ideally <strong>&gt;100 × 100 × 100 µm</strong>. Many leading <strong>light-sheet fluorescence microscopes
-(LSFMs)</strong> are optimized for small fields of view (e.g., 25µm), which limits their applicability to studies
+(LSFMs)</strong> are optimized for small fields of view (e.g., 25 µm), which limits their applicability to studies
 of large-scale tissue dynamics.</p></li>
 <li><p><strong>Avoidance of Computational Post-Processing Biases:</strong>
 To ensure compatibility with <strong>quantitative downstream analyses</strong>, reliance on iterative <strong>deconvolution</strong>

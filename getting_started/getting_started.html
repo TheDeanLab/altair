@@ -70,9 +70,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Altair-ASLM/CTASLM/SPIM v1</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ALSM/CTASLM Baseplate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ALSM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ALSM/CTASLM Baseplate Example Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ASLM/CTASLM Baseplate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ASLM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ASLM/CTASLM Baseplate Example Images</a></li>
 </ul>
 
         </div>
@@ -105,15 +105,15 @@
 you first need to set up a connection to your hardware. This guide will walk you through the steps necessary to get your system up and running.</p>
 <section id="hardware-setup">
 <h2>Hardware Setup<a class="headerlink" href="#hardware-setup" title="Permalink to this heading"></a></h2>
-<p>Unlike other microscopy systems, Altair simplifies control by having only one controller - one apparatus to trigger and drive all necessary devices.
+<p>Unlike other microscopy systems, Altair simplifies control by having only one controller: one apparatus to trigger and drive all necessary devices.
 This is Applied Scientific Instrumentation’s <a class="reference external" href="https://www.asiimaging.com/controllers/tiger-controller/">Tiger Controller</a>,
-a modular controller with customizable control cards. Our solution calls for a tiger controller with the following cards:</p>
+a modular controller with customizable control cards. Our solution calls for a Tiger Controller with the following cards:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://asiimaging.com/docs/tg1000_info#description">TGCOM</a> - allows Joystick control and serial communication from computer</p></li>
-<li><p>3 Stage control cards - (X/Y, Z/F, M/N)</p></li>
-<li><p>2 <a class="reference external" href="https://asiimaging.com/docs/tggalvo">DAC4</a> cards - Analog signal generators</p></li>
-<li><p><a class="reference external" href="https://asiimaging.com/docs/tiger_programmable_logic_card">TGPLC</a> - Programmable Logic Controller which provides for custom timing</p></li>
-<li><p><a class="reference external" href="https://asiimaging.com/docs/fw_1000">FW-1000</a>- Filter Wheel Control</p></li>
+<li><p><a class="reference external" href="https://asiimaging.com/docs/tg1000_info#description">TGCOM</a> - Allows joystick control and serial communication from the computer.</p></li>
+<li><p>3 stage control cards (X/Y, Z/F, M/N).</p></li>
+<li><p>2 <a class="reference external" href="https://asiimaging.com/docs/tggalvo">DAC4</a> cards - Analog signal generators.</p></li>
+<li><p><a class="reference external" href="https://asiimaging.com/docs/tiger_programmable_logic_card">TGPLC</a> - Programmable logic controller providing custom timing.</p></li>
+<li><p><a class="reference external" href="https://asiimaging.com/docs/fw_1000">FW-1000</a> - Filter wheel control.</p></li>
 </ul>
 <p>The order of these cards within the controller does not matter.
 The software to run the controller is <a class="reference external" href="https://thedeanlab.github.io/navigate/index.html">navigate</a>.
@@ -170,7 +170,7 @@ The provided configuration file will delineate the following configuration:</p>
 </tr>
 </tbody>
 </table>
-<p><a href="#id1"><span class="problematic" id="id2">*</span></a>The stage control card specified for PLC outputs 3 and 4 is the stage that is used for Z-stacks.
+<p>The stage control card specified for PLC outputs 3 and 4 is the stage that is used for Z-stacks.
 This allows stage feedback to dictate when the sample is ready for an image.
 In our configuration, the X hardware stage corresponds to the Z stage within the software.
 This can be changed to match your stage setup by editing the following part of the configuration file:</p>

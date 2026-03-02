@@ -84,9 +84,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Altair-ASLM/CTASLM/SPIM v1</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ALSM/CTASLM Baseplate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ALSM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ALSM/CTASLM Baseplate Example Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ASLM/CTASLM Baseplate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ASLM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ASLM/CTASLM Baseplate Example Images</a></li>
 </ul>
 
         </div>
@@ -118,7 +118,7 @@
 <span id="computer-home"></span><h1>Acquisition Computer<a class="headerlink" href="#acquisition-computer" title="Permalink to this heading"></a></h1>
 <p>Modern scientific cameras are capable of capturing images at very high frame rates.
 For example, the Orca-Lightning from Hamamatsu, when imaging a region of interest of
-4608x128, can image at 2203 frames per second, totalling 1.3 terapixel per second. It
+4608 × 128, can image at 2203 frames per second, totaling 1.3 terapixels per second. It
 is important to have a computer that can handle this data rate. For many applications, we recommend Colfax International’s SXP9000 workstation, which
 includes several convenient features, including:</p>
 <ul class="simple">
@@ -127,12 +127,12 @@ GPU cards, these slots can be used for other high-speed peripherals, such as fra
 grabbers.</p></li>
 <li><p>A high-speed NVMe SSD, which can achieve upwards of 20 GB/s under ideal
 conditions.</p></li>
-<li><p>10GbE LAN - 10G Ethernet or faster, if supported by your institution, is highly
+<li><p>10 GbE LAN - 10 G Ethernet or faster, if supported by your institution, is highly
 recommended for transferring data to and from the computer. This computer provides
 this high-speed connection without necessitating an additional network card, freeing
 up precious space in the computer.</p></li>
 <li><p>USB-C ports that can be used for image display, keyboard, and mouse. Again, by
-eliminating the need for a graphics card, available space is available to other
+eliminating the need for a graphics card, more space is available to other
 peripheral devices.</p></li>
 <li><p>Redundant power supplies - in the event of a power supply failure, the computer will
 continue to operate. Moreover, they will be able to drive some of the more power-hungry
@@ -143,19 +143,19 @@ high-speed components.</p></li>
 <hr class="docutils" />
 <section id="standard-specifications">
 <h2>Standard Specifications<a class="headerlink" href="#standard-specifications" title="Permalink to this heading"></a></h2>
-<p>A general build for a imaging computer is as follows:</p>
+<p>A general build for an imaging computer is as follows:</p>
 <ul class="simple">
 <li><p>Windows 10 Pro. This is the most common operating system for scientific imaging
 applications.</p></li>
-<li><p>2x Intel Xeon Silver CPUs Total of 16 Cores/32 Threads &#64; 3.2GHz. Higher speeds,
-and a greater number of cores is advantageous but expensive.</p></li>
+<li><p>2 × Intel Xeon Silver CPUs, for a total of 16 cores/32 threads at 3.2 GHz. Higher speeds
+and a greater number of cores are advantageous but expensive.</p></li>
 <li><p>128 GB of 3200 MHz DDR4 RAM. This is more than sufficient for most applications.</p></li>
 <li><p>800 GB M.2 NVMe SSD. Used to host and run the operating system.</p></li>
 <li><p>20 TB 7200 RPM SATA HDD. Used as a ‘cold storage’ for long-term data storage.</p></li>
 <li><p>NVIDIA T1000 Video Card. This is a low-end video card that can be used to drive
 displays and perform some basic image processing. The priority for this computer
 is driving the microscope and acquiring data, so a high-end video card is not necessary.</p></li>
-<li><p>Intel X710-T2L 10GbE Card. If the motherboard does not provide 10GbE, this card can
+<li><p>Intel X710-T2L 10 GbE card. If the motherboard does not provide 10 GbE, this card can
 be used to provide high-speed network connectivity.</p></li>
 <li><p>7.68 TB NVMe SSD. Used as the primary data drive.</p></li>
 </ul>
@@ -195,8 +195,8 @@ Control Panel → Power Options → Change plan settings → Advanced power sett
 <section id="install-chipset-platform-drivers-including-intel-management-engine">
 <h4>3. Install chipset platform drivers (including Intel Management Engine)<a class="headerlink" href="#install-chipset-platform-drivers-including-intel-management-engine" title="Permalink to this heading"></a></h4>
 <p>The Intel Management Engine (ME) provides platform management
-capabilities independent of the OS. Install the latest ME drivers, which can be found
-<a class="reference external" href="https://www.intel.com/content/www/us/en/download/682431/intel-management-engine-drivers-for-windows-10-and-windows-11.html">https://www.intel.com/content/www/us/en/download/682431/intel-management-engine-drivers-for-windows-10-and-windows-11.html</a></p>
+capabilities independent of the OS. Install the latest ME drivers from your
+motherboard or system vendor’s support page.</p>
 <ol class="arabic simple">
 <li><p>Install your <strong>vendor chipset driver bundle</strong> (preferred for servers/workstations).</p></li>
 <li><p>Install the <strong>Intel Management Engine Interface (MEI)</strong> driver package (vendor-supplied).</p></li>
@@ -330,7 +330,7 @@ when the platform defaults to NUMA mode). In that case, verify NUMA is active in
 <li><p><a class="reference external" href="https://support.microsoft.com/en-us/windows/automatically-get-recommended-and-updated-hardware-drivers-0549a8d9-4842-8acb-75fa-a6faadb62507">Recommended hardware drivers</a></p></li>
 <li><p><a class="reference external" href="https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/hardware/power/power-performance-tuning">Windows power and performance tuning</a></p></li>
 <li><p><a class="reference external" href="https://learn.microsoft.com/en-us/windows-hardware/drivers/dashboard/understanding-windows-update-automatic-and-optional-rules-for-driver-distribution">Understanding automatic and optional updates</a></p></li>
-<li><p><a class="reference external" href="https://www.intel.com/content/www/us/en/support/articles/000008927/software/chipset-software.html">Intel Management Engine overview</a></p></li>
+<li><p>Intel Management Engine resources (vendor support pages)</p></li>
 <li><p><a class="reference external" href="https://edc.intel.com/content/www/us/en/design/products/ethernet/appnote-perf-tuning-guide-700-series-linux/%E2%80%8Bc-state-control/">C-state guidance - Part 1</a></p></li>
 <li><p><a class="reference external" href="https://www.cisco.com/c/en/us/products/collateral/servers-unified-computing/ucs-c-series-rack-servers/bios-tuning-guide-ucs-m8-intel-xeon-wp.html">C-state guidance - Part 2</a></p></li>
 <li><p><a class="reference external" href="https://frankdenneman.nl/2010/12/28/node-interleaving-enable-or-disable">Node interleaving background</a></p></li>

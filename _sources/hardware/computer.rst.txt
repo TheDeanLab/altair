@@ -6,7 +6,7 @@ Acquisition Computer
 
 Modern scientific cameras are capable of capturing images at very high frame rates.
 For example, the Orca-Lightning from Hamamatsu, when imaging a region of interest of
-4608x128, can image at 2203 frames per second, totalling 1.3 terapixel per second. It
+4608 × 128, can image at 2203 frames per second, totaling 1.3 terapixels per second. It
 is important to have a computer that can handle this data rate. For many applications, we recommend Colfax International's SXP9000 workstation, which
 includes several convenient features, including:
 
@@ -15,12 +15,12 @@ includes several convenient features, including:
     grabbers.
 -   A high-speed NVMe SSD, which can achieve upwards of 20 GB/s under ideal
     conditions.
--   10GbE LAN - 10G Ethernet or faster, if supported by your institution, is highly
+-   10 GbE LAN - 10 G Ethernet or faster, if supported by your institution, is highly
     recommended for transferring data to and from the computer. This computer provides
     this high-speed connection without necessitating an additional network card, freeing
     up precious space in the computer.
 -   USB-C ports that can be used for image display, keyboard, and mouse. Again, by
-    eliminating the need for a graphics card, available space is available to other
+    eliminating the need for a graphics card, more space is available to other
     peripheral devices.
 -   Redundant power supplies - in the event of a power supply failure, the computer will
     continue to operate. Moreover, they will be able to drive some of the more power-hungry
@@ -33,19 +33,19 @@ includes several convenient features, including:
 Standard Specifications
 _______________________
 
-A general build for a imaging computer is as follows:
+A general build for an imaging computer is as follows:
 
 -   Windows 10 Pro. This is the most common operating system for scientific imaging
     applications.
--   2x Intel Xeon Silver CPUs Total of 16 Cores/32 Threads @ 3.2GHz. Higher speeds,
-    and a greater number of cores is advantageous but expensive.
+-   2 × Intel Xeon Silver CPUs, for a total of 16 cores/32 threads at 3.2 GHz. Higher speeds
+    and a greater number of cores are advantageous but expensive.
 -   128 GB of 3200 MHz DDR4 RAM. This is more than sufficient for most applications.
 -   800 GB M.2 NVMe SSD. Used to host and run the operating system.
 -   20 TB 7200 RPM SATA HDD. Used as a 'cold storage' for long-term data storage.
 -   NVIDIA T1000 Video Card. This is a low-end video card that can be used to drive
     displays and perform some basic image processing. The priority for this computer
     is driving the microscope and acquiring data, so a high-end video card is not necessary.
--   Intel X710-T2L 10GbE Card. If the motherboard does not provide 10GbE, this card can
+-   Intel X710-T2L 10 GbE card. If the motherboard does not provide 10 GbE, this card can
     be used to provide high-speed network connectivity.
 -   7.68 TB NVMe SSD. Used as the primary data drive.
 
@@ -90,8 +90,8 @@ Control Panel → Power Options → Change plan settings → Advanced power sett
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Intel Management Engine (ME) provides platform management
-capabilities independent of the OS. Install the latest ME drivers, which can be found
-https://www.intel.com/content/www/us/en/download/682431/intel-management-engine-drivers-for-windows-10-and-windows-11.html
+capabilities independent of the OS. Install the latest ME drivers from your
+motherboard or system vendor's support page.
 
 #. Install your **vendor chipset driver bundle** (preferred for servers/workstations).
 #. Install the **Intel Management Engine Interface (MEI)** driver package (vendor-supplied).
@@ -204,8 +204,7 @@ References
 * `Recommended hardware drivers <https://support.microsoft.com/en-us/windows/automatically-get-recommended-and-updated-hardware-drivers-0549a8d9-4842-8acb-75fa-a6faadb62507>`_
 * `Windows power and performance tuning <https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/hardware/power/power-performance-tuning>`_
 * `Understanding automatic and optional updates <https://learn.microsoft.com/en-us/windows-hardware/drivers/dashboard/understanding-windows-update-automatic-and-optional-rules-for-driver-distribution>`_
-* `Intel Management Engine overview <https://www.intel.com/content/www/us/en/support/articles/000008927/software/chipset-software.html>`_
+* Intel Management Engine resources (vendor support pages)
 * `C-state guidance - Part 1 <https://edc.intel.com/content/www/us/en/design/products/ethernet/appnote-perf-tuning-guide-700-series-linux/%E2%80%8Bc-state-control/>`_
 * `C-state guidance - Part 2 <https://www.cisco.com/c/en/us/products/collateral/servers-unified-computing/ucs-c-series-rack-servers/bios-tuning-guide-ucs-m8-intel-xeon-wp.html>`_
 * `Node interleaving background <https://frankdenneman.nl/2010/12/28/node-interleaving-enable-or-disable>`_
-

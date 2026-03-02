@@ -9,7 +9,7 @@ Imaging Configurations
 
 Our sample chamber features three ports that provide two distinct imaging configurations shown below: the first is a
 traditional light-sheet imaging scheme, where illumination and detection objectives are placed orthogonally to each
-other, and the second is one where the illumination and detection objective are placed coaxially with each other. The
+other, and the second is one where the illumination and detection objectives are placed coaxially with each other. The
 first configuration should be thought of as the default imaging setup for the microscope, and the second allows one to
 observe and characterize the produced light sheet itself. The port not in use should be sealed, which we do using a
 silicon or rubber seal that's able to be fixed onto the exterior of the port using screws. In addition, it should be
@@ -21,7 +21,7 @@ the objectives and prevent any leaking.
     :alt: Two imaging configurations for the sample chamber design
     :width: 300px
 
-    **Figure 1** Two imaging configurations for the sample chamber design
+    **Figure 1:** Two imaging configurations for the sample chamber design
 
 
 -------------
@@ -30,7 +30,7 @@ Visualization of Axes Mapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In our system we essentially have 5 different translation stages at work: the standard x,y, and z axes, an additional
-stage along the z axis to control the focus of the detection path (f), and and axis associated with the piezo positioned
+stage along the z axis to control the focus of the detection path (f), and an axis associated with the piezo positioned
 such that its normal is 60.5 degrees away from the y-axis.
 
 .. figure:: Images/PhysicalAxesMaps.png
@@ -38,7 +38,7 @@ such that its normal is 60.5 degrees away from the y-axis.
     :alt: Layout of how the axis of the system are mapped
     :width: 300px
 
-    **Figure 2** Layout of how the axis of the system are mapped
+    **Figure 2:** Layout of how the axes of the system are mapped
 
 -------------
 
@@ -66,9 +66,9 @@ and using ImageJ to quickly process those images.
        correction collar and repeat Steps 1-5. Each time you adjust the correction collar, you will likely need to update the focus of the microscope.
 
 As a note, observing the camera live-feed via navigate's "Continuous Scan" mode while adjusting the correction collar
-can help to get in the general vicinity of the correct placement of the correction collar. An example of how change in
-the correction collar affect live images are shown below for fluorescent beads. Aiming to get to get the beads near the
-expected light sheet position to be as in-focus as possible is a general guide for what direction to move the collar;
+can help to get in the general vicinity of the correct placement of the correction collar. Examples of how changes in
+the correction collar affect live images are shown below for fluorescent beads. Aiming to get the beads near the
+expected light-sheet position as in focus as possible is a general guide for which direction to move the collar;
 however, true correction needs to be done with the z-projection method mentioned above.
 
 .. figure:: Images/ChangingCorrectionCollar.png
@@ -115,7 +115,7 @@ Deskewing
 ^^^^^^^^^
 
 
-With an image stack acquired, some post processing is still required in order to remove the effects of shearing in our images. The root of this shearing is due to the angled method in which our sample is mounted and similarly, the angled path that the sample moves as the piezo is scanned. A basic visual idea of how deskewing affects the resulting image is shown below for 100 nm fluorescent beads. Here before deskewing for the same image plane (yz), the beads appear to be stacked in a straight line but oriented along an angle, which is not the most accurate representation of our system. On the deskewed image on the right, one can see that the beads are now properly angled correspond to our piezo angle mount, and that the PSFs of the beads is now correctly aligned along the z axis.
+With an image stack acquired, some post-processing is still required to remove shearing effects in our images. The root of this shearing is the angled method in which our sample is mounted and, similarly, the angled path that the sample follows as the piezo is scanned. A basic visual idea of how deskewing affects the resulting image is shown below for 100 nm fluorescent beads. Before deskewing, for the same image plane (yz), the beads appear to be stacked in a straight line but oriented along an angle, which is not the most accurate representation of our system. In the deskewed image on the right, one can see that the beads are now angled to correspond to our piezo angle mount, and that the bead PSFs are now correctly aligned along the z axis.
 
 .. figure:: Images/BeadDeskewExample.png
     :align: center
@@ -123,14 +123,14 @@ With an image stack acquired, some post processing is still required in order to
 
     **Figure 6:** Difference between an image set of 100 nm bead before deskewing (left) and after (right)
 
-To do this deskew processing, we utilize custom-built python code via Jupyter notebooks `available here
+To do this deskew processing, we utilize custom-built Python code via Jupyter notebooks `available here
 <https://github.com/TheDeanLab/altair/blob/main/downloads/common/python/Deskewing_1Channel_Compass.ipynb>`_.
-The user needs to provide the correct file path to the .tif image stack collected via navigate, as well as the parameters of the imaging system like z-step size, xy pixel size, and the angle that the images should be deskewed over. In our case, our deskew angle is equivalent to 90-60.5 degrees, where 60.5 degrees corresponds to the difference between the normal of our angle mount and the y-axis. If this value is unknown, one can use different values for the deskew angle until the bead PSFs are correctly aligned along the z-axis and not angled.
+The user needs to provide the correct file path to the `.tif` image stack collected via navigate, as well as imaging-system parameters such as z-step size, xy pixel size, and the angle over which the images should be deskewed. In our case, our deskew angle is equivalent to 90 - 60.5 degrees, where 60.5 degrees corresponds to the difference between the normal of our angle mount and the y-axis. If this value is unknown, one can use different values for the deskew angle until the bead PSFs are correctly aligned along the z-axis and not angled.
 
 Reslicing
 ^^^^^^^^^
 
-Reslicing in ImageJ is a process that allows one to be able to reconstruct different planes of a 3D image set. In other words, it allows one to view the XY, XZ, and YZ projections of the same image set. In our system, our default viewing plane is the XY plane, and so we reslice to observe the XZ and YZ planes. The reslicing process within ImageJ is done after deskewing, and involves opening up the Reslicing panel (Image-> Stacks-> Reslice). Within this panel, one just needs to select the direction of the reslice (typically just top or left). For our system, top slicing provides us with the YZ plane view where one can observe the angled orientation of our sample setup after projection (Image-> Stacks-> Z Project). This is shown below for the same 100 nm bead samples used in the Deskewing and Rescaling portions of this page.
+Reslicing in ImageJ is a process that allows reconstruction of different planes of a 3D image set. In other words, it allows one to view the XY, XZ, and YZ projections of the same image set. In our system, the default viewing plane is the XY plane, so we reslice to observe the XZ and YZ planes. The reslicing process within ImageJ is done after deskewing, and involves opening the Reslicing panel (Image -> Stacks -> Reslice). Within this panel, one needs to select the reslice direction (typically top or left). For our system, top reslicing provides the YZ plane view, where one can observe the angled orientation of our sample setup after projection (Image -> Stacks -> Z Project). This is shown below for the same 100 nm bead samples used in the Deskewing and Rescaling portions of this page.
 
 .. figure:: Images/ResliceTop.png
     :align: center
@@ -156,7 +156,7 @@ The same process can then be done to obtain the XZ plane view of our sample by r
     :align: center
     :alt: The XZ projection of our bead images after reslicing.
 
-    **Figure 10** The XZ projection of our bead images after reslicing.
+    **Figure 10:** The XZ projection of our bead images after reslicing.
 
 Deconvolution
 ^^^^^^^^^^^^^

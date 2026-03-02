@@ -74,9 +74,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Altair-ASLM/CTASLM/SPIM v1</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ALSM/CTASLM Baseplate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ALSM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ALSM/CTASLM Baseplate Example Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ASLM/CTASLM Baseplate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ASLM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ASLM/CTASLM Baseplate Example Images</a></li>
 </ul>
 
         </div>
@@ -108,7 +108,7 @@
 <span id="voicecoil-home"></span><h1>Remote Focus Actuator<a class="headerlink" href="#remote-focus-actuator" title="Permalink to this heading"></a></h1>
 <p>In Axially Swept Light-Sheet Microscopy (ASLM), axial scanning is achieved by driving a mirror placed at the focus of a remote objective. To maintain high-fidelity imaging, the remote focus actuator must precisely synchronize its motion with the rolling shutter of the camera. However, designing for speed and accuracy involves trade-offs. As the stroke of the actuator increases, its mechanical bandwidth decreases, limiting the maximum acquisition rate for large field of view imaging. Similarly, higher scan frequencies tend to reduce the scan amplitude and introduce phase delays, which can degrade image quality, especially at the edges of the field of view. Therefore, it is crucial to select an actuator that balances these factors effectively.</p>
 <p>Early implementations of ASLM used piezoelectric actuators, but modern systems often employ voice coil actuators for improved performance. We have tested two commercially available systems: the LFA2004 from Equipment Solutions and the Blink from Thorlabs. The LFA2004 is reliable, easy to configure, and sufficient for most imaging applications, while the Blink offers higher performance at the cost of greater complexity and sensitivity to tuning. For most users, we recommend the LFA2004.</p>
-<p>When ordering the LFA2004, we typically request the stage configured with the SCA814 amplifier and SPS15 power supply. For standard ASLM configurations, we recommend tuning the system for a ~2 gram mirror with a 30µm sawtooth waveform (90% duty cycle). The factory can preconfigure the unit to accept an analog position command by default (servo active). If oscillation or high-frequency noise is observed when the servo is engaged, you can fine-tune the control loop via the RS232 interface by adjusting the “A” and “B” parameters. A common stable configuration is A 40 20 and B 80 5, though slight adjustments may be necessary depending on your optical load and mechanical setup.</p>
+<p>When ordering the LFA2004, we typically request the stage configured with the SCA814 amplifier and SPS15 power supply. For standard ASLM configurations, we recommend tuning the system for a ~2 gram mirror with a 30 µm sawtooth waveform (90% duty cycle). The factory can preconfigure the unit to accept an analog position command by default (servo active). If oscillation or high-frequency noise is observed when the servo is engaged, you can fine-tune the control loop via the RS232 interface by adjusting the “A” and “B” parameters. A common stable configuration is A 40 20 and B 80 5, though slight adjustments may be necessary depending on your optical load and mechanical setup.</p>
 </section>
 
 

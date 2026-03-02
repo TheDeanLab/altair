@@ -8,7 +8,7 @@ Initial Lens Selection
 ______________________
 
 Prior to starting optical simulations in Zemax, it's convenient to start with straightforward
-calculations to determine which lenses to use in the optical train to achieve the desired field of view (FoV) for your
+calculations to determine which lenses to use in the optical train to achieve the desired field of view (FOV) for your
 detection path. In our case, our detection path consisted of a 400 mm tube lens and a Nikon 25x/1.1 numerical aperture (NA) immersion detection objective.
 
 .. figure:: Images/DetectionPath.png
@@ -47,7 +47,7 @@ detection path. In our case, our detection path consisted of a 400 mm tube lens 
 
 
 
-To determine the target FoV, start with determining the final magnification (M) of the system using the ratio of the focal lengths of the tube lens (*f*:subscript:`TL`) and the detection objective (*f*:subscript:`DO`, Equation 1.).
+To determine the target FOV, start by determining the final magnification (M) of the system using the ratio of the focal lengths of the tube lens (:math:`f_{\text{TL}}`) and the detection objective (:math:`f_{\text{DO}}`, Equation 1).
 
 .. math::
 
@@ -55,26 +55,26 @@ To determine the target FoV, start with determining the final magnification (M) 
 
 
 
-From there, determine the resulting FoV of the detection path by dividing the total camera sensor size (in mm) by the magnification, and then converting into microns (Equation 2).
+From there, determine the resulting FOV of the detection path by dividing the total camera sensor size (in mm) by the magnification, and then converting into microns (Equation 2).
 
 .. math::
 
-   \text{FoV} \ (\mu m) = \left( \frac{W_{\text{Sensor}}}{M} \right) \times 1000
+   \text{FOV} \ (\mu m) = \left( \frac{W_{\text{Sensor}}}{M} \right) \times 1000
 
-For our system, where *f*:subscript:`TL` = 400 mm, *f*:subscript:`DO` = 8 mm, and W :subscript:`Sensor` = 13 mm,
-this resulted in a FoV of ~266 :math:`\mu m`, meaning that we want to select lenses in our illumination path
+For our system, where :math:`f_{\text{TL}}` = 400 mm, :math:`f_{\text{DO}}` = 8 mm, and :math:`W_{\text{Sensor}}` = 13 mm,
+this resulted in a FOV of ~266 :math:`\mu m`, meaning that we want to select lenses in our illumination path
 to produce a light sheet as close to 266 :math:`\mu m` in length as we can achieve.
 
 The overarching goal of a standard optical system is to both mold light into a particular shape and direct it to a
-particular location. In our case, our optical system works to convert an input gaussian beam into a thin light sheet that illuminates our sample. There are a few sets of criteria that help guide our potential lens selection:
+particular location. In our case, our optical system works to convert an input Gaussian beam into a thin light sheet that illuminates our sample. There are a few sets of criteria that help guide our potential lens selection:
 
-    * As mentioned, we want our final light sheet size to ideally cover the full FoV of our detection path (~266 μm)
+    * As mentioned, we want our final light sheet size to ideally cover the full FOV of our detection path (~266 μm)
     * At the focus of our cylindrical lens, we want the beam spot size to stay under the size of our resonant galvo (12 mm diameter)
     * We need the focal distance between the cylindrical lens and the galvo mirror system to be greater than ~55 mm due to mechanical considerations of the mirror mount used
 
 With these criteria in mind, we can calculate a theoretical estimate of what our beam size is after each of our lenses. We
 do this by considering every pair of lenses (i.e. Lens 1 & 2, Lens 2 & 3, ...) as a sort of 4F magnification system,
-where the resulting image size of the pairs is determined by the ratio of their focal lengths (*f*:subscript:`n`) as follows:
+where the resulting image size of the pairs is determined by the ratio of their focal lengths (:math:`f_n`) as follows:
 
 
 .. figure:: Images/4FSystem.png
@@ -106,7 +106,7 @@ We can then take these lens choices and load them into Zemax OpticStudio to veri
 Zemax Simulation Setup Process
 ______________________________
 
-With our chosen lenses in mind, we can download Zemax files associated with each lens directly from Thorlabs website
+With our chosen lenses in mind, we can download Zemax files associated with each lens directly from the Thorlabs website
 and set up our simulation.
 
 .. figure:: Images/ThorlabsExample.png
@@ -115,7 +115,7 @@ and set up our simulation.
 
     **Figure 4:** An example of a Zemax file download from Thorlabs. The file contains the optical properties of the lens, which can be imported into Zemax OpticStudio.
 
-Here, we use Zemax as a tool to find the optimal placement of all the lenses of our system based on whether or not the input beam should be focusing or collimated after each lens. As a general rule of thumb, one should build optical systems in Zemax in an element-by-element manner instead of adding all the optical elements and trying to then optimize aspects of it. Our general flow involves adding a lens to the system and then optimizing for either either a focused or collimated beam, and then adding in the next lens and doing the same process until all lenses are placed in the system. This is described in more detail below.
+Here, we use Zemax as a tool to find the optimal placement of all the lenses in our system based on whether the input beam should be focused or collimated after each lens. As a general rule of thumb, one should build optical systems in Zemax in an element-by-element manner instead of adding all optical elements and then trying to optimize aspects of the full system at once. Our general flow involves adding a lens to the system and then optimizing for either a focused or collimated beam, followed by adding the next lens and repeating the process until all lenses are placed in the system. This is described in more detail below.
 
 For our particular system, our generalized process went as follows:
 
@@ -158,9 +158,9 @@ For our particular system, our generalized process went as follows:
 Zemax Simulation Analysis
 _________________________
 
-Within Zemax, there are numerous analysis tools available to investigate different characteristics of optical systems. Our analysis will primarily be guided by the Geometric Image Analysis, Huygen's PSF, and Through Focus Spot tools. Zemax innately uses geometric ray tracing in most all of its operations like beam optimization. This is generally-acceptable for most optical systems; however, as our output light sheet size approaches the diffraction limit ( :math:`\frac{\lambda}{2NA}` ), we need to make sure to also consider the effects of diffraction in our analysis.
+Within Zemax, there are numerous analysis tools available to investigate different characteristics of optical systems. Our analysis is primarily guided by the Geometric Image Analysis, Huygens PSF, and Through Focus Spot tools. Zemax natively uses geometric ray tracing in most operations such as beam optimization. This is generally acceptable for most optical systems; however, as our output light-sheet size approaches the diffraction limit (:math:`\frac{\lambda}{2NA}`), we also need to consider diffraction effects in our analysis.
 
-The Huygen's PSF analysis tool is how we incorporate effects of diffraction into our analysis; where we anticipate results from this analysis to be more in-line with what would be seen on the physical system. Based on the cross section of our Huygen's PSF analysis, we can see that our expected Full-Width Half-Max (FWHM) of the light sheet is expected to lie somewhere around 0.376 :math:`\mu m`.
+The Huygens PSF analysis tool is how we incorporate diffraction effects into our analysis; we anticipate results from this analysis to be more in line with what would be observed on the physical system. Based on the cross section of our Huygens PSF analysis, we can see that the expected full width at half maximum (FWHM) of the light sheet is around 0.376 :math:`\mu m`.
 
 We compare the results of these two analyses for our optimized illumination path below, where we show the full XY profile
 as well as cross-sections through the center row of both beam profiles. In this case, the FWHM of both analyses ends up
@@ -168,9 +168,9 @@ being quite similar at ~0.37 :math:`\mu m`.
 
 .. figure:: Images/HuygensvsGeo.png
     :align: center
-    :alt: Comparison of Geometric Image Analysis and Huygen's PSF analysis for our optimized system
+    :alt: Comparison of Geometric Image Analysis and Huygens PSF analysis for our optimized system
 
-    **Figure 7:** A comparison of the Geometric Image Analysis and Huygen's PSF analysis for our optimized system. The FWHM of the light sheet is expected to be around 0.376 :math:`\mu m`.
+    **Figure 7:** A comparison of the Geometric Image Analysis and Huygens PSF analysis for our optimized system. The FWHM of the light sheet is expected to be around 0.376 :math:`\mu m`.
 
 Through Focus Spot analysis allows us to essentially see the evolution of the light sheet through the point of focus, where we can then estimate a sort of range where we expect the width of the light sheet to be thin enough for our imaging purposes, where the maximum usable light sheet width is the FWHM at the focus multiplied by :math:`\sqrt{2}`. The optimized illumination path simulation files are available in the `Zemax <https://github.com/TheDeanLab/altair/tree/main/downloads/base/zemax>`_ folder of our repository.
 
@@ -187,7 +187,7 @@ When considering building physical systems using Zemax, an additional analysis t
 
     **Figure 8:** The merit function used in our Zemax tolerancing analysis. The merit function is used to evaluate the performance of the system based on the size and position of the output light sheet.
 
-With a merit function criteria set, the next step is to designate which elements of the system will change and by how much. In our case, we wanted to associate our tolerance analysis with the machining tolerances given by fabrication companies. In general, looking across different companies, the standard machining tolerance is around +-0.005" and the finer machining tolerance is around +-0.002". For our analysis, we wanted to understand how angular deviations in elements due to machining tolerances in the alignment dowel pins would affect overall system performance. This is depicted below, where in the worst case scenario of one pin being offset +0.005" and the other -0.005" the resulting angular offset would be around 1.45 degrees.
+With a merit function criterion set, the next step is to designate which elements of the system will change and by how much. In our case, we wanted to associate our tolerance analysis with the machining tolerances given by fabrication companies. In general, looking across different companies, the standard machining tolerance is around +-0.005" and the finer machining tolerance is around +-0.002". For our analysis, we wanted to understand how angular deviations in elements due to machining tolerances in the alignment dowel pins would affect overall system performance. This is depicted below, where in the worst-case scenario of one pin being offset +0.005" and the other -0.005", the resulting angular offset would be around 1.45 degrees.
 
 .. figure:: Images/AlignmentHole.png
     :align: center
@@ -195,11 +195,11 @@ With a merit function criteria set, the next step is to designate which elements
 
     **Figure 9:** The angular offset of elements due to machining tolerances of alignment dowel pin holes. In the worst case scenario, the angular offset is around 1.45 degrees.
 
-In addition to perturbations to a system, in tolerancing analysis a compensator can also be defined as a sort of designated element that can be changed in ways to try to mitigate effects of other elements in the system being tweaked. In our case, we define the xy position of our illumination objective as a compensator with a range of +-0.25mm, which matches the xy translation adjustment associated with our `objective mount used <https://www.thorlabs.com/thorproduct.cfm?partnumber=POLARIS-1XY>`_.
+In addition to perturbations to a system, in tolerancing analysis a compensator can also be defined as a designated element that can be changed to mitigate the effects of other tweaked elements in the system. In our case, we define the XY position of our illumination objective as a compensator with a range of +-0.25 mm, which matches the XY translation adjustment associated with our `objective mount <https://www.thorlabs.com/thorproduct.cfm?partnumber=POLARIS-1XY>`_.
 
-The basic way in which this analysis works is that Zemax performs a designated number of Monte Carlo simulations, each with a different perturbation made to the system, and evaluates the merit function for each of those systems. Based on the change to the merit function for each of these instances, tolerancing outputs a report that describes the sensitivity of the merit function to each of the different elements in the system. In some cases, tolerancing analysis gives information as to how much . An example of this is for a lens designer tolerancing the radii or material properties of a lens to ensure it's focal length stays above or below a certain value. For our system though, even with our designated merit function, it is difficult to directly ascribe a sort of cutoff value of the merit function as acceptable, and so we primarily use tolerancing analysis as a way to guide us as to general trends of sensitivity in the elements of our system.
+The basic way in which this analysis works is that Zemax performs a designated number of Monte Carlo simulations, each with a different perturbation made to the system, and evaluates the merit function for each of those systems. Based on the change to the merit function for each instance, tolerancing outputs a report that describes the sensitivity of the merit function to each element in the system. In some cases, tolerancing analysis provides information about how much a parameter can vary before performance becomes unacceptable. An example is a lens designer tolerancing the radii or material properties of a lens to ensure its focal length stays above or below a certain value. For our system, even with our designated merit function, it is difficult to directly ascribe a cutoff value of the merit function as acceptable, so we primarily use tolerancing analysis as a way to guide general trends of sensitivity in system elements.
 
-This is shown below, where in this instance we can see that in the case of our system, the element corresponding to the 24th surface (the galvo mirror) causes the most change to the merit function as it becomes perturbed. In all cases, the largest perturbations in the system (i.e. when the angular offset of an element is maximum at +-1.45 degrees) results in the largest changes to the merit function.
+This is shown below, where in this instance we can see that, in the case of our system, the element corresponding to the 24th surface (the galvo mirror) causes the most change to the merit function as it becomes perturbed. In all cases, the largest perturbations in the system (i.e. when the angular offset of an element is maximum at +-1.45 degrees) result in the largest changes to the merit function.
 
 We also set our tolerance analysis to output the best and worst instances from the Monte Carlo simulations as individual files, and the corresponding geometric image analysis windows are shown for each as well as the nominal optimized case for comparison. It's clear that in the worst case scenario, it looks like the resulting light sheet is shorter in span than that of the nominal and best cases.
 
@@ -209,7 +209,7 @@ We also set our tolerance analysis to output the best and worst instances from t
 
     **Figure 10:** Results of the tolerancing analysis when the offset corresponded to +-0.005". The merit function is used to evaluate the performance of the system based on the size and position of the output light sheet.
 
-To understand how tighter tolerances might affect system performance, we set our angular offset to correspond to tighter machining tolerances offered online at +-0.002". Typically, tighter machining tolerances correspond to an increase in price, so understanding if higher tolerances would benefit a system is beneficial. We can the same tolerance analysis as before, but this time with an angular offset of +-0.581 degrees, and show the results below. In this analysis, once again the element that affects the system most adversely is the galvo mirror element. The deviations in the resulting merit functions from this element are about a tenth of that of the larger machining tolerance case. Visually, in the worst case example, one can see that the resulting light sheet looks much closer to the nominal case than before as well.
+To understand how tighter tolerances might affect system performance, we set our angular offset to correspond to tighter machining tolerances offered online at +-0.002". Typically, tighter machining tolerances correspond to an increase in price, so understanding whether tighter tolerances would benefit a system is useful. We can run the same tolerance analysis as before, but this time with an angular offset of +-0.581 degrees, and show the results below. In this analysis, once again, the element that affects the system most adversely is the galvo mirror element. The deviations in the resulting merit functions from this element are about a tenth of that of the larger machining-tolerance case. Visually, in the worst-case example, one can see that the resulting light sheet looks much closer to the nominal case than before.
 
 .. figure:: Images/Tolerance_Fine.png
     :align: center
@@ -218,8 +218,7 @@ To understand how tighter tolerances might affect system performance, we set our
     **Figure 11:** Results of the tolerancing analysis when the offset corresponded to +-0.002". The merit function is used to evaluate the performance of the system based on the size and position of the output light sheet.
 
 
-The results of our tolerancing analysis, as well as the associated lens files for our best and wort case instances for both fine and coarse tolerancing are available `here <https://github
-.com/TheDeanLab/altair/tree/main/downloads/base/zemax>`_.
+The results of our tolerancing analysis, as well as the associated lens files for our best and worst-case instances for both fine and coarse tolerancing, are available `here <https://github.com/TheDeanLab/altair/tree/main/downloads/base/zemax>`_.
 
 ----------------
 
@@ -245,8 +244,7 @@ For mounting our elements, we utilize the `Polaris <https://www.thorlabs.com/nav
     **Figure 13:** A schematic of the Polaris mounting system. The system is characterized by two dowel pin alignment holes to ensure subsequent mounted elements are aligned along a specific axis.
 
 While we are able to use most of our element mounts from the Polaris line, for the cylindrical lens L3 we needed a mount capable of rotating the lens, which at this time is not something available from Thorlabs. In our case we designed an additional mounting element that allows the use of a basic Thorlabs
-`RSP1 rotation mount <https://www.thorlabs.com/thorproduct.cfm?partnumber=RSP1>`_, but still ensures alignment with the other Polaris elements. The CAD file for this mount is available for download `in our CAD directory <https://github
-.com/TheDeanLab/altair/tree/main/downloads/base/cad>`_.
+`RSP1 rotation mount <https://www.thorlabs.com/thorproduct.cfm?partnumber=RSP1>`_, but still ensures alignment with the other Polaris elements. The CAD file for this mount is available for download `in our CAD directory <https://github.com/TheDeanLab/altair/tree/main/downloads/base/cad>`_.
 
 .. figure:: Images/RotationMount.png
     :align: center
@@ -291,19 +289,17 @@ With the baseplate designed, our final assembly for our illumination path looks 
 
     **Figure 18:** A top view of the baseplate assembly.
 
-The CAD files for our baseplate design are available in the following `GitHub repository <https://github
-.com/TheDeanLab/altair/tree/main/downloads/base/cad>`_.
+The CAD files for our baseplate design are available in the following `GitHub repository <https://github.com/TheDeanLab/altair/tree/main/downloads/base/cad>`_.
 
 ----------------
 
 Physical Coordinate Definitions
 _______________________________
 
-It should be noted briefly that when discussing our physical microscope systems using navigate software, the definitions for the coordinate axes is different than that of our simulations. This is due to a difference in standardized definitions for the axes in our previous systems and how Zemax defines these same axes. This difference is depicted in the picture below:
+It should be noted briefly that when discussing our physical microscope systems using navigate software, the coordinate-axis definitions are different from those in our simulations. This is due to differences between the standardized axis definitions used in our previous systems and how Zemax defines these same axes. This difference is depicted in the figure below:
 
 .. figure:: Images/CoordinateSchemeChange.png
     :align: center
     :alt: Difference in coordinate axes for simulation and physical setup
 
     **Figure 19:** A schematic of the difference in coordinate axes for simulation and physical setup.
-

@@ -54,9 +54,9 @@ maximizing imaging efficiency. Additionally, by leveraging highly sensitive scie
 (e.g., 4×10\ :sup:`6` pixels), LSFM enables massively parallelized image acquisition—recording
 entire planes in a single exposure rather than scanning point-by-point.
 
-For instance, a typical laser scanning confocal microscope requires **~4.16s** to acquire
-a **2048 × 2048** voxel image, given a voxel dwell time of **1µs**. In contrast, an LSFM can
-image the same region in just **~5ms**, an **832-fold** increase in speed, all while maintaining a
+For instance, a typical laser scanning confocal microscope requires **~4.16 s** to acquire
+a **2048 × 2048** voxel image, given a voxel dwell time of **1 µs**. In contrast, an LSFM can
+image the same region in just **~5 ms**, an **832-fold** increase in speed, all while maintaining a
 **5,000-fold longer** per-voxel dwell time. This extended dwell time enables improved signal
 accumulation, lower laser power requirements, and a significantly improved signal-to-noise
 ratio (SNR). As a result, LSFM is uniquely suited for long-term volumetric imaging at high
@@ -69,7 +69,7 @@ spatiotemporal resolution while reducing photodamage.
    image formation at any given moment during an imaging process. In **laser scanning confocal microscopy**,
    only a single point is illuminated at a time, resulting in a **low duty cycle** and requiring compensatory increases in laser
    power to maintain signal. In contrast, **light-sheet fluorescence microscopy (LSFM)** illuminates and images an entire plane at once,
-   yielding a **duty cycle** that approaches 100%, enabling drastically reduced laser powers that reduce phototoxicity, .
+   yielding a **duty cycle** that approaches 100%, enabling drastically reduced laser powers that reduce phototoxicity.
 
 
 ---------------
@@ -89,8 +89,8 @@ reliability of 3D imaging:
 -   **Nyquist Sampling in Space and Time:**
     To faithfully capture dynamic processes, the event of interest must be **Nyquist sampled** in both
     spatial and temporal dimensions. For example, the GTPase cycle times of Rho, Rac, and Cdc42 can be
-    as short as 5s, necessitating volumetric acquisitions at :math:`\leq` 2.5s per volume with a spatial resolution
-    of **<500nm**. Furthermore, resolution should ideally be **isotropic or nearly isotropic** to prevent
+    as short as 5 s, necessitating volumetric acquisitions at :math:`\leq` 2.5 s per volume with a spatial resolution
+    of **<500 nm**. Furthermore, resolution should ideally be **isotropic or nearly isotropic** to prevent
     morphology-dependent intensity artifacts—particularly for signaling events at the plasma membrane.
 
 -   **Multicolor Excitation and Detection:**
@@ -109,7 +109,7 @@ reliability of 3D imaging:
     When imaging dynamic processes in **extracellular matrix environments** (where cells can migrate in
     any direction) or within a **developing embryo**, the microscope must provide a sufficiently **large field
     of view (FOV)**—ideally **>100 × 100 × 100 µm**. Many leading **light-sheet fluorescence microscopes
-    (LSFMs)** are optimized for small fields of view (e.g., 25µm), which limits their applicability to studies
+    (LSFMs)** are optimized for small fields of view (e.g., 25 µm), which limits their applicability to studies
     of large-scale tissue dynamics.
 
 -   **Avoidance of Computational Post-Processing Biases:**

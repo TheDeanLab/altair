@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Altair ALSM/CTASLM Baseplate &mdash; altair  documentation</title>
+  <title>Altair ASLM/CTASLM Baseplate &mdash; altair  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
@@ -25,7 +25,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ALSM/CTASLM Baseplate Assembly &amp; Alignment" href="../baseplate2_alignment/baseplate2_alignment.html" />
+    <link rel="next" title="ASLM/CTASLM Baseplate Assembly &amp; Alignment" href="../baseplate2_alignment/baseplate2_alignment.html" />
     <link rel="prev" title="Live-Cell Imaging" href="../live_cell/live_cell.html" /> 
 </head>
 
@@ -68,7 +68,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Altair-ASLM/CTASLM/SPIM v1</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Altair ALSM/CTASLM Baseplate</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Altair ASLM/CTASLM Baseplate</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#zemax-simulation-setup-process">Zemax Simulation Setup Process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adapting-for-ct-aslm">Adapting for CT-ASLM</a></li>
@@ -76,8 +76,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#final-baseplate-design">Final Baseplate Design</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ALSM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ALSM/CTASLM Baseplate Example Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ASLM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ASLM/CTASLM Baseplate Example Images</a></li>
 </ul>
 
         </div>
@@ -94,7 +94,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Altair ALSM/CTASLM Baseplate</li>
+      <li class="breadcrumb-item active">Altair ASLM/CTASLM Baseplate</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/baseplate2/baseplate2.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -104,8 +104,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="altair-alsm-ctaslm-baseplate">
-<span id="aslmbaseplate-home"></span><h1>Altair ALSM/CTASLM Baseplate<a class="headerlink" href="#altair-alsm-ctaslm-baseplate" title="Permalink to this heading"></a></h1>
+  <section id="altair-aslm-ctaslm-baseplate">
+<span id="aslmbaseplate-home"></span><h1>Altair ASLM/CTASLM Baseplate<a class="headerlink" href="#altair-aslm-ctaslm-baseplate" title="Permalink to this heading"></a></h1>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
 <p>For the second iteration of our Altair baseplate system, we set out to make a number of different updates/upgrades
@@ -123,27 +123,27 @@ switching or upgrading between these modes is as accessible as possible and does
 components along their respective illumination paths.</p>
 <p>The primary distinction between ASLM/CTASLM and our SPIM paths is the incorporation of a remote focusing objective (RFO)
 system into the illumination path itself. The RFO system essentially allows the light sheet focus to be swept across
-the full field of view (FoV) of your imaging sensor, in comparison to the traditional SPIM system which is limited to a
+the full field of view (FOV) of your imaging sensor, in comparison to the traditional SPIM system which is limited to a
 thin line profile on the imaging sensor. More information on ASLM can be found <a class="reference external" href="https://www.nature.com/articles/s41596-022-00706-6">here</a>.
 Figure 1 below details the ASLM process, where on the left a schematic of how the focus of the light sheet is swept and
-synced with the rolling shutter of an associated camera system in ASLM is shown. On the right is two different images
-taken where the top image is taken without utilizing the RFO and the bottom is utilizing the RFO, where when it’s
-utilized the beam is able to be swept across the full FoV of the image.</p>
+synced with the rolling shutter of an associated camera system in ASLM is shown. On the right are two images:
+the top image is taken without utilizing the RFO, and the bottom image is taken with the RFO, where the beam is swept
+across the full FOV of the image.</p>
 <figure class="align-center" id="id1">
-<img alt="Images showing the ability of the RFO in ASLM to sweep the light sheet focus across a camera FoV" src="../_images/ASLMIntro.png" />
+<img alt="Images showing the ability of the RFO in ASLM to sweep the light sheet focus across a camera FOV" src="../_images/ASLMIntro.png" />
 <figcaption>
 <p><span class="caption-text"><strong>Figure 1:</strong> Introduction to the features of ASLM.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
-<p>Another notable update for these microscope systems are that they also are fully optimized via simulation for three
+<p>Another notable update for these microscope systems is that they are fully optimized via simulation for three
 different illumination wavelengths (488 nm, 560 nm, and 640 nm), whereas our first baseplate design was optimized
 specifically for 488 nm. This should improve the overall quality of imaging between the different excitation
 wavelengths used in various fluorescent tags.</p>
 <p>In addition to the aforementioned upgrades, this iteration of Altair also allows for a Powell lens instead of a
 cylindrical lens as the element that forms our light sheet profile itself. Powell lenses are a specialized variant of
 lenses that are known to produce line profiles with consistent and uniform intensity. When utilized in light-sheet
-imaging, these lenses essentially help provide a more uniform intensity of illumination across the full FoV of the
-imaging sensor when compared to cylindrically formed light-sheets which feature more of a gaussian intensity
+imaging, these lenses essentially help provide a more uniform intensity of illumination across the full FOV of the
+imaging sensor when compared to cylindrically formed light-sheets which feature more of a Gaussian intensity
 distribution associated with them. More information on Powell lenses can be found at <a class="reference external" href="https://laserlineoptics.com/pages/buyers-guide">Laserline Optics</a>.</p>
 </section>
 <hr class="docutils" />
@@ -152,14 +152,14 @@ distribution associated with them. More information on Powell lenses can be foun
 <p>Similarly to our methods used for designing our <a class="reference external" href="https://thedeanlab.github.io/altair/design_principles/design_process.html">first iteration of our baseplate</a>, we first start by
 using basic magnification equations to select theoretical focal lengths of lenses that would be needed along our
 illumination path to form a light sheet with our desired physical characteristics. A basic schematic of what one of
-these powell-lens-based ALSM systems would look like is shown below in Figure (2).</p>
+these Powell-lens-based ASLM systems would look like is shown below in Figure 2.</p>
 <figure class="align-center" id="id2">
 <img alt="Schematic of the ASLM illumination path design" src="../_images/Altair_ASLM_Schematic.png" />
 <figcaption>
 <p><span class="caption-text"><strong>Figure 2:</strong> Schematic of the ASLM illumination path design.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
-<p>Of note in the design process is the careful considerations in abberation-prevention in a remote focusing system is to
+<p>A key consideration in the design process is aberration prevention in a remote-focusing system to
 ensure mapping the magnification of the remote focus objective (RFO) to that of the illumination objective (ILO). In
 our case our chosen illumination objective is the Thorlabs TL20X-MPL and our remote focus objective is the Thorlabs
 TL15X-2P.</p>
@@ -222,7 +222,7 @@ these two refractive indices for our immersion media:</p>
 </tbody>
 </table>
 <p>With the lenses selected, we then moved forward with the simulation and optimization of our illumination path in
-Zemax Opticstudio. Due to the way in which the blackbox files we utilize associated with the objective in our system
+Zemax OpticStudio. Due to the way in which the blackbox files we utilize associated with the objective in our system
 are designed, we structured our simulation in a way that essentially unfurled the forward and reverse paths of our
 system to all be in a single direction, where our reverse path is essentially mirrored with respect to our forward
 path. This setup is shown below in Figure 3.</p>
@@ -259,7 +259,7 @@ were found to be:</p>
 <p>In order to see how the remote focusing unit would function within our illumination path, we took our
 initially-optimized path and inserted an additional offset at the focus of the RFO (the inflection point between the
 forward and reverse paths), with the goal of seeing if we would be able to shift the focus position of our beam
-across our 266 micron imaging FoV. Our process is essentially as follows:</p>
+across our 266 µm imaging FOV. Our process is essentially as follows:</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>Insert desired RFO offset</p></li>
@@ -272,9 +272,9 @@ dummy surface</p></li>
 </ol>
 </div></blockquote>
 <p>The results from this process for our ASLM configuration are shown below in Figure 4, where we track the focus
-position for each wavelength as we increase the RFO offset to 150 um. From this, we saw that by adjusting the RFO
-offset, we were able to sweep our light sheet focus up to roughly ~225 um in a single direction. By adjusting the RFO
-offset both in a positive and negative direction this would allow us to cover our full imaging FoV easily.</p>
+position for each wavelength as we increase the RFO offset to 150 µm. From this, we saw that by adjusting the RFO
+offset, we were able to sweep our light-sheet focus up to roughly ~225 µm in a single direction. By adjusting the RFO
+offset both in a positive and negative direction this would allow us to cover our full imaging FOV easily.</p>
 <figure class="align-center" id="id4">
 <img alt="ASLM RFO Simulations" src="../_images/ASLM_RFOOffset.png" />
 <figcaption>
@@ -282,12 +282,12 @@ offset both in a positive and negative direction this would allow us to cover ou
 </figcaption>
 </figure>
 <p>In addition, we tracked how the FWHM cross-sectional profile of our beam changed as we adjusted the RFO offset to
-make sure it stayed consistent as it would be swept across our image FoV, shown in Figure 5. From these, it can be
+make sure it stayed consistent as it would be swept across our image FOV, shown in Figure 5. From these, it can be
 seen that even up to our largest RFO offset, our beam waist stays consistent in size across all wavelengths.</p>
 <figure class="align-center" id="id5">
 <img alt="ASLM FWHM Simulations" src="../_images/ASLM_ProfileAll.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 5:</strong> Results from our Zemax simulations of the light sheet FWHM’s from adjusting the RFO offset</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 5:</strong> Results from our Zemax simulations of the light-sheet FWHMs from adjusting the RFO offset</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -297,7 +297,7 @@ seen that even up to our largest RFO offset, our beam waist stays consistent in 
 <p>In order to allow for a wider variety of biological structures to be studied in our systems, we adapted aspects of
 our ASLM design detailed above to be optimized for imaging cleared or expanded tissue or bone samples, in a
 configuration known as cleared-tissue ASLM (CT-ASLM). These samples require a different type of immersion media
-compared to the water (n=1.33) used in traditional ALSM, where typically liquids like BABB (n=1.56) can be used to
+compared to the water (n=1.33) used in traditional ASLM, where typically liquids like BABB (n=1.56) can be used to
 match the refractive index of the cleared samples.</p>
 <p>Our illumination and detection objectives for our CT-ASLM system are changed to both be ASI 54-12-8 Multi-immersion
 objectives, which are designed to be able to withstand being immersed in media like refractive-index matching media
@@ -309,7 +309,7 @@ used in our standard ASLM configuration, so we need to revisit our choice of len
 <div class="math notranslate nohighlight">
 \[\frac{f_{\text{L7}}}{f_{\text{L6}}} = 0.9167\]</div>
 <p>Based on this relationship, we chose L7 to be f = 180 mm and L6 to be f = 200 mm, and used the equivalent tube lenses
-from Thorlabs that match these (TTL180-A and TTL200-A, respectively). Our path elements for the CTASLM then becomes:</p>
+from Thorlabs that match these (TTL180-A and TTL200-A, respectively). Our path elements for the CTASLM then become:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Lens #</p></th>
@@ -358,7 +358,6 @@ from Thorlabs that match these (TTL180-A and TTL200-A, respectively). Our path e
 </table>
 <p>Re-optimizing the system with our new illumination objective and L7 with a sample immersion media of n = 1.56 yielded
 the following FWHM of our end light sheet widths:</p>
-<p>Custom sample chamber for CTASLM</p>
 <table class="docutils align-center">
 <thead>
 <tr class="row-odd"><th class="head"><p>Wavelength</p></th>
@@ -386,7 +385,7 @@ the following FWHM of our end light sheet widths:</p>
 <figure class="align-center" id="id7">
 <img alt="CT-ASLM FWHM Simulations" src="../_images/CTASLM_ProfileAll.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 7:</strong> CT-ASLM Results from our Zemax simulations of the light sheet FWHM’s from adjusting the RFO offset</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 7:</strong> CT-ASLM results from our Zemax simulations of the light-sheet FWHMs from adjusting the RFO offset</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -456,7 +455,7 @@ iteration to use a Powell lens approach.</p>
 <figure class="align-center" id="id9">
 <img alt="SPIM FWHM Simulations" src="../_images/SPIM_ProfileAll.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 9:</strong> SPIM Results from our Zemax simulations of the light sheet FWHM’s for different wavelengths</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 9:</strong> SPIM results from our Zemax simulations of the light-sheet FWHMs for different wavelengths</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -470,9 +469,9 @@ lens through L5), having the illumination paths on the same baseplate allows for
 imaging modes. This could serve as an accessible way for labs to test light-sheet imaging in their research via the
 lower-cost SPIM configuration, and then decide later that they would like to upgrade to the capabilities of an ASLM
 or CT-ASLM system where they only need to buy the additional components and plug them into the same baseplate. It
-this configuration also allows for the straightforward switching between ASLM and CT-ASLM capabilities by swapping
+This configuration also allows straightforward switching between ASLM and CT-ASLM capabilities by swapping
 L7, the illumination objective, and the sample chamber used.</p>
-<p>Going through the same process we detailed for our first baseplate iteration <a class="reference external" href="https://thedeanlab.github.io/altair/design_principles/design_process.html">our first baseplate iteration</a>, we determined the
+<p>Going through the same process we detailed for <a class="reference external" href="https://thedeanlab.github.io/altair/design_principles/design_process.html">our first baseplate iteration</a>, we determined the
 locations where holes on our baseplate would need to be to correctly position the optical components of all three of
 our potential illumination paths. Our final baseplate design for our second iteration of Altair is shown below in
 Figure 10.</p>
@@ -490,7 +489,7 @@ Figure 10.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../live_cell/live_cell.html" class="btn btn-neutral float-left" title="Live-Cell Imaging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../baseplate2_alignment/baseplate2_alignment.html" class="btn btn-neutral float-right" title="ALSM/CTASLM Baseplate Assembly &amp; Alignment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../baseplate2_alignment/baseplate2_alignment.html" class="btn btn-neutral float-right" title="ASLM/CTASLM Baseplate Assembly &amp; Alignment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,7 +1,7 @@
 .. _aslmbaseplate-home:
 
 ############################
-Altair ALSM/CTASLM Baseplate
+Altair ASLM/CTASLM Baseplate
 ############################
 
 Overview
@@ -21,20 +21,20 @@ components along their respective illumination paths.
 
 The primary distinction between ASLM/CTASLM and our SPIM paths is the incorporation of a remote focusing objective (RFO)
 system into the illumination path itself. The RFO system essentially allows the light sheet focus to be swept across
-the full field of view (FoV) of your imaging sensor, in comparison to the traditional SPIM system which is limited to a
+the full field of view (FOV) of your imaging sensor, in comparison to the traditional SPIM system which is limited to a
 thin line profile on the imaging sensor. More information on ASLM can be found `here <https://www.nature.com/articles/s41596-022-00706-6>`_.
 Figure 1 below details the ASLM process, where on the left a schematic of how the focus of the light sheet is swept and
-synced with the rolling shutter of an associated camera system in ASLM is shown. On the right is two different images
-taken where the top image is taken without utilizing the RFO and the bottom is utilizing the RFO, where when it's
-utilized the beam is able to be swept across the full FoV of the image.
+synced with the rolling shutter of an associated camera system in ASLM is shown. On the right are two images:
+the top image is taken without utilizing the RFO, and the bottom image is taken with the RFO, where the beam is swept
+across the full FOV of the image.
 
 .. figure:: Images/ASLMIntro.png
     :align: center
-    :alt: Images showing the ability of the RFO in ASLM to sweep the light sheet focus across a camera FoV
+    :alt: Images showing the ability of the RFO in ASLM to sweep the light sheet focus across a camera FOV
 
     **Figure 1:** Introduction to the features of ASLM.
 
-Another notable update for these microscope systems are that they also are fully optimized via simulation for three
+Another notable update for these microscope systems is that they are fully optimized via simulation for three
 different illumination wavelengths (488 nm, 560 nm, and 640 nm), whereas our first baseplate design was optimized
 specifically for 488 nm. This should improve the overall quality of imaging between the different excitation
 wavelengths used in various fluorescent tags.
@@ -42,8 +42,8 @@ wavelengths used in various fluorescent tags.
 In addition to the aforementioned upgrades, this iteration of Altair also allows for a Powell lens instead of a
 cylindrical lens as the element that forms our light sheet profile itself. Powell lenses are a specialized variant of
 lenses that are known to produce line profiles with consistent and uniform intensity. When utilized in light-sheet
-imaging, these lenses essentially help provide a more uniform intensity of illumination across the full FoV of the
-imaging sensor when compared to cylindrically formed light-sheets which feature more of a gaussian intensity
+imaging, these lenses essentially help provide a more uniform intensity of illumination across the full FOV of the
+imaging sensor when compared to cylindrically formed light-sheets which feature more of a Gaussian intensity
 distribution associated with them. More information on Powell lenses can be found at `Laserline Optics <https://laserlineoptics.com/pages/buyers-guide>`_.
 
 
@@ -56,7 +56,7 @@ ______________________________
 Similarly to our methods used for designing our `first iteration of our baseplate <https://thedeanlab.github.io/altair/design_principles/design_process.html>`_, we first start by
 using basic magnification equations to select theoretical focal lengths of lenses that would be needed along our
 illumination path to form a light sheet with our desired physical characteristics. A basic schematic of what one of
-these powell-lens-based ALSM systems would look like is shown below in Figure (2).
+these Powell-lens-based ASLM systems would look like is shown below in Figure 2.
 
 .. figure:: Images/Altair_ASLM_Schematic.png
     :align: center
@@ -64,7 +64,7 @@ these powell-lens-based ALSM systems would look like is shown below in Figure (2
 
     **Figure 2:** Schematic of the ASLM illumination path design.
 
-Of note in the design process is the careful considerations in abberation-prevention in a remote focusing system is to
+A key consideration in the design process is aberration prevention in a remote-focusing system to
 ensure mapping the magnification of the remote focus objective (RFO) to that of the illumination objective (ILO). In
 our case our chosen illumination objective is the Thorlabs TL20X-MPL and our remote focus objective is the Thorlabs
 TL15X-2P.
@@ -126,7 +126,7 @@ With that relationship solidified, we then moved forward with selecting our lens
          - https://www.thorlabs.com/thorproduct.cfm?partnumber=TL20X-MPL
 
 With the lenses selected, we then moved forward with the simulation and optimization of our illumination path in
-Zemax Opticstudio. Due to the way in which the blackbox files we utilize associated with the objective in our system
+Zemax OpticStudio. Due to the way in which the blackbox files we utilize associated with the objective in our system
 are designed, we structured our simulation in a way that essentially unfurled the forward and reverse paths of our
 system to all be in a single direction, where our reverse path is essentially mirrored with respect to our forward
 path. This setup is shown below in Figure 3.
@@ -160,7 +160,7 @@ were found to be:
 In order to see how the remote focusing unit would function within our illumination path, we took our
 initially-optimized path and inserted an additional offset at the focus of the RFO (the inflection point between the
 forward and reverse paths), with the goal of seeing if we would be able to shift the focus position of our beam
-across our 266 micron imaging FoV. Our process is essentially as follows:
+across our 266 µm imaging FOV. Our process is essentially as follows:
 
     1. Insert desired RFO offset
     2. Re-optimize the simulation for the focus position of the illumination objective (all wavelengths weighted
@@ -171,9 +171,9 @@ across our 266 micron imaging FoV. Our process is essentially as follows:
     5. Repeat Steps 3&4 for each wavelength, and 1&2 for each RFO offset distance
 
 The results from this process for our ASLM configuration are shown below in Figure 4, where we track the focus
-position for each wavelength as we increase the RFO offset to 150 um. From this, we saw that by adjusting the RFO
-offset, we were able to sweep our light sheet focus up to roughly ~225 um in a single direction. By adjusting the RFO
-offset both in a positive and negative direction this would allow us to cover our full imaging FoV easily.
+position for each wavelength as we increase the RFO offset to 150 µm. From this, we saw that by adjusting the RFO
+offset, we were able to sweep our light-sheet focus up to roughly ~225 µm in a single direction. By adjusting the RFO
+offset both in a positive and negative direction this would allow us to cover our full imaging FOV easily.
 
 .. figure:: Images/ASLM_RFOOffset.png
     :align: center
@@ -182,14 +182,14 @@ offset both in a positive and negative direction this would allow us to cover ou
     **Figure 4:** Results from our Zemax simulations of the light sheet focus offset from adjusting the RFO offset
 
 In addition, we tracked how the FWHM cross-sectional profile of our beam changed as we adjusted the RFO offset to
-make sure it stayed consistent as it would be swept across our image FoV, shown in Figure 5. From these, it can be
+make sure it stayed consistent as it would be swept across our image FOV, shown in Figure 5. From these, it can be
 seen that even up to our largest RFO offset, our beam waist stays consistent in size across all wavelengths.
 
 .. figure:: Images/ASLM_ProfileAll.png
     :align: center
     :alt: ASLM FWHM Simulations
 
-    **Figure 5:** Results from our Zemax simulations of the light sheet FWHM's from adjusting the RFO offset
+    **Figure 5:** Results from our Zemax simulations of the light-sheet FWHMs from adjusting the RFO offset
 
 
 --------------------
@@ -201,7 +201,7 @@ ____________________
 In order to allow for a wider variety of biological structures to be studied in our systems, we adapted aspects of
 our ASLM design detailed above to be optimized for imaging cleared or expanded tissue or bone samples, in a
 configuration known as cleared-tissue ASLM (CT-ASLM). These samples require a different type of immersion media
-compared to the water (n=1.33) used in traditional ALSM, where typically liquids like BABB (n=1.56) can be used to
+compared to the water (n=1.33) used in traditional ASLM, where typically liquids like BABB (n=1.56) can be used to
 match the refractive index of the cleared samples.
 
 Our illumination and detection objectives for our CT-ASLM system are changed to both be ASI 54-12-8 Multi-immersion
@@ -220,7 +220,7 @@ Where our new relationship between L6 and L7 becomes:
    \frac{f_{\text{L7}}}{f_{\text{L6}}} = 0.9167
 
 Based on this relationship, we chose L7 to be f = 180 mm and L6 to be f = 200 mm, and used the equivalent tube lenses
-from Thorlabs that match these (TTL180-A and TTL200-A, respectively). Our path elements for the CTASLM then becomes:
+from Thorlabs that match these (TTL180-A and TTL200-A, respectively). Our path elements for the CTASLM then become:
 
 .. list-table::
        :header-rows: 1
@@ -259,8 +259,6 @@ from Thorlabs that match these (TTL180-A and TTL200-A, respectively). Our path e
 Re-optimizing the system with our new illumination objective and L7 with a sample immersion media of n = 1.56 yielded
 the following FWHM of our end light sheet widths:
 
-Custom sample chamber for CTASLM
-
 .. list-table::
        :align: center
        :header-rows: 1
@@ -284,7 +282,7 @@ Custom sample chamber for CTASLM
     :align: center
     :alt: CT-ASLM FWHM Simulations
 
-    **Figure 7:** CT-ASLM Results from our Zemax simulations of the light sheet FWHM's from adjusting the RFO offset
+    **Figure 7:** CT-ASLM results from our Zemax simulations of the light-sheet FWHMs from adjusting the RFO offset
 
 ------------------
 
@@ -343,7 +341,7 @@ iteration to use a Powell lens approach.
     :align: center
     :alt: SPIM FWHM Simulations
 
-    **Figure 9:** SPIM Results from our Zemax simulations of the light sheet FWHM's for different wavelengths
+    **Figure 9:** SPIM results from our Zemax simulations of the light-sheet FWHMs for different wavelengths
 
 ----------------------
 
@@ -358,10 +356,10 @@ lens through L5), having the illumination paths on the same baseplate allows for
 imaging modes. This could serve as an accessible way for labs to test light-sheet imaging in their research via the
 lower-cost SPIM configuration, and then decide later that they would like to upgrade to the capabilities of an ASLM
 or CT-ASLM system where they only need to buy the additional components and plug them into the same baseplate. It
-this configuration also allows for the straightforward switching between ASLM and CT-ASLM capabilities by swapping
+This configuration also allows straightforward switching between ASLM and CT-ASLM capabilities by swapping
 L7, the illumination objective, and the sample chamber used.
 
-Going through the same process we detailed for our first baseplate iteration `our first baseplate iteration <https://thedeanlab.github.io/altair/design_principles/design_process.html>`_, we determined the
+Going through the same process we detailed for `our first baseplate iteration <https://thedeanlab.github.io/altair/design_principles/design_process.html>`_, we determined the
 locations where holes on our baseplate would need to be to correctly position the optical components of all three of
 our potential illumination paths. Our final baseplate design for our second iteration of Altair is shown below in
 Figure 10.

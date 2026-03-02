@@ -5,11 +5,28 @@
 **Altair**
 #####################
 
+.. image:: https://img.shields.io/badge/eLife-Article%20106910-0B7285
+   :target: https://elifesciences.org/articles/106910
+   :alt: eLife article 106910
+
+.. image:: https://img.shields.io/badge/DOI-10.7554%2FeLife.106910-1f6feb
+   :target: https://doi.org/10.7554/eLife.106910
+   :alt: DOI 10.7554/eLife.106910
+
 Biologists are increasingly transitioning towards more complex assays that require volumetric imaging with high spatiotemporal resolution. Whether it is a developing embryo, the formation of an immunological synapse, cancer migrating through a 3D collagen matrix, these biological processes can only be understood when non-invasively and quantitatively evaluated in their entirety through time.
 
 To meet these growing demands, we aim to develop simplified optical systems that provide cutting-edge imaging performance while ensuring ease of assembly and accessibility. By leveraging precision-engineered, baseplate-mounted designs, we eliminate unnecessary degrees of freedom, making high-resolution light-sheet microscopy more robust, reproducible, and approachable for researchers across disciplines. Our goal is to create powerful yet modular imaging platforms that enable biologists to focus on discovery rather than instrument complexity, accelerating the adoption of advanced volumetric imaging techniques.
 
 -----------
+
+**Publication**
+=========================
+
+`Haug et al., 2025 (eLife 14:RP106910) <https://doi.org/10.7554/eLife.106910>`_ describes Altair-LSFM as a high-resolution, sample-scanning, open-source light-sheet microscope designed for subcellular imaging with straightforward assembly and reproducible alignment.
+
+In bead-based benchmarking, Altair-LSFM achieved average FWHM values of 328 nm (x), 330 nm (y), and 464 nm (z) before deconvolution, improving to 235.5 nm (x), 233.5 nm (y), and 350.4 nm (z) after deconvolution across a 266 um field of view. The manuscript further demonstrates fixed-cell imaging of nuclei, microtubules, actin filaments, and Golgi, as well as live-cell imaging of microtubules and vimentin in migrating cells.
+
+--------
 
 **Project Philosophy**
 =========================

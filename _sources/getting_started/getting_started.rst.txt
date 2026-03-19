@@ -59,5 +59,11 @@ This can be changed to match your stage setup by editing the following part of t
                 -
                   type: ASI
                   serial_number: 001
-                  axes: [x, y, z, f]          # software stages
+                  axes: [x, y, z, f]          # software stages 
                   axes_mapping: [X, Y, Z, F]  # hardware stages
+
+.. figure:: Images/IMG_4341.png
+    :align: center
+    :alt: Tiger Controller with specified cards for Altair
+
+    **Figure 3:** Tiger Controller with specified cards for Altair

@@ -405,21 +405,67 @@ To accurately tune the amplitude, offset, and delay values, follow the following
   - An offset of about 5V with the Altair setup should bring the center of the focus to the 
     center of the camera FOV. 
 
+.. list-table::
+   :widths: 50 50
+   :header-rows: 0
+
+   * - .. figure:: images/assembly/offset.png
+          :width: 100%
+          :align: center
+
+          Aligning waveform center
+
+     - .. figure:: images/assembly/beam_offset.png
+          :width: 100%
+          :align: center
+
+          Corresponding beam image (beam focus in center of camera FOV)
+
 **2. Tune the amplitude to align with the rolling shutter**
   - Gradually increase the amplitude until the laser line is straight across the camera FOV.
     An amplitude of about 0.5 V aligns with the rolling shutter of the Hamamatsu Orca Flash. This 
     value will change based on the camera used, exposure time, and number of pixels (scan width).
-    If the amplitude moves the thinnest part of the beam away from the center, the offset can be 
+    If the amplitude moves the thinnest part of the beam away from the center, the delay can be 
     adjusted to move it back to the center.
 
+.. list-table::
+   :widths: 50 50
+   :header-rows: 0
+
+   * - .. figure:: images/assembly/amplitude.png
+          :width: 100%
+          :align: center
+
+          Aligning waveform amplitude. 
+
+     - .. figure:: images/assembly/beam_amplitude.png
+          :width: 100%
+          :align: center
+
+          Corresponding beam image
+
 **3. Tune the delay values.**
-  - There is an ideal waveform. The amplitude will create a parallel waveform, and the offset and 
-    delay values will shift the waveform vertically and horizontally respectively. Adjusting the offset 
-    as described in step 2 will often cause the beam to thicken. If this happens, the delay value can be 
-    tuned to line the mirror up with the ideal waveform again. Increasing the offset needs to paired with 
-    increasing the remote focus delay, while decreasing the offset needs to be paired with decreasing the 
-    remote focus delay. If the remote focus delay reaches 0 ms, then the camera delay can be increased,
-    essentially acting as a negative remote focus delay.
+  - There is an ideal waveform. The amplitude will adjust the slope and create a parallel waveform, 
+    and the offset and delay values will shift the waveform vertically and horizontally respectively. 
+    If the thinnest part of the beam is below the center of the camera FOV (as shown above), decreasing 
+    the remote focus delay will bring the thinnest part of the beam up. If the remote focus delay reaches 
+    0 ms, then the camera delay can be increased, essentially acting as a negative remote focus delay.
+
+.. list-table::
+   :widths: 50 50
+   :header-rows: 0
+
+   * - .. figure:: images/assembly/delay.png
+          :width: 100%
+          :align: center
+
+          Example of waveform that needs delay tuning.
+
+     - .. figure:: images/assembly/beam_delay.png
+          :width: 100%
+          :align: center
+
+          Corresponding beam image.
 
 Detection Path Assembly
 ^^^^^^^^^^^^^^^^^^^^^^^

@@ -62,8 +62,16 @@ This can be changed to match your stage setup by editing the following part of t
                   axes: [x, y, z, f]          # software stages 
                   axes_mapping: [X, Y, Z, F]  # hardware stages
 
-.. figure:: Images/IMG_4341.png
+.. figure:: images/TG_16.png
     :align: center
     :alt: Tiger Controller with specified cards for Altair
 
-    **Figure 3:** Tiger Controller with specified cards for Altair
+    **Figure 1:** Tiger Controller with specified cards for Altair
+
+The wiring diagram for the Altair-ASLM with ASI Control is shown below:
+
+.. figure:: images/TigerControllerConnections.png
+    :align: center
+    :alt: Tiger Controller Connections
+
+    **Figure 2:** Tiger Controller Connections

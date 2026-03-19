@@ -293,7 +293,7 @@ The servo amplifier has two command input terminals, operated in a differential 
 
 These are shown in the servo amplifier manual.
 
-.. figure:: images/assembly/servo_manual_cmd_terminals.png
+.. figure:: Images/assembly/servo_manual_cmd_terminals.png
    :alt: Servo manual showing +Cmd and -Cmd terminals
    :align: center
 
@@ -320,7 +320,7 @@ Connect as follows:
 | (Reference)          |                       |
 +----------------------+-----------------------+
 
-.. figure:: images/assembly/physical_wiring_example.png
+.. figure:: Images/assembly/physical_wiring_example.png
    :alt: Physical wiring between Tiger controller and servo amplifier
    :align: center
 
@@ -409,13 +409,13 @@ To accurately tune the amplitude, offset, and delay values, follow the following
    :widths: 50 50
    :header-rows: 0
 
-   * - .. figure:: images/assembly/offset.png
+   * - .. figure:: Images/assembly/offset.png
           :width: 100%
           :align: center
 
           Aligning waveform center
 
-     - .. figure:: images/assembly/beam_offset.png
+     - .. figure:: Images/assembly/beam_offset.png
           :width: 100%
           :align: center
 
@@ -432,13 +432,13 @@ To accurately tune the amplitude, offset, and delay values, follow the following
    :widths: 50 50
    :header-rows: 0
 
-   * - .. figure:: images/assembly/amplitude.png
+   * - .. figure:: Images/assembly/amplitude.png
           :width: 100%
           :align: center
 
           Aligning waveform amplitude. 
 
-     - .. figure:: images/assembly/beam_amplitude.png
+     - .. figure:: Images/assembly/beam_amplitude.png
           :width: 100%
           :align: center
 
@@ -455,13 +455,13 @@ To accurately tune the amplitude, offset, and delay values, follow the following
    :widths: 50 50
    :header-rows: 0
 
-   * - .. figure:: images/assembly/delay.png
+   * - .. figure:: Images/assembly/delay.png
           :width: 100%
           :align: center
 
           Example of waveform that needs delay tuning.
 
-     - .. figure:: images/assembly/beam_delay.png
+     - .. figure:: Images/assembly/beam_delay.png
           :width: 100%
           :align: center
 

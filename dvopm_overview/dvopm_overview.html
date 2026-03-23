@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Remote Focus Actuator &mdash; altair  documentation</title>
+  <title>Altair dvOPM &mdash; altair  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
@@ -23,9 +23,7 @@
         <script src="../_static/design-tabs.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Getting Started" href="../getting_started/getting_started.html" />
-    <link rel="prev" title="Laser Sources" href="lasers.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,18 +47,11 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../introduction/introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../introduction/background.html">Overview of Subcellular Light-Sheet Microscope Technologies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../design_principles/required_software.html">Software</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Room and Hardware Considerations</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="room_preparation.html">Preparation of the Imaging Room</a></li>
-<li class="toctree-l2"><a class="reference internal" href="table.html">Optical Table</a></li>
-<li class="toctree-l2"><a class="reference internal" href="computer.html">Acquisition Computer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lasers.html">Laser Sources</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Remote Focus Actuator</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware/index.html">Room and Hardware Considerations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
 </ul>
@@ -99,10 +90,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Room and Hardware Considerations</a></li>
-      <li class="breadcrumb-item active">Remote Focus Actuator</li>
+      <li class="breadcrumb-item active">Altair dvOPM</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/hardware/voicecoil.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/dvopm_overview/dvopm_overview.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -110,20 +100,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="remote-focus-actuator">
-<span id="voicecoil-home"></span><h1>Remote Focus Actuator<a class="headerlink" href="#remote-focus-actuator" title="Permalink to this heading"></a></h1>
-<p>In Axially Swept Light-Sheet Microscopy (ASLM), axial scanning is achieved by driving a mirror placed at the focus of a remote objective. To maintain high-fidelity imaging, the remote focus actuator must precisely synchronize its motion with the rolling shutter of the camera. However, designing for speed and accuracy involves trade-offs. As the stroke of the actuator increases, its mechanical bandwidth decreases, limiting the maximum acquisition rate for large field of view imaging. Similarly, higher scan frequencies tend to reduce the scan amplitude and introduce phase delays, which can degrade image quality, especially at the edges of the field of view. Therefore, it is crucial to select an actuator that balances these factors effectively.</p>
-<p>Early implementations of ASLM used piezoelectric actuators, but modern systems often employ voice coil actuators for improved performance. We have tested two commercially available systems: the LFA2004 from Equipment Solutions and the Blink from Thorlabs. The LFA2004 is reliable, easy to configure, and sufficient for most imaging applications, while the Blink offers higher performance at the cost of greater complexity and sensitivity to tuning. For most users, we recommend the LFA2004.</p>
-<p>When ordering the LFA2004, we typically request the stage configured with the SCA814 amplifier and SPS15 power supply. For standard ASLM configurations, we recommend tuning the system for a ~2 gram mirror with a 30 µm sawtooth waveform (90% duty cycle). The factory can preconfigure the unit to accept an analog position command by default (servo active). If oscillation or high-frequency noise is observed when the servo is engaged, you can fine-tune the control loop via the RS232 interface by adjusting the “A” and “B” parameters. A common stable configuration is A 40 20 and B 80 5, though slight adjustments may be necessary depending on your optical load and mechanical setup.</p>
+  <section id="altair-dvopm">
+<span id="dvopm-home"></span><h1>Altair dvOPM<a class="headerlink" href="#altair-dvopm" title="Permalink to this heading"></a></h1>
+<p>The Direct-View OPM (dvOPM) system is an oblique-plane light-sheet microscope designed for mesoscopic fluorescence imaging of large specimens. The system projects an oblique image plane directly onto a compact camera sensor without the use of a tertiary objective, simplifying the remote-imaging path while preserving light-sheet optical sectioning. This architecture enables a compact detection path while preserving the optical sectioning advantages of light-sheet microscopy.
+The implementation presented here focuses on practical engineering improvements to simplify construction and alignment of the system. The detection path uses a pair of readily available photographic lenses to form the remote image directly on the camera sensor, while the illumination and detection subsystems are implemented as modular baseplate assemblies. These design choices reduce optical complexity, constrain alignment degrees of freedom, and support reproducible assembly within the Altair platform.</p>
+<section id="system-overview">
+<h2>System Overview<a class="headerlink" href="#system-overview" title="Permalink to this heading"></a></h2>
+<p>The dvOPM system consists of independent illumination and detection optical trains arranged around a shared sample region. The illumination subsystem generates an oblique The light sheet intersects the specimen at an oblique angle relative to the imaging stage, while the emitted fluorescence is captured by the primary objective and relayed through the detection optics, which project the tilted image plane directly onto the camera sensor.
+The microscope operates using a stage-scanning acquisition geometry, where the specimen is translated through the stationary illumination and detection planes to acquire volumetric data. The illumination and detection optics are implemented as independent modular assemblies mounted on precision baseplates. The detection module is attached to a vertically oriented translation stage that allows adjustment of the imaging plane relative to the specimen while maintaining the fixed optical geometry of the system.</p>
+<hr class="docutils" />
+</section>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="lasers.html" class="btn btn-neutral float-left" title="Laser Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../getting_started/getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

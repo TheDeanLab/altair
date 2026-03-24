@@ -80,6 +80,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#detection-path-zemax-analysis">Detection Path: Zemax Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#illumination-path-zemax-analysis">Illumination Path: Zemax Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#detection-path-baseplate-design">Detection Path: Baseplate Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#illumination-path-baseplate-design">Illumination Path: Baseplate Design</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">Altair DV-OPM Baseplate Design</a></li>
@@ -149,7 +150,7 @@ During optimization, central field points were assigned higher weighting than pe
 </figcaption>
 </figure>
 <figure class="align-center" id="id4">
-<a class="reference internal image-reference" href="dvopm_design/Images/DetectionPath.png"><img alt="Schematic of a standard, widefield detection path." src="dvopm_design/Images/DetectionPath.png" style="width: 100px;" /></a>
+<a class="reference internal image-reference" href="../_images/tilted_plane_visualization.svg"><img alt="Schematic of a Fields setup in a physical sense" src="../_images/tilted_plane_visualization.svg" width="100px" /></a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure 1:</strong> Description</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
 </figcaption>
@@ -200,15 +201,16 @@ Resolution was quantified using the MTF20 criterion, defined as the spatial freq
 To express resolution in object space, the spatial frequency values were converted by accounting for the system magnification. The resolution was computed as:
 Resolution=frac{1000}{f_{image}cdot M}
 where f_{image} is the spatial frequency in frac{lp}{mm} reported by Zemax, Mapprox1.3 is the system magnification, and the factor of 1000 converts the result to micrometers. This calculation was applied independently to both tangential and sagittal MTF20 values at each field location.
-The MTF data were exported from Zemax as raw numerical values and processed externally for analysis. The resulting resolution values across all 35 field points (7 × 5 grid) were mapped onto the tilted object plane and visualized as an interpolated heatmap, providing a spatial representation of resolution variation across the imaging region.</p>
+The MTF data were exported from Zemax as raw numerical values and processed externally for analysis. The resulting resolution values across all 35 field points (7 × 5 grid) were mapped onto the tilted object plane and visualized as an interpolated heatmap, providing a spatial representation of resolution variation across the imaging region.
+The tangential and sagittal resolution at the main axis are µm and µm respectively.</p>
 <figure class="align-center" id="id8">
-<a class="reference internal image-reference" href="dvopm_design/Images/DetectionPath.png"><img alt="Schematic of a standard, widefield detection path." src="dvopm_design/Images/DetectionPath.png" style="width: 100px;" /></a>
+<a class="reference internal image-reference" href="../_images/tangential_heatmap.svg"><img alt="Schematic of a standard, widefield detection path." src="../_images/tangential_heatmap.svg" width="100px" /></a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure 1:</strong> Description</span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id9">
-<a class="reference internal image-reference" href="dvopm_design/Images/DetectionPath.png"><img alt="Schematic of a standard, widefield detection path." src="dvopm_design/Images/DetectionPath.png" style="width: 100px;" /></a>
+<a class="reference internal image-reference" href="../_images/sagittal_heatmap.svg"><img alt="Schematic of a standard, widefield detection path." src="../_images/sagittal_heatmap.svg" width="100px" /></a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure 1:</strong> Description</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
 </figcaption>
@@ -251,6 +253,38 @@ This baseplate design constrains the relative positioning of optical components 
 <a class="reference internal image-reference" href="dvopm_design/Images/DetectionPath.png"><img alt="Schematic of a standard, widefield detection path." src="dvopm_design/Images/DetectionPath.png" style="width: 100px;" /></a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure 1:</strong> Description</span><a class="headerlink" href="#id13" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<hr class="docutils" />
+<section id="illumination-path-baseplate-design">
+<h2>Illumination Path: Baseplate Design<a class="headerlink" href="#illumination-path-baseplate-design" title="Permalink to this heading"></a></h2>
+<p>The illumination baseplate was designed following the same principles established in the Altair platform for translating Zemax-optimized optical layouts into physical assemblies. The optimized element-to-element distances obtained from the Zemax model were used to define the relative placement of components, while standardized mounting using the Thorlabs Polaris system provides mechanical stability and repeatable alignment. The general baseplate design approach is consistent with the methodology described in the Altair documentation.</p>
+<p>The illumination train is implemented as a sequence of mounted optical elements arranged on a planar baseplate, preserving the relay geometry defined during simulation. However, unlike a purely planar optical system, the illumination path must deliver the beam to an inverted imaging stage and intersect the specimen at an oblique angle of approximately 20° relative to the stage.</p>
+<p>To achieve this, the final section of the baseplate incorporates a vertical mounting structure with an inclined arm, which redirects the beam upward and sets the required incidence angle at the sample. This folded geometry allows the illumination system to remain mechanically constrained within the baseplate while positioning the light sheet at the correct height, location, and angle relative to the detection objective.</p>
+<p>This design extends the standard Altair baseplate approach to accommodate the geometric constraints of oblique-plane illumination, while preserving the advantages of constrained alignment and reproducible system assembly.</p>
+<figure class="align-center" id="id14">
+<a class="reference internal image-reference" href="dvopm_design/Images/DetectionPath.png"><img alt="Schematic of a standard, widefield detection path." src="dvopm_design/Images/DetectionPath.png" style="width: 100px;" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1:</strong> Description</span><a class="headerlink" href="#id14" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id15">
+<a class="reference internal image-reference" href="dvopm_design/Images/DetectionPath.png"><img alt="Schematic of a standard, widefield detection path." src="dvopm_design/Images/DetectionPath.png" style="width: 100px;" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1:</strong> Description</span><a class="headerlink" href="#id15" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id16">
+<a class="reference internal image-reference" href="dvopm_design/Images/DetectionPath.png"><img alt="Schematic of a standard, widefield detection path." src="dvopm_design/Images/DetectionPath.png" style="width: 100px;" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1:</strong> Description</span><a class="headerlink" href="#id16" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id17">
+<a class="reference internal image-reference" href="dvopm_design/Images/DetectionPath.png"><img alt="Schematic of a standard, widefield detection path." src="dvopm_design/Images/DetectionPath.png" style="width: 100px;" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1:</strong> Description</span><a class="headerlink" href="#id17" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>

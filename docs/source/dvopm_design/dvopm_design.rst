@@ -49,8 +49,8 @@ During optimization, central field points were assigned higher weighting than pe
 
    **Figure 1:** Description
 
-.. figure:: Images/DetectionPath.png
-   :alt: Schematic of a standard, widefield detection path.
+.. figure:: Images/tilted_plane_visualization.svg
+   :alt: Schematic of a Fields setup in a physical sense
    :align: center
    :width: 100px
 
@@ -112,15 +112,16 @@ To express resolution in object space, the spatial frequency values were convert
 Resolution=\frac{1000}{f_{image}\ \cdot M} 
 where f_{image} is the spatial frequency in \frac{lp}{mm} reported by Zemax, M\approx1.3 is the system magnification, and the factor of 1000 converts the result to micrometers. This calculation was applied independently to both tangential and sagittal MTF20 values at each field location.
 The MTF data were exported from Zemax as raw numerical values and processed externally for analysis. The resulting resolution values across all 35 field points (7 × 5 grid) were mapped onto the tilted object plane and visualized as an interpolated heatmap, providing a spatial representation of resolution variation across the imaging region.
+The tangential and sagittal resolution at the main axis are µm and µm respectively.
 
-.. figure:: Images/DetectionPath.png
+.. figure:: Images/tangential_heatmap.svg
    :alt: Schematic of a standard, widefield detection path.
    :align: center
    :width: 100px
 
    **Figure 1:** Description
 
-.. figure:: Images/DetectionPath.png
+.. figure:: Images/sagittal_heatmap.svg
    :alt: Schematic of a standard, widefield detection path.
    :align: center
    :width: 100px
@@ -160,6 +161,49 @@ The detection subsystem follows an inverted layout incorporating two photographi
 A kinematic mirror mount is positioned directly below the filter wheel to introduce a 90° beam fold, enabling the orthogonal arrangement of the relay. The second photographic lens (O2) is attached to the output port of the mirror mount using appropriate adapters, completing the detection path.
 The entire detection assembly is mounted on a linear translation stage, allowing adjustment of the imaging plane relative to the specimen for focusing. At the camera end, a manual linear stage provides fine axial adjustment, and a rotary stage enables alignment of the camera sensor with the tilted image plane.
 This baseplate design constrains the relative positioning of optical components while preserving the required degrees of freedom for focus and sensor alignment, reducing the complexity of system assembly.
+
+.. figure:: Images/DetectionPath.png
+   :alt: Schematic of a standard, widefield detection path.
+   :align: center
+   :width: 100px
+
+   **Figure 1:** Description
+
+.. figure:: Images/DetectionPath.png
+   :alt: Schematic of a standard, widefield detection path.
+   :align: center
+   :width: 100px
+
+   **Figure 1:** Description
+
+
+------------------------------
+
+Illumination Path: Baseplate Design
+______________________________
+
+The illumination baseplate was designed following the same principles established in the Altair platform for translating Zemax-optimized optical layouts into physical assemblies. The optimized element-to-element distances obtained from the Zemax model were used to define the relative placement of components, while standardized mounting using the Thorlabs Polaris system provides mechanical stability and repeatable alignment. The general baseplate design approach is consistent with the methodology described in the Altair documentation.
+
+The illumination train is implemented as a sequence of mounted optical elements arranged on a planar baseplate, preserving the relay geometry defined during simulation. However, unlike a purely planar optical system, the illumination path must deliver the beam to an inverted imaging stage and intersect the specimen at an oblique angle of approximately 20° relative to the stage.
+
+To achieve this, the final section of the baseplate incorporates a vertical mounting structure with an inclined arm, which redirects the beam upward and sets the required incidence angle at the sample. This folded geometry allows the illumination system to remain mechanically constrained within the baseplate while positioning the light sheet at the correct height, location, and angle relative to the detection objective.
+
+This design extends the standard Altair baseplate approach to accommodate the geometric constraints of oblique-plane illumination, while preserving the advantages of constrained alignment and reproducible system assembly.
+
+
+.. figure:: Images/DetectionPath.png
+   :alt: Schematic of a standard, widefield detection path.
+   :align: center
+   :width: 100px
+
+   **Figure 1:** Description
+
+.. figure:: Images/DetectionPath.png
+   :alt: Schematic of a standard, widefield detection path.
+   :align: center
+   :width: 100px
+
+   **Figure 1:** Description
 
 .. figure:: Images/DetectionPath.png
    :alt: Schematic of a standard, widefield detection path.

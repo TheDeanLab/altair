@@ -1,18 +1,35 @@
 .. _dvopmcharacterization-home:
 
 ##############################
-Altair DV-OPM Baseplate Design
+Altair DV-OPM Characterization
 ##############################
 
-Overview
-______________________
+------------------------------
+
+Beads
+_____
 
 Placeholder
 
 ------------------------------
 
-
-Zemax Simulation Setup Process
-______________________________
+Cells
+_____
 
 Placeholder
+
+------------------------------
+
+Liver
+_____
+
+Placeholder
+
+------------------------------
+
+Brain
+_____
+
+Placeholder
+
+------------------------------

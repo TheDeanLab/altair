@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Altair dvOPM &mdash; altair  documentation</title>
+  <title>Introduction &mdash; altair  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
@@ -23,7 +23,9 @@
         <script src="../_static/design-tabs.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Design Process" href="../dvopm_design/dvopm_design.html" />
+    <link rel="prev" title="ASLM/CTASLM Baseplate Example Images" href="../baseplate2_exampleimages/baseplate2_exampleimages.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -69,11 +71,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ASLM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ASLM/CTASLM Baseplate Example Images</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Altair-DVOPM</span></p>
-<ul>
+<p class="caption" role="heading"><span class="caption-text">Altair-dvOPM</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#direct-view-opm">Direct-View OPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system-overview">System Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#altair-dvopm">Altair dvOPM</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_design/dvopm_design.html">Design Process</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">Altair DV-OPM Baseplate Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dvopm_characterization/dvopm_characterization.html">Altair DV-OPM Baseplate Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">DV-OPM Baseplate Assembly &amp; Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_characterization/dvopm_characterization.html">Altair DV-OPM Characterization</a></li>
 </ul>
 
         </div>
@@ -90,7 +98,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Altair dvOPM</li>
+      <li class="breadcrumb-item active">Introduction</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/dvopm_overview/dvopm_overview.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -100,14 +108,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="altair-dvopm">
-<span id="dvopm-home"></span><h1>Altair dvOPM<a class="headerlink" href="#altair-dvopm" title="Permalink to this heading"></a></h1>
-<p>The Direct-View OPM (dvOPM) system is an oblique-plane light-sheet microscope designed for mesoscopic fluorescence imaging of large specimens. The system projects an oblique image plane directly onto a compact camera sensor without the use of a tertiary objective, simplifying the remote-imaging path while preserving light-sheet optical sectioning. This architecture enables a compact detection path while preserving the optical sectioning advantages of light-sheet microscopy.
-The implementation presented here focuses on practical engineering improvements to simplify construction and alignment of the system. The detection path uses a pair of readily available photographic lenses to form the remote image directly on the camera sensor, while the illumination and detection subsystems are implemented as modular baseplate assemblies. These design choices reduce optical complexity, constrain alignment degrees of freedom, and support reproducible assembly within the Altair platform.</p>
+  <section id="introduction">
+<span id="dvopmoverview-home"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h1>
+<section id="direct-view-opm">
+<h2>Direct-View OPM<a class="headerlink" href="#direct-view-opm" title="Permalink to this heading"></a></h2>
+<p>The Direct-View OPM (dvOPM) system is an oblique-plane light-sheet microscope designed for mesoscopic fluorescence imaging of large specimens. The system projects an oblique image plane directly onto a compact camera sensor without the use of a tertiary objective, simplifying the remote-imaging path while preserving light-sheet optical sectioning. This architecture enables a compact detection path while preserving the optical sectioning advantages of light-sheet microscopy.</p>
+</section>
+<hr class="docutils" />
 <section id="system-overview">
 <h2>System Overview<a class="headerlink" href="#system-overview" title="Permalink to this heading"></a></h2>
-<p>The dvOPM system consists of independent illumination and detection optical trains arranged around a shared sample region. The illumination subsystem generates an oblique The light sheet intersects the specimen at an oblique angle relative to the imaging stage, while the emitted fluorescence is captured by the primary objective and relayed through the detection optics, which project the tilted image plane directly onto the camera sensor.
-The microscope operates using a stage-scanning acquisition geometry, where the specimen is translated through the stationary illumination and detection planes to acquire volumetric data. The illumination and detection optics are implemented as independent modular assemblies mounted on precision baseplates. The detection module is attached to a vertically oriented translation stage that allows adjustment of the imaging plane relative to the specimen while maintaining the fixed optical geometry of the system.</p>
+<p>The dvOPM system consists of independent illumination and detection optical trains arranged around a shared sample region. The illumination subsystem generates an oblique The light sheet intersects the specimen at an oblique angle relative to the imaging stage, while the emitted fluorescence is captured by the primary objective and relayed through the detection optics, which project the tilted image plane directly onto the camera sensor.</p>
+<p>The microscope operates using a stage-scanning acquisition geometry, where the specimen is translated through the stationary illumination and detection planes to acquire volumetric data. The illumination and detection optics are implemented as independent modular assemblies mounted on precision baseplates. The detection module is attached to a vertically oriented translation stage that allows adjustment of the imaging plane relative to the specimen while maintaining the fixed optical geometry of the system.</p>
+</section>
+<hr class="docutils" />
+<section id="altair-dvopm">
+<h2>Altair dvOPM<a class="headerlink" href="#altair-dvopm" title="Permalink to this heading"></a></h2>
+<p>The implementation presented here focuses on practical engineering improvements to simplify construction and alignment of the system. The detection path uses a pair of readily available photographic lenses to form the remote image directly on the camera sensor, while the illumination and detection subsystems are implemented as modular baseplate assemblies. These design choices reduce optical complexity, constrain alignment degrees of freedom, and support reproducible assembly within the Altair platform.</p>
 <hr class="docutils" />
 </section>
 </section>
@@ -115,7 +131,10 @@ The microscope operates using a stage-scanning acquisition geometry, where the s
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../baseplate2_exampleimages/baseplate2_exampleimages.html" class="btn btn-neutral float-left" title="ASLM/CTASLM Baseplate Example Images" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../dvopm_design/dvopm_design.html" class="btn btn-neutral float-right" title="Design Process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

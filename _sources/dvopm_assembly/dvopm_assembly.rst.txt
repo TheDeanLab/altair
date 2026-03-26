@@ -1,18 +1,22 @@
 .. _dvopmassembly-home:
 
 ##############################
-Altair DV-OPM Baseplate Design
+DV-OPM Baseplate Assembly & Alignment
 ##############################
 
-Overview
-______________________
+------------------------------
+
+Detection Train Assembly
+________________________
 
 Placeholder
 
 ------------------------------
 
 
-Zemax Simulation Setup Process
-______________________________
+Illumination Train Assembly
+___________________________
 
 Placeholder
+
+------------------------------

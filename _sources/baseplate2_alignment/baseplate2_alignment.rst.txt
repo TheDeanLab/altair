@@ -845,7 +845,6 @@ change VC offset to re-collimate the beam. Using the re-collimated offset positi
 detection path (ensuring it is as perpendicular as possible to the illumination path), and primarily adjust TL1 and TL2
 XY to center the beam as much as possible on the back of the ILO.
 
-
 -------------------------------
 
 Step 10: Install Detection Path
@@ -857,8 +856,6 @@ chamber filled with water and fluorescein.**
 First `assemble the detection path <https://thedeanlab.github.io/altair/baseplate2_alignment/baseplate2_alignment
 .html#detection-path-assembly>`_.
 
-
-
 ------------------------------------------------
 
 Step 11: Optimize System Light-Sheet Performance
@@ -866,6 +863,48 @@ Step 11: Optimize System Light-Sheet Performance
 
 **Section Goal: Optimize navigate parameters and XY offsets of RFO, L6, L7, and ILO to verify the system is working.**
 
+This section is focused on two main objectives:
+1. Verify that the focus remains sharp as you manually adjust the voicecoil offset to scan your focus across your
+camera FoV
+2. Tune your navigate waveform parameters to ensure that your beam is being scanned properly by your generated waveform.
+
+For objective 1, with the detection path installed and the beam roughly centered vertically, adjust the VC offset
+manually  until the beam looks like it reaches the top and bottom edges of the image FoV. In the optimized system, as
+you manually change the offset your beam focus should stay sharp and not shift horizontally across the screen.
+
+.. figure:: Images/alignment/FindingOffsetRange.png
+    :align: center
+    :alt: finding voicecoil offset range
+
+    **Figure 9:** Manually changing the voicecoil offset to scan the beam across the image FoV.
+
+If either of these aren't true, there's likely an element in the optical assembly that needs to be adjusted. It's
+difficult to provide a precise prescription of steps to take as each system will be different, but here are some
+sanity checks or steps that can be helpful with figuring out the ideal alignment:
+
+    1. As you scan the beam back and forth, observe the top-down shape of the beam in the chamber by eye. Make sure
+       that it looks symmetrical in profile (i.e. it's not slanted towards either side). If it is, you might need to
+       adjust the horizontal positioning of L6, L7, and the ILO relative to one another.
+    2. You can use the threaded irises used in the other alignment steps on L6 and L7 to ensure that the beam is
+       passing through the center of these elements. When stopping down the beam centered on L6, the beam coming out of
+       the ILO should also look like it's coming from the center and going in a straight line, not tilted in any
+       particular direction. If not, adjust the XY offsets of L6 and L7 until everything is centered even with a
+       stopped down beam.
+    3. If you want, in waveform parameters you can give the system a little bit of amplitude (anywhere from 0.4
+       to 1) briefly. It's difficult to describe, but as the circular beam spot is pulsing on L6, L7 and the back
+       pupil of the ILO it should look like it's pulsing radially outwards equally in all directions. If it looks
+       like the pulsing movement is biased towards any direction in particular (i.e. it looks like it extends further
+       in one direction than others as the beam spot pulses), then it's likely that you'll need to adjust the XY offset
+       of L6 and L7 to make the beam pulse radially. When it looks good, just remove the amplitude again until the
+       next steps.
+    4. There's also the potential that your detection path isn't exactly orthogonal to your illumination objective if
+       with the prior suggestions your beam still isn't looking as expected. Re-adjusting your detection path position
+       and going through the previous suggestions again can help hone in on the proper orientation.
+
+When your beam profile looks sharp and fixed horizontally as it's scanned vertically across your FoV, you can move
+forward with `optimizing the rest of your waveform parameters <https://thedeanlab.github
+.io/altair/baseplate2_alignment/baseplate2_alignment
+.html#tuning-remote-focus-waveform>`_.
 
 ---------------------------
 
@@ -874,6 +913,39 @@ Step 12: Add in Powell Lens
 
 **Section Goal: Incorporate Powell Lens, do a final fine-tuning alignment of system elements.**
 
+With your system producing a uniform-looking beam profile across your FoV, you can now move forward with
+incorporating the Powell lens into the optical path. Screw the AD9F mount with the Powell lens inside it into the
+LRM1 assembly.
+
+This step is most easily accomplished through imaging a fluorescent collagen sample, but theoretically can be done
+with fluorescent beads in agarose as well.
+
+With a fluorescent collagen sample in, the alignment process is straightforward:
+
+    1. Move your collagen sample such that it's in your beam path and present in your FoV.
+    2. Remove any amplitude on your waveform parameter and run a normal-mode continuous scan. You want to rotate your
+       Powell lens until you essentially see a horizontal region in your FoV that looks consistently in/out of focus.
+       You can adjust your focus position as well during this step. Your end goal should be producing a horizontal
+       region of your sample that looks consistently in-focus.
+
+.. figure:: Images/alignment/horizontalpowellcollagen.png
+    :align: center
+    :alt: horizontal region in focus using powell lens
+
+    **Figure 10:** How the image should look in normal mode for a properly oriented Powell lens.
+
+    3. Stop the continuous mode acquisition and switch to light-sheet mode (we set the number of pixels parameter to be
+       5 for most of our imaging cases), then start the continuous mode acquisition again.
+    4. Now adjust the amplitude and delay of your waveform parameters until the entire FoV of your image looks in
+       focus and crisp.
+
+.. figure:: Images/alignment/fovaslmcollagen.png
+    :align: center
+    :alt: Full FoV of the image is now in focus
+
+    **Figure 11:** When your waveform is optimized, your image should look in focus across the full FoV.
+
+With that, your system should be aligned, optimized, and ready to image actual samples!
 
 ---------------
 

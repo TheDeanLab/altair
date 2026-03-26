@@ -947,11 +947,87 @@ chamber filled with water and fluorescein.</strong></p>
 <section id="step-11-optimize-system-light-sheet-performance">
 <h3>Step 11: Optimize System Light-Sheet Performance<a class="headerlink" href="#step-11-optimize-system-light-sheet-performance" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Optimize navigate parameters and XY offsets of RFO, L6, L7, and ILO to verify the system is working.</strong></p>
+<p>This section is focused on two main objectives:
+1. Verify that the focus remains sharp as you manually adjust the voicecoil offset to scan your focus across your
+camera FoV
+2. Tune your navigate waveform parameters to ensure that your beam is being scanned properly by your generated waveform.</p>
+<p>For objective 1, with the detection path installed and the beam roughly centered vertically, adjust the VC offset
+manually  until the beam looks like it reaches the top and bottom edges of the image FoV. In the optimized system, as
+you manually change the offset your beam focus should stay sharp and not shift horizontally across the screen.</p>
+<figure class="align-center" id="id39">
+<img alt="finding voicecoil offset range" src="../_images/FindingOffsetRange.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 9:</strong> Manually changing the voicecoil offset to scan the beam across the image FoV.</span><a class="headerlink" href="#id39" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>If either of these aren’t true, there’s likely an element in the optical assembly that needs to be adjusted. It’s
+difficult to provide a precise prescription of steps to take as each system will be different, but here are some
+sanity checks or steps that can be helpful with figuring out the ideal alignment:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>As you scan the beam back and forth, observe the top-down shape of the beam in the chamber by eye. Make sure
+that it looks symmetrical in profile (i.e. it’s not slanted towards either side). If it is, you might need to
+adjust the horizontal positioning of L6, L7, and the ILO relative to one another.</p></li>
+<li><p>You can use the threaded irises used in the other alignment steps on L6 and L7 to ensure that the beam is
+passing through the center of these elements. When stopping down the beam centered on L6, the beam coming out of
+the ILO should also look like it’s coming from the center and going in a straight line, not tilted in any
+particular direction. If not, adjust the XY offsets of L6 and L7 until everything is centered even with a
+stopped down beam.</p></li>
+<li><p>If you want, in waveform parameters you can give the system a little bit of amplitude (anywhere from 0.4
+to 1) briefly. It’s difficult to describe, but as the circular beam spot is pulsing on L6, L7 and the back
+pupil of the ILO it should look like it’s pulsing radially outwards equally in all directions. If it looks
+like the pulsing movement is biased towards any direction in particular (i.e. it looks like it extends further
+in one direction than others as the beam spot pulses), then it’s likely that you’ll need to adjust the XY offset
+of L6 and L7 to make the beam pulse radially. When it looks good, just remove the amplitude again until the
+next steps.</p></li>
+<li><p>There’s also the potential that your detection path isn’t exactly orthogonal to your illumination objective if
+with the prior suggestions your beam still isn’t looking as expected. Re-adjusting your detection path position
+and going through the previous suggestions again can help hone in on the proper orientation.</p></li>
+</ol>
+</div></blockquote>
+<p>When your beam profile looks sharp and fixed horizontally as it’s scanned vertically across your FoV, you can move
+forward with <a class="reference external" href="https://thedeanlab.github.io/altair/baseplate2_alignment/baseplate2_alignment.html#tuning-remote-focus-waveform">optimizing the rest of your waveform parameters</a>.</p>
 </section>
 <hr class="docutils" />
 <section id="step-12-add-in-powell-lens">
 <h3>Step 12: Add in Powell Lens<a class="headerlink" href="#step-12-add-in-powell-lens" title="Permalink to this heading"></a></h3>
 <p><strong>Section Goal: Incorporate Powell Lens, do a final fine-tuning alignment of system elements.</strong></p>
+<p>With your system producing a uniform-looking beam profile across your FoV, you can now move forward with
+incorporating the Powell lens into the optical path. Screw the AD9F mount with the Powell lens inside it into the
+LRM1 assembly.</p>
+<p>This step is most easily accomplished through imaging a fluorescent collagen sample, but theoretically can be done
+with fluorescent beads in agarose as well.</p>
+<p>With a fluorescent collagen sample in, the alignment process is straightforward:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Move your collagen sample such that it’s in your beam path and present in your FoV.</p></li>
+<li><p>Remove any amplitude on your waveform parameter and run a normal-mode continuous scan. You want to rotate your
+Powell lens until you essentially see a horizontal region in your FoV that looks consistently in/out of focus.
+You can adjust your focus position as well during this step. Your end goal should be producing a horizontal
+region of your sample that looks consistently in-focus.</p></li>
+</ol>
+</div></blockquote>
+<figure class="align-center" id="id40">
+<img alt="horizontal region in focus using powell lens" src="../_images/horizontalpowellcollagen.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 10:</strong> How the image should look in normal mode for a properly oriented Powell lens.</span><a class="headerlink" href="#id40" title="Permalink to this image"></a></p>
+<div class="legend">
+<ol class="arabic simple" start="3">
+<li><p>Stop the continuous mode acquisition and switch to light-sheet mode (we set the number of pixels parameter to be
+5 for most of our imaging cases), then start the continuous mode acquisition again.</p></li>
+<li><p>Now adjust the amplitude and delay of your waveform parameters until the entire FoV of your image looks in
+focus and crisp.</p></li>
+</ol>
+</div>
+</figcaption>
+</figure>
+<figure class="align-center" id="id41">
+<img alt="Full FoV of the image is now in focus" src="../_images/fovaslmcollagen.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 11:</strong> When your waveform is optimized, your image should look in focus across the full FoV.</span><a class="headerlink" href="#id41" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>With that, your system should be aligned, optimized, and ready to image actual samples!</p>
 </section>
 </section>
 <hr class="docutils" />
@@ -967,10 +1043,10 @@ in our system. The lens itself is particularly sensitive to displacements in x a
 visible in the profile of the beam on the front surfaces of the lenses that follow. Using the beam profile on the
 front of L2 as an example, when the Powell lens has a vertical (y) displacement, the beam profile starts to take on
 more of the conical shape instead of the more rectangular or pill-shaped profile from our simulations.</p>
-<figure class="align-center" id="id39">
+<figure class="align-center" id="id42">
 <img alt="Potential profiles of misaligned Powell lens beams" src="../_images/PowellLensPositioningProfile.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> Potential misaligned Powell lens beam profiles on the front surface of L2</span><a class="headerlink" href="#id39" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> Potential misaligned Powell lens beam profiles on the front surface of L2</span><a class="headerlink" href="#id42" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>In addition, due to tolerances with the Powell lenses we use in simulation compared to the physical ones purchased,
@@ -979,10 +1055,10 @@ our particular case, we found that having an additional 2.6 mm spacing between t
 of the system follow closely with our simulations, but this value might be different for different Powell lenses. We
 found this optimized spacing value by observing the beam profile on the front of L2 and L4, comparing it to
 simulated profiles in the same locations, and iteratively adjusting the LNR25M dial until the profiles matched closely.</p>
-<figure class="align-center" id="id40">
+<figure class="align-center" id="id43">
 <img alt="Example profiles at L2 and L4 front surfaces" src="../_images/L1L3PowellProfiles.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 2:</strong> Example profiles at L2 and L4 front surfaces used to optimize z-displacement of L1</span><a class="headerlink" href="#id40" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 2:</strong> Example profiles at L2 and L4 front surfaces used to optimize z-displacement of L1</span><a class="headerlink" href="#id43" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>

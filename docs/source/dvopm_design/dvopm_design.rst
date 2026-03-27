@@ -4,23 +4,39 @@
 Design Process
 ##############################
 
-Detection Train Design
+Detection Path: Design
 ______________________
 
-The detection path was designed around a compact remote-imaging architecture that projects the oblique image plane directly onto the camera sensor. A pair of photographic lenses was selected to form this relay, consisting of a `65 mm Mitakon Zhongyi Speedmaster lens` as O1 and an `85 mm Nikon AF-S NIKKOR lens` as O2. This combination provides an effective magnification of approximately 1.308×, which establishes the image scale at the sensor while remaining compatible with specimens mounted in water-based media. An emission filter wheel is positioned within the relay to support fluorescence imaging while maintaining the modular layout of the detection assembly.
+The detection path is designed as a compact remote-imaging relay that projects the oblique image plane directly onto the camera sensor.
 
-Image acquisition is performed using a compact Ximea MU196MR-ON camera. The small physical size of the sensor allows it to be positioned directly in the remote image space while maintaining the required tilt of the imaging plane. The sensor pixel size and active imaging area determine the effective sampling and the maximum field of view supported by the detection system. These parameters establish the lateral imaging extent of the microscope and define the region that must be illuminated by the light sheet in the illumination subsystem.
+The relay is formed using a pair of photographic lenses: a 65 mm Mitakon Zhongyi Speedmaster lens (O1) and an 85 mm Nikon AF-S NIKKOR lens (O2). The use of photographic lenses enables a compact and mechanically accessible relay configuration while allowing intermediate components to be incorporated within the optical path. The focal length ratio of these lenses provides an effective magnification of approximately 1.308×, which sets the image scale at the sensor.
 
-The optical configuration described above establishes the geometric and sampling constraints of the detection path. This configuration was subsequently modeled and evaluated in Zemax to analyze imaging performance across the field and to guide optimization of lens spacing, image plane orientation, and overall system geometry prior to physical implementation.
+An emission filter wheel is positioned between the two lenses to enable fluorescence filtering while preserving the relay geometry. The physical presence of this filter wheel introduces a minimum spacing constraint in the relay, which is carried forward into both the optical and mechanical design.
+
+Image acquisition is performed using a Ximea MU196MR-ON camera with a pixel size of 1.4 µm and an active sensor area of 7.2 mm × 5.4 mm. These parameters define both the sampling and the maximum field of view of the system. With a magnification of 1.308×, the corresponding object-space field of view is approximately:
+
+.. math::
+
+   \frac{7.2\ \text{mm}}{1.308} \approx 5.5\ \text{mm}
+
+This object-space field of view defines the usable imaging region and directly determines the minimum required light-sheet length in the illumination subsystem.
 
 ------------------------------
 
 Detection Path: Zemax Simulation Setup
 ______________________________________
 
-To evaluate the optical performance of the detection subsystem and to optimize the relay distances and angle of the camera, the configuration was modeled in Zemax. The simulation environment was used to analyze image formation across the field and to guide refinement of the relay geometry prior to implementation.
+The detection relay was modeled in Zemax using a sequential optical system to evaluate image formation across the field and refine the relay geometry prior to implementation.
 
-A sequential optical system was constructed in Zemax representing the detection relay. The aperture of the system was defined using the effective numerical aperture of the photographic relay lenses (NA ≈ 0.1786), derived from the combined f-number of the two f/1.4 lenses used in the relay. The photographic relay lenses were incorporated using black-box lens files corresponding to the Mitakon 65 mm and Nikon 85 mm lenses. The emission filter wheel positioned within the relay was represented as a planar optical element to preserve the physical spacing of the components within the model.
+The photographic lenses were incorporated using reverse-engineered black-box lens files representing their optical behavior. These models ensure that the Zemax simulation reflects the actual imaging performance of the relay lenses. Additional detail on the construction or validation of these lens files can be provided or referenced elsewhere if required.
+
+The emission filter wheel was modeled as a planar optical element to preserve the physical spacing constraints it introduces within the relay.
+
+The system aperture was defined using the Object Space NA aperture type in Zemax. The value was entered as:
+
+.. math::
+
+   NA = \frac{1}{2 (1.4 + 1.4)} = \frac{1}{5.6} \approx 0.1786
 
 .. figure:: Images/
    :alt: A screenshot of System Explorer in Zemax.
@@ -29,9 +45,11 @@ A sequential optical system was constructed in Zemax representing the detection 
 
    **Figure 1:** Aperture dropdown in System Explorer in Zemax
 
-**Object Geometry:** 
+**Object Geometry**
 
-The object surface in the Zemax model represents the oblique imaging plane within the specimen. To reproduce the imaging geometry of the microscope, this surface was defined as a plane tilted by 45° and embedded in a water medium. 
+The object surface represents the oblique imaging plane within the specimen. To reproduce the system geometry, it was defined as a plane tilted by 45° and embedded in water.
+
+Because of this tilt, positions across the object correspond to both lateral displacement and changes in depth within the sample. This ensures that the Zemax model accurately reflects the intended imaging condition.
 
 .. figure:: Images/
    :alt: Screenshot of the settings for Object Surface in the Zemax.
@@ -40,27 +58,23 @@ The object surface in the Zemax model represents the oblique imaging plane withi
 
    **Figure 2:** Object Surface settings in Zemax 
 
-**Field Definition:**
+**Field Definition**
 
-A rectangular grid of field points was used to sample the tilted object surface. The fields were defined symmetrically about the optical axis, spanning −2.75mm to +2.75mm in y and −1 mm to +1 mm in x.
+A rectangular grid of field points was used to sample the tilted object surface. The field ranges were defined as:
 
-The extent in the y-direction is limited by the camera sensor. With a sensor width of 7.2 mm and system magnification of approximately 1.307, the object-space field of view is ~5.5mm which defines the Zemax field range of ±2.75 mm. The x-direction is instead constrained by the specimen thickness intersected by the tilted imaging plane. For a specimen thickness of approximately 2 mm, the field was restricted to ±1 mm to ensure that all modeled field points remain within the sample volume.
+- y: −2.75 mm to +2.75 mm  
+- x: −1 mm to +1 mm  
 
-During optimization, central field points were assigned higher weighting than peripheral fields. When optimizing, this prioritizes imaging performance near the center of the field of view.
+The y-range is determined by the camera-limited field of view (~5.5 mm object space). The x-range is constrained by the specimen thickness intersected by the tilted plane. Because of the 45° tilt, displacement along x corresponds to a change in depth within the specimen. For a specimen thickness of approximately 2 mm, the field was restricted to ±1 mm so that all field points remain within the sample.
 
-.. figure:: Images/Field_settings.svg
+The fields themselves were weighted to prioritize central regions. The x and y coordinates in the Optimization Wizard were not independently weighted; rather, the weighting was applied through the field definitions, which influences the optimization process.
+
+.. figure:: Images/Fields_setup.png
    :alt: Screenshot of fields setup settigns
    :align: center
    :width: 70%
 
-   **Figure 3:** Description
-
-.. figure:: Images/Field_plot.svg
-   :alt: Screenshot of fields setup settigns
-   :align: center
-   :width: 40%
-
-   **Figure 4:** Plot of field points in Zemax on a 2D plane
+   **Figure 3:** Settings and Plot of field points in Zemax on a 2D plane
 
 Because the object is tilted, this setup is essentially a 3D visualization, where the field points on the xy plane are also having different depth or z.
 
@@ -72,11 +86,31 @@ Because the object is tilted, this setup is essentially a 3D visualization, wher
    **Figure 5:** A 3D visualization of the object surface and field points in the object as modelled in Zemax
 
 
-**Optimization:**
+**Optimization**
 
-The optical configuration of the detection relay was refined using the Zemax Optimization Wizard. Optimization variables included the spacing between relay components and the orientation of the image plane representing the camera sensor. Because the system images an oblique plane, the image surface was allowed to tilt during optimization to align with the projected image plane formed by the relay optics.
+The detection relay was refined using the Zemax Optimization Wizard.
 
-Optimization was performed across the defined field grid, incorporating the field weighting described previously. Central field points were prioritized during optimization to maintain high image quality near the center of the field of view while preserving acceptable performance across the full imaging region.
+The primary optimization variables were:
+
+- relay distances  
+- camera (image plane) tilt  
+
+The relay distances correspond to the physical separations between system components:
+
+- specimen to O1  
+- O1 to fold mirror (minimum spacing set by filter wheel)  
+- fold mirror to O2 (minimum spacing set by kinematic mount)  
+- O2 to camera  
+
+Among these, the O2-to-camera distance and the camera tilt angle were found to be the most sensitive parameters. These directly control image plane alignment and defocus sensitivity, making them the dominant contributors to final image quality.
+
+Because the system images an oblique plane, the image surface was allowed to tilt so that it aligns with the projected image formed by the relay.
+
+Optimization settings:
+
+- Image Quality: Spot  
+- Reference: Centroid  
+- Gaussian Quadrature: maximum arms and rings 
 
 The optimization process was carried out iteratively, adjusting one parameter at a time to improve focus and reduce aberrations across the field. The resulting configuration established the final geometric arrangement of the detection relay used in the physical implementation of the system.
 
@@ -87,14 +121,67 @@ The optimization process was carried out iteratively, adjusting one parameter at
 
    **Figure 6:** Optimization Wizard in Zemax. We are optimizng for the spot size of our detection path.
 
+Detection Path: Zemax Analysis
+______________________________
+
+The imaging performance of the detection path was evaluated using the modulation transfer function (MTF). The MTF describes how effectively the optical system transfers contrast at different spatial frequencies from the object to the image. Low spatial frequencies correspond to coarse features, while higher spatial frequencies correspond to finer details. As spatial frequency increases, contrast decreases due to aberrations and diffraction, and the MTF curve captures this behavior.
+
+MTF was computed at each field point in both tangential and sagittal directions. These two directions are defined locally at each field point and correspond to orthogonal orientations of spatial variation. In general, the tangential direction lies along the direction of increasing field height, while the sagittal direction is orthogonal to it. Because these directions are defined locally, they rotate across the field and do not correspond directly to global x and y axes.
+
+Resolution was quantified using the MTF20 criterion, defined as the spatial frequency at which the MTF drops to 20% contrast. This threshold provides a practical measure of the smallest resolvable feature size under typical imaging conditions.
+
+The spatial frequency obtained from Zemax is reported in image space (lp/mm). To express resolution in object space, the following relationship was used:
+
+.. math::
+
+   \mathrm{Resolution} = \frac{1000}{f_{\mathrm{image}} \cdot M}
+
+where :math:`f_{\mathrm{image}}` is the spatial frequency at MTF20 (in lp/mm), :math:`M = 1.308` is the system magnification, and the factor of 1000 converts the result to micrometers.
+
+At the center field, the measured resolutions are:
+
+- Tangential: 2.262885 µm  
+- Sagittal: 3.077209 µm  
+
+Across the full field:
+
+- Tangential resolution ranges from approximately 2.18 µm in the central region to 5.94 µm toward the field boundaries  
+- Sagittal resolution ranges from approximately 2.95 µm in the central region to 4.43 µm toward the field boundaries  
+
+These results indicate that the best imaging performance is achieved near the central region of the field, where aberrations are minimal. As the field position moves toward the edges, both tangential and sagittal resolutions degrade due to increasing off-axis aberrations. The tangential direction exhibits a larger variation across the field, indicating that it is more sensitive to field-dependent aberrations in this relay configuration.
+
+The full MTF curves provide additional insight beyond the MTF20 metric by showing how contrast decays across spatial frequencies for each field point. In particular, they reveal whether performance degradation occurs gradually or abruptly at different field locations, which is useful for understanding edge-of-field behavior.
+
+.. figure:: Images/MTF_curves.svg
+   :alt: MTF Curves for 35 fields both tangential and sagittal.
+   :align: center
+   :width: 75%
+
+   **Figure 9:** MTF curves for all field points in both tangential and sagittal directions
+
+.. figure:: Images/Res_Heatmaps.svg
+   :alt: Heatmap visualization of tangential and sagittal resolution
+   :align: center
+   :width: 75%
+
+   **Figure 10:** Interpolated heatmaps showing spatial variation of tangential and sagittal resolution across the field
+
 ------------------------------
 
-Illumination Train Design
-____________________________
+Illumination Path: Design
+_________________________
 
-The illumination train was designed to generate an oblique light sheet matched to the imaging requirements established by the detection path. Based on the camera-limited detection field of view of approximately 5.5 mm in object space, the illumination system was designed to provide a light-sheet length of at least 6–7 mm to ensure full field coverage. In addition to sheet length, the illumination path was designed to produce a sheet thickness in the few-micron range, providing optical sectioning appropriate for mesoscopic imaging.
+The illumination path was designed to generate an oblique light sheet matched to the detection field of view.
 
-The illumination relay consists of a 10° Powell lens followed by a sequence of achromatic doublets. The Powell lens shapes the input beam into a fan angle for sheet generation, while the relay optics control the propagation and focusing of the sheet at the sample. 
+From the detection design, the required object-space coverage is approximately 5.5 mm. To ensure full utilization of the camera field, the light sheet was designed to extend beyond this value, targeting a length exceeding 7 mm.
+
+The illumination begins with a Powell lens, which converts the input beam into a fan with a uniform intensity distribution. This improves illumination uniformity across the field.
+
+The beam is relayed using achromatic doublets. Longer focal length lenses were selected to provide sufficient propagation distance before focusing into a thin sheet. This allows all lenses to remain in a consistent orientation on a common baseplate while still enabling the sheet to be formed at the correct location on the stage. The increased working distance also simplifies mechanical integration.
+
+A resonant galvo is placed between L2 and L3 to introduce rapid angular pivoting and reduce shadowing artifacts.
+
+In the physical system, the beam is folded using mirrors. After L4, the beam is redirected upward and then reflected by an inclined mirror (35° relative to normal), launching the sheet into the specimen at approximately 20° relative to the stage.
 
 .. figure:: Images/Illumination_design.svg
    :alt: Schematic of Illumination Train.
@@ -103,7 +190,7 @@ The illumination relay consists of a 10° Powell lens followed by a sequence of 
 
    **Figure 7:** A schematic of the illumination path for light sheet generation
 
-The implemented lens sequence uses the following lenses listed in the table. A resonant galvo is positioned between L2 and L3 to introduce rapid angular pivoting of the illumination, reducing shadowing artifacts during imaging while preserving the overall light-sheet geometry.
+The implemented lens sequence uses the following lenses listed in the table. 
 
 .. list-table::
        :header-rows: 1
@@ -130,13 +217,31 @@ The implemented lens sequence uses the following lenses listed in the table. A r
 ------------------------------
 
 Illumination Path: Zemax Simulation Setup
-__________________________________________
+_________________________________________
 
-The illumination system was modeled in Zemax using black-box optical models for each lens obtained from the Thorlabs library. A new Zemax file was created to represent the illumination assembly, with the system aperture set to match the input laser beam diameter of 2.0 mm and at 561 nm wavelength.
+The illumination system was modeled in Zemax using a collimated input beam at 561 nm with a pupil diameter of 2 mm. In the physical system, this corresponds to the collimated beam produced by the source and collimator prior to the Powell lens.
 
-The optical layout was developed using an element-by-element design approach. Each lens was introduced sequentially, and its position was adjusted before adding subsequent components. At each stage, the beam condition after the element was constrained to achieve either collimation or controlled focusing along the relevant axis, depending on the intended function of that element within the illumination train.
+The Powell lens was incorporated using a reverse-engineered lens model representing its optical behavior. The resonant galvo was modeled as a planar mirror, capturing its static geometric effect on the beam path without including dynamic scanning.
 
-This approach allowed the beam propagation to be controlled independently in orthogonal directions, consistent with the requirements of light-sheet formation. By enforcing the desired beam behavior after each element, the relay geometry was refined progressively to produce the required sheet length and thickness at the sample plane. This strategy also avoided global optimization of the full system, providing greater control and stability during the design process.
+The illumination path was constructed sequentially, with beam propagation controlled independently in orthogonal dimensions. This approach allows each stage of the relay to be designed with a clear optical objective rather than relying on a single global optimization.
+
+**Sequential Design Procedure**
+
+- The design begins by placing L1 (Powell lens) and L2, and adjusting the distance between them so that the beam becomes collimated in the y-dimension after L2.
+
+- A mirror representing the resonant galvo (Mirror 1) is then placed after L2 to redirect the beam downward, and the distance between L2 and this mirror is adjusted so that the beam is focused in the x-dimension at this location.
+
+- A second mirror (Mirror 2) is introduced to restore the beam propagation direction, and the distance between Mirror 1 and Mirror 2 is fixed at 25.564 mm to match the physical system constraint.
+
+- L3 is then placed after Mirror 2, and the distance between Mirror 2 and L3 is adjusted so that the beam becomes collimated in the x-dimension after L3.
+
+- L4 is placed after L3, and the distance between L3 and L4 is adjusted to achieve collimation in the y-dimension after L4.
+
+- A third mirror (Mirror 3) is introduced to invert the beam upward.
+
+- A fourth mirror (Mirror 4), inclined at 35°, is placed after Mirror 3 to launch the beam toward the specimen, and the distance between Mirror 3 and Mirror 4 is fixed at 91.5 mm.
+
+- Finally, the distance between Mirror 4 and the image plane is adjusted so that the beam reaches the desired focus in the x-dimension after L4 and final launch.
 
 .. figure:: Images/3DLayout.pdf
    :alt: 3D Layout of illumination train
@@ -147,45 +252,14 @@ This approach allowed the beam propagation to be controlled independently in ort
 
 ------------------------------
 
-Detection Path: Zemax Analysis
-______________________________
-
-MTF / Resolution Analysis:
-
-The imaging performance of the detection path was evaluated using the modulation transfer function (MTF) computed in Zemax. Full MTF curves were extracted at each field position for both tangential and sagittal directions.
-
-.. figure:: Images/MTF_curves.svg
-   :alt: MTF Curves for 35 fields both tangential and sagittal.
-   :align: center
-   :width: 75%
-
-   **Figure 9:** Plot of MTF curves for all 35 fields both tangential and sagittal. Visualized in Python
-
-Resolution was quantified using the MTF20 criterion, defined as the spatial frequency at which the MTF drops to 20% contrast. The corresponding spatial frequency values (in line pairs per millimeter) were obtained from the MTF curves at each field point.
-
-To express resolution in object space, the spatial frequency values were converted by accounting for the system magnification. The resolution was computed as:
-Resolution=\frac{1000}{f_{image}\ \cdot M} 
-where f_{image} is the spatial frequency in \frac{lp}{mm} reported by Zemax, M\approx1.3 is the system magnification, and the factor of 1000 converts the result to micrometers. This calculation was applied independently to both tangential and sagittal MTF20 values at each field location.
-
-The MTF data were exported from Zemax as raw numerical values and processed externally for analysis. The resulting resolution values across all 35 field points (7 × 5 grid) were mapped onto the tilted object plane and visualized as an interpolated heatmap, providing a spatial representation of resolution variation across the imaging region.
-
-The tangential and sagittal resolution at the main axis are µm and µm respectively.
-
-.. figure:: Images/Res_Heatmaps.svg
-   :alt: Heatmap visualization of tangential resolution on a 2D plane
-   :align: center
-   :width: 75%
-
-   **Figure 10:** An interpolated heatmap visualization of tangential and sagittal resolutions on the image plane.
-
-------------------------------
-
 Illumination Path: Zemax Analysis
 _________________________________
 
-The illumination performance was evaluated in Zemax using Huygens PSF Cross-Section and Huygens PSF analyses.
+The illumination performance was evaluated using both Huygens PSF Cross-Section and 2D Huygens PSF analyses.
 
-The Huygens PSF Cross-Section was used to evaluate the light-sheet thickness. This tool provides the intensity cross-section of the beam, allowing direct quantification of the sheet thickness. The thickness was measured using the full width at half maximum (FWHM) of the intensity profile. At a wavelength of 561 nm, the light-sheet thickness was measured to be approximately 12 µm.
+The cross-section analysis was used to quantify light-sheet thickness. The full width at half maximum (FWHM) was measured to be:
+
+- Thickness: 13.65 µm (561 nm)
 
 .. figure:: Images/cross_section_fwhm.svg
    :alt: Plot of the Huygens PSF Cross-Section
@@ -194,7 +268,11 @@ The Huygens PSF Cross-Section was used to evaluate the light-sheet thickness. Th
 
    **Figure 11:** Huygens PSF Cross-Section of the light sheet having an FWHM of 13.65µm
 
-The Huygens PSF was used to evaluate the spatial extent of the light sheet along the propagation direction. This analysis provides a visualization of the beam profile, allowing verification that the sheet maintains sufficient extent across the imaging region. The simulated light sheet was observed to span greater than 7 mm, exceeding the required illumination length defined by the detection field of view.
+The 2D PSF was used to evaluate sheet extent and continuity. It is not used to quantify thickness.
+
+The simulated sheet extends beyond 7 mm, exceeding the required ~5.5 mm coverage defined by the detection system.
+
+These results confirm that the illumination system satisfies both thickness and length requirements.
 
 .. figure:: Images/psf2d_map.svg
    :alt: Plot of 2D Huygens PSF in True Color
@@ -203,84 +281,96 @@ The Huygens PSF was used to evaluate the spatial extent of the light sheet along
 
    **Figure 12:** 2D Huygens PSF with normalized intensity map illustrates the extended sheet used to estimate the sheet length.
 
-------------------------------
-
 Detection Path: Baseplate Design
 ________________________________
 
-The detection module was implemented on a dedicated baseplate using the optimized surface-to-surface distances obtained from Zemax simulations. These distances directly defined the placement of all optical components, ensuring that the mechanical implementation preserves the designed optical geometry.
+The detection subsystem was translated from the Zemax model into a dedicated baseplate assembly. The purpose of this baseplate is not only to hold the optical components, but to preserve the optimized relay geometry in a form that is mechanically reproducible and practical to align.
 
-The detection subsystem follows an inverted layout incorporating two photographic lenses arranged at 90° relative to each other, with an emission filter wheel positioned between them. The baseplate was designed to provide mounting interfaces for the filter wheel allowing the first photographic lens (O1) to be aligned with the input axis of the relay.
+The relay is implemented as a folded geometry using a 90° beam fold. O1 is positioned to collect the emitted fluorescence from below the specimen and direct it through the emission filter wheel region toward the fold mirror. The kinematic mirror mount then redirects the beam so that O2 can be positioned orthogonally to O1. This folded arrangement allows the compact relay architecture to be physically realized while still accommodating the required components within the optical path.
 
-A kinematic mirror mount is positioned directly below the filter wheel to introduce a 90° beam fold, enabling the orthogonal arrangement of the relay. The second photographic lens (O2) is attached to the output port of the mirror mount using appropriate adapters, completing the detection path.
+The filter wheel occupies the region between O1 and the folded portion of the relay, and because it imposes a minimum spacing requirement, it directly affects the mechanical placement of adjacent components on the baseplate. Likewise, the kinematic mirror mount defines another minimum spacing region that must be respected when placing O2.
 
-The entire detection assembly is mounted on a linear translation stage, allowing adjustment of the imaging plane relative to the specimen for focusing. At the camera end, a manual linear stage provides fine axial adjustment, and a rotary stage enables alignment of the camera sensor with the tilted image plane.
+The entire detection module is mounted on a vertical translation stage so that the imaging plane can be adjusted relative to the specimen for focusing. At the camera end, a manual linear stage provides fine axial adjustment, and a rotary stage enables alignment of the camera sensor to the tilted image plane. These degrees of freedom are essential, since the optical performance of the system is particularly sensitive to the O2-to-camera distance and camera angle, as observed during the Zemax optimization.
 
- .. figure:: Images/Detection_Baseplate_Isometric.png
+The baseplate therefore has a dual purpose. First, it constrains the relative positions of the major relay elements so that the optimized optical geometry can be reproduced. Second, it preserves the specific alignment degrees of freedom that are still required in the physical system. This reflects the core Altair design principle: constrain what should be fixed, and preserve only the adjustments that are necessary for achieving optimal performance.
+
+.. figure:: Images/Detection_Baseplate_Isometric.png
    :alt: CAD rendering of the detection path baseplate; isometric view
    :align: center
    :width: 75%
 
-   **Figure 13:** A CAD rendering of the baseplate for the detection train of dvOPM
-
-This baseplate design constrains the relative positioning of optical components while preserving the required degrees of freedom for focus and sensor alignment, reducing the complexity of system assembly.
+   **Figure 13:** CAD rendering of the detection baseplate showing component placement and folded relay geometry
 
 .. figure:: Images/Detection_Assembly_Isometric.png
    :alt: CAD rendering of the detection train assembly on the baseplate; isometric view
    :align: center
    :width: 75%
 
-   **Figure 14:** An isometric view CAD rendering of the detection train assmebly on the baseplate
+   **Figure 14:** Isometric view of the assembled detection subsystem
 
 .. figure:: Images/Detection_Assembly_Top.png
    :alt: CAD rendering of the detection train assembly on the baseplate; top view
    :align: center
    :width: 100%
 
-   **Figure 15:** A top view CAD rendering of the detection train assmebly on the baseplate
+   **Figure 15:** Top view of the detection assembly illustrating optical path layout and spacing constraints
 
 ------------------------------
 
 Illumination Path: Baseplate Design
 ___________________________________
 
-The illumination baseplate was designed following the same principles established in the Altair platform for translating Zemax-optimized optical layouts into physical assemblies. The optimized element-to-element distances obtained from the Zemax model were used to define the relative placement of components, while standardized mounting using the Thorlabs Polaris system provides mechanical stability and repeatable alignment. The general baseplate design approach is consistent with the methodology described in the Altair documentation.
+The illumination subsystem was similarly translated from the Zemax design into a dedicated baseplate assembly. As with the detection subsystem, the goal of the baseplate is to make the optimized optical geometry physically realizable, stable, and reproducible.
 
-The illumination train is implemented as a sequence of mounted optical elements arranged on a planar baseplate, preserving the relay geometry defined during simulation.
+The illumination path is implemented as a sequence of mounted optical elements arranged primarily on a common planar baseplate. This reflects a key design decision: the use of longer focal length achromatic doublets allows the lenses to be kept in a consistent orientation on the same baseplate while still providing sufficient propagation distance to shape the beam into the required light sheet at the stage.
 
-However, unlike a purely planar optical system, the illumination path must deliver the beam to an inverted imaging stage and intersect the specimen at an oblique angle of approximately 20° relative to the stage.
-To achieve this, the final section of the baseplate incorporates a vertical mounting structure with an inclined arm, which redirects the beam upward and sets the required incidence angle at the sample. This folded geometry allows the illumination system to remain mechanically constrained within the baseplate while positioning the light sheet at the correct height, location, and angle relative to the detection objective.
+Because the relay uses longer focal length lenses, the physical optical path becomes relatively long. To prevent the footprint from becoming impractically large, the beam is folded using mirrors in the physical system. This beam folding is therefore not an incidental feature, but a direct mechanical consequence of the long-focal-length design choice made to satisfy both optical and integration requirements.
 
-Also because the use of achromatic doublets with longer focal lengths, the illumination path gets pretty long, so to efficiently use the space the beam is folder using four mirrors.
+Near the end of the illumination path, the beam must leave the planar relay geometry and be directed upward toward the sample. This is achieved using a vertical inversion mirror followed by a final inclined mirror that launches the beam toward the specimen at approximately 20° relative to the stage. This final section is particularly important, as it represents the point where the optical relay geometry and the physical stage geometry intersect. The baseplate and mounting configuration must therefore preserve not only the lens spacings, but also the correct beam height and launch angle.
 
-This design extends the standard Altair baseplate approach to accommodate the geometric constraints of oblique-plane illumination, while preserving the advantages of constrained alignment and reproducible system assembly.
+The illumination baseplate design thus extends beyond simply placing optical elements in sequence. It must coordinate planar relay optics, beam folding, vertical redirection, final launch geometry, and stage height constraints within a single mechanically stable system. As a result, this subsystem represents one of the most integration-intensive aspects of the overall instrument design.
 
- .. figure:: Images/Illumination_Baseplate_Isometric.png
+.. figure:: Images/Illumination_Baseplate_Isometric.png
    :alt: CAD rendering of the illumination path baseplate; isometric view
    :align: center
    :width: 80%
 
-   **Figure 16:** A CAD rendering of the baseplate for the illumination train of dvOPM
+   **Figure 16:** CAD rendering of the illumination baseplate showing folded beam path and component layout
 
 .. figure:: Images/Illumination_Assembly_Isometric.png
-   :alt: CAD rendering of the ilumination train assembly on the baseplate; isometric view
+   :alt: CAD rendering of the illumination train assembly on the baseplate; isometric view
    :align: center
    :width: 75%
 
-   **Figure 17:** An isometric view CAD rendering of the illumination train assmebly on the baseplate
+   **Figure 17:** Isometric view of the assembled illumination subsystem
 
 .. figure:: Images/Illumination_Assembly_Top.png
    :alt: CAD rendering of the illumination train assembly on the baseplate; top view
    :align: center
    :width: 75%
 
-   **Figure 18:** A top view CAD rendering of the illumination train assmebly on the baseplate
+   **Figure 18:** Top view of the illumination assembly highlighting beam folding and optical path arrangement
+
+------------------------------
+
+System Integration and Stage
+_____________________________
+
+Before presenting the complete system assembly, it is useful to describe how the optical subsystems integrate with the stage, since the system operates in a stage-scanning acquisition geometry.
+
+The illumination and detection baseplates are mounted on the optical table as fixed subsystems. The sample is mounted above them on a motorized stage. During imaging, the sample is translated through the stationary illumination and detection planes, allowing volumetric data to be acquired without moving the optical subsystems.
+
+The specific stage hardware used in this implementation is documented in the parts list and is not the primary focus of this section. Instead, the emphasis here is on the system-level relationship: the optical subsystems remain fixed and geometrically constrained, while the stage provides controlled motion of the sample.
+
+This arrangement separates optical alignment from volumetric acquisition. Once the detection and illumination paths are aligned and fixed on their respective baseplates, volumetric imaging is achieved entirely through stage motion rather than through repeated adjustment of the optical system. This significantly improves both stability and repeatability.
+
+The complete system assembly can therefore be understood as the integration of three primary components: the fixed detection baseplate, the fixed illumination baseplate, and the motorized stage positioned above them.
 
 .. figure:: Images/Full_Assembly.png
-   :alt: CAD rendering of the complete system assembly on the baseplate; Isometric view
+   :alt: CAD rendering of the complete system assembly on the baseplate; isometric view
    :align: center
    :width: 100%
 
-   **Figure 19:** An isometric view of CAD rendering of the complete Altair dvOPM System
+   **Figure 19:** Complete Altair dvOPM system assembly showing integration of detection, illumination, and stage subsystems
 
 ------------------------------

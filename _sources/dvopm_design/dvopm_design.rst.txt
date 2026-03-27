@@ -233,7 +233,7 @@ The illumination path was constructed sequentially, with beam propagation contro
 
 - Finally, the distance between Mirror 4 and the image plane is adjusted so that the beam reaches the desired focus in the x-dimension after L4 and final launch.
 
-.. figure:: Images/3DLayout_illum.PNG
+.. figure:: Images/3DModel_illum.PNG
    :alt: 3D Layout of illumination train
    :align: center
    :width: 100%

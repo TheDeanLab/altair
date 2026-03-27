@@ -137,9 +137,9 @@
 <div class="math notranslate nohighlight">
 \[NA = \frac{1}{2 (1.4 + 1.4)} = \frac{1}{5.6} \approx 0.1786\]</div>
 <figure class="align-center" id="id1">
-<a class="reference internal image-reference" href="../_images/Images"><img alt="A screenshot of System Explorer in Zemax." src="../_images/Images" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="dvopm_design/Images/SystemExplorerDet.PNG"><img alt="A screenshot of System Explorer in Zemax." src="dvopm_design/Images/SystemExplorerDet.PNG" style="width: 60%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> Aperture dropdown in System Explorer in Zemax</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> A screenshot of Aperture settings in System Explorer in Zemax</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p><strong>Object Geometry</strong></p>
@@ -160,7 +160,7 @@
 <p>The y-range is determined by the camera-limited field of view (~5.5 mm object space). The x-range is constrained by the specimen thickness intersected by the tilted plane. Because of the 45° tilt, displacement along x corresponds to a change in depth within the specimen. For a specimen thickness of approximately 2 mm, the field was restricted to ±1 mm so that all field points remain within the sample.</p>
 <p>The fields themselves were weighted to prioritize central regions. The x and y coordinates in the Optimization Wizard were not independently weighted; rather, the weighting was applied through the field definitions, which influences the optimization process.</p>
 <figure class="align-center" id="id3">
-<a class="reference internal image-reference" href="../_images/Fields_setup.png"><img alt="Screenshot of fields setup settigns" src="../_images/Fields_setup.png" style="width: 70%;" /></a>
+<a class="reference internal image-reference" href="../_images/Fields_setup.png"><img alt="Screenshot of fields setup settigns" src="../_images/Fields_setup.png" style="width: 75%;" /></a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure 3:</strong> Settings and Plot of field points in Zemax on a 2D plane</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
 </figcaption>
@@ -169,7 +169,7 @@
 <figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../_images/tilted_plane_visualization.svg"><img alt="Schematic of a Fields setup in a physical sense" src="../_images/tilted_plane_visualization.svg" width="75%" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 5:</strong> A 3D visualization of the object surface and field points in the object as modelled in Zemax</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 4:</strong> A 3D visualization of the object surface and field points in the object as modelled in Zemax</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p><strong>Optimization</strong></p>
@@ -188,7 +188,7 @@
 </ul>
 <p>Among these, the O2-to-camera distance and the camera tilt angle were found to be the most sensitive parameters. These directly control image plane alignment and defocus sensitivity, making them the dominant contributors to final image quality.</p>
 <p>Because the system images an oblique plane, the image surface was allowed to tilt so that it aligns with the projected image formed by the relay.</p>
-<p>Optimization settings:</p>
+<p>The folllowing optimization settings were used:</p>
 <ul class="simple">
 <li><p>Image Quality: Spot</p></li>
 <li><p>Reference: Centroid</p></li>
@@ -196,7 +196,7 @@
 </ul>
 <p>The optimization process was carried out iteratively, adjusting one parameter at a time to improve focus and reduce aberrations across the field. The resulting configuration established the final geometric arrangement of the detection relay used in the physical implementation of the system.</p>
 <figure class="align-center" id="id5">
-<a class="reference internal image-reference" href="dvopm_design/Images/FieldsSetup.PNG"><img alt="Screenshot of the Optimization Wizard in Zemax" src="dvopm_design/Images/FieldsSetup.PNG" style="width: 75%;" /></a>
+<a class="reference internal image-reference" href="../_images/Optimization_wiz_det.PNG"><img alt="Screenshot of the Optimization Wizard in Zemax" src="../_images/Optimization_wiz_det.PNG" style="width: 75%;" /></a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure 6:</strong> Optimization Wizard in Zemax. We are optimizng for the spot size of our detection path.</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
 </figcaption>
@@ -207,6 +207,12 @@
 <p>The imaging performance of the detection path was evaluated using the modulation transfer function (MTF). The MTF describes how effectively the optical system transfers contrast at different spatial frequencies from the object to the image. Low spatial frequencies correspond to coarse features, while higher spatial frequencies correspond to finer details. As spatial frequency increases, contrast decreases due to aberrations and diffraction, and the MTF curve captures this behavior.</p>
 <p>MTF was computed at each field point in both tangential and sagittal directions. These two directions are defined locally at each field point and correspond to orthogonal orientations of spatial variation. In general, the tangential direction lies along the direction of increasing field height, while the sagittal direction is orthogonal to it. Because these directions are defined locally, they rotate across the field and do not correspond directly to global x and y axes.</p>
 <p>Resolution was quantified using the MTF20 criterion, defined as the spatial frequency at which the MTF drops to 20% contrast. This threshold provides a practical measure of the smallest resolvable feature size under typical imaging conditions.</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/MTF_Tangential_Sagittal_2panel.svg"><img alt="MTF Curves for 35 fields both tangential and sagittal." src="../_images/MTF_Tangential_Sagittal_2panel.svg" width="75%" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 7:</strong> MTF curves for all field points in both tangential and sagittal directions</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
 <p>The spatial frequency obtained from Zemax is reported in image space (lp/mm). To express resolution in object space, the following relationship was used:</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{Resolution} = \frac{1000}{f_{\mathrm{image}} \cdot M}\]</div>
@@ -223,16 +229,10 @@
 </ul>
 <p>These results indicate that the best imaging performance is achieved near the central region of the field, where aberrations are minimal. As the field position moves toward the edges, both tangential and sagittal resolutions degrade due to increasing off-axis aberrations. The tangential direction exhibits a larger variation across the field, indicating that it is more sensitive to field-dependent aberrations in this relay configuration.</p>
 <p>The full MTF curves provide additional insight beyond the MTF20 metric by showing how contrast decays across spatial frequencies for each field point. In particular, they reveal whether performance degradation occurs gradually or abruptly at different field locations, which is useful for understanding edge-of-field behavior.</p>
-<figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../_images/MTF_curves.svg"><img alt="MTF Curves for 35 fields both tangential and sagittal." src="../_images/MTF_curves.svg" width="75%" /></a>
-<figcaption>
-<p><span class="caption-text"><strong>Figure 9:</strong> MTF curves for all field points in both tangential and sagittal directions</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
 <figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../_images/Res_Heatmaps.svg"><img alt="Heatmap visualization of tangential and sagittal resolution" src="../_images/Res_Heatmaps.svg" width="75%" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 10:</strong> Interpolated heatmaps showing spatial variation of tangential and sagittal resolution across the field</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 8:</strong> Interpolated heatmaps showing spatial variation of tangential and sagittal resolution across the field</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -248,7 +248,7 @@
 <figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="../_images/Illumination_design.svg"><img alt="Schematic of Illumination Train." src="../_images/Illumination_design.svg" width="100%" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 7:</strong> A schematic of the illumination path for light sheet generation</span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 9:</strong> A schematic of the illumination path for light sheet generation</span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>The implemented lens sequence uses the following lenses listed in the table.</p>
@@ -301,9 +301,9 @@
 <li><p>Finally, the distance between Mirror 4 and the image plane is adjusted so that the beam reaches the desired focus in the x-dimension after L4 and final launch.</p></li>
 </ul>
 <figure class="align-center" id="id9">
-<a class="reference internal image-reference" href="../_images/3DLayout.pdf"><img alt="3D Layout of illumination train" src="../_images/3DLayout.pdf" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="dvopm_design/Images/3DLayout_illum.PNG"><img alt="3D Layout of illumination train" src="dvopm_design/Images/3DLayout_illum.PNG" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 8:</strong> A 3D Layout of the complete illumination train as modelled in Zemax</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 9:</strong> A 3D Layout of the complete illumination train as modelled in Zemax</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -318,7 +318,7 @@
 <figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../_images/cross_section_fwhm.svg"><img alt="Plot of the Huygens PSF Cross-Section" src="../_images/cross_section_fwhm.svg" width="75%" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 11:</strong> Huygens PSF Cross-Section of the light sheet having an FWHM of 13.65µm</span><a class="headerlink" href="#id10" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 10:</strong> Huygens PSF Cross-Section of the light sheet having an FWHM of 13.65µm</span><a class="headerlink" href="#id10" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>The 2D PSF was used to evaluate sheet extent and continuity. It is not used to quantify thickness.</p>
@@ -327,7 +327,7 @@
 <figure class="align-center" id="id11">
 <a class="reference internal image-reference" href="../_images/psf2d_map.svg"><img alt="Plot of 2D Huygens PSF in True Color" src="../_images/psf2d_map.svg" width="75%" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 12:</strong> 2D Huygens PSF with normalized intensity map illustrates the extended sheet used to estimate the sheet length.</span><a class="headerlink" href="#id11" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 11:</strong> 2D Huygens PSF with normalized intensity map illustrates the extended sheet used to estimate the sheet length.</span><a class="headerlink" href="#id11" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -341,19 +341,19 @@
 <figure class="align-center" id="id12">
 <a class="reference internal image-reference" href="../_images/Detection_Baseplate_Isometric.png"><img alt="CAD rendering of the detection path baseplate; isometric view" src="../_images/Detection_Baseplate_Isometric.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 13:</strong> CAD rendering of the detection baseplate showing component placement and folded relay geometry</span><a class="headerlink" href="#id12" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 12:</strong> CAD rendering of the detection baseplate showing component placement and folded relay geometry</span><a class="headerlink" href="#id12" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id13">
 <a class="reference internal image-reference" href="../_images/Detection_Assembly_Isometric.png"><img alt="CAD rendering of the detection train assembly on the baseplate; isometric view" src="../_images/Detection_Assembly_Isometric.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 14:</strong> Isometric view of the assembled detection subsystem</span><a class="headerlink" href="#id13" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 13:</strong> Isometric view of the assembled detection subsystem</span><a class="headerlink" href="#id13" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id14">
 <a class="reference internal image-reference" href="../_images/Detection_Assembly_Top.png"><img alt="CAD rendering of the detection train assembly on the baseplate; top view" src="../_images/Detection_Assembly_Top.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 15:</strong> Top view of the detection assembly illustrating optical path layout and spacing constraints</span><a class="headerlink" href="#id14" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 14:</strong> Top view of the detection assembly illustrating optical path layout and spacing constraints</span><a class="headerlink" href="#id14" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -368,19 +368,19 @@
 <figure class="align-center" id="id15">
 <a class="reference internal image-reference" href="../_images/Illumination_Baseplate_Isometric.png"><img alt="CAD rendering of the illumination path baseplate; isometric view" src="../_images/Illumination_Baseplate_Isometric.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 16:</strong> CAD rendering of the illumination baseplate showing folded beam path and component layout</span><a class="headerlink" href="#id15" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 15:</strong> CAD rendering of the illumination baseplate showing folded beam path and component layout</span><a class="headerlink" href="#id15" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id16">
 <a class="reference internal image-reference" href="../_images/Illumination_Assembly_Isometric.png"><img alt="CAD rendering of the illumination train assembly on the baseplate; isometric view" src="../_images/Illumination_Assembly_Isometric.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 17:</strong> Isometric view of the assembled illumination subsystem</span><a class="headerlink" href="#id16" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 16:</strong> Isometric view of the assembled illumination subsystem</span><a class="headerlink" href="#id16" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id17">
 <a class="reference internal image-reference" href="../_images/Illumination_Assembly_Top.png"><img alt="CAD rendering of the illumination train assembly on the baseplate; top view" src="../_images/Illumination_Assembly_Top.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 18:</strong> Top view of the illumination assembly highlighting beam folding and optical path arrangement</span><a class="headerlink" href="#id17" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 17:</strong> Top view of the illumination assembly highlighting beam folding and optical path arrangement</span><a class="headerlink" href="#id17" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -395,7 +395,7 @@
 <figure class="align-center" id="id18">
 <a class="reference internal image-reference" href="../_images/Full_Assembly.png"><img alt="CAD rendering of the complete system assembly on the baseplate; isometric view" src="../_images/Full_Assembly.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 19:</strong> Complete Altair dvOPM system assembly showing integration of detection, illumination, and stage subsystems</span><a class="headerlink" href="#id18" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 18:</strong> Complete Altair dvOPM system assembly showing integration of detection, illumination, and stage subsystems</span><a class="headerlink" href="#id18" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <hr class="docutils" />

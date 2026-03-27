@@ -7,22 +7,36 @@ Introduction
 Direct-View OPM
 _______________
 
-The Direct-View OPM (dvOPM) system is an oblique-plane light-sheet microscope designed for mesoscopic fluorescence imaging of large specimens. The system projects an oblique image plane directly onto a compact camera sensor without the use of a tertiary objective, simplifying the remote-imaging path while preserving light-sheet optical sectioning. This architecture enables a compact detection path while preserving the optical sectioning advantages of light-sheet microscopy.
+The Direct-View OPM (dvOPM) system is an oblique-plane light-sheet microscopy technique designed for mesoscopic fluorescence imaging of large specimens. In this approach, an oblique imaging plane within the sample is optically sectioned using a light sheet and directly projected onto a camera sensor.
+
+Conventional oblique-plane microscopy systems typically rely on a tertiary imaging objective to re-image the tilted plane onto the detector. In contrast, dvOPM eliminates this requirement by projecting the oblique image plane directly onto a compact camera sensor using a simplified relay. This reduces optical complexity and system footprint while preserving the optical sectioning capability of light-sheet microscopy.
+
+As a result, dvOPM provides a practical approach for imaging extended fields of view with optical sectioning while maintaining a compact and accessible optical design.
 
 ------------------------------
 
 System Overview
 _______________
 
-The dvOPM system consists of independent illumination and detection optical trains arranged around a shared sample region. The illumination subsystem generates an oblique The light sheet intersects the specimen at an oblique angle relative to the imaging stage, while the emitted fluorescence is captured by the primary objective and relayed through the detection optics, which project the tilted image plane directly onto the camera sensor.
+The dvOPM system consists of separate illumination and detection optical trains arranged around a shared sample region in an inverted configuration, where both illumination and detection are performed from below the specimen.
 
-The microscope operates using a stage-scanning acquisition geometry, where the specimen is translated through the stationary illumination and detection planes to acquire volumetric data. The illumination and detection optics are implemented as independent modular assemblies mounted on precision baseplates. The detection module is attached to a vertically oriented translation stage that allows adjustment of the imaging plane relative to the specimen while maintaining the fixed optical geometry of the system.
+The illumination subsystem generates a light sheet that intersects the sample at an oblique angle relative to the imaging stage. Fluorescence emitted from this illuminated plane is collected by the primary objective and relayed through the detection optics, which project the tilted image plane directly onto the camera sensor.
+
+Image acquisition is performed using a stage-scanning geometry, in which the sample is translated through the stationary illumination and detection planes to acquire volumetric data without moving the optical components.
+
+The illumination and detection subsystems are implemented as independent modular assemblies mounted on precision baseplates. The detection module is mounted on a vertically oriented translation stage, allowing adjustment of the imaging plane relative to the sample while preserving the fixed optical geometry of the relay.
 
 ------------------------------
 
 Altair dvOPM
 ____________
 
-The implementation presented here focuses on practical engineering improvements to simplify construction and alignment of the system. The detection path uses a pair of readily available photographic lenses to form the remote image directly on the camera sensor, while the illumination and detection subsystems are implemented as modular baseplate assemblies. These design choices reduce optical complexity, constrain alignment degrees of freedom, and support reproducible assembly within the Altair platform.
+The Altair dvOPM implementation focuses on translating the dvOPM concept into a system that is easier to construct, align, and reproduce.
+
+The detection path uses a pair of commercially available photographic lenses to form the remote image directly on the camera sensor, eliminating the need for complex multi-objective relay systems. Both the illumination and detection subsystems are implemented as modular baseplate assemblies, where the optical layout is mechanically constrained based on optimized design parameters.
+
+This approach reduces alignment sensitivity, limits the number of adjustable degrees of freedom, and improves reproducibility of the system. By combining simplified optical design with structured mechanical implementation, the Altair dvOPM provides a practical and accessible realization of oblique-plane light-sheet microscopy.
 
 ------------------------------
+
+The detailed optical design and implementation of the detection and illumination subsystems are described in the following section.

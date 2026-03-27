@@ -38,10 +38,10 @@ The system aperture was defined using the Object Space NA aperture type in Zemax
 
    NA = \frac{1}{2 (1.4 + 1.4)} = \frac{1}{5.6} \approx 0.1786
 
-.. figure:: Images/System Explorer Det.PNG
+.. figure:: Images/System_Explorer_Det.PNG
    :alt: A screenshot of System Explorer in Zemax.
    :align: center
-   :width: 60%
+   :width: 50%
 
    **Figure 1:** A screenshot of Aperture settings in System Explorer in Zemax
 
@@ -50,13 +50,6 @@ The system aperture was defined using the Object Space NA aperture type in Zemax
 The object surface represents the oblique imaging plane within the specimen. To reproduce the system geometry, it was defined as a plane tilted by 45° and embedded in water.
 
 Because of this tilt, positions across the object correspond to both lateral displacement and changes in depth within the sample. This ensures that the Zemax model accurately reflects the intended imaging condition.
-
-.. figure:: Images/
-   :alt: Screenshot of the settings for Object Surface in the Zemax.
-   :align: center
-   :width: 75%
-
-   **Figure 2:** Object Surface settings in Zemax 
 
 **Field Definition**
 
@@ -74,7 +67,7 @@ The fields themselves were weighted to prioritize central regions. The x and y c
    :align: center
    :width: 75%
 
-   **Figure 3:** Settings and Plot of field points in Zemax on a 2D plane
+   **Figure 2:** Settings and Plot of field points in Zemax on a 2D plane
 
 Because the object is tilted, this setup is essentially a 3D visualization, where the field points on the xy plane are also having different depth or z.
 
@@ -83,7 +76,7 @@ Because the object is tilted, this setup is essentially a 3D visualization, wher
    :align: center
    :width: 75%
 
-   **Figure 4:** A 3D visualization of the object surface and field points in the object as modelled in Zemax
+   **Figure 3:** A 3D visualization of the object surface and field points in the object as modelled in Zemax
 
 
 **Optimization**
@@ -91,12 +84,10 @@ Because the object is tilted, this setup is essentially a 3D visualization, wher
 The detection relay was refined using the Zemax Optimization Wizard.
 
 The primary optimization variables were:
-
 - relay distances  
 - camera (image plane) tilt  
 
 The relay distances correspond to the physical separations between system components:
-
 - specimen to O1  
 - O1 to fold mirror (minimum spacing set by filter wheel)  
 - fold mirror to O2 (minimum spacing set by kinematic mount)  
@@ -107,7 +98,6 @@ Among these, the O2-to-camera distance and the camera tilt angle were found to b
 Because the system images an oblique plane, the image surface was allowed to tilt so that it aligns with the projected image formed by the relay.
 
 The folllowing optimization settings were used:
-
 - Image Quality: Spot  
 - Reference: Centroid  
 - Gaussian Quadrature: maximum arms and rings 
@@ -119,7 +109,7 @@ The optimization process was carried out iteratively, adjusting one parameter at
    :align: center
    :width: 75%
 
-   **Figure 6:** Optimization Wizard in Zemax. We are optimizng for the spot size of our detection path.
+   **Figure 4:** Optimization Wizard in Zemax. We are optimizng for the spot size of our detection path.
 
 Detection Path: Zemax Analysis
 ______________________________
@@ -135,7 +125,7 @@ Resolution was quantified using the MTF20 criterion, defined as the spatial freq
    :align: center
    :width: 75%
 
-   **Figure 7:** MTF curves for all field points in both tangential and sagittal directions
+   **Figure 5:** MTF curves for all field points in both tangential and sagittal directions
 
 The spatial frequency obtained from Zemax is reported in image space (lp/mm). To express resolution in object space, the following relationship was used:
 
@@ -164,7 +154,7 @@ The full MTF curves provide additional insight beyond the MTF20 metric by showin
    :align: center
    :width: 75%
 
-   **Figure 8:** Interpolated heatmaps showing spatial variation of tangential and sagittal resolution across the field
+   **Figure 6:** Interpolated heatmaps showing spatial variation of tangential and sagittal resolution across the field
 
 ------------------------------
 
@@ -188,7 +178,7 @@ In the physical system, the beam is folded using mirrors. After L4, the beam is 
    :align: center
    :width: 100%
 
-   **Figure 9:** A schematic of the illumination path for light sheet generation
+   **Figure 7:** A schematic of the illumination path for light sheet generation
 
 The implemented lens sequence uses the following lenses listed in the table. 
 
@@ -248,7 +238,7 @@ The illumination path was constructed sequentially, with beam propagation contro
    :align: center
    :width: 100%
 
-   **Figure 9:** A 3D Layout of the complete illumination train as modelled in Zemax
+   **Figure 8:** A 3D Layout of the complete illumination train as modelled in Zemax
 
 ------------------------------
 
@@ -266,7 +256,7 @@ The cross-section analysis was used to quantify light-sheet thickness. The full 
    :align: center
    :width: 75%
 
-   **Figure 10:** Huygens PSF Cross-Section of the light sheet having an FWHM of 13.65µm
+   **Figure 9:** Huygens PSF Cross-Section of the light sheet having an FWHM of 13.65µm
 
 The 2D PSF was used to evaluate sheet extent and continuity. It is not used to quantify thickness.
 
@@ -279,7 +269,7 @@ These results confirm that the illumination system satisfies both thickness and 
    :align: center
    :width: 75%
 
-   **Figure 11:** 2D Huygens PSF with normalized intensity map illustrates the extended sheet used to estimate the sheet length.
+   **Figure 10:** 2D Huygens PSF with normalized intensity map illustrates the extended sheet used to estimate the sheet length.
 
 Detection Path: Baseplate Design
 ________________________________
@@ -299,21 +289,21 @@ The baseplate therefore has a dual purpose. First, it constrains the relative po
    :align: center
    :width: 75%
 
-   **Figure 12:** CAD rendering of the detection baseplate showing component placement and folded relay geometry
+   **Figure 11:** CAD rendering of the detection baseplate showing component placement and folded relay geometry
 
 .. figure:: Images/Detection_Assembly_Isometric.png
    :alt: CAD rendering of the detection train assembly on the baseplate; isometric view
    :align: center
    :width: 75%
 
-   **Figure 13:** Isometric view of the assembled detection subsystem
+   **Figure 12:** Isometric view of the assembled detection subsystem
 
 .. figure:: Images/Detection_Assembly_Top.png
    :alt: CAD rendering of the detection train assembly on the baseplate; top view
    :align: center
    :width: 100%
 
-   **Figure 14:** Top view of the detection assembly illustrating optical path layout and spacing constraints
+   **Figure 13:** Top view of the detection assembly illustrating optical path layout and spacing constraints
 
 ------------------------------
 
@@ -335,21 +325,21 @@ The illumination baseplate design thus extends beyond simply placing optical ele
    :align: center
    :width: 80%
 
-   **Figure 15:** CAD rendering of the illumination baseplate showing folded beam path and component layout
+   **Figure 14:** CAD rendering of the illumination baseplate showing folded beam path and component layout
 
 .. figure:: Images/Illumination_Assembly_Isometric.png
    :alt: CAD rendering of the illumination train assembly on the baseplate; isometric view
    :align: center
    :width: 75%
 
-   **Figure 16:** Isometric view of the assembled illumination subsystem
+   **Figure 15:** Isometric view of the assembled illumination subsystem
 
 .. figure:: Images/Illumination_Assembly_Top.png
    :alt: CAD rendering of the illumination train assembly on the baseplate; top view
    :align: center
    :width: 75%
 
-   **Figure 17:** Top view of the illumination assembly highlighting beam folding and optical path arrangement
+   **Figure 16:** Top view of the illumination assembly highlighting beam folding and optical path arrangement
 
 ------------------------------
 
@@ -371,6 +361,6 @@ The complete system assembly can therefore be understood as the integration of t
    :align: center
    :width: 100%
 
-   **Figure 18:** Complete Altair dvOPM system assembly showing integration of detection, illumination, and stage subsystems
+   **Figure 17:** Complete Altair dvOPM system assembly showing integration of detection, illumination, and stage subsystems
 
 ------------------------------

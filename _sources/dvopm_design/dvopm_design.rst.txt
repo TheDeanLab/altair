@@ -123,7 +123,7 @@ Resolution was quantified using the MTF20 criterion, defined as the spatial freq
 .. figure:: Images/MTF_Tangential_Sagittal_2panel.svg
    :alt: MTF Curves for 35 fields both tangential and sagittal.
    :align: center
-   :width: 75%
+   :width: 85%
 
    **Figure 5:** MTF curves for all field points in both tangential and sagittal directions
 
@@ -187,22 +187,16 @@ The implemented lens sequence uses the following lenses listed in the table.
 
        * - Lens #
          - Lens Description
-         - Link
        * - L1
          - Powell Lens LOCP-8.9R10-2.0
-         - https://laserlineoptics.com/products/powell-lens-10-degree?variant=44313731334178
        * - L2
          - Achromatic Doublet f = 60 mm
-         - https://www.thorlabs.com/item/AC254-060-A
        * - L3
          - Achromatic Doublet f = 300 mm
-         - https://www.thorlabs.com/item/AC254-300-A
        * - L4
          - Achromatic Doublet f = 250 mm
-         - https://www.thorlabs.com/item/AC254-250-A
        * - RG
          - Resonant Galvo
-         - https://www.findlight.net/laser-material-processing/machine-parts/galvo-scanners/crs-4-khz-resonant-scanner
 
 ------------------------------
 
@@ -363,4 +357,3 @@ The complete system assembly can therefore be understood as the integration of t
 
    **Figure 17:** Complete Altair dvOPM system assembly showing integration of detection, illumination, and stage subsystems
 
-------------------------------

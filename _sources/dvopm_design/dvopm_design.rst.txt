@@ -173,7 +173,7 @@ A resonant galvo is placed between L2 and L3 to introduce rapid angular pivoting
 
 In the physical system, the beam is folded using mirrors. After L4, the beam is redirected upward and then reflected by an inclined mirror (35° relative to normal), launching the sheet into the specimen at approximately 20° relative to the stage.
 
-.. figure:: Images/Illumination_design.svg
+.. figure:: Images/Illumination_design2.svg
    :alt: Schematic of Illumination Train.
    :align: center
    :width: 100%
@@ -197,7 +197,10 @@ The implemented lens sequence uses the following lenses listed in the table.
          - Achromatic Doublet f = 250 mm
        * - RG
          - Resonant Galvo
-
+       * - M1 & M2
+         - Ø1" Protected Silver Mirror
+       * - M3
+         - Ø1" Protected Silver D-Shaped Mirror
 ------------------------------
 
 Illumination Path: Zemax Simulation Setup

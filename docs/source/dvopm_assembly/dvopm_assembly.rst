@@ -26,24 +26,28 @@ The alignment procedure is centered around the filter wheel, which serves as the
 
 .. figure:: Images/iris_tube.png
    :align: center
+   :width: 50%
    :alt: Reference beam with irises mounted on translation stages.
 
    Reference beam with irises mounted on translation stages.
 
 .. figure:: Images/iris_check_alignment.png
    :align: center
+   :width: 50%
    :alt: Checking beam symmetry at the irises.
 
    Verify that the beam is centered on each iris aperture.
 
 .. figure:: Images/flat_mirror.png
    :align: center
+   :width: 75%
    :alt: Flat mirror installed for back-reflection alignment check.
 
    Installation of a flat mirror for back-reflection alignment verification.
 
 .. figure:: Images/iris_not_align.png
    :align: center
+   :width: 75%
    :alt: Example of a misaligned reference beam.
 
    Example of a misaligned reference beam. The beam does not pass through the iris aperture.
@@ -55,6 +59,7 @@ O2 must be operated with its focus locked at infinity and its aperture fully ope
 
 .. figure:: Images/o2_focus.png
    :align: center
+   :width: 50%
    :alt: O2 focus ring locked to infinity.
 
    Lock the focus of O2 to infinity by rotating its focus adjustment ring.
@@ -63,6 +68,7 @@ Because the Nikon AF-S NIKKOR 85 mm f/1.4G does not include a mechanical apertur
 
 .. figure:: Images/o2_aperture.png
    :align: center
+   :width: 75%
    :alt: O2 aperture opened with a cardboard shim.
 
    Open O2's aperture by inserting a cardboard shim into the aperture control lever on the rear of the lens.
@@ -79,30 +85,35 @@ The focus of O1 does not critically affect overall system performance and may be
 
 .. figure:: Images/baseplate_mounting.png
    :align: center
+   :width: 50%
    :alt: Filter wheel and kinematic mirror mount installed on the baseplate.
 
    Filter wheel and kinematic mirror mount installed at their predetermined positions on the custom baseplate.
 
 .. figure:: Images/filter_entrance.png
    :align: center
+   :width: 75%
    :alt: Center alignment demonstrated by translating the reference beam through the filter wheel entrance.
 
    Center alignment demonstrated by translating the reference beam through the filter wheel entrance aperture.
 
 .. figure:: Images/mirror_tubes.png
    :align: center
+   :width: 50%
    :alt: Mirror mounted on a lens tube for back-reflection alignment check.
 
    Mirror mounted on a lens tube used to verify alignment of the kinematic mount via back-reflection.
 
 .. figure:: Images/misaligned_filter.png
    :align: center
+   :width: 75%
    :alt: Example of a misaligned mirror mount showing off-axis back-reflection.
 
    Example of a misaligned beam: adjusting the tip and tilt of the kinematic mirror shifts the back-reflection off-axis.
 
 .. figure:: Images/aligned_filter.png
    :align: center
+   :width: 50%
    :alt: Example of an aligned mirror mount with on-axis back-reflection.
 
    Example of an aligned beam: back-reflection is coaxial with the incident beam after tip/tilt correction of the kinematic mirror.
@@ -112,6 +123,7 @@ Once the beam path is established, install O2 in a reversed configuration and mo
 
 .. figure:: Images/o2_camera.png
    :align: center
+   :width: 50%
    :alt: Setup for locating the optimal camera focus position relative to O2.
 
    Setup for locating the optimal focus position of the camera relative to O2.

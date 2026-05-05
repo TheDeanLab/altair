@@ -864,9 +864,9 @@ Step 11: Optimize System Light-Sheet Performance
 **Section Goal: Optimize navigate parameters and XY offsets of RFO, L6, L7, and ILO to verify the system is working.**
 
 This section is focused on two main objectives:
-1. Verify that the focus remains sharp as you manually adjust the voicecoil offset to scan your focus across your
-camera FoV
-2. Tune your navigate waveform parameters to ensure that your beam is being scanned properly by your generated waveform.
+    1. Verify that the focus remains sharp as you manually adjust the voicecoil offset to scan your focus across your
+       camera FoV
+    2. Tune your navigate waveform parameters to ensure that your beam is being scanned properly by your generated waveform.
 
 For objective 1, with the detection path installed and the beam roughly centered vertically, adjust the VC offset
 manually  until the beam looks like it reaches the top and bottom edges of the image FoV. In the optimized system, as

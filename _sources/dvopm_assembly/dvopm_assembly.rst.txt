@@ -474,7 +474,7 @@ The stage assemlby includes the following S561-2235B, Dual-LS-50-FTP with LS-500
 
 **Important: The height of the stage must be set to over 260mm from the optical table to the bottom surface of the stage**
 
-Place stage over the illumination train 4" away from the pedastal post at the end of the baseplate. For the detection module, use a PT1B stage <https://www.thorlabs.com/thorproduct.cfm?partnumber=PT1B>`_ with a MSAP90 bracket <https://www.thorlabs.com/thorproduct.cfm?partnumber=MSAP90>`_ to mount the detection module and place under the stage. Then, you can use the translation stage to adjust the position of the detection module such that the pupil of the objective is nearly in the center of the stage field of view.
+Place stage over the illumination train 4" away from the pedastal post at the end of the baseplate. For the detection module, use a `PT1B stage <https://www.thorlabs.com/thorproduct.cfm?partnumber=PT1B>`_ with a `MSAP90 bracket <https://www.thorlabs.com/thorproduct.cfm?partnumber=MSAP90>`_ to mount the detection module and place under the stage. Then, you can use the translation stage to adjust the position of the detection module such that the pupil of the objective is nearly in the center of the stage field of view.
 The figure below shows the final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
 
 .. figure:: Images/Complete_System_Assembly_V2.png

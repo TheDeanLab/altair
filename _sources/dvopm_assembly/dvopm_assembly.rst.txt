@@ -180,7 +180,7 @@ Mounting Baseplate on Optical Table
 To mount the baseplate onto an optical table, the process requires screwing 1/4"-20 screws onto 2.5" pedastal posts (`RS2.5P <https://www.thorlabs.com/item/RS2.5P>`_). There are multiple holes on the baseplate for pedastal posts, we recommend at least using the 5 pedastal posts for all 5 vertices. You could either use clamps to fasten the pedastal posts on the optical table or use cap screws in which case first fasten the pedastal posts on the optical table and then mount the baseplate on top of the pedastal posts. 
 The whole system has been made keeping in mind of the height of the pedastal posts, so using 2.5" pedastal posts will ensure that the baseplate is at the proper height to correctly couple with the detection module.
 
-.. figure:: Images/Baseplate_on_Optical_Table_with_Pedastal_Posts.png
+.. figure:: Images/Baseplate_on_Table_with_Pedastal_Posts.png
     :align: center
     :alt: Mounting the baseplate on the optical table using pedastal posts.
     :width: 100%
@@ -228,7 +228,9 @@ With the pinholes placed, the process becomes iterative by making small adjustme
 
 ---------------
 
-Placing the Galvo Scanner and the first K1S4 mount with mirror
+Placing the Galvo and the K1S4 Mirror Mount
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 Now that the beam is collimated and aligned, the next step is to mount the galvo scanner and the first K1S4 mount with mirror, which will decrease the optical axis height by a inch. 
 For the Resonant Galvanometer, use a 3" Polaris Post, and mount the custom galvo adapter on top of the post using dowell pins and 3/8" screw, then carefully insert the galvo scanner through the adapter bore and fasten a little using 3/8" screws but do not tighten yet. Make sure the reflecting surface faces the correct direction.
@@ -248,6 +250,7 @@ Once the beam is passing through the pinhole at the end of the baseplate, you ca
 ---------------
 
 Folding Mirrors
+^^^^^^^^^^^^^^^
 
 Now, the next step is to mount the remaining folding mirrors and ensure that the beam still passes through the pinholes. We begin by only the corner mirror first.
 Ideally, you would need to make any adjustment to make the beam pass through the pinholes, if the beam aligned correctly in the previous step and that the folding mirrors are correctly mounted. 
@@ -263,6 +266,7 @@ Also, you could use the aligment holes in between the folding mirrors at differe
 ---------------
 
 Mounting the Optical Lenses
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now that the beam is properly aligned with the folding mirrors, the next step is to mount the optical lenses. 
 We only mount the achromatic doublet lens first, and the powell lens is mounted at the end.
@@ -280,6 +284,7 @@ You could chose to check the bakc reflection of the lenses to make sure they are
 ---------------
 
 Fold the Beam Up
+^^^^^^^^^^^^^^^^
 
 Now, switch the 1XY mount with pinhole at the end of the baseplate with the second K1S4 mount with a mirror which will fold the beam up.
 
@@ -301,6 +306,7 @@ For this step, we used a `DG10-1500-H1-MD <https://www.thorlabs.com/thorproduct.
 ---------------
 
 Gluing the D-Shaped Mirror on the Side Plate
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now, we need to glue the D-Shaped mirror on the side plate and then fasten the side plate on the main baseplate. The D-shaped mirror is used to reflect the beam from the illumination train into the detection module, so it is crucial to ensure that it is properly aligned and securely attached.
 The D-shaped mirror is glued onto the side plate using a high-quality optical adhesive. We used `Norland Optical Adhesive 81 <https://www.thorlabs.com/thorproduct.cfm?partnumber=NOA81>`_, which is a UV-curable adhesive that provides strong bonding and excellent optical clarity. 
@@ -309,10 +315,11 @@ The process involves applying a small amount of the adhesive to the socket in th
 .. figure:: Images/NOA81.jpeg
     :align: center
     :alt: D-Shaped mirror glued onto the side plate.
+    :width: 50%
 
     **Figure 23:** The choice of glue used for attaching the D-Shaped mirror.
 
-.. figure:: Images/SidePlateWithMirror.png
+.. figure:: Images/SidePlateWithMirror.jpeg
     :align: center
     :alt: D-Shaped mirror glued onto the side plate.
 
@@ -320,20 +327,22 @@ The process involves applying a small amount of the adhesive to the socket in th
 
 ---------------
 
-Fastening the Side Plate on the main Baseplate
+Mounting the Side Plate 
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Once the D-shaped mirror is securely attached to the side plate, the next step is to fasten the side plate onto the main baseplate. The side plate is designed to be mounted onto the main baseplate using dowell pins and 1/4-20 screws, so you will need to put the dowell pins in the baseplate side holes and then align the holes on the side plate on the main baseplate and then secure it in place using screws.
 
 .. figure:: Images/K1XY_RG_K1S4_Ms_Ls_K1S4_D-M_Step_8.png
     :align: center
     :alt: Side plate fastened onto the main baseplate.
+    :width: 50%
 
     **Figure 25:** Side plate fastened onto the main baseplate.
 
 -------------------------
 
 Powell Lens Assembly
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 Our illumination path utilize a Powell lens as the element that forms the light sheet profile. Our mounting scheme for the Powell lens offers control over all 3 axes (x, y,
 and z), where the Polaris 1XY Mount covers x and y and the LNR25M covers z. We found that outside of the Polaris 1XY
@@ -440,6 +449,7 @@ Then you will mount the XP10X on top of the Polaris Mount using dowel pins and 1
 ------------------
 
 Mechanical Slit Assembly
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 We use a mechanical slit to control the aperture of the light sheet.
 We first mount the VA100CP mechanical slit on the custom adapter usign 3/8" screw, and then mount the custom adapter onto the Polaris Mount using dowel pins and 3/8" screw. Finally, we mount the Polaris Mount onto the baseplate using dowel pins and 1/4-20 screws.
@@ -466,6 +476,7 @@ The final baseplate assembly should look like the figure below.
 ------------------
 
 Coupling the Illumination Train with the Detection Module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Finally with both the illumination train and the detection module assembled, we can then couple the illumination train with the detection module. The key is to make sure that the beam from the illumination train is properly reflected by the D-shaped mirror into the detection module, and that it is properly aligned with the optical path of the detection module.
 
@@ -483,3 +494,4 @@ The figure below shows the final assembly of the stage with the detection module
 
     **Figure 35:** Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
 
+------------------

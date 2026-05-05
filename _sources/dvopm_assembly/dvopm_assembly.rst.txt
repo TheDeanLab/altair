@@ -138,7 +138,7 @@ Breakdown of Baseplate Holes
 
 The baseplate includes a series of holes for mounting the various optical components of the illumination train. Most of the optical components are mounted on Thorlabs Polaris Post with Polaris mounts, with a few exceptions. And there are some holes which purely for alignment purposes and would not be used once done with the alignment process. The following figure is a breakdown of the holes on the baseplate and their intended use:
 
-.. figure:: Images/Illumination Baseplate Top Schematic.jpg
+.. figure:: Images/Illumination_Baseplate_Top_Schematic.jpg
    :alt: A schematic of the baseplate labelled their intended use or optical components.
    :align: center
    :width: 100%
@@ -180,7 +180,7 @@ Mounting Baseplate on Optical Table
 To mount the baseplate onto an optical table, the process requires screwing 1/4"-20 screws onto 2.5" pedastal posts (`RS2.5P <https://www.thorlabs.com/item/RS2.5P>`_). There are multiple holes on the baseplate for pedastal posts, we recommend at least using the 5 pedastal posts for all 5 vertices. You could either use clamps to fasten the pedastal posts on the optical table or use cap screws in which case first fasten the pedastal posts on the optical table and then mount the baseplate on top of the pedastal posts. 
 The whole system has been made keeping in mind of the height of the pedastal posts, so using 2.5" pedastal posts will ensure that the baseplate is at the proper height to correctly couple with the detection module.
 
-.. figure:: Images/Baseplate on Table with Pedastal Posts.png
+.. figure:: Images/Baseplate_on_Optical_Table_with_Pedastal_Posts.png
     :align: center
     :alt: Mounting the baseplate on the optical table using pedastal posts.
     :width: 100%
@@ -214,7 +214,7 @@ The other way is using `Thorlabs ID12 <https://www.thorlabs.com/thorproduct.cfm?
 Either way, the key is to ensure that the pinholes are at the correct height and you could have one of these pinholes placed at the powell lens hole and one at the other end of the baseplate as shown in the figure below. There are multiple alignments holes in between and one can use them too, it is always better to check far away. 
 With the pinholes placed, the process becomes iterative by making small adjustments on the K1XY tip/tilt knobs and XY position screws until the beam passes through both pinholes.
 
-.. figure:: Images/K1XY Step 1.png
+.. figure:: Images/K1XY_Step_1.png
     :align: center
     :alt: Initial beam alignment using pinholes
 
@@ -239,7 +239,7 @@ The figure below shows the galvo scanner, the first K1S4 mount with mirror, the 
 Now the goal is to make sure that the beam reflects off the mirror and passes through the pinhole at the end of the baseplate and at this point. For the vertical alignment, you can adjust the tip knob on the K1S4 mount and the rotation of the galvo scanner. Adjust the galvo scanner to make sure the beam the passthrough the first pinhole and adjust the tip knob of the K1S4 mount to make sure the beam passes through the second pinhole at the end of the baseplate. Iteratively adjusting both will make the beam at the correct height throughout, if beam is laterally shifted on the pinholes, use the tilt knob on the K1S4 mount to make the adjustment.
 Once the beam is passing through the pinhole at the end of the baseplate, you can then tighten the screws on the galvo scanner.
 
-.. figure:: Images/K1XY RG K1S4 M1 Step 2f.png
+.. figure:: Images/K1XY_RG_K1S4_M1_Step_2f.png
     :align: center
     :alt: Aligning the galvo scanner and the first K1S4 mount with mirror
 
@@ -254,7 +254,7 @@ Ideally, you would need to make any adjustment to make the beam pass through the
 If there is still slight misalignment, you can first try to wobble the folding mirrors' post (they have a little room play with) if not you can adjust the tip/tilt knobs on the K1S4 mount until the reflected beam passes through both pinholes.
 Also, you could use the aligment holes in between the folding mirrors at different positions to inspect at which point is the beam getting misaligned if any, and make the adjustment accordingly.
 
-.. figure:: Images/K1XY RG K1S4 Ms Step 4.png
+.. figure:: Images/K1XY_RG_K1S4_Ms_Step_4.png
     :align: center
     :alt: Aligning the folding mirror
 
@@ -271,7 +271,7 @@ The f=60mm AC254-60-A achromatic doublet lens is mounted on a 3" polris post in 
 The process of mounting the lenses is straightforward, but the key is to ensure that the lenses are mounted at the correct positions, facing the correct direction, and that the beam passes through the center of the lenses. The figure below shows the achromatic doublet lenses mounted on the baseplate.
 You could chose to check the bakc reflection of the lenses to make sure they are properly mounted and that the beam is passing through the center of the lenses, but it is not necessary.
 
-.. figure:: Images/K1XY RG K1S4 Ms Ls Step 5f.png
+.. figure:: Images/K1XY_RG_K1S4_Ms_Ls_Step_5f.png
     :align: center
     :alt: Mounting the achromatic doublet lenses on the baseplate
 
@@ -283,16 +283,16 @@ Fold the Beam Up
 
 Now, switch the 1XY mount with pinhole at the end of the baseplate with the second K1S4 mount with a mirror which will fold the beam up.
 
-.. figure:: Images/K1XY RG K1S4 Ms Ls K1S4 Step 6.png
+.. figure:: Images/K1XY_RG_K1S4_Ms_Ls_K1S4_Step_6.png
     :align: center
     :alt: Mounting the second K1S4 mount with mirror
 
     **Figure 21:** Mounting the second K1S4 mount with mirror
 
 Now, the final alignment check is to make sure the beam is correctly folding  up and passing through the center.
-For this step, we used a DG10-1500-H1-MD <https://www.thorlabs.com/thorproduct.cfm?partnumber=DG10-1500-H1-MD>`_ put on a custom adapter. The custom adapter can be mounted to the side of the baseplate and you can just place the Alignment disk on top of the adapter.
+For this step, we used a `DG10-1500-H1-MD <https://www.thorlabs.com/thorproduct.cfm?partnumber=DG10-1500-H1-MD>`_ put on a custom adapter. The custom adapter can be mounted to the side of the baseplate and you can just place the Alignment disk on top of the adapter.
 
-.. figure:: Images/K1XY RG K1S4 Ms Ls K1S4  Align Step 7f.png
+.. figure:: Images/K1XY_RG_K1S4_Ms_Ls_K1S4_Align_Step_7f.png
     :align: center
     :alt: Alignment disk mounted on the side of the baseplate for final alignment check.
 
@@ -324,7 +324,7 @@ Fastening the Side Plate on the main Baseplate
 
 Once the D-shaped mirror is securely attached to the side plate, the next step is to fasten the side plate onto the main baseplate. The side plate is designed to be mounted onto the main baseplate using dowell pins and 1/4-20 screws, so you will need to put the dowell pins in the baseplate side holes and then align the holes on the side plate on the main baseplate and then secure it in place using screws.
 
-.. figure:: Images/SidePlate.jpeg
+.. figure:: Images/K1XY_RG_K1S4_Ms_Ls_K1S4_D-M_Step_8.png
     :align: center
     :alt: Side plate fastened onto the main baseplate.
 
@@ -363,7 +363,7 @@ secure the lens in place.
 Screw the threaded portion of the LRM1 into the threaded hole on the Polaris 1XY until the back surface of the LRM1
 is flush with the front of the 1XY.
 
-.. figure:: Images/assembly/LRM1into1XY.png
+.. figure:: Images/LRM1into1XY.png
     :align: center
     :alt: Screwing the LRM1 into the 1XY
 
@@ -378,7 +378,7 @@ have corresponding holes on the baseplate in blue. Finally, there are three hole
 correspond to threaded holes on the bottom of the LNR25M, 1/4-20 screws can be used to secure the LNR25M through
 these holes the same way that one would fix the other Polaris posts on the baseplate in place.
 
-.. figure:: Images/assembly/LNR25MontoBaseplate.png
+.. figure:: Images/LNR25MontoBaseplate.png
     :align: center
     :alt: placing the LNR25M onto the baseplate
 
@@ -390,7 +390,7 @@ Then take the LNR25M to Polaris adapter and using the same 2 mm dowel pins and 1
 posts in the system use, fix the 1" Polaris post onto the adapter by screwing in a 1/4-20 screw from the bottom of
 the adapter into the post.
 
-.. figure:: Images/assembly/P1onLNR25Adapter.png
+.. figure:: Images/P1onLNR25Adapter.png
     :align: center
     :alt: placing the 1" Polaris Post onto the LNR25M Adapter
 
@@ -401,7 +401,7 @@ the adapter into the post.
 Then using the four holes on the top of the adapter surrounding the 1" post, place 1/4-20 screws in those holes and
 screw them into the top of the LNR25M
 
-.. figure:: Images/assembly/P1onLNR25AdapteronLNR25.png
+.. figure:: Images/P1onLNR25AdapteronLNR25.png
     :align: center
     :alt: placing the LNR25M Adapter onto the LNR25
 
@@ -411,7 +411,7 @@ screw them into the top of the LNR25M
 
 Using an 8-32 screw and the 2 mm dowel pins, fix the Polaris 1XY onto the top of the 1" Polaris post assembly.
 
-.. figure:: Images/assembly/PowellLNR25MLRM1.png
+.. figure:: Images/PowellLNR25MLRM1.png
     :align: center
     :alt: Fixing the Polaris 1XY onto the 1" Polaris Post
 
@@ -421,7 +421,7 @@ Using an 8-32 screw and the 2 mm dowel pins, fix the Polaris 1XY onto the top of
 
 Finally, screw in the AD9F fully into the LRM1 mount threading.
 
-.. figure:: Images/assembly/PowellLNR25M.png
+.. figure:: Images/PowellLNR25M.png
     :align: center
     :alt: Threading the AD9F into the LRM1 mount
 
@@ -431,7 +431,7 @@ There will also an alternate way to mount the 1XY on the baseplate, which is to 
 You will first mount a 1.5" Polaris Mount with a custom height adapter on the baseplate.
 Then you will mount the XP10X on top of the Polaris Mount using dowel pins and 1/4-20 screw, and then mount the Polaris 1XY onto the XP10X-C1 using dowel pins and 8-32 screw.
 
-.. figure:: Images/assembly/XP10X 1XY Powell Lens Steps.jpg
+.. figure:: Images/XP10X_1X_Powell_Lens_Steps.jpg
     :align: center
     :alt: Mounting the Polaris 1XY onto the XP10X-C1
 
@@ -445,7 +445,7 @@ We use a mechanical slit to control the aperture of the light sheet.
 We first mount the VA100CP mechanical slit on the custom adapter usign 3/8" screw, and then mount the custom adapter onto the Polaris Mount using dowel pins and 3/8" screw. Finally, we mount the Polaris Mount onto the baseplate using dowel pins and 1/4-20 screws.
 The slit should be placed at the focal plane of the second achromatic doublet, so that it can effectively control the aperture of the light sheet. If you can't find the focus at the mechanical slit, you can play with the position of the powell lens a little using the translation stage it sits on, and you should be able to find the focus at the mechanical slit.
 
-.. figure:: Images/assembly/Slit on Baseplate Steps.jpg
+.. figure:: Images/Slit_on_Baseplate_Steps.jpg
     :align: center
     :alt: Mounting the mechanical slit onto the baseplate
     :width: 100%
@@ -456,7 +456,7 @@ The slit should be placed at the focal plane of the second achromatic doublet, s
 
 The final baseplate assembly should look like the figure below.
 
-.. figure:: Images/assembly/Illumination Only Assembly.png
+.. figure:: Images/Illumination_Only_Assembly.png
     :align: center
     :alt: Aligning the mechanical slit with the beam path
     :width: 100%
@@ -477,7 +477,7 @@ The stage assemlby includes the following S561-2235B, Dual-LS-50-FTP with LS-500
 Place stage over the illumination train 4" away from the pedastal post at the end of the baseplate. For the detection module, use a PT1B stage <https://www.thorlabs.com/thorproduct.cfm?partnumber=PT1B>`_ with a MSAP90 bracket <https://www.thorlabs.com/thorproduct.cfm?partnumber=MSAP90>`_ to mount the detection module and place under the stage. Then, you can use the translation stage to adjust the position of the detection module such that the pupil of the objective is nearly in the center of the stage field of view.
 The figure below shows the final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
 
-.. figure:: Images/assembly/Complete System Assembly V2.png
+.. figure:: Images/Complete_System_Assembly_V2.png
     :align: center
     :alt: Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
 

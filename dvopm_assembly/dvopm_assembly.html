@@ -77,7 +77,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_design/dvopm_design.html">Design Process</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">DV-OPM Baseplate Assembly &amp; Alignment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#detection-train-assembly">Detection Train Assembly</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#illumination-train-assembly">Illumination Train Assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#illumination-train-assembly">Illumination Train Assembly</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initial-laser-collimation">Initial Laser Collimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#powell-lens-assembly">Powell Lens Assembly</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_characterization/dvopm_characterization.html">Altair DV-OPM Characterization</a></li>
@@ -128,25 +132,25 @@
 <figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/iris_tube.png"><img alt="Reference beam with irises mounted on translation stages." src="../_images/iris_tube.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-text">Reference beam with irises mounted on translation stages.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> Reference beam with irises mounted on translation stages.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../_images/iris_check_alignment.png"><img alt="Checking beam symmetry at the irises." src="../_images/iris_check_alignment.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-text">Verify that the beam is centered on each iris aperture.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 2:</strong> Verify that the beam is centered on each iris aperture.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="../_images/flat_mirror.png"><img alt="Flat mirror installed for back-reflection alignment check." src="../_images/flat_mirror.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-text">Installation of a flat mirror for back-reflection alignment verification.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 3:</strong> Installation of a flat mirror for back-reflection alignment verification.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../_images/iris_not_align.png"><img alt="Example of a misaligned reference beam." src="../_images/iris_not_align.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-text">Example of a misaligned reference beam. The beam does not pass through the iris aperture.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 4:</strong> Example of a misaligned reference beam. The beam does not pass through the iris aperture.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>The next step is to configure the photographic lenses. Because neither lens is telecentric, correct setup is critical for minimizing aberrations and achieving optimal performance.</p>
@@ -154,14 +158,14 @@
 <figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../_images/o2_focus.png"><img alt="O2 focus ring locked to infinity." src="../_images/o2_focus.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-text">Lock the focus of O2 to infinity by rotating its focus adjustment ring.</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 5:</strong> Lock the focus of O2 to infinity by rotating its focus adjustment ring.</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>Because the Nikon AF-S NIKKOR 85 mm f/1.4G does not include a mechanical aperture ring, the aperture must be opened manually. This can be accomplished by inserting a thin, rigid piece of material (e.g., hard cardboard) into the aperture control lever on the rear bayonet face of the lens. This fully opens the aperture and allows the lens to be stepped up to the camera.</p>
 <figure class="align-center" id="id6">
 <a class="reference internal image-reference" href="../_images/o2_aperture.png"><img alt="O2 aperture opened with a cardboard shim." src="../_images/o2_aperture.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-text">Open O2’s aperture by inserting a cardboard shim into the aperture control lever on the rear of the lens.</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 6:</strong> Open O2’s aperture by inserting a cardboard shim into the aperture control lever on the rear of the lens.</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>The focus of O1 does not critically affect overall system performance and may be left at an arbitrary setting. However, O1 includes a mechanical aperture ring that allows the effective NA to be adjusted. The system can in principle be operated at full aperture (NA = 0.36). Due to the non-telecentric, non-corrected nature of the photographic lenses and the fact that the filter wheel aperture in the current configuration is smaller than the back pupil of O1, operating at full NA will introduce significant astigmatism without a corresponding improvement in resolution. It is therefore recommended to set O1 to a reduced aperture.</p>
@@ -175,44 +179,313 @@
 <figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../_images/baseplate_mounting.png"><img alt="Filter wheel and kinematic mirror mount installed on the baseplate." src="../_images/baseplate_mounting.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-text">Filter wheel and kinematic mirror mount installed at their predetermined positions on the custom baseplate.</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 7:</strong> Filter wheel and kinematic mirror mount installed at their predetermined positions on the custom baseplate.</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="../_images/filter_entrance.png"><img alt="Center alignment demonstrated by translating the reference beam through the filter wheel entrance." src="../_images/filter_entrance.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-text">Center alignment demonstrated by translating the reference beam through the filter wheel entrance aperture.</span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 8:</strong> Center alignment demonstrated by translating the reference beam through the filter wheel entrance aperture.</span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../_images/mirror_tubes.png"><img alt="Mirror mounted on a lens tube for back-reflection alignment check." src="../_images/mirror_tubes.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-text">Mirror mounted on a lens tube used to verify alignment of the kinematic mount via back-reflection.</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 9:</strong> Mirror mounted on a lens tube used to verify alignment of the kinematic mount via back-reflection.</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../_images/misaligned_filter.png"><img alt="Example of a misaligned mirror mount showing off-axis back-reflection." src="../_images/misaligned_filter.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-text">Example of a misaligned beam: adjusting the tip and tilt of the kinematic mirror shifts the back-reflection off-axis.</span><a class="headerlink" href="#id10" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 10:</strong> Example of a misaligned beam: adjusting the tip and tilt of the kinematic mirror shifts the back-reflection off-axis.</span><a class="headerlink" href="#id10" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id11">
 <a class="reference internal image-reference" href="../_images/aligned_filter.png"><img alt="Example of an aligned mirror mount with on-axis back-reflection." src="../_images/aligned_filter.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-text">Example of an aligned beam: back-reflection is coaxial with the incident beam after tip/tilt correction of the kinematic mirror.</span><a class="headerlink" href="#id11" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 11:</strong> Example of an aligned beam: back-reflection is coaxial with the incident beam after tip/tilt correction of the kinematic mirror.</span><a class="headerlink" href="#id11" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>Once the beam path is established, install O2 in a reversed configuration and mount the camera to locate the optimal focus position. Rotate the camera to approximately 45° so that its entrance pupil is parallel to O2. Illuminate O2 with a large-diameter beam (ideally filling its back aperture) and translate the axial stage until a sharp focus is observed on the camera using its acquisition software. Insert neutral-density filters if necessary to avoid sensor saturation.</p>
 <figure class="align-center" id="id12">
 <a class="reference internal image-reference" href="../_images/o2_camera.png"><img alt="Setup for locating the optimal camera focus position relative to O2." src="../_images/o2_camera.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-text">Setup for locating the optimal focus position of the camera relative to O2.</span><a class="headerlink" href="#id12" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 12:</strong> Setup for locating the optimal focus position of the camera relative to O2.</span><a class="headerlink" href="#id12" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="illumination-train-assembly">
 <h2>Illumination Train Assembly<a class="headerlink" href="#illumination-train-assembly" title="Permalink to this heading"></a></h2>
-<p>Placeholder</p>
+<p><strong>Breakdown of Baseplate Holes</strong></p>
+<p>The baseplate includes a series of holes for mounting the various optical components of the illumination train. Most of the optical components are mounted on Thorlabs Polaris Post with Polaris mounts, with a few exceptions. And there are some holes which purely for alignment purposes and would not be used once done with the alignment process. The following figure is a breakdown of the holes on the baseplate and their intended use:</p>
+<figure class="align-center" id="id13">
+<a class="reference internal image-reference" href="dvopm_assembly/Images/IlluminationBaseplateTopSchematic.png"><img alt="A schematic of the baseplate labelled their intended use or optical components." src="dvopm_assembly/Images/IlluminationBaseplateTopSchematic.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 13:</strong> Labelled schematic of the baseplate showing the intended use of each hole for mounting optical components or for alignment purposes.</span><a class="headerlink" href="#id13" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Overview of the Illumination Train Assembly Process</strong></p>
+<p>The assembly of the illumination train is a multi-step process that involves the careful installation and alignment of various optical components. The following steps outline the general procedure for assembling the illumination train:</p>
+<ol class="arabic simple">
+<li><p>Mount the baseplate on the pedastal posts</p></li>
+<li><p>Laster Collimation and Alignment</p></li>
+<li><p>Mounting the Galvo Scanner and the first K1S4 mount with mirror</p></li>
+<li><p>Mounting the foldings Mirrors and ensuring alignment</p></li>
+<li><p>Mounting the Optical Lenses</p></li>
+<li><p>Mount the second K1S4 mount with mirror to fold the beam up</p></li>
+<li><p>Gluing the D-Shaped Mirror on the Side Plate</p></li>
+<li><p>Fastening the Side Plate on the main Baseplate.</p></li>
+<li><p>Mounting the Powell Lens</p></li>
+<li><p>Mounting Mechanical Slit</p></li>
+</ol>
+<p>10.Cross-check the positon of the Powell and use the translation stage to fine-tune the position of the Powell lens.</p>
+<hr class="docutils" />
+<p>Mounting Baseplate on Optical Table</p>
+<p>To mount the baseplate onto an optical table, the process requires screwing 1/4”-20 screws onto 2.5” pedastal posts (‘RS2.5P&lt;<a class="reference external" href="https://www.thorlabs.com/item/RS2.5P">https://www.thorlabs.com/item/RS2.5P</a>&gt;’_). There are multiple holes on the baseplate for pedastal posts, we recommend at least using the 5 pedastal posts for all 5 vertices. You could either use clamps to fasten the pedastal posts on the optical table or use cap screws in which case first fasten the pedastal posts on the optical table and then mount the baseplate on top of the pedastal posts.
+The whole system has been made keeping in mind of the height of the pedastal posts, so using 2.5” pedastal posts will ensure that the baseplate is at the proper height to correctly couple with the detection module.</p>
+<figure class="align-center" id="id14">
+<a class="reference internal image-reference" href="dvopm_assembly/Images/BaseplateonTablewithPedastalPosts.png"><img alt="Mounting the baseplate on the optical table using pedastal posts." src="dvopm_assembly/Images/BaseplateonTablewithPedastalPosts.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 14:</strong> Mounting the baseplate on the optical table using pedastal posts.</span><a class="headerlink" href="#id14" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<section id="initial-laser-collimation">
+<h3>Initial Laser Collimation<a class="headerlink" href="#initial-laser-collimation" title="Permalink to this heading"></a></h3>
+<p>When first assembling the system, ensuring proper output collimation from the fiber laser source is critical. There are multiple checks that one can take for this step, but we utilize a combination of a <a class="reference external" href="https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=2970">shear-plate interferometer</a> and two pinhole apertures placed at opposite ends along the length of the baseplate. Shear-plate interferometers are designed to split and interfere an input beam of coherent light, such that when the beam is collimated there are interference fringes aligned vertically with a reference line. The fiber laser collimator we used for this system is the <a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=CFC11A-A">Thorlabs CFC11A-A</a>, which features an adjustable barrel which controls the position of collimation optics within the element.</p>
+<p>The basic assembly process involves first inserting and fixing the CFC11A-A into a Thorlabs AD15S2 adapter, which allows it to then be mounted into a 2.5” Polaris K1XY mount (We used a combination of a custom machined 0.5” spacer with 2” Polaris Post). This assembly is then mounted onto the respective Polaris post at the start of the baseplate. The fiber laser source is then able to be directly mounted into the CFC11A-A, making sure that the protrusion on the fiber wire aligns with the open section of the CFC11A-A port. The basic process of ensuring collimation then involves turning on the laser source, and placing the shear-plate interferometer such that the input port aligns with the output of the laser unit. Then, by slowly adjusting the barrel of the CFC11A-A and observing the interference fringe orientations along the top display of the interferometer, one is able to adjust the beam until it is properly collimated.</p>
+<figure class="align-center" id="id15">
+<a class="reference internal image-reference" href="../_images/LaserAlignment11.png"><img alt="Shear Plate interferometer and collimator lens" src="../_images/LaserAlignment11.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 15:</strong> Shear Plate interferometer and collimator lens</span><a class="headerlink" href="#id15" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<p>Initial Alignment</p>
+<p>With the beam collimated, the process of beam alignment involves adjusting the position control knobs on the K1XY to have the beam pass through two pinhole apertures along the optical path. The height of the initial laser output is designed to be at 3.75” above the top surface of the baseplate, so selecting appropriate post heights for the apertures such that their centers rest at 3.75” is essential.
+In our case we use a 2.5” post with 1XY mount to hold the P2000K1 pinhole apertures &lt;<a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=P2000K1">https://www.thorlabs.com/thorproduct.cfm?partnumber=P2000K1</a>&gt;`_ or any adjustable iris which has SM1 threading, however  if using Polaris 1XY mount, <strong>the user must not adjust the XY adjusment screws on the 1XY mount and treat it as fixed in the whole alignmennt process</strong>.
+The other way is using <a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=ID12">Thorlabs ID12</a> pinhole apertures, so using a post height of 3.25” will ensure that they are at the proper height for alignment. We designed a <a class="reference external" href="https://github.com/TheDeanLab/altair/tree/main/downloads/common/cad">custom ID12 to Polaris adapter</a> to ensure the aperture is at the proper height and properly aligned along the designated Polaris axis.
+Either way, the key is to ensure that the pinholes are at the correct height and you could have one of these pinholes placed at the powell lens hole and one at the other end of the baseplate as shown in the figure below. There are multiple alignments holes in between and one can use them too, it is always better to check far away.
+With the pinholes placed, the process becomes iterative by making small adjustments on the K1XY tip/tilt knobs and XY position screws until the beam passes through both pinholes.</p>
+<figure class="align-center" id="id16">
+<img alt="Initial beam alignment using pinholes" src="dvopm_assembly/Images/K1XYStep1.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 16:</strong> Alignment setup with a pair of pinholes with 1XY mount for initial beam alignment.</span><a class="headerlink" href="#id16" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id17">
+<img alt="Performing beam alignment across the baseplate" src="../_images/LaserAlignment2.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 17:</strong> Performing beam alignment using ID12 and custom adapter for it.</span><a class="headerlink" href="#id17" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<p>Placing the Galvo Scanner and the first K1S4 mount with mirror</p>
+<p>Now that the beam is collimated and aligned, the next step is to mount the galvo scanner and the first K1S4 mount with mirror, which will decrease the optical axis height by a inch.
+For the Resonant Galvanometer, use a 3” Polaris Post, and mount the custom galvo adapter on top of the post using dowell pins and 3/8” screw, then carefully insert the galvo scanner through the adapter bore and fasten a little using 3/8” screws but do not tighten yet. Make sure the reflecting surface faces the correct direction.
+For the K1S4 mount, use a custom K1S4 post and mount the K1S4 on top of the post using dowell pins, then insert a mirror into the mount and fasten it using the provided screw.
+Now we also put in the first folding mirror which is at the corner of the baseplate, and this mirror is mounted in a B1F mount which gets mounted on the 2” Polaris Post. Detailed instructions for mounting the optics in B1F can be accessed in ThorLabs Specs Sheet.
+We need to have atleast 2 pinholes for this step, one nearest to the K1S4 mount and one at the end of the baseplate. We need to use 1.5” post with 1XY mount to hold the pinhole.
+The figure below shows the galvo scanner, the first K1S4 mount with mirror, the first folding mirror mounted on the baseplate and a pinhole at the end of the baseplate.
+Now the goal is to make sure that the beam reflects off the mirror and passes through the pinhole at the end of the baseplate and at this point. For the vertical alignment, you can adjust the tip knob on the K1S4 mount and the rotation of the galvo scanner. Adjust the galvo scanner to make sure the beam the passthrough the first pinhole and adjust the tip knob of the K1S4 mount to make sure the beam passes through the second pinhole at the end of the baseplate. Iteratively adjusting both will make the beam at the correct height throughout, if beam is laterally shifted on the pinholes, use the tilt knob on the K1S4 mount to make the adjustment.
+Once the beam is passing through the pinhole at the end of the baseplate, you can then tighten the screws on the galvo scanner.</p>
+<figure class="align-center" id="id18">
+<img alt="Aligning the galvo scanner and the first K1S4 mount with mirror" src="dvopm_assembly/Images/K1XYRGK1S4M1Step2f.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 18:</strong> Aligning the beam across the baseplate through the galvo scanner and the first K1S4 mount and the first folding mirror</span><a class="headerlink" href="#id18" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<p>Folding Mirrors</p>
+<p>Now, the next step is to mount the remaining folding mirrors and ensure that the beam still passes through the pinholes. We begin by only the corner mirror first.
+Ideally, you would need to make any adjustment to make the beam pass through the pinholes, if the beam aligned correctly in the previous step and that the folding mirrors are correctly mounted.
+If there is still slight misalignment, you can first try to wobble the folding mirrors’ post (they have a little room play with) if not you can adjust the tip/tilt knobs on the K1S4 mount until the reflected beam passes through both pinholes.
+Also, you could use the aligment holes in between the folding mirrors at different positions to inspect at which point is the beam getting misaligned if any, and make the adjustment accordingly.</p>
+<figure class="align-center" id="id19">
+<img alt="Aligning the folding mirror" src="dvopm_assembly/Images/K1XYRGK1S4MsStep4.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 19:</strong> Mounting all the folding mirrors in the path and ensuring the beam is properly aligned through the pinholes.</span><a class="headerlink" href="#id19" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<p>Mounting the Optical Lenses</p>
+<p>Now that the beam is properly aligned with the folding mirrors, the next step is to mount the optical lenses.
+We only mount the achromatic doublet lens first, and the powell lens is mounted at the end.</p>
+<p>The f=60mm AC254-60-A achromatic doublet lens is mounted on a 3” polris post in a B1S mount, and the f=300mm AC254-300-A achromatic doublet lens is mounted on a 2” polris post in a B1S mount and the f=250mm AC254-250-A achromatic doublet lens is mounted on a 2” polris post in a B1S mount as well.
+The process of mounting the lenses is straightforward, but the key is to ensure that the lenses are mounted at the correct positions, facing the correct direction, and that the beam passes through the center of the lenses. The figure below shows the achromatic doublet lenses mounted on the baseplate.
+You could chose to check the bakc reflection of the lenses to make sure they are properly mounted and that the beam is passing through the center of the lenses, but it is not necessary.</p>
+<figure class="align-center" id="id20">
+<img alt="Mounting the achromatic doublet lenses on the baseplate" src="dvopm_assembly/Images/K1XYRGK1S4MsLsStep5f.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 20:</strong> Mounting the achromatic doublet lenses on the baseplate</span><a class="headerlink" href="#id20" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<p>Fold the Beam Up</p>
+<p>Now, switch the 1XY mount with pinhole at the end of the baseplate with the second K1S4 mount with a mirror which will fold the beam up.</p>
+<figure class="align-center" id="id21">
+<img alt="Mounting the second K1S4 mount with mirror" src="dvopm_assembly/Images/K1XYRGK1S4MsLsK1S4Step6.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 21:</strong> Mounting the second K1S4 mount with mirror</span><a class="headerlink" href="#id21" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Now, the final alignment check is to make sure the beam is correctly folding  up and passing through the center.
+For this step, we used a DG10-1500-H1-MD &lt;<a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=DG10-1500-H1-MD">https://www.thorlabs.com/thorproduct.cfm?partnumber=DG10-1500-H1-MD</a>&gt;`_ put on a custom adapter. The custom adapter can be mounted to the side of the baseplate and you can just place the Alignment disk on top of the adapter.</p>
+<figure class="align-center" id="id22">
+<img alt="Alignment disk mounted on the side of the baseplate for final alignment check." src="dvopm_assembly/Images/K1XYRGK1S4MsLsK1S4AlignStep7f.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 22:</strong> Alignment disk mounted on the side of the baseplate for final alignment check.</span><a class="headerlink" href="#id22" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<p>Gluing the D-Shaped Mirror on the Side Plate</p>
+<p>Now, we need to glue the D-Shaped mirror on the side plate and then fasten the side plate on the main baseplate. The D-shaped mirror is used to reflect the beam from the illumination train into the detection module, so it is crucial to ensure that it is properly aligned and securely attached.
+The D-shaped mirror is glued onto the side plate using a high-quality optical adhesive. We used <a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=NOA81">Norland Optical Adhesive 81</a>, which is a UV-curable adhesive that provides strong bonding and excellent optical clarity.
+The process involves applying a small amount of the adhesive to the socket in the side plate where the D-shaped mirror will be placed. You don’t a thick layer of adhesive, just a thin layer evenly applied to the base and curved surface. Then place the D-Shaped mirror followed by curing from all the directions, and then curing it under UV light according to the manufacturer’s instructions.</p>
+<figure class="align-center" id="id23">
+<img alt="D-Shaped mirror glued onto the side plate." src="../_images/NOA81.jpeg" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 23:</strong> The choice of glue used for attaching the D-Shaped mirror.</span><a class="headerlink" href="#id23" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id24">
+<img alt="D-Shaped mirror glued onto the side plate." src="dvopm_assembly/Images/SidePlateWithMirror.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 24:</strong> D-Shaped mirror glued onto the side plate.</span><a class="headerlink" href="#id24" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<p>Fastening the Side Plate on the main Baseplate</p>
+<p>Once the D-shaped mirror is securely attached to the side plate, the next step is to fasten the side plate onto the main baseplate. The side plate is designed to be mounted onto the main baseplate using dowell pins and 1/4-20 screws, so you will need to put the dowell pins in the baseplate side holes and then align the holes on the side plate on the main baseplate and then secure it in place using screws.</p>
+<figure class="align-center" id="id25">
+<img alt="Side plate fastened onto the main baseplate." src="dvopm_assembly/Images/SidePlate.jpeg" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 25:</strong> Side plate fastened onto the main baseplate.</span><a class="headerlink" href="#id25" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<hr class="docutils" />
+<section id="powell-lens-assembly">
+<h3>Powell Lens Assembly<a class="headerlink" href="#powell-lens-assembly" title="Permalink to this heading"></a></h3>
+<p>Our illumination path utilize a Powell lens as the element that forms the light sheet profile. Our mounting scheme for the Powell lens offers control over all 3 axes (x, y,
+and z), where the Polaris 1XY Mount covers x and y and the LNR25M covers z. We found that outside of the Polaris 1XY
+for centering the Powell lens precisely on the beam, due to tolerances of the Powell lens from Laserline, we
+also needed to adjust the distance between the Powell lens and L2 to have our physical system align with our
+simulations.</p>
+<p><strong>Step 1: Fixing the Powell lens into the AD9F Mount</strong></p>
+<p>For the first step, get a piece of optical tissue paper and the AD9F and Powell lens. Place the flat face of the
+Powell lens onto the tissue paper, and then place the AD9F onto the Powell lens such that the front surface of the
+smaller side of the AD9F is flush with the flat face of the Powell lens. Use the two mounting screws on the AD9F to
+secure the lens in place.</p>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Powell Lens into AD9F Assembly</div>
+<video controls style="width:50%;">
+  <source src="Images/Videos/Assembly/PowellAD9F.mp4" type="video/mp4">
+  your browser doesn't support video
+</video></div>
+</div>
+<p><strong>Step 2: Install the LRM1 rotation Mount into the Polaris 1XY</strong></p>
+<p>Screw the threaded portion of the LRM1 into the threaded hole on the Polaris 1XY until the back surface of the LRM1
+is flush with the front of the 1XY.</p>
+<figure class="align-center" id="id26">
+<img alt="Screwing the LRM1 into the 1XY" src="dvopm_assembly/Images/assembly/LRM1into1XY.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 26:</strong> Screwing the LRM1 into the 1XY</span><a class="headerlink" href="#id26" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Step 3: Install the LNR25M onto the Baseplate</strong></p>
+<p>There are a variety of holes on the baseplate that one can use to fix the LNR25M in place. In the graphic below, the
+two holes in red on the top of the LNR25M allow you to thread 1/4-20 screws directly through the LNR25M into the
+threaded holes on the baseplate below. There are also two 3 mm-diameter dowel pins on the bottom of the LNR25M that
+have corresponding holes on the baseplate in blue. Finally, there are three holes on the baseplate in yellow that
+correspond to threaded holes on the bottom of the LNR25M, 1/4-20 screws can be used to secure the LNR25M through
+these holes the same way that one would fix the other Polaris posts on the baseplate in place.</p>
+<figure class="align-center" id="id27">
+<img alt="placing the LNR25M onto the baseplate" src="dvopm_assembly/Images/assembly/LNR25MontoBaseplate.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 27:</strong> placing the LNR25M onto the baseplate</span><a class="headerlink" href="#id27" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Step 4: Fix the 1” Polaris Post onto the LNR25M to Polaris adapter</strong></p>
+<p>Then take the LNR25M to Polaris adapter and using the same 2 mm dowel pins and 1/4-20 screws that the other Polaris
+posts in the system use, fix the 1” Polaris post onto the adapter by screwing in a 1/4-20 screw from the bottom of
+the adapter into the post.</p>
+<figure class="align-center" id="id28">
+<img alt="placing the 1&quot; Polaris Post onto the LNR25M Adapter" src="dvopm_assembly/Images/assembly/P1onLNR25Adapter.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 28:</strong> placing the 1” Polaris Post onto the LNR25M Adapter</span><a class="headerlink" href="#id28" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Step 5: Install the LNR25M to Polaris adapter onto the LNR25M</strong></p>
+<p>Then using the four holes on the top of the adapter surrounding the 1” post, place 1/4-20 screws in those holes and
+screw them into the top of the LNR25M</p>
+<figure class="align-center" id="id29">
+<img alt="placing the LNR25M Adapter onto the LNR25" src="dvopm_assembly/Images/assembly/P1onLNR25AdapteronLNR25.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 29:</strong> placing the LNR25M Adapter onto the LNR25</span><a class="headerlink" href="#id29" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Step 6: Fix the Polaris 1XY onto the 1” Polaris post</strong></p>
+<p>Using an 8-32 screw and the 2 mm dowel pins, fix the Polaris 1XY onto the top of the 1” Polaris post assembly.</p>
+<figure class="align-center" id="id30">
+<img alt="Fixing the Polaris 1XY onto the 1&quot; Polaris Post" src="dvopm_assembly/Images/assembly/PowellLNR25MLRM1.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 30:</strong> Fixing the Polaris 1XY onto the 1” Polaris Post</span><a class="headerlink" href="#id30" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Step 7: Screw in the AD9F into the LRM1 mount until it’s fully threaded</strong></p>
+<p>Finally, screw in the AD9F fully into the LRM1 mount threading.</p>
+<figure class="align-center" id="id31">
+<img alt="Threading the AD9F into the LRM1 mount" src="dvopm_assembly/Images/assembly/PowellLNR25M.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 31:</strong> Threading the AD9F into the LRM1 mount</span><a class="headerlink" href="#id31" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>There will also an alternate way to mount the 1XY on the baseplate, which is to use XP10X with an actuator XP10X-C1.
+You will first mount a 1.5” Polaris Mount with a custom height adapter on the baseplate.
+Then you will mount the XP10X on top of the Polaris Mount using dowel pins and 1/4-20 screw, and then mount the Polaris 1XY onto the XP10X-C1 using dowel pins and 8-32 screw.</p>
+<figure class="align-center" id="id32">
+<img alt="Mounting the Polaris 1XY onto the XP10X-C1" src="dvopm_assembly/Images/assembly/XP10X1XYPowellLensSteps.jpg" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 32:</strong> Mounting the Polaris 1XY onto the XP10X-C1</span><a class="headerlink" href="#id32" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<p>Mechanical Slit Assembly</p>
+<p>We use a mechanical slit to control the aperture of the light sheet.
+We first mount the VA100CP mechanical slit on the custom adapter usign 3/8” screw, and then mount the custom adapter onto the Polaris Mount using dowel pins and 3/8” screw. Finally, we mount the Polaris Mount onto the baseplate using dowel pins and 1/4-20 screws.
+The slit should be placed at the focal plane of the second achromatic doublet, so that it can effectively control the aperture of the light sheet. If you can’t find the focus at the mechanical slit, you can play with the position of the powell lens a little using the translation stage it sits on, and you should be able to find the focus at the mechanical slit.</p>
+<figure class="align-center" id="id33">
+<a class="reference internal image-reference" href="dvopm_assembly/Images/assembly/SlitonBaseplateSteps.jpg"><img alt="Mounting the mechanical slit onto the baseplate" src="dvopm_assembly/Images/assembly/SlitonBaseplateSteps.jpg" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 33:</strong> Mounting the mechanical slit onto the baseplate</span><a class="headerlink" href="#id33" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<p>The final baseplate assembly should look like the figure below.</p>
+<figure class="align-center" id="id34">
+<a class="reference internal image-reference" href="dvopm_assembly/Images/assembly/IlluminationOnlyAssembly.png"><img alt="Aligning the mechanical slit with the beam path" src="dvopm_assembly/Images/assembly/IlluminationOnlyAssembly.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 34:</strong> Final Assemlby of the Illumination Train on the Baseplate</span><a class="headerlink" href="#id34" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<hr class="docutils" />
+<p>Coupling the Illumination Train with the Detection Module</p>
+<p>Finally with both the illumination train and the detection module assembled, we can then couple the illumination train with the detection module. The key is to make sure that the beam from the illumination train is properly reflected by the D-shaped mirror into the detection module, and that it is properly aligned with the optical path of the detection module.</p>
+<p>The stage essentially integrates the illumination and detetion trains.
+The stage assemlby includes the following S561-2235B, Dual-LS-50-FTP with LS-5007 and LS-1010-K.</p>
+<p><strong>Important: The height of the stage must be set to over 260mm from the optical table to the bottom surface of the stage</strong></p>
+<p>Place stage over the illumination train 4” away from the pedastal post at the end of the baseplate. For the detection module, use a PT1B stage &lt;<a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=PT1B">https://www.thorlabs.com/thorproduct.cfm?partnumber=PT1B</a>&gt;`_ with a MSAP90 bracket &lt;<a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=MSAP90">https://www.thorlabs.com/thorproduct.cfm?partnumber=MSAP90</a>&gt;`_ to mount the detection module and place under the stage. Then, you can use the translation stage to adjust the position of the detection module such that the pupil of the objective is nearly in the center of the stage field of view.
+The figure below shows the final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.</p>
+<figure class="align-center" id="id35">
+<img alt="Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train." src="dvopm_assembly/Images/assembly/CompleteSystemAssemblyV2.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 35:</strong> Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.</span><a class="headerlink" href="#id35" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
 </section>
 </section>
 

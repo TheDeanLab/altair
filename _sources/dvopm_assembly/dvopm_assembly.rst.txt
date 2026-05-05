@@ -273,7 +273,7 @@ We only mount the achromatic doublet lens first, and the powell lens is mounted 
 
 The f=60mm AC254-60-A achromatic doublet lens is mounted on a 3" polris post in a B1S mount, and the f=300mm AC254-300-A achromatic doublet lens is mounted on a 2" polris post in a B1S mount and the f=250mm AC254-250-A achromatic doublet lens is mounted on a 2" polris post in a B1S mount as well.
 The process of mounting the lenses is straightforward, but the key is to ensure that the lenses are mounted at the correct positions, facing the correct direction, and that the beam passes through the center of the lenses. The figure below shows the achromatic doublet lenses mounted on the baseplate.
-You could chose to check the bakc reflection of the lenses to make sure they are properly mounted and that the beam is passing through the center of the lenses, but it is not necessary.
+You could chose to check the back reflection of the lenses to make sure they are properly mounted and that the beam is passing through the center of the lenses, but it is not necessary.
 
 .. figure:: Images/K1XY_RG_K1S4_Ms_Ls_Step_5f.png
     :align: center
@@ -315,13 +315,14 @@ The process involves applying a small amount of the adhesive to the socket in th
 .. figure:: Images/NOA81.jpeg
     :align: center
     :alt: D-Shaped mirror glued onto the side plate.
-    :width: 50%
+    :width: 90%
 
     **Figure 23:** The choice of glue used for attaching the D-Shaped mirror.
 
 .. figure:: Images/SidePlateWithMirror.jpeg
     :align: center
     :alt: D-Shaped mirror glued onto the side plate.
+    :width: 75%
 
     **Figure 24:** D-Shaped mirror glued onto the side plate.
 
@@ -440,7 +441,7 @@ There will also an alternate way to mount the 1XY on the baseplate, which is to 
 You will first mount a 1.5" Polaris Mount with a custom height adapter on the baseplate.
 Then you will mount the XP10X on top of the Polaris Mount using dowel pins and 1/4-20 screw, and then mount the Polaris 1XY onto the XP10X-C1 using dowel pins and 8-32 screw.
 
-.. figure:: Images/XP10X_1X_Powell_Lens_Steps.jpg
+.. figure:: Images/XP10X_1XY_Powell_Lens_Steps.jpg
     :align: center
     :alt: Mounting the Polaris 1XY onto the XP10X-C1
 

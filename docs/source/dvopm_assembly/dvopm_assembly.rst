@@ -253,8 +253,8 @@ Folding Mirrors
 ^^^^^^^^^^^^^^^
 
 Now, the next step is to mount the remaining folding mirrors and ensure that the beam still passes through the pinholes. We begin by only the corner mirror first.
-Ideally, you would need to make any adjustment to make the beam pass through the pinholes, if the beam aligned correctly in the previous step and that the folding mirrors are correctly mounted. 
-If there is still slight misalignment, you can first try to wobble the folding mirrors' post (they have a little room play with) if not you can adjust the tip/tilt knobs on the K1S4 mount until the reflected beam passes through both pinholes.
+Ideally, you wouldn't need to make any adjustment to make the beam pass through the pinholes, if the beam aligned correctly in the previous step and that the folding mirrors are correctly mounted. 
+If there is still slight misalignment, you can first try to rotate the folding mirrors' post (they have a little room play with) if not you can adjust the tip/tilt knobs on the K1S4 mount until the reflected beam passes through both pinholes.
 Also, you could use the aligment holes in between the folding mirrors at different positions to inspect at which point is the beam getting misaligned if any, and make the adjustment accordingly.
 
 .. figure:: Images/K1XY_RG_K1S4_Ms_Step_4.png
@@ -271,7 +271,7 @@ Mounting the Optical Lenses
 Now that the beam is properly aligned with the folding mirrors, the next step is to mount the optical lenses. 
 We only mount the achromatic doublet lens first, and the powell lens is mounted at the end.
 
-The f=60mm AC254-60-A achromatic doublet lens is mounted on a 3" polris post in a B1S mount, and the f=300mm AC254-300-A achromatic doublet lens is mounted on a 2" polris post in a B1S mount and the f=250mm AC254-250-A achromatic doublet lens is mounted on a 2" polris post in a B1S mount as well.
+The f=60mm AC254-60-A achromatic doublet lens is mounted on a 3" polaris post in a B1S mount, and the f=300mm AC254-300-A achromatic doublet lens is mounted on a 2" polaris post in a B1S mount and the f=250mm AC254-250-A achromatic doublet lens is mounted on a 2" polaris post in a B1S mount as well.
 The process of mounting the lenses is straightforward, but the key is to ensure that the lenses are mounted at the correct positions, facing the correct direction, and that the beam passes through the center of the lenses. The figure below shows the achromatic doublet lenses mounted on the baseplate.
 You could chose to check the back reflection of the lenses to make sure they are properly mounted and that the beam is passing through the center of the lenses, but it is not necessary.
 

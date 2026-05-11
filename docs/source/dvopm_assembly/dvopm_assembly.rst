@@ -269,7 +269,7 @@ Mounting the Optical Lenses
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now that the beam is properly aligned with the folding mirrors, the next step is to mount the optical lenses. 
-We only mount the achromatic doublet lens first, and the powell lens is mounted at the end.
+We only mount the achromatic doublet lenses first, and the powell lens is mounted at the end.
 
 The f=60mm AC254-60-A achromatic doublet lens is mounted on a 3" polaris post in a B1S mount, and the f=300mm AC254-300-A achromatic doublet lens is mounted on a 2" polaris post in a B1S mount and the f=250mm AC254-250-A achromatic doublet lens is mounted on a 2" polaris post in a B1S mount as well.
 The process of mounting the lenses is straightforward, but the key is to ensure that the lenses are mounted at the correct positions, facing the correct direction, and that the beam passes through the center of the lenses. The figure below shows the achromatic doublet lenses mounted on the baseplate.
@@ -467,12 +467,12 @@ The slit should be placed at the focal plane of the second achromatic doublet, s
 
 The final baseplate assembly should look like the figure below.
 
-.. figure:: Images/Illumination_Only_Assembly.png
+.. figure:: Images/Illumination_Only_Assembly_Isometric.png
     :align: center
     :alt: Aligning the mechanical slit with the beam path
     :width: 100%
 
-    **Figure 34:** Final Assemlby of the Illumination Train on the Baseplate
+    **Figure 34:** Final Assemlby of the Illumination Train on the Baseplate. The optical path is highlighted in yellow.
 
 ------------------
 
@@ -481,8 +481,8 @@ Coupling the Illumination Train with the Detection Module
 
 Finally with both the illumination train and the detection module assembled, we can then couple the illumination train with the detection module. The key is to make sure that the beam from the illumination train is properly reflected by the D-shaped mirror into the detection module, and that it is properly aligned with the optical path of the detection module.
 
-The stage essentially integrates the illumination and detetion trains.
-The stage assemlby includes the following S561-2235B, Dual-LS-50-FTP with LS-5007 and LS-1010-K.
+The stage essentially integrates the illumination and detection trains.
+The stage assembly includes the following S561-2235B, Dual-LS-50-FTP with LS-5007 and LS-1010-K.
 
 **Important: The height of the stage must be set to over 260mm from the optical table to the bottom surface of the stage**
 
@@ -494,5 +494,13 @@ The figure below shows the final assembly of the stage with the detection module
     :alt: Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
 
     **Figure 35:** Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
+
+The following figure shows the front view of the complete assembly where the D-Shaped mirror mounted on the oblique side plate launches the beam into the specimen sitting on the stage at an oblique angle.
+
+.. figure:: Images/Front_View.jpg
+    :align: center
+    :alt: Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
+
+    **Figure 36:** Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
 
 ------------------

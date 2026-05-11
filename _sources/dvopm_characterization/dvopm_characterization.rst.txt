@@ -72,7 +72,7 @@ To prepare the fluorescent bead sample, 1 µm YG fluorescent nanospheres were di
     :align: center
     :alt: Bead characterization profiles.
 
-    **Figure 4:** Zoomed-in image of a single fluorescent bead shown in the :math:`XY` and :math:`XZ` planes.
+    **Figure 4:** Zoomed-in image of a single fluorescent bead shown in the :math:`X'Y'` and :math:`X'Z'` planes.
 
 We measured the full width at half maximum (FWHM) from images of 1 µm fluorescent beads (:math:`n = 302` beads). The measurements were grouped into eight grids based on lateral position across the field of view, and the median FWHM values for each section are reported in micrometers along the :math:`X'`, :math:`Y'`, and :math:`Z'` directions.
 

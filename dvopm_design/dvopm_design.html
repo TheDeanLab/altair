@@ -146,10 +146,10 @@
 <p>The object surface represents the oblique imaging plane within the specimen. To reproduce the system geometry, it was defined as a plane tilted by 45° and embedded in water.</p>
 <p>Because of this tilt, positions across the object correspond to both lateral displacement and changes in depth within the sample. This ensures that the Zemax model accurately reflects the intended imaging condition.</p>
 <p><strong>Field Definition</strong></p>
-<p>A rectangular grid of field points was used to sample the tilted object surface. The field ranges were defined as:</p>
+<p>A rectangular grid of field points was used to sample the tilted object surface. The field ranges in Zemax were defined as:</p>
 <ul class="simple">
-<li><p>y: −2.75 mm to +2.75 mm</p></li>
-<li><p>x: −1 mm to +1 mm</p></li>
+<li><p>y: −2.75 mm to +2.75 mm (X or X’ in physical scheme)</p></li>
+<li><p>x: −1 mm to +1 mm  (Y in physical scheme)</p></li>
 </ul>
 <p>The y-range is determined by the camera-limited field of view (~5.5 mm object space). The x-range is constrained by the specimen thickness intersected by the tilted plane. Because of the 45° tilt, displacement along x corresponds to a change in depth within the specimen. For a specimen thickness of approximately 2 mm, the field was restricted to ±1 mm so that all field points remain within the sample.</p>
 <p>The fields themselves were weighted to prioritize central regions. The x and y coordinates in the Optimization Wizard were not independently weighted; rather, the weighting was applied through the field definitions, which influences the optimization process.</p>

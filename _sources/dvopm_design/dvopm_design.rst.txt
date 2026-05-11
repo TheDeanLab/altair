@@ -53,10 +53,10 @@ Because of this tilt, positions across the object correspond to both lateral dis
 
 **Field Definition**
 
-A rectangular grid of field points was used to sample the tilted object surface. The field ranges were defined as:
+A rectangular grid of field points was used to sample the tilted object surface. The field ranges in Zemax were defined as:
 
-- y: −2.75 mm to +2.75 mm  
-- x: −1 mm to +1 mm  
+- y: −2.75 mm to +2.75 mm (X or X' in physical scheme)
+- x: −1 mm to +1 mm  (Y in physical scheme)
 
 The y-range is determined by the camera-limited field of view (~5.5 mm object space). The x-range is constrained by the specimen thickness intersected by the tilted plane. Because of the 45° tilt, displacement along x corresponds to a change in depth within the specimen. For a specimen thickness of approximately 2 mm, the field was restricted to ±1 mm so that all field points remain within the sample.
 

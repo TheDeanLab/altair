@@ -124,8 +124,18 @@
 <p>The detection subsystem is implemented as a remote-imaging relay using a pair of photographic lenses with external pupils. An emission filter wheel (FW1000, Applied Scientific Instrumentation) is positioned within the relay to enable fluorescence imaging. The image is formed directly onto a compact camera (Ximea MU196MR-ON) with a pixel size of 1.4 µm. The entire detection assembly is mounted on a modular baseplate and attached to a motorized linear translation stage, allowing the detection train to be positioned relative to the specimen.</p>
 <p>The illumination subsystem is implemented as a separate optical train. It begins with a Powell lens, followed by a sequence of three achromatic doublets that relay and shape the beam. A resonant galvo is incorporated within the illumination path, and the resulting beam forms a micron-scale light sheet that is launched obliquely into the specimen.</p>
 <p>The system operates in a stage-scanning geometry, where the sample is translated through the stationary illumination and detection planes. The illumination and detection subsystems are mounted as independent modular baseplates on the optical table, while the stage is positioned above them.</p>
+<figure class="align-center" id="id1">
+<img alt="Schematic of the Altair DV-OPM system." src="../_images/Geometry_diagram.jpg" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1:</strong> Schematic Geometry of the Altair DV-OPM system.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>The above the schematic illustrates the optical geometry of the system, showing the relative arrangement of the illumination and detection paths around the sample region and the axes defining the oblqiue plane and the stage coordinates.
+The illumination light-sheet is launched externally through the coverslip at an angle of approximately 20◦ and refracts to approximately 45◦ upon entering the aqueous specimen. Fluorescence from the obliquely illuminated plane is collected in the epi-direction by the photographic-lens-based detection path. Unprimed axes denote the stage coordinate system, in which Y is the sample-scanning direction, Z is the specimen-depth direction and X is parallel to the long axis of the light-sheet. Primed axes denote the oblique image coordinate system recorded by the camera, in which Y′ is the light-sheet propagation direction, X′ is the long
+axis of the light-sheet and Z′ defines the light-sheet thickness. The stage X axis corresponds to the image X′ axis. Thus, each camera frame captures an X′Y′ oblique plane, while volumetric imaging is performed by translating the specimen along stage Y . Following acquisition, image stacks are computationally sheared and rotated into the stage coordinate frame for visualization.</p>
 <hr class="docutils" />
 <p>The detailed optical design and implementation of the detection and illumination subsystems are described in the following section.</p>
+<hr class="docutils" />
 </section>
 </section>
 

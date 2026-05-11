@@ -71,7 +71,7 @@ The fields themselves were weighted to prioritize central regions. The x and y c
 
 Because the object is tilted, this setup is essentially a 3D visualization, where the field points on the xy plane are also having different depth or z.
 
-.. figure:: Images/tilted_plane_visualization.svg
+.. figure:: Images/tilted_plane_visualization.jpg
    :alt: Schematic of a Fields setup in a physical sense
    :align: center
    :width: 75%
@@ -120,7 +120,7 @@ MTF was computed at each field point in both tangential and sagittal directions.
 
 Resolution was quantified using the MTF20 criterion, defined as the spatial frequency at which the MTF drops to 20% contrast. This threshold provides a practical measure of the smallest resolvable feature size under typical imaging conditions.
 
-.. figure:: Images/MTF_Tangential_Sagittal_2panel.svg
+.. figure:: Images/MTF_Tangential_Sagittal_2panel.jpg
    :alt: MTF Curves for 35 fields both tangential and sagittal.
    :align: center
    :width: 85%
@@ -149,7 +149,7 @@ These results indicate that the best imaging performance is achieved near the ce
 
 The full MTF curves provide additional insight beyond the MTF20 metric by showing how contrast decays across spatial frequencies for each field point. In particular, they reveal whether performance degradation occurs gradually or abruptly at different field locations, which is useful for understanding edge-of-field behavior.
 
-.. figure:: Images/Res_Heatmaps.svg
+.. figure:: Images/Res_Heatmaps.jpg
    :alt: Heatmap visualization of tangential and sagittal resolution
    :align: center
    :width: 75%
@@ -289,7 +289,7 @@ The baseplate therefore has a dual purpose. First, it constrains the relative po
 
    **Figure 11:** CAD rendering of the detection baseplate showing component placement and folded relay geometry
 
-.. figure:: Images/Detection_Assembly_Isometric.png
+.. figure:: Images/Detection_Assembly_Isometric.jpg
    :alt: CAD rendering of the detection train assembly on the baseplate; isometric view
    :align: center
    :width: 75%

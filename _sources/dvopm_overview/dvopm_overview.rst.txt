@@ -30,6 +30,18 @@ The illumination subsystem is implemented as a separate optical train. It begins
 
 The system operates in a stage-scanning geometry, where the sample is translated through the stationary illumination and detection planes. The illumination and detection subsystems are mounted as independent modular baseplates on the optical table, while the stage is positioned above them.
 
+.. figure:: Images/Geometry_diagram.jpg
+    :align: center
+    :alt: Schematic of the Altair DV-OPM system.
+
+    **Figure 1:** Schematic Geometry of the Altair DV-OPM system. 
+
+The above the schematic illustrates the optical geometry of the system, showing the relative arrangement of the illumination and detection paths around the sample region and the axes defining the oblqiue plane and the stage coordinates.
+The illumination light-sheet is launched externally through the coverslip at an angle of approximately 20◦ and refracts to approximately 45◦ upon entering the aqueous specimen. Fluorescence from the obliquely illuminated plane is collected in the epi-direction by the photographic-lens-based detection path. Unprimed axes denote the stage coordinate system, in which Y is the sample-scanning direction, Z is the specimen-depth direction and X is parallel to the long axis of the light-sheet. Primed axes denote the oblique image coordinate system recorded by the camera, in which Y′ is the light-sheet propagation direction, X′ is the long
+axis of the light-sheet and Z′ defines the light-sheet thickness. The stage X axis corresponds to the image X′ axis. Thus, each camera frame captures an X′Y′ oblique plane, while volumetric imaging is performed by translating the specimen along stage Y . Following acquisition, image stacks are computationally sheared and rotated into the stage coordinate frame for visualization. 
+
 ------------------------------
 
 The detailed optical design and implementation of the detection and illumination subsystems are described in the following section.
+
+------------------------------

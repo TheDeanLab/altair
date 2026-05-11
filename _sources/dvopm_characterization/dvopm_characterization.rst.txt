@@ -81,5 +81,3 @@ We measured the full width at half maximum (FWHM) from images of 1 µm fluoresce
     :alt: Bead characterization profiles.
 
     **Figure 5:** Median FWHM values measured from images of 1 µm fluorescent beads, grouped by lateral position across the field of view.
-
-------------------------------

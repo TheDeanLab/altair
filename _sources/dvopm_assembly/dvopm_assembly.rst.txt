@@ -467,7 +467,7 @@ The slit should be placed at the focal plane of the second achromatic doublet, s
 
 The final baseplate assembly should look like the figure below.
 
-.. figure:: Images/Illumination_Only_Assembly_Isometric.png
+.. figure:: Images/Illumination_Only_Assembly.png
     :align: center
     :alt: Aligning the mechanical slit with the beam path
     :width: 100%

@@ -173,7 +173,7 @@ A resonant galvo is placed between L2 and L3 to introduce rapid angular pivoting
 
 In the physical system, the beam is folded using mirrors. After L4, the beam is redirected upward and then reflected by an inclined mirror (35° relative to normal), launching the sheet into the specimen at approximately 20° relative to the stage.
 
-.. figure:: Images/Illumination_design2.svg
+.. figure:: Images/Illumination_design2.jpg
    :alt: Schematic of Illumination Train.
    :align: center
    :width: 100%
@@ -262,7 +262,7 @@ The simulated sheet extends beyond 7 mm, exceeding the required ~5.5 mm coverage
 
 These results confirm that the illumination system satisfies both thickness and length requirements.
 
-.. figure:: Images/psf2d_map.svg
+.. figure:: Images/psf2d_map.jpg
    :alt: Plot of 2D Huygens PSF in True Color
    :align: center
    :width: 75%

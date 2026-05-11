@@ -360,4 +360,3 @@ The complete system assembly can therefore be understood as the integration of t
    :width: 100%
 
    **Figure 17:** Complete Altair dvOPM system assembly showing integration of detection, illumination, and stage subsystems
-

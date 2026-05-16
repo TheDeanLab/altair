@@ -72,6 +72,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#deskewing">Deskewing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reslicing">Reslicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#limited-range-maximum-intensity-projections">Limited-Range Maximum-Intensity Projections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#deconvolution">Deconvolution</a></li>
 </ul>
 </li>
@@ -252,6 +253,64 @@ The user needs to provide the correct file path to the <cite>.tif</cite> image s
 <p><span class="caption-text"><strong>Figure 10:</strong> The XZ projection of our bead images after reslicing.</span><a class="headerlink" href="#id10" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
+</section>
+<section id="limited-range-maximum-intensity-projections">
+<h2>Limited-Range Maximum-Intensity Projections<a class="headerlink" href="#limited-range-maximum-intensity-projections" title="Permalink to this heading"></a></h2>
+<p>Dense volumetric data can be difficult to interpret when a maximum-intensity projection is calculated across the
+entire z-stack. Bright structures above or below the cell of interest can obscure the object being inspected. In these
+cases, a limited-range maximum-intensity projection can be more useful: inspect the stack, choose the z-slices that
+contain the cell or subcellular structure of interest, and calculate the projection only across that range. This is
+especially useful for checking whether puncta or particles are inside a cell rather than above or below it.</p>
+<p>This workflow is most useful after any required deskewing, shearing correction, or top-view rotation has already been
+applied. First inspect the dataset in Fiji/ImageJ and identify the z-slice range of interest. If the projection should
+only include a single cell or region, draw an ROI in Fiji/ImageJ and record the ROI coordinates as
+<code class="docutils literal notranslate"><span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">width,</span> <span class="pre">height</span></code>. The scripts below use one-based inclusive z-slice numbers, matching the slice labels displayed
+in Fiji/ImageJ. The ROI coordinates use the ImageJ/Fiji convention where <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are the upper-left pixel
+coordinates.</p>
+<p><strong>Python</strong></p>
+<p>Download the standalone Python script:
+<a class="reference download internal" download="" href="../_downloads/82202357206c3b1d3e65f0eaeceb6e57/limited_range_mip.py"><code class="xref download docutils literal notranslate"><span class="pre">limited_range_mip.py</span></code></a>.
+The script includes <a class="reference external" href="https://peps.python.org/pep-0723/">PEP 723</a> metadata, so <code class="docutils literal notranslate"><span class="pre">uv</span></code> can create the temporary
+environment and install the required dependencies automatically.</p>
+<p>For example, to process all channel TIFF stacks for a cell, crop to an ROI, and project only slices 451 through 640:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>downloads/common/python/limited_range_mip.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s2">&quot;/path/to/Top_shear45_mlv2_Cell10/1_CH0*.tif&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--first-z<span class="w"> </span><span class="m">451</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--last-z<span class="w"> </span><span class="m">640</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--roi<span class="w"> </span><span class="m">372</span><span class="w"> </span><span class="m">405</span><span class="w"> </span><span class="m">232</span><span class="w"> </span><span class="m">175</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--xy-pixel-size<span class="w"> </span><span class="m">0</span>.15<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--z-step-size<span class="w"> </span><span class="m">0</span>.15<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-dir<span class="w"> </span><span class="s2">&quot;/path/to/MIPs_cell10_roi3&quot;</span>
+</pre></div>
+</div>
+<p>The script writes XY, XZ, YZ, and combined <code class="docutils literal notranslate"><span class="pre">three</span></code> projection TIFF files for each input stack. If the data have
+already been resampled so the z pixel size matches the lateral pixel size, either omit <code class="docutils literal notranslate"><span class="pre">--xy-pixel-size</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--z-step-size</span></code> or provide the same value for both. Add <code class="docutils literal notranslate"><span class="pre">--write-cropped-stack</span></code> if the cropped limited-z volume
+should also be saved. Large cropped stacks are written as BigTIFF automatically.</p>
+<p><strong>MATLAB</strong></p>
+<p>Download the MATLAB helper files:
+<a class="reference download internal" download="" href="../_downloads/2f0e3c1d091fdf147af32a95d56284eb/limited_range_mip.m"><code class="xref download docutils literal notranslate"><span class="pre">limited_range_mip.m</span></code></a>,
+<a class="reference download internal" download="" href="../_downloads/34395b37bd73c3f925e6c77ca81f8132/readtiffstack.m"><code class="xref download docutils literal notranslate"><span class="pre">readtiffstack.m</span></code></a>, and
+<a class="reference download internal" download="" href="../_downloads/6c21143f4befea2988a0d521a6f67faa/writetiffstack.m"><code class="xref download docutils literal notranslate"><span class="pre">writetiffstack.m</span></code></a>. The <code class="docutils literal notranslate"><span class="pre">readtiffstack.m</span></code> and
+<code class="docutils literal notranslate"><span class="pre">writetiffstack.m</span></code> helpers support standard TIFF and BigTIFF files, and <code class="docutils literal notranslate"><span class="pre">limited_range_mip.m</span></code> creates the same XY,
+XZ, YZ, and combined projection outputs.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">addpath</span><span class="p">(</span><span class="s">&#39;/path/to/altair/downloads/common/matlab&#39;</span><span class="p">);</span>
+
+<span class="n">inputPath</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;/path/to/Top_shear45_mlv2_Cell10/1_CH00_000000.tif&#39;</span><span class="p">;</span>
+<span class="n">outputDir</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;/path/to/MIPs_cell10_roi3&#39;</span><span class="p">;</span>
+
+<span class="n">zRange</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">451</span><span class="p">,</span><span class="w"> </span><span class="mi">640</span><span class="p">];</span><span class="w">          </span><span class="c">% one-based, inclusive</span>
+<span class="n">roi</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">372</span><span class="p">,</span><span class="w"> </span><span class="mi">405</span><span class="p">,</span><span class="w"> </span><span class="mi">232</span><span class="p">,</span><span class="w"> </span><span class="mi">175</span><span class="p">];</span><span class="w">   </span><span class="c">% x, y, width, height from Fiji/ImageJ</span>
+<span class="n">xyPixelSize</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.15</span><span class="p">;</span>
+<span class="n">zStepSize</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.15</span><span class="p">;</span>
+
+<span class="n">limited_range_mip</span><span class="p">(</span><span class="n">inputPath</span><span class="p">,</span><span class="w"> </span><span class="n">outputDir</span><span class="p">,</span><span class="w"> </span><span class="n">zRange</span><span class="p">,</span><span class="w"> </span><span class="n">roi</span><span class="p">,</span><span class="w"> </span><span class="n">xyPixelSize</span><span class="p">,</span><span class="w"> </span><span class="n">zStepSize</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Leave <code class="docutils literal notranslate"><span class="pre">roi</span></code> empty to project the full field of view:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">limited_range_mip</span><span class="p">(</span><span class="n">inputPath</span><span class="p">,</span><span class="w"> </span><span class="n">outputDir</span><span class="p">,</span><span class="w"> </span><span class="n">zRange</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="n">xyPixelSize</span><span class="p">,</span><span class="w"> </span><span class="n">zStepSize</span><span class="p">);</span>
+</pre></div>
+</div>
 </section>
 <section id="deconvolution">
 <h2>Deconvolution<a class="headerlink" href="#deconvolution" title="Permalink to this heading"></a></h2>

@@ -158,6 +158,76 @@ The same process can then be done to obtain the XZ plane view of our sample by r
 
     **Figure 10:** The XZ projection of our bead images after reslicing.
 
+Limited-Range Maximum-Intensity Projections
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Dense volumetric data can be difficult to interpret when a maximum-intensity projection is calculated across the
+entire z-stack. Bright structures above or below the cell of interest can obscure the object being inspected. In these
+cases, a limited-range maximum-intensity projection can be more useful: inspect the stack, choose the z-slices that
+contain the cell or subcellular structure of interest, and calculate the projection only across that range. This is
+especially useful for checking whether puncta or particles are inside a cell rather than above or below it.
+
+This workflow is most useful after any required deskewing, shearing correction, or top-view rotation has already been
+applied. First inspect the dataset in Fiji/ImageJ and identify the z-slice range of interest. If the projection should
+only include a single cell or region, draw an ROI in Fiji/ImageJ and record the ROI coordinates as
+``x, y, width, height``. The scripts below use one-based inclusive z-slice numbers, matching the slice labels displayed
+in Fiji/ImageJ. The ROI coordinates use the ImageJ/Fiji convention where ``x`` and ``y`` are the upper-left pixel
+coordinates.
+
+**Python**
+
+Download the standalone Python script:
+:download:`limited_range_mip.py <../../../downloads/common/python/limited_range_mip.py>`.
+The script includes `PEP 723 <https://peps.python.org/pep-0723/>`_ metadata, so ``uv`` can create the temporary
+environment and install the required dependencies automatically.
+
+For example, to process all channel TIFF stacks for a cell, crop to an ROI, and project only slices 451 through 640:
+
+.. code-block:: bash
+
+    uv run downloads/common/python/limited_range_mip.py \
+        "/path/to/Top_shear45_mlv2_Cell10/1_CH0*.tif" \
+        --first-z 451 \
+        --last-z 640 \
+        --roi 372 405 232 175 \
+        --xy-pixel-size 0.15 \
+        --z-step-size 0.15 \
+        --output-dir "/path/to/MIPs_cell10_roi3"
+
+The script writes XY, XZ, YZ, and combined ``three`` projection TIFF files for each input stack. If the data have
+already been resampled so the z pixel size matches the lateral pixel size, either omit ``--xy-pixel-size`` and
+``--z-step-size`` or provide the same value for both. Add ``--write-cropped-stack`` if the cropped limited-z volume
+should also be saved. Large cropped stacks are written as BigTIFF automatically.
+
+**MATLAB**
+
+Download the MATLAB helper files:
+:download:`limited_range_mip.m <../../../downloads/common/matlab/limited_range_mip.m>`,
+:download:`readtiffstack.m <../../../downloads/common/matlab/readtiffstack.m>`, and
+:download:`writetiffstack.m <../../../downloads/common/matlab/writetiffstack.m>`. The ``readtiffstack.m`` and
+``writetiffstack.m`` helpers support standard TIFF and BigTIFF files, and ``limited_range_mip.m`` creates the same XY,
+XZ, YZ, and combined projection outputs.
+
+.. code-block:: matlab
+
+    addpath('/path/to/altair/downloads/common/matlab');
+
+    inputPath = '/path/to/Top_shear45_mlv2_Cell10/1_CH00_000000.tif';
+    outputDir = '/path/to/MIPs_cell10_roi3';
+
+    zRange = [451, 640];          % one-based, inclusive
+    roi = [372, 405, 232, 175];   % x, y, width, height from Fiji/ImageJ
+    xyPixelSize = 0.15;
+    zStepSize = 0.15;
+
+    limited_range_mip(inputPath, outputDir, zRange, roi, xyPixelSize, zStepSize);
+
+Leave ``roi`` empty to project the full field of view:
+
+.. code-block:: matlab
+
+    limited_range_mip(inputPath, outputDir, zRange, [], xyPixelSize, zStepSize);
+
 Deconvolution
 ^^^^^^^^^^^^^
 

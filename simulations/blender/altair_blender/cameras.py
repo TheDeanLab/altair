@@ -38,10 +38,10 @@ def create_wide_camera(
     return camera
 
 
-def create_card_closeup_camera(*, card_x_mm: float):
+def create_card_closeup_camera(*, card_x_mm: float, optical_axis_z_mm: float = 15.0):
     bpy = get_bpy()
     bpy.ops.object.camera_add(
-        location=(card_x_mm - 24.0, -28.0, 20.0),
+        location=(card_x_mm - 24.0, -28.0, optical_axis_z_mm + 5.0),
         rotation=(math.radians(78.0), 0.0, math.radians(-38.0)),
     )
     camera = bpy.context.object

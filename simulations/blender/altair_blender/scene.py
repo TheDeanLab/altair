@@ -39,8 +39,30 @@ def configure_scene(*, frame_start: int, frame_end: int, fps: int = 24) -> None:
     scene.render.resolution_y = 1080
     scene.unit_settings.system = "METRIC"
     scene.unit_settings.scale_length = 0.001
-    scene.eevee.taa_render_samples = 64
+    scene.eevee.taa_render_samples = 96
+    if hasattr(scene.eevee, "use_gtao"):
+        scene.eevee.use_gtao = True
+        scene.eevee.gtao_distance = 24
+        scene.eevee.gtao_factor = 1.2
     scene.world.color = (0.015, 0.018, 0.022)
+
+
+def add_area_light(
+    *,
+    name: str,
+    location: tuple[float, float, float],
+    power: float,
+    size: float,
+):
+    """Add a soft area light suitable for shadowed educational renders."""
+
+    bpy = get_bpy()
+    bpy.ops.object.light_add(type="AREA", location=location)
+    light = bpy.context.object
+    light.name = name
+    light.data.energy = power
+    light.data.size = size
+    return light
 
 
 def ensure_collection(name: str):

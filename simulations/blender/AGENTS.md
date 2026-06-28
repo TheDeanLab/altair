@@ -29,6 +29,15 @@ Altair educational optics-alignment videos.
 - Do not claim exact wave optics, exact Fresnel/refraction behavior, or exact
   Zemax equivalence unless a future implementation adds that machinery.
 - Visual exaggeration is allowed when an explicit parameter documents it.
+- For the AC254-100-A achromat scene, use `prescriptions.py` as the source of
+  truth for lens and LMR1-style mount dimensions. The mounted-lens and mount
+  drawing dimensions are official Thorlabs data; the AC-series surface
+  prescription is used as a documented geometric teaching model.
+- Back-reflection spots should come from ray-bundle helpers when possible, not
+  hand-positioned offsets. Keep those helpers import-safe without Blender.
+- The current ray model traces geometric surface reflections but does not model
+  wavelength-dependent refraction through the cemented doublet or coating
+  Fresnel coefficients.
 
 ## Run Pattern
 
@@ -58,5 +67,6 @@ pytest checks.
 - Put reusable helpers in `altair_blender/`.
 - Put scene-specific timelines in `scenes/`.
 - Put repeatable render/export workflows in `scripts/`.
+- Keep source-backed physical constants in `prescriptions.py`.
 - Prefer explicit names over clever abstractions.
 - Keep visual approximation constants visible near the top of scene scripts.

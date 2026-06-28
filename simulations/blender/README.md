@@ -18,7 +18,24 @@ aperture.
 
 The model is intentionally hybrid: it is geometrically plausible and uses
 teaching-scale dimensions, but it exaggerates small alignment errors so the
-motion is legible in video.
+motion is legible in video. The lens is represented as an AC254-100-A-style
+cemented doublet with separate N-BK7 and SF5 elements, a curved cemented
+interface, a weakly curved rear surface, and an LMR1-style fixed mount. Return
+spots are computed from geometric ray-bundle reflections and therefore have
+surface-dependent positions and diameters.
+
+## Fidelity Notes
+
+`altair_blender/prescriptions.py` stores the source-backed model constants. The
+mounted AC254-100-A-ML dimensions and LMR1/M mount dimensions come from Thorlabs
+drawings. The AC-series surface prescription is used for the educational
+geometric model so the rendered doublet and reflected spots respond to surface
+curvature.
+
+The ray model traces reflections from spherical surfaces back to the card plane.
+It does not yet model refraction through the glass, wavelength-dependent coating
+reflectance, ghost intensity, or diffraction at the aperture. Spot positions and
+diameters are physically motivated, then visually scaled for legibility.
 
 ## Run
 

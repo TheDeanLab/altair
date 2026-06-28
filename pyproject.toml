@@ -37,5 +37,11 @@ docs = [
 [project.urls]
 Source = "https://github.com/TheDeanLab/altair"
 
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
 [tool.setuptools.dynamic]
 version = {file = "VERSION"}
+
+[tool.setuptools.packages.find]
+include = ["simulations*"]

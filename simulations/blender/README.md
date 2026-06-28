@@ -36,16 +36,51 @@ blender --background --python simulations/blender/scenes/achromat_back_reflectio
 
 The output directory must already exist.
 
+## Render Movies
+
+Use the render script to create the `.blend` file, both camera-view PNG
+sequences, both camera-view MP4 movies, a vertically stacked PNG sequence, and a
+stacked MP4 movie:
+
+```bash
+simulations/blender/scripts/render_achromat_back_reflection.sh
+```
+
+By default, outputs are written under `output/achromat_back_reflection/`:
+
+```text
+achromat_back_reflection.blend
+frames/wide/frame_0001.png ...
+frames/card_closeup/frame_0001.png ...
+frames/stacked/frame_0001.png ...
+achromat_back_reflection_wide.mp4
+achromat_back_reflection_card_closeup.mp4
+achromat_back_reflection_stacked.mp4
+```
+
+For a faster smoke render, override the frame range and resolution:
+
+```bash
+FRAME_START=1 FRAME_END=24 RESOLUTION_X=960 RESOLUTION_Y=540 \
+  simulations/blender/scripts/render_achromat_back_reflection.sh output/smoke
+```
+
+Run a dry-run plan without invoking Blender or `ffmpeg`:
+
+```bash
+simulations/blender/scripts/render_achromat_back_reflection.sh --dry-run
+```
+
 ## Test
 
 Run non-Blender checks from the repository root:
 
 ```bash
-uv run pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_achromat_scene_contract.py
+uv run pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_achromat_scene_contract.py tests/test_blender_render_script.py
 ```
 
 If `uv run` is not suitable in the local environment, use:
 
 ```bash
-pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_achromat_scene_contract.py
+pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_achromat_scene_contract.py tests/test_blender_render_script.py
 ```

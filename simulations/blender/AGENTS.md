@@ -38,6 +38,16 @@ Run a scene from the repository root with Blender:
 blender --background --python simulations/blender/scenes/achromat_back_reflection.py
 ```
 
+Render deliverable movies with the scene-specific script:
+
+```bash
+simulations/blender/scripts/render_achromat_back_reflection.sh
+```
+
+That script intentionally renders PNG frame sequences first, then encodes MP4
+movies with `ffmpeg`. This is more reliable than direct Blender movie output in
+the currently verified Blender 5.1 background runtime.
+
 If Blender is not on `PATH`, document that limitation and run the non-Blender
 pytest checks.
 
@@ -47,5 +57,6 @@ pytest checks.
   that need it.
 - Put reusable helpers in `altair_blender/`.
 - Put scene-specific timelines in `scenes/`.
+- Put repeatable render/export workflows in `scripts/`.
 - Prefer explicit names over clever abstractions.
 - Keep visual approximation constants visible near the top of scene scripts.

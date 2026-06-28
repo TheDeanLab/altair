@@ -24,6 +24,8 @@ Environment overrides:
   BLENDER_BIN    Blender executable. Defaults to blender on PATH, then
                  /Applications/Blender.app/Contents/MacOS/Blender.
   FFMPEG_BIN     ffmpeg executable. Defaults to ffmpeg on PATH.
+  CYCLES_DEVICE  Optional Cycles render device for final renders, such as
+                 CUDA, OPTIX, CUDA+CPU, or CPU. Defaults to Blender settings.
   RENDER_MODE    Render preset: final or preview. Defaults to final.
   FRAME_START    Optional first frame to render.
   FRAME_END      Optional last frame to render.
@@ -135,6 +137,8 @@ esac
 fps="${FPS:-24}"
 crf="${CRF:-18}"
 frame_number_start="${FRAME_START:-1}"
+cycles_device="${CYCLES_DEVICE:-}"
+cycles_device_display="${cycles_device:-default}"
 
 blend_path="$output_dir/achromat_back_reflection.blend"
 wide_frame_dir="$output_dir/frames/wide"
@@ -155,6 +159,7 @@ if (( dry_run )); then
   cat <<EOF
 Would create:
   Render mode: $render_mode
+  Cycles device: $cycles_device_display
   $blend_path
   $wide_frame_prefix
   $card_frame_prefix
@@ -166,7 +171,7 @@ Would create:
   $stacked_movie
 
 Would run:
-  RENDER_MODE=$render_mode $blender_display --background --python $scene_script -- $blend_path
+  RENDER_MODE=$render_mode CYCLES_DEVICE=$cycles_device $blender_display --background --python $scene_script -- $blend_path
   Render Wide Setup Camera frames to $wide_frame_prefix
   Render Card Close-Up Camera frames to $card_frame_prefix
   Render Hero Camera frames to $hero_frame_prefix
@@ -193,11 +198,20 @@ repo_root = os.environ["REPO_ROOT"]
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from simulations.blender.altair_blender.scene import apply_render_preset
+from simulations.blender.altair_blender.scene import (
+    apply_render_preset,
+    configure_cycles_device,
+)
 
 scene = bpy.context.scene
 scene.camera = bpy.data.objects[os.environ["CAMERA_NAME"]]
-apply_render_preset(os.environ["RENDER_MODE"])
+actual_engine = apply_render_preset(os.environ["RENDER_MODE"])
+cycles_device = os.environ.get("CYCLES_DEVICE", "").strip()
+if cycles_device:
+    configured_device = configure_cycles_device(cycles_device)
+    print(f"Cycles device: {configured_device}")
+elif actual_engine == "CYCLES":
+    print("Cycles device: default")
 
 frame_start = os.environ.get("FRAME_START")
 frame_end = os.environ.get("FRAME_END")
@@ -234,6 +248,7 @@ render_view() {
     FPS="$fps" \
     RESOLUTION_X="${RESOLUTION_X:-}" \
     RESOLUTION_Y="${RESOLUTION_Y:-}" \
+    CYCLES_DEVICE="$cycles_device" \
     "$blender_bin" --background "$blend_path" --python-expr "$render_expr"
 }
 
@@ -254,12 +269,15 @@ encode_movie() {
 
 printf 'Output directory: %s\n' "$output_dir"
 printf 'Render mode: %s\n' "$render_mode"
+printf 'Cycles device: %s\n' "$cycles_device_display"
 mkdir -p "$output_dir"
 rm -rf "$wide_frame_dir" "$card_frame_dir" "$hero_frame_dir" "$stacked_frame_dir"
 mkdir -p "$wide_frame_dir" "$card_frame_dir" "$hero_frame_dir" "$stacked_frame_dir"
 
 printf '\n==> Creating Blender scene file %s\n' "$blend_path"
-RENDER_MODE="$render_mode" "$blender_bin" --background --python "$scene_script" -- "$blend_path"
+RENDER_MODE="$render_mode" \
+  CYCLES_DEVICE="$cycles_device" \
+  "$blender_bin" --background --python "$scene_script" -- "$blend_path"
 
 render_view "Wide Setup Camera" "$wide_frame_prefix"
 render_view "Card Close-Up Camera" "$card_frame_prefix"

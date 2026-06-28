@@ -5,7 +5,6 @@ from __future__ import annotations
 from pathlib import Path
 from types import ModuleType
 
-
 RENDER_PRESETS = {
     "preview": {
         "engine": "BLENDER_EEVEE",
@@ -18,6 +17,8 @@ RENDER_PRESETS = {
         "description": "Cycles beauty render for deliverable movies.",
     },
 }
+
+WORLD_BACKGROUND_COLOR = (0.11, 0.12, 0.13)
 
 
 def get_bpy() -> ModuleType:
@@ -125,6 +126,47 @@ def apply_render_preset(preset_name: str) -> str:
     return actual_engine
 
 
+def configure_cycles_device(device_name: str) -> str:
+    """Configure the active Cycles scene to use a requested render device."""
+
+    requested = device_name.strip().upper()
+    if not requested or requested == "DEFAULT":
+        return "default"
+
+    bpy = get_bpy()
+    scene = bpy.context.scene
+    if scene.render.engine != "CYCLES" or not hasattr(scene, "cycles"):
+        return f"ignored for {scene.render.engine}"
+
+    include_cpu = requested.endswith("+CPU")
+    device_type = requested.removesuffix("+CPU")
+    if device_type == "CPU":
+        _try_setattr(scene.cycles, "device", "CPU")
+        return "CPU"
+
+    try:
+        import addon_utils  # type: ignore[import-not-found]
+
+        addon_utils.enable("cycles", default_set=False, persistent=False)
+        preferences = bpy.context.preferences.addons["cycles"].preferences
+        preferences.compute_device_type = device_type
+        preferences.refresh_devices()
+    except Exception as exc:
+        raise RuntimeError(f"Could not configure Cycles device {requested!r}.") from exc
+
+    for device in preferences.devices:
+        use_device = device.type == device_type or (
+            include_cpu and device.type == "CPU"
+        )
+        device.use = use_device
+
+    if not any(device.type == device_type for device in preferences.devices):
+        raise RuntimeError(f"No Cycles {device_type} device is available.")
+
+    _try_setattr(scene.cycles, "device", "GPU")
+    return requested
+
+
 def configure_scene(
     *,
     frame_start: int,
@@ -144,7 +186,7 @@ def configure_scene(
     scene.render.resolution_y = 1080
     scene.unit_settings.system = "METRIC"
     scene.unit_settings.scale_length = 0.001
-    scene.world.color = (0.015, 0.018, 0.022)
+    scene.world.color = WORLD_BACKGROUND_COLOR
     apply_render_preset(render_preset)
 
 

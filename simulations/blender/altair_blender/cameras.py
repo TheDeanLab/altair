@@ -20,20 +20,40 @@ def create_wide_camera(
     target: tuple[float, float, float] = (70.0, 0.0, 15.0),
     distance_mm: float = 280.0,
     elevation_mm: float = 90.0,
+    frame_start: int | None = None,
+    frame_end: int | None = None,
+    end_target: tuple[float, float, float] | None = None,
+    end_distance_mm: float | None = None,
+    end_elevation_mm: float | None = None,
 ):
     bpy = get_bpy()
+    start_location = (
+        target[0],
+        target[1] - distance_mm,
+        target[2] + elevation_mm,
+    )
     bpy.ops.object.camera_add(
-        location=(
-            target[0],
-            target[1] - distance_mm,
-            target[2] + elevation_mm,
-        ),
+        location=start_location,
     )
     camera = bpy.context.object
     camera.name = "Wide Setup Camera"
     camera.data.lens = 35
     camera.data.dof.use_dof = True
     camera.data.dof.focus_distance = _look_at(camera, target)
+    if frame_start is not None and frame_end is not None:
+        camera.keyframe_insert(data_path="location", frame=frame_start)
+        camera.keyframe_insert(data_path="rotation_euler", frame=frame_start)
+
+        final_target = end_target or target
+        camera.location = (
+            final_target[0],
+            final_target[1] - (end_distance_mm or distance_mm),
+            final_target[2] + (end_elevation_mm or elevation_mm),
+        )
+        camera.data.dof.focus_distance = _look_at(camera, final_target)
+        camera.keyframe_insert(data_path="location", frame=frame_end)
+        camera.keyframe_insert(data_path="rotation_euler", frame=frame_end)
+
     bpy.context.scene.camera = camera
     return camera
 

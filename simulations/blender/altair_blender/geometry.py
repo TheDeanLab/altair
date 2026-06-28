@@ -161,21 +161,84 @@ def _element_mesh(
     )
 
 
+def _grid_offsets(
+    *, span_mm: float, spacing_mm: float, border_mm: float
+) -> tuple[float, ...]:
+    if spacing_mm <= 0.0:
+        raise ValueError("spacing_mm must be positive.")
+    if border_mm < 0.0:
+        raise ValueError("border_mm must be non-negative.")
+    max_offset = (span_mm / 2.0) - border_mm
+    if max_offset < 0.0:
+        return (0.0,)
+    steps = int(math.floor((max_offset / spacing_mm) + 1e-9))
+    return tuple(round(index * spacing_mm, 6) for index in range(-steps, steps + 1))
+
+
+def optical_table_hole_centers(
+    *,
+    length_mm: float,
+    width_mm: float,
+    spacing_mm: float = 25.4,
+    border_mm: float = 12.7,
+) -> tuple[tuple[float, float], ...]:
+    """Return local XY centers for a 1 inch / 25.4 mm optical-table hole grid."""
+
+    return tuple(
+        (x_mm, y_mm)
+        for x_mm in _grid_offsets(
+            span_mm=length_mm, spacing_mm=spacing_mm, border_mm=border_mm
+        )
+        for y_mm in _grid_offsets(
+            span_mm=width_mm, spacing_mm=spacing_mm, border_mm=border_mm
+        )
+    )
+
+
 def create_optical_table(
     *,
     collection,
     materials: dict[str, object],
     length_mm: float = 220.0,
     width_mm: float = 90.0,
+    hole_spacing_mm: float = 25.4,
+    hole_diameter_mm: float = 5.6,
+    hole_border_mm: float = 12.7,
 ):
     bpy = get_bpy()
+    table_x = 70.0
+    table_z = -8.0
+    table_thickness = 6.0
     bpy.ops.mesh.primitive_cube_add(size=1, location=(70.0, 0.0, -8.0))
     table = bpy.context.object
     table.name = "Optical Table"
-    table.dimensions = (length_mm, width_mm, 6.0)
+    table.dimensions = (length_mm, width_mm, table_thickness)
     table.data.materials.append(materials["table"])
     _add_soft_edges(table, width_mm=0.5, segments=3)
     _link_to_collection(table, collection)
+
+    hole_radius = hole_diameter_mm / 2.0
+    hole_z = table_z + (table_thickness / 2.0) + 0.018
+    for index, (x_mm, y_mm) in enumerate(
+        optical_table_hole_centers(
+            length_mm=length_mm,
+            width_mm=width_mm,
+            spacing_mm=hole_spacing_mm,
+            border_mm=hole_border_mm,
+        ),
+        start=1,
+    ):
+        bpy.ops.mesh.primitive_cylinder_add(
+            vertices=32,
+            radius=hole_radius,
+            depth=0.035,
+            location=(table_x + x_mm, y_mm, hole_z),
+        )
+        hole = bpy.context.object
+        hole.name = f"Optical Table Hole {index:03d}"
+        hole.data.materials.append(materials["table_hole"])
+        _link_to_collection(hole, collection)
+
     return table
 
 

@@ -22,7 +22,6 @@ from simulations.blender.altair_blender.prescriptions import (  # noqa: E402
 )
 from simulations.blender.altair_blender.scene import RENDER_PRESETS  # noqa: E402
 
-
 SCENE_NAME = "achromat_back_reflection"
 
 DEFAULT_PARAMETERS = {
@@ -53,6 +52,7 @@ DEFAULT_PARAMETERS = {
     "initial_decenter_y_mm": 0.28,
     "initial_decenter_z_mm": -0.18,
     "exaggeration": 5.0,
+    "alignment_display_exaggeration": 20.0,
     "frame_start": 1,
     "frame_tilt_corrected": 72,
     "frame_decenter_corrected": 132,
@@ -68,6 +68,32 @@ def _parse_output_path(argv: list[str]) -> str | None:
     if not extra:
         return None
     return extra[0]
+
+
+def _alignment_display_pose(
+    params,
+    *,
+    lens_x: float,
+    axis_z: float,
+    tilt_corrected: bool = False,
+    decenter_corrected: bool = False,
+) -> tuple[tuple[float, float, float], tuple[float, float, float]]:
+    exaggeration = float(
+        params.get("alignment_display_exaggeration", params["exaggeration"])
+    )
+    tilt_y_deg = 0.0 if tilt_corrected else params["initial_tilt_y_deg"] * exaggeration
+    tilt_z_deg = 0.0 if tilt_corrected else params["initial_tilt_z_deg"] * exaggeration
+    decenter_y_mm = (
+        0.0 if decenter_corrected else params["initial_decenter_y_mm"] * exaggeration
+    )
+    decenter_z_mm = (
+        0.0 if decenter_corrected else params["initial_decenter_z_mm"] * exaggeration
+    )
+
+    return (
+        (0.0, math.radians(-tilt_z_deg), math.radians(tilt_y_deg)),
+        (lens_x, decenter_y_mm, axis_z + decenter_z_mm),
+    )
 
 
 def main(output_path: str | None = None) -> None:
@@ -99,6 +125,7 @@ def main(output_path: str | None = None) -> None:
     )
     from simulations.blender.altair_blender.scene import (
         add_area_light,
+        configure_cycles_device,
         configure_scene,
         ensure_collection,
         get_bpy,
@@ -121,6 +148,9 @@ def main(output_path: str | None = None) -> None:
             "RENDER_MODE", str(params["default_render_preset"])
         ),
     )
+    cycles_device = os.environ.get("CYCLES_DEVICE", "").strip()
+    if cycles_device:
+        configure_cycles_device(cycles_device)
 
     collection = ensure_collection("Achromat Back Reflection")
     materials = create_materials()
@@ -236,36 +266,40 @@ def main(output_path: str | None = None) -> None:
         optical_axis_z_mm=axis_z,
     )
 
+    initial_rotation, initial_location = _alignment_display_pose(
+        params, lens_x=lens_x, axis_z=axis_z
+    )
+    tilt_corrected_rotation, tilt_corrected_location = _alignment_display_pose(
+        params,
+        lens_x=lens_x,
+        axis_z=axis_z,
+        tilt_corrected=True,
+    )
+    final_rotation, final_location = _alignment_display_pose(
+        params,
+        lens_x=lens_x,
+        axis_z=axis_z,
+        tilt_corrected=True,
+        decenter_corrected=True,
+    )
     for obj in (lens, mount):
         keyframe_transform(
             obj,
             frame=int(params["frame_start"]),
-            rotation_euler=(
-                0.0,
-                math.radians(-params["initial_tilt_z_deg"]),
-                math.radians(params["initial_tilt_y_deg"]),
-            ),
-            location=(
-                lens_x,
-                params["initial_decenter_y_mm"],
-                axis_z + params["initial_decenter_z_mm"],
-            ),
+            rotation_euler=initial_rotation,
+            location=initial_location,
         )
         keyframe_transform(
             obj,
             frame=int(params["frame_tilt_corrected"]),
-            rotation_euler=(0.0, 0.0, 0.0),
-            location=(
-                lens_x,
-                params["initial_decenter_y_mm"],
-                axis_z + params["initial_decenter_z_mm"],
-            ),
+            rotation_euler=tilt_corrected_rotation,
+            location=tilt_corrected_location,
         )
         keyframe_transform(
             obj,
             frame=int(params["frame_decenter_corrected"]),
-            rotation_euler=(0.0, 0.0, 0.0),
-            location=(lens_x, 0.0, axis_z),
+            rotation_euler=final_rotation,
+            location=final_location,
         )
         set_linear_interpolation(obj)
 
@@ -328,7 +362,16 @@ def main(output_path: str | None = None) -> None:
             size_mm=2.0,
         )
 
-    create_wide_camera(target=(70.0, 0.0, axis_z))
+    create_wide_camera(
+        target=(70.0, 0.0, axis_z),
+        distance_mm=280.0,
+        elevation_mm=90.0,
+        frame_start=int(params["frame_start"]),
+        frame_end=int(params["frame_end"]),
+        end_target=(58.0, 0.0, axis_z + 2.0),
+        end_distance_mm=230.0,
+        end_elevation_mm=78.0,
+    )
     create_card_closeup_camera(card_x_mm=card_x, optical_axis_z_mm=axis_z)
     create_hero_camera(
         target=(48.0, 0.0, axis_z + 4.0),

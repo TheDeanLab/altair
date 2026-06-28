@@ -33,6 +33,29 @@ def test_core_modules_import_without_blender():
     assert callable(optics.create_return_spot)
 
 
+def test_optical_table_hole_grid_uses_one_inch_spacing():
+    geometry = importlib.import_module("simulations.blender.altair_blender.geometry")
+
+    centers = geometry.optical_table_hole_centers(
+        length_mm=76.2,
+        width_mm=50.8,
+        spacing_mm=25.4,
+        border_mm=12.7,
+    )
+
+    assert centers == ((-25.4, 0.0), (0.0, 0.0), (25.4, 0.0))
+
+
+def test_scene_palette_uses_lighter_table_and_backdrop_constants():
+    materials = importlib.import_module("simulations.blender.altair_blender.materials")
+    scene = importlib.import_module("simulations.blender.altair_blender.scene")
+
+    assert materials.TABLE_STAINLESS_COLOR[0] > 0.45
+    assert materials.BACKDROP_NEUTRAL_COLOR[0] > 0.25
+    assert materials.TABLE_HOLE_COLOR[0] < materials.TABLE_STAINLESS_COLOR[0]
+    assert scene.WORLD_BACKGROUND_COLOR[0] > 0.05
+
+
 def test_get_bpy_reports_clear_error_outside_blender():
     scene = importlib.import_module("simulations.blender.altair_blender.scene")
 
@@ -47,8 +70,12 @@ def test_wide_camera_exposes_target_and_distance_controls():
 
     assert "target" in signature.parameters
     assert "distance_mm" in signature.parameters
+    assert "frame_start" in signature.parameters
+    assert "frame_end" in signature.parameters
     assert signature.parameters["target"].kind is inspect.Parameter.KEYWORD_ONLY
     assert signature.parameters["distance_mm"].kind is inspect.Parameter.KEYWORD_ONLY
+    assert signature.parameters["frame_start"].kind is inspect.Parameter.KEYWORD_ONLY
+    assert signature.parameters["frame_end"].kind is inspect.Parameter.KEYWORD_ONLY
 
 
 def test_hero_camera_exposes_animation_and_focus_controls():

@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from .scene import get_bpy
 
+TABLE_STAINLESS_COLOR = (0.58, 0.60, 0.60, 1.0)
+TABLE_HOLE_COLOR = (0.045, 0.048, 0.05, 1.0)
+BACKDROP_NEUTRAL_COLOR = (0.36, 0.38, 0.40, 1.0)
+
 
 def _material(
     name: str,
@@ -43,8 +47,24 @@ def create_materials() -> dict[str, object]:
     """Create the standard material palette for the simulation."""
 
     return {
-        "table": _material("Optical Table Matte Black", (0.05, 0.055, 0.06, 1.0)),
-        "backdrop": _material("Dark Studio Backdrop", (0.07, 0.075, 0.082, 1.0)),
+        "table": _material(
+            "Brushed Stainless Optical Table",
+            TABLE_STAINLESS_COLOR,
+            roughness=0.28,
+            metallic=0.65,
+        ),
+        "table_hole": _material(
+            "Recessed Table Hole",
+            TABLE_HOLE_COLOR,
+            roughness=0.36,
+            metallic=0.25,
+        ),
+        "backdrop": _material(
+            "Neutral Gray Studio Backdrop",
+            BACKDROP_NEUTRAL_COLOR,
+            emission=0.05,
+            roughness=0.62,
+        ),
         "metal": _material(
             "Black Anodized Metal", (0.12, 0.125, 0.13, 1.0), roughness=0.32
         ),

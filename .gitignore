@@ -9,3 +9,4 @@ docs/build/*
 *.doctree
 *.pyc
 /docs/PDF
+/output/

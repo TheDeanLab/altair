@@ -6,6 +6,20 @@ from pathlib import Path
 from types import ModuleType
 
 
+RENDER_PRESETS = {
+    "preview": {
+        "engine": "BLENDER_EEVEE",
+        "samples": 96,
+        "description": "Fast EEVEE preview render for iteration and smoke checks.",
+    },
+    "final": {
+        "engine": "CYCLES",
+        "samples": 128,
+        "description": "Cycles beauty render for deliverable movies.",
+    },
+}
+
+
 def get_bpy() -> ModuleType:
     """Return Blender's `bpy` module or raise a clear runtime error."""
 
@@ -26,7 +40,98 @@ def reset_scene() -> None:
     bpy.ops.object.delete()
 
 
-def configure_scene(*, frame_start: int, frame_end: int, fps: int = 24) -> None:
+def _set_render_engine(scene, preferred: str, fallbacks: tuple[str, ...]) -> str:
+    for engine in (preferred, *fallbacks):
+        if engine == "CYCLES":
+            try:
+                import addon_utils  # type: ignore[import-not-found]
+
+                addon_utils.enable("cycles", default_set=False, persistent=False)
+            except Exception:
+                pass
+        try:
+            scene.render.engine = engine
+        except (TypeError, ValueError):
+            continue
+        if scene.render.engine == engine:
+            return engine
+    return scene.render.engine
+
+
+def _try_setattr(obj, attr: str, value) -> None:
+    try:
+        setattr(obj, attr, value)
+    except (AttributeError, TypeError, ValueError):
+        return
+
+
+def _configure_color_management(scene) -> None:
+    for view_transform in ("Filmic", "AgX"):
+        try:
+            scene.view_settings.view_transform = view_transform
+            break
+        except (TypeError, ValueError):
+            continue
+
+    for look in ("Medium High Contrast", "High Contrast", "Medium Contrast"):
+        try:
+            scene.view_settings.look = look
+            break
+        except (TypeError, ValueError):
+            continue
+
+    _try_setattr(scene.view_settings, "exposure", -0.15)
+    _try_setattr(scene.view_settings, "gamma", 1.0)
+
+
+def apply_render_preset(preset_name: str) -> str:
+    """Apply a reusable preview or final render preset to the active scene."""
+
+    if preset_name not in RENDER_PRESETS:
+        valid = ", ".join(sorted(RENDER_PRESETS))
+        raise ValueError(f"Unknown render preset {preset_name!r}; expected {valid}.")
+
+    bpy = get_bpy()
+    scene = bpy.context.scene
+    preset = RENDER_PRESETS[preset_name]
+    requested_engine = str(preset["engine"])
+
+    if preset_name == "final":
+        actual_engine = _set_render_engine(
+            scene, requested_engine, ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE")
+        )
+        if actual_engine == "CYCLES" and hasattr(scene, "cycles"):
+            _try_setattr(scene.cycles, "samples", int(preset["samples"]))
+            _try_setattr(scene.cycles, "preview_samples", 32)
+            _try_setattr(scene.cycles, "use_denoising", True)
+            _try_setattr(scene.cycles, "max_bounces", 8)
+            _try_setattr(scene.cycles, "diffuse_bounces", 3)
+            _try_setattr(scene.cycles, "glossy_bounces", 4)
+            _try_setattr(scene.cycles, "transparent_max_bounces", 8)
+    else:
+        actual_engine = _set_render_engine(
+            scene, requested_engine, ("BLENDER_EEVEE_NEXT",)
+        )
+
+    eevee = getattr(scene, "eevee", None)
+    if eevee is not None:
+        _try_setattr(eevee, "taa_render_samples", int(preset["samples"]))
+        if hasattr(eevee, "use_gtao"):
+            eevee.use_gtao = True
+            eevee.gtao_distance = 24
+            eevee.gtao_factor = 1.25
+
+    _configure_color_management(scene)
+    return actual_engine
+
+
+def configure_scene(
+    *,
+    frame_start: int,
+    frame_end: int,
+    fps: int = 24,
+    render_preset: str = "preview",
+) -> None:
     """Configure units, timeline, render defaults, and world background."""
 
     bpy = get_bpy()
@@ -39,12 +144,8 @@ def configure_scene(*, frame_start: int, frame_end: int, fps: int = 24) -> None:
     scene.render.resolution_y = 1080
     scene.unit_settings.system = "METRIC"
     scene.unit_settings.scale_length = 0.001
-    scene.eevee.taa_render_samples = 96
-    if hasattr(scene.eevee, "use_gtao"):
-        scene.eevee.use_gtao = True
-        scene.eevee.gtao_distance = 24
-        scene.eevee.gtao_factor = 1.2
     scene.world.color = (0.015, 0.018, 0.022)
+    apply_render_preset(render_preset)
 
 
 def add_area_light(

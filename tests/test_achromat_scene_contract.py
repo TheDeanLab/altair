@@ -57,3 +57,22 @@ def test_scene_default_parameters_match_first_demo():
     assert params["initial_tilt_y_deg"] != 0.0
     assert params["initial_decenter_y_mm"] != 0.0
     assert params["exaggeration"] > 1.0
+
+
+def test_scene_default_parameters_include_cinematic_video_contract():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+
+    assert params["show_minimal_labels"] is True
+    assert params["hero_camera_name"] == "Hero Camera"
+    assert params["default_render_preset"] == "final"
+    assert params["render_presets"]["preview"]["engine"] == "BLENDER_EEVEE"
+    assert params["render_presets"]["final"]["engine"] == "CYCLES"
+
+    labels = params["scene_labels"]
+    assert labels == (
+        "Aperture card",
+        "AC254-100-A doublet",
+        "LMR1 mount",
+        "Two return reflections",
+    )

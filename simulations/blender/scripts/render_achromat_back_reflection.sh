@@ -6,22 +6,25 @@ usage() {
 Render the achromat back-reflection Blender scene as teaching movies.
 
 Usage:
-  simulations/blender/scripts/render_achromat_back_reflection.sh [--dry-run] [OUTPUT_DIR]
+  simulations/blender/scripts/render_achromat_back_reflection.sh [--preview|--final] [--dry-run] [OUTPUT_DIR]
   simulations/blender/scripts/render_achromat_back_reflection.sh --help
 
 Artifacts:
   OUTPUT_DIR/achromat_back_reflection.blend
   OUTPUT_DIR/frames/wide/frame_0001.png ...
   OUTPUT_DIR/frames/card_closeup/frame_0001.png ...
+  OUTPUT_DIR/frames/hero/frame_0001.png ...
   OUTPUT_DIR/frames/stacked/frame_0001.png ...
   OUTPUT_DIR/achromat_back_reflection_wide.mp4
   OUTPUT_DIR/achromat_back_reflection_card_closeup.mp4
+  OUTPUT_DIR/achromat_back_reflection_hero.mp4
   OUTPUT_DIR/achromat_back_reflection_stacked.mp4
 
 Environment overrides:
   BLENDER_BIN    Blender executable. Defaults to blender on PATH, then
                  /Applications/Blender.app/Contents/MacOS/Blender.
   FFMPEG_BIN     ffmpeg executable. Defaults to ffmpeg on PATH.
+  RENDER_MODE    Render preset: final or preview. Defaults to final.
   FRAME_START    Optional first frame to render.
   FRAME_END      Optional last frame to render.
   FPS            Movie framerate. Defaults to 24.
@@ -31,8 +34,9 @@ Environment overrides:
 
 Examples:
   simulations/blender/scripts/render_achromat_back_reflection.sh
+  simulations/blender/scripts/render_achromat_back_reflection.sh --preview output/preview
   FRAME_START=1 FRAME_END=24 RESOLUTION_X=960 RESOLUTION_Y=540 \
-    simulations/blender/scripts/render_achromat_back_reflection.sh output/smoke
+    simulations/blender/scripts/render_achromat_back_reflection.sh --preview output/smoke
 EOF
 }
 
@@ -67,20 +71,62 @@ find_ffmpeg() {
 }
 
 dry_run=0
-if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
-  usage
-  exit 0
-fi
-if [[ "${1:-}" == "--dry-run" ]]; then
-  dry_run=1
+render_mode="${RENDER_MODE:-final}"
+output_dir=""
+
+while (($#)); do
+  case "$1" in
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    --dry-run)
+      dry_run=1
+      ;;
+    --preview)
+      render_mode="preview"
+      ;;
+    --final)
+      render_mode="final"
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      die "Unknown option: $1"
+      ;;
+    *)
+      if [[ -n "$output_dir" ]]; then
+        die "Expected one output directory, got both '$output_dir' and '$1'."
+      fi
+      output_dir="$1"
+      ;;
+  esac
+  shift
+done
+
+if (($#)); then
+  if [[ -n "$output_dir" ]]; then
+    die "Expected one output directory, got both '$output_dir' and '$1'."
+  fi
+  output_dir="$1"
   shift
 fi
+if (($#)); then
+  die "Unexpected extra arguments: $*"
+fi
+
+case "$render_mode" in
+  preview|final) ;;
+  *) die "RENDER_MODE must be 'preview' or 'final', got '$render_mode'." ;;
+esac
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "$script_dir/../../.." && pwd)"
 scene_script="$repo_root/simulations/blender/scenes/achromat_back_reflection.py"
 
-output_dir="${1:-output/achromat_back_reflection}"
+output_dir="${output_dir:-output/achromat_back_reflection}"
 case "$output_dir" in
   /*) ;;
   *) output_dir="$PWD/$output_dir" ;;
@@ -93,11 +139,14 @@ frame_number_start="${FRAME_START:-1}"
 blend_path="$output_dir/achromat_back_reflection.blend"
 wide_frame_dir="$output_dir/frames/wide"
 card_frame_dir="$output_dir/frames/card_closeup"
+hero_frame_dir="$output_dir/frames/hero"
 stacked_frame_dir="$output_dir/frames/stacked"
 wide_frame_prefix="$wide_frame_dir/frame_"
 card_frame_prefix="$card_frame_dir/frame_"
+hero_frame_prefix="$hero_frame_dir/frame_"
 wide_movie="$output_dir/achromat_back_reflection_wide.mp4"
 card_movie="$output_dir/achromat_back_reflection_card_closeup.mp4"
+hero_movie="$output_dir/achromat_back_reflection_hero.mp4"
 stacked_movie="$output_dir/achromat_back_reflection_stacked.mp4"
 
 if (( dry_run )); then
@@ -105,21 +154,26 @@ if (( dry_run )); then
   ffmpeg_display="${FFMPEG_BIN:-$(command -v ffmpeg || printf 'ffmpeg')}"
   cat <<EOF
 Would create:
+  Render mode: $render_mode
   $blend_path
   $wide_frame_prefix
   $card_frame_prefix
+  $hero_frame_prefix
   $stacked_frame_dir/frame_%04d.png
   $wide_movie
   $card_movie
+  $hero_movie
   $stacked_movie
 
 Would run:
-  $blender_display --background --python $scene_script -- $blend_path
+  RENDER_MODE=$render_mode $blender_display --background --python $scene_script -- $blend_path
   Render Wide Setup Camera frames to $wide_frame_prefix
   Render Card Close-Up Camera frames to $card_frame_prefix
+  Render Hero Camera frames to $hero_frame_prefix
   $ffmpeg_display -filter_complex vstack=inputs=2 $stacked_frame_dir/frame_%04d.png
   $ffmpeg_display encode $wide_movie
   $ffmpeg_display encode $card_movie
+  $ffmpeg_display encode $hero_movie
   $ffmpeg_display encode $stacked_movie
 EOF
   exit 0
@@ -132,10 +186,18 @@ ffmpeg_bin="$(find_ffmpeg)" || die "Could not find ffmpeg. Set FFMPEG_BIN."
 
 render_expr='
 import os
+import sys
 import bpy
+
+repo_root = os.environ["REPO_ROOT"]
+if repo_root not in sys.path:
+    sys.path.insert(0, repo_root)
+
+from simulations.blender.altair_blender.scene import apply_render_preset
 
 scene = bpy.context.scene
 scene.camera = bpy.data.objects[os.environ["CAMERA_NAME"]]
+apply_render_preset(os.environ["RENDER_MODE"])
 
 frame_start = os.environ.get("FRAME_START")
 frame_end = os.environ.get("FRAME_END")
@@ -165,12 +227,14 @@ render_view() {
   printf '\n==> Rendering %s frames to %s%%04d.png\n' "$camera_name" "$frame_prefix"
   CAMERA_NAME="$camera_name" \
     FRAME_PREFIX="$frame_prefix" \
+    REPO_ROOT="$repo_root" \
+    RENDER_MODE="$render_mode" \
     FRAME_START="${FRAME_START:-}" \
     FRAME_END="${FRAME_END:-}" \
     FPS="$fps" \
     RESOLUTION_X="${RESOLUTION_X:-}" \
     RESOLUTION_Y="${RESOLUTION_Y:-}" \
-    "$blender_bin" --background --python "$scene_script" --python-expr "$render_expr"
+    "$blender_bin" --background "$blend_path" --python-expr "$render_expr"
 }
 
 encode_movie() {
@@ -189,15 +253,17 @@ encode_movie() {
 }
 
 printf 'Output directory: %s\n' "$output_dir"
+printf 'Render mode: %s\n' "$render_mode"
 mkdir -p "$output_dir"
-rm -rf "$wide_frame_dir" "$card_frame_dir" "$stacked_frame_dir"
-mkdir -p "$wide_frame_dir" "$card_frame_dir" "$stacked_frame_dir"
+rm -rf "$wide_frame_dir" "$card_frame_dir" "$hero_frame_dir" "$stacked_frame_dir"
+mkdir -p "$wide_frame_dir" "$card_frame_dir" "$hero_frame_dir" "$stacked_frame_dir"
 
 printf '\n==> Creating Blender scene file %s\n' "$blend_path"
-"$blender_bin" --background --python "$scene_script" -- "$blend_path"
+RENDER_MODE="$render_mode" "$blender_bin" --background --python "$scene_script" -- "$blend_path"
 
 render_view "Wide Setup Camera" "$wide_frame_prefix"
 render_view "Card Close-Up Camera" "$card_frame_prefix"
+render_view "Hero Camera" "$hero_frame_prefix"
 
 printf '\n==> Stacking wide and card frames\n'
 "$ffmpeg_bin" -y \
@@ -213,6 +279,7 @@ printf '\n==> Stacking wide and card frames\n'
 
 encode_movie "$wide_frame_dir" "$wide_movie"
 encode_movie "$card_frame_dir" "$card_movie"
+encode_movie "$hero_frame_dir" "$hero_movie"
 encode_movie "$stacked_frame_dir" "$stacked_movie"
 
 cat <<EOF
@@ -221,5 +288,6 @@ Done.
   Blend file:     $blend_path
   Wide movie:     $wide_movie
   Card movie:     $card_movie
+  Hero movie:     $hero_movie
   Stacked movie:  $stacked_movie
 EOF

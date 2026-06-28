@@ -50,3 +50,37 @@ def create_card_closeup_camera(*, card_x_mm: float, optical_axis_z_mm: float = 1
     camera.data.dof.use_dof = True
     camera.data.dof.focus_distance = 30.0
     return camera
+
+
+def create_hero_camera(
+    *,
+    target: tuple[float, float, float] = (55.0, 0.0, 22.0),
+    frame_start: int = 1,
+    frame_end: int = 168,
+    focus_distance_mm: float | None = None,
+):
+    """Create a slow animated camera for the polished single-view movie."""
+
+    bpy = get_bpy()
+    start_location = (target[0] - 20.0, target[1] - 210.0, target[2] + 60.0)
+    end_location = (target[0] + 24.0, target[1] - 195.0, target[2] + 52.0)
+    bpy.ops.object.camera_add(location=start_location)
+    camera = bpy.context.object
+    camera.name = "Hero Camera"
+    camera.data.lens = 42
+    camera.data.dof.use_dof = True
+    camera.data.dof.aperture_fstop = 7.1
+
+    camera.location = start_location
+    distance = _look_at(camera, target)
+    camera.data.dof.focus_distance = focus_distance_mm or distance
+    camera.keyframe_insert(data_path="location", frame=frame_start)
+    camera.keyframe_insert(data_path="rotation_euler", frame=frame_start)
+
+    camera.location = end_location
+    distance = _look_at(camera, target)
+    camera.data.dof.focus_distance = focus_distance_mm or distance
+    camera.keyframe_insert(data_path="location", frame=frame_end)
+    camera.keyframe_insert(data_path="rotation_euler", frame=frame_end)
+
+    return camera

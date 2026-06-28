@@ -1,5 +1,6 @@
 import importlib
 import inspect
+from types import SimpleNamespace
 
 import pytest
 
@@ -15,14 +16,17 @@ def test_core_modules_import_without_blender():
     assert callable(scene.get_bpy)
     assert callable(scene.reset_scene)
     assert callable(scene.configure_scene)
+    assert callable(scene.apply_render_preset)
     assert callable(scene.ensure_collection)
     assert callable(materials.create_materials)
     assert callable(geometry.create_optical_table)
     assert callable(geometry.create_business_card)
     assert callable(geometry.create_achromat)
     assert callable(geometry.create_lens_mount)
+    assert callable(geometry.create_scene_label)
     assert callable(cameras.create_wide_camera)
     assert callable(cameras.create_card_closeup_camera)
+    assert callable(cameras.create_hero_camera)
     assert callable(animation.keyframe_transform)
     assert callable(animation.set_linear_interpolation)
     assert callable(optics.create_beam_between)
@@ -45,3 +49,36 @@ def test_wide_camera_exposes_target_and_distance_controls():
     assert "distance_mm" in signature.parameters
     assert signature.parameters["target"].kind is inspect.Parameter.KEYWORD_ONLY
     assert signature.parameters["distance_mm"].kind is inspect.Parameter.KEYWORD_ONLY
+
+
+def test_hero_camera_exposes_animation_and_focus_controls():
+    cameras = importlib.import_module("simulations.blender.altair_blender.cameras")
+
+    signature = inspect.signature(cameras.create_hero_camera)
+
+    for parameter in (
+        "target",
+        "frame_start",
+        "frame_end",
+        "focus_distance_mm",
+    ):
+        assert parameter in signature.parameters
+        assert signature.parameters[parameter].kind is inspect.Parameter.KEYWORD_ONLY
+
+
+def test_render_engine_setter_does_not_depend_on_stale_enum_listing():
+    scene = importlib.import_module("simulations.blender.altair_blender.scene")
+    fake_scene = SimpleNamespace(
+        render=SimpleNamespace(
+            engine="BLENDER_EEVEE",
+        ),
+    )
+
+    actual = scene._set_render_engine(  # noqa: SLF001
+        fake_scene,
+        "CYCLES",
+        ("BLENDER_EEVEE",),
+    )
+
+    assert actual == "CYCLES"
+    assert fake_scene.render.engine == "CYCLES"

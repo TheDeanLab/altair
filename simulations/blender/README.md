@@ -24,6 +24,11 @@ interface, a weakly curved rear surface, and an LMR1-style fixed mount. Return
 spots are computed from geometric ray-bundle reflections and therefore have
 surface-dependent positions and diameters.
 
+The scene includes three camera views: a wide setup view, a close-up view of the
+card aperture and return spots, and a slow hero camera move for a polished
+single-view movie. Minimal in-scene labels identify the aperture card, doublet,
+mount, and two return reflections without adding narration or external editing.
+
 ## Fidelity Notes
 
 `altair_blender/prescriptions.py` stores the source-backed model constants. The
@@ -55,13 +60,16 @@ The output directory must already exist.
 
 ## Render Movies
 
-Use the render script to create the `.blend` file, both camera-view PNG
-sequences, both camera-view MP4 movies, a vertically stacked PNG sequence, and a
-stacked MP4 movie:
+Use the render script to create the `.blend` file, wide/card/hero PNG
+sequences, wide/card/hero MP4 movies, a vertically stacked wide-plus-card PNG
+sequence, and a stacked MP4 movie:
 
 ```bash
 simulations/blender/scripts/render_achromat_back_reflection.sh
 ```
+
+The default render mode is `final`, which applies the Cycles beauty preset. Use
+`--preview` or `RENDER_MODE=preview` for faster EEVEE iteration.
 
 By default, outputs are written under `output/achromat_back_reflection/`:
 
@@ -69,9 +77,11 @@ By default, outputs are written under `output/achromat_back_reflection/`:
 achromat_back_reflection.blend
 frames/wide/frame_0001.png ...
 frames/card_closeup/frame_0001.png ...
+frames/hero/frame_0001.png ...
 frames/stacked/frame_0001.png ...
 achromat_back_reflection_wide.mp4
 achromat_back_reflection_card_closeup.mp4
+achromat_back_reflection_hero.mp4
 achromat_back_reflection_stacked.mp4
 ```
 
@@ -79,13 +89,14 @@ For a faster smoke render, override the frame range and resolution:
 
 ```bash
 FRAME_START=1 FRAME_END=24 RESOLUTION_X=960 RESOLUTION_Y=540 \
-  simulations/blender/scripts/render_achromat_back_reflection.sh output/smoke
+  simulations/blender/scripts/render_achromat_back_reflection.sh --preview output/smoke
 ```
 
 Run a dry-run plan without invoking Blender or `ffmpeg`:
 
 ```bash
 simulations/blender/scripts/render_achromat_back_reflection.sh --dry-run
+simulations/blender/scripts/render_achromat_back_reflection.sh --preview --dry-run
 ```
 
 ## Test

@@ -25,6 +25,18 @@ def _new_parent(name: str, *, collection, location: tuple[float, float, float]):
     return parent
 
 
+def _add_soft_edges(obj, *, width_mm: float, segments: int = 2) -> None:
+    bevel = obj.modifiers.new("Softened Edges", "BEVEL")
+    bevel.width = width_mm
+    bevel.segments = segments
+    if hasattr(bevel, "affect"):
+        try:
+            bevel.affect = "EDGES"
+        except (TypeError, ValueError):
+            pass
+    obj.modifiers.new("Weighted Normals", "WEIGHTED_NORMAL")
+
+
 def _mesh_object(name: str, *, collection, parent, vertices, faces, material):
     bpy = get_bpy()
     mesh = bpy.data.meshes.new(name)
@@ -70,7 +82,7 @@ def _box_object(
         (2, 6, 7, 3),
         (3, 7, 4, 0),
     ]
-    return _mesh_object(
+    obj = _mesh_object(
         name,
         collection=collection,
         parent=parent,
@@ -78,6 +90,8 @@ def _box_object(
         faces=faces,
         material=material,
     )
+    _add_soft_edges(obj, width_mm=0.18, segments=2)
+    return obj
 
 
 def _surface_vertices(surface, *, radial_steps: int, angular_steps: int):
@@ -160,8 +174,35 @@ def create_optical_table(
     table.name = "Optical Table"
     table.dimensions = (length_mm, width_mm, 6.0)
     table.data.materials.append(materials["table"])
+    _add_soft_edges(table, width_mm=0.5, segments=3)
     _link_to_collection(table, collection)
     return table
+
+
+def create_studio_backdrop(
+    *,
+    collection,
+    materials: dict[str, object],
+    center_x_mm: float = 70.0,
+    y_mm: float = 58.0,
+    center_z_mm: float = 38.0,
+):
+    half_width = 130.0
+    half_height = 60.0
+    vertices = [
+        (center_x_mm - half_width, y_mm, center_z_mm - half_height),
+        (center_x_mm + half_width, y_mm, center_z_mm - half_height),
+        (center_x_mm + half_width, y_mm, center_z_mm + half_height),
+        (center_x_mm - half_width, y_mm, center_z_mm + half_height),
+    ]
+    return _mesh_object(
+        "Dark Studio Backdrop",
+        collection=collection,
+        parent=None,
+        vertices=vertices,
+        faces=[(0, 1, 2, 3)],
+        material=materials["backdrop"],
+    )
 
 
 def create_business_card(
@@ -195,6 +236,33 @@ def create_business_card(
     aperture.data.materials.append(materials["aperture"])
     _link_to_collection(aperture, collection)
     return card, aperture
+
+
+def create_scene_label(
+    *,
+    collection,
+    materials: dict[str, object],
+    name: str,
+    text: str,
+    location: tuple[float, float, float],
+    size_mm: float = 3.0,
+):
+    bpy = get_bpy()
+    bpy.ops.object.text_add(
+        location=location,
+        rotation=(math.radians(90.0), 0.0, 0.0),
+    )
+    label = bpy.context.object
+    label.name = name
+    label.data.name = f"{name} Text"
+    label.data.body = text
+    label.data.align_x = "CENTER"
+    label.data.align_y = "CENTER"
+    label.data.size = size_mm
+    label.data.extrude = 0.015
+    label.data.materials.append(materials["label"])
+    _link_to_collection(label, collection)
+    return label
 
 
 def create_achromat(

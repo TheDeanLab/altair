@@ -38,6 +38,8 @@ Altair educational optics-alignment videos.
 - The current ray model traces geometric surface reflections but does not model
   wavelength-dependent refraction through the cemented doublet or coating
   Fresnel coefficients.
+- Use minimal in-scene labels for teaching videos when they clarify the setup.
+  Keep labels unobtrusive and reusable through `geometry.create_scene_label`.
 
 ## Run Pattern
 
@@ -53,9 +55,21 @@ Render deliverable movies with the scene-specific script:
 simulations/blender/scripts/render_achromat_back_reflection.sh
 ```
 
-That script intentionally renders PNG frame sequences first, then encodes MP4
-movies with `ffmpeg`. This is more reliable than direct Blender movie output in
-the currently verified Blender 5.1 background runtime.
+That script intentionally creates the `.blend` file, renders PNG frame
+sequences first, then encodes MP4 movies with `ffmpeg`. This is more reliable
+than direct Blender movie output in the currently verified Blender 5.1
+background runtime.
+
+The achromat script preserves the wide, card close-up, and stacked movies and
+adds a hero movie. Its default render mode is `final` for Cycles output; use
+`--preview` or `RENDER_MODE=preview` for fast EEVEE iteration and smoke tests.
+Keep the render preset machinery in `altair_blender.scene` reusable for future
+videos instead of hard-coding engine settings in scene scripts.
+
+In the verified Blender 5.1.2 runtime, `CYCLES` can be assigned as
+`scene.render.engine` even when the render-engine enum list only reports
+`BLENDER_EEVEE`. Do not use the enum list alone to decide whether Cycles is
+available.
 
 If Blender is not on `PATH`, document that limitation and run the non-Blender
 pytest checks.

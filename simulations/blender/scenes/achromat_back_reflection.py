@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import os
 from pathlib import Path
 import sys
 
@@ -19,6 +20,7 @@ from simulations.blender.altair_blender.prescriptions import (  # noqa: E402
     AC254_100_A,
     LMR1_MOUNT,
 )
+from simulations.blender.altair_blender.scene import RENDER_PRESETS  # noqa: E402
 
 
 SCENE_NAME = "achromat_back_reflection"
@@ -33,6 +35,16 @@ DEFAULT_PARAMETERS = {
     "lens_source": AC254_100_A.source_notes,
     "mount_source": LMR1_MOUNT.source_notes,
     "reflected_surfaces": ("front_bk7_air", "rear_sf5_air"),
+    "show_minimal_labels": True,
+    "hero_camera_name": "Hero Camera",
+    "default_render_preset": "final",
+    "render_presets": RENDER_PRESETS,
+    "scene_labels": (
+        "Aperture card",
+        "AC254-100-A doublet",
+        "LMR1 mount",
+        "Two return reflections",
+    ),
     "card_x_mm": 0.0,
     "lens_x_mm": 75.0,
     "optical_axis_z_mm": LMR1_MOUNT.optical_axis_height_mm,
@@ -67,6 +79,7 @@ def main(output_path: str | None = None) -> None:
     )
     from simulations.blender.altair_blender.cameras import (
         create_card_closeup_camera,
+        create_hero_camera,
         create_wide_camera,
     )
     from simulations.blender.altair_blender.geometry import (
@@ -74,6 +87,8 @@ def main(output_path: str | None = None) -> None:
         create_business_card,
         create_lens_mount,
         create_optical_table,
+        create_scene_label,
+        create_studio_backdrop,
     )
     from simulations.blender.altair_blender.materials import create_materials
     from simulations.blender.altair_blender.optics import (
@@ -102,6 +117,9 @@ def main(output_path: str | None = None) -> None:
         frame_start=int(params["frame_start"]),
         frame_end=int(params["frame_end"]),
         fps=24,
+        render_preset=os.environ.get(
+            "RENDER_MODE", str(params["default_render_preset"])
+        ),
     )
 
     collection = ensure_collection("Achromat Back Reflection")
@@ -117,11 +135,15 @@ def main(output_path: str | None = None) -> None:
     )
 
     create_optical_table(collection=collection, materials=materials)
+    create_studio_backdrop(collection=collection, materials=materials)
     add_area_light(
-        name="Large Softbox", location=(35.0, -75.0, 95.0), power=450.0, size=55.0
+        name="Large Softbox", location=(35.0, -75.0, 95.0), power=700.0, size=65.0
     )
     add_area_light(
-        name="Card Glint Fill", location=(-35.0, -25.0, 55.0), power=85.0, size=18.0
+        name="Card Glint Fill", location=(-35.0, -25.0, 55.0), power=160.0, size=20.0
+    )
+    add_area_light(
+        name="Lens Rim Light", location=(116.0, 38.0, 62.0), power=220.0, size=18.0
     )
     create_business_card(
         collection=collection,
@@ -269,8 +291,50 @@ def main(output_path: str | None = None) -> None:
         )
         set_linear_interpolation(spot)
 
+    if params["show_minimal_labels"]:
+        aperture_label, doublet_label, mount_label, reflection_label = params[
+            "scene_labels"
+        ]
+        create_scene_label(
+            collection=collection,
+            materials=materials,
+            name="Label Aperture Card",
+            text=aperture_label,
+            location=(card_x + 12.0, -42.0, axis_z + 24.0),
+            size_mm=2.2,
+        )
+        create_scene_label(
+            collection=collection,
+            materials=materials,
+            name="Label AC254 Doublet",
+            text=doublet_label,
+            location=(lens_x - 2.0, -42.0, axis_z + 24.0),
+            size_mm=2.2,
+        )
+        create_scene_label(
+            collection=collection,
+            materials=materials,
+            name="Label LMR1 Mount",
+            text=mount_label,
+            location=(lens_x + 2.0, -42.0, axis_z - 18.0),
+            size_mm=2.0,
+        )
+        create_scene_label(
+            collection=collection,
+            materials=materials,
+            name="Label Return Reflections",
+            text=reflection_label,
+            location=(card_x + 8.0, -42.0, axis_z - 17.0),
+            size_mm=2.0,
+        )
+
     create_wide_camera(target=(70.0, 0.0, axis_z))
     create_card_closeup_camera(card_x_mm=card_x, optical_axis_z_mm=axis_z)
+    create_hero_camera(
+        target=(48.0, 0.0, axis_z + 4.0),
+        frame_start=int(params["frame_start"]),
+        frame_end=int(params["frame_end"]),
+    )
 
     output = validate_output_path(output_path)
     if output is not None:

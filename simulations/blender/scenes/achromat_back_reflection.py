@@ -6,9 +6,13 @@ import math
 import os
 from pathlib import Path
 import sys
+from collections.abc import Mapping
+from typing import Any
 
 
 def _ensure_repo_root_on_path() -> None:
+    """Ensure direct script execution can import the repository package."""
+
     repo_root = Path(__file__).resolve().parents[3]
     if str(repo_root) not in sys.path:
         sys.path.insert(0, str(repo_root))
@@ -24,7 +28,7 @@ from simulations.blender.altair_blender.scene import RENDER_PRESETS  # noqa: E40
 
 SCENE_NAME = "achromat_back_reflection"
 
-DEFAULT_PARAMETERS = {
+DEFAULT_PARAMETERS: dict[str, Any] = {
     "wavelength_nm": 561.0,
     "beam_diameter_mm": 1.0,
     "aperture_diameter_mm": 1.0,
@@ -61,6 +65,19 @@ DEFAULT_PARAMETERS = {
 
 
 def _parse_output_path(argv: list[str]) -> str | None:
+    """Parse the optional Blender output path from script arguments.
+
+    Parameters
+    ----------
+    argv
+        Process argument vector supplied by Blender or Python.
+
+    Returns
+    -------
+    str or None
+        Output path after Blender's ``--`` separator, when provided.
+    """
+
     if "--" not in argv:
         return None
     separator = argv.index("--")
@@ -71,13 +88,34 @@ def _parse_output_path(argv: list[str]) -> str | None:
 
 
 def _alignment_display_pose(
-    params,
+    params: Mapping[str, Any],
     *,
     lens_x: float,
     axis_z: float,
     tilt_corrected: bool = False,
     decenter_corrected: bool = False,
 ) -> tuple[tuple[float, float, float], tuple[float, float, float]]:
+    """Return the exaggerated lens pose used in the visible alignment animation.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    lens_x
+        Lens X position in millimeters.
+    axis_z
+        Optical-axis height in millimeters.
+    tilt_corrected
+        Whether the displayed angular error has been corrected.
+    decenter_corrected
+        Whether the displayed translational error has been corrected.
+
+    Returns
+    -------
+    tuple[tuple[float, float, float], tuple[float, float, float]]
+        Euler rotation and location for the lens and mount.
+    """
+
     exaggeration = float(
         params.get("alignment_display_exaggeration", params["exaggeration"])
     )
@@ -97,6 +135,14 @@ def _alignment_display_pose(
 
 
 def main(output_path: str | None = None) -> None:
+    """Generate the achromat back-reflection teaching scene.
+
+    Parameters
+    ----------
+    output_path
+        Optional path where the generated ``.blend`` file should be saved.
+    """
+
     _ensure_repo_root_on_path()
 
     from simulations.blender.altair_blender.animation import (
@@ -244,13 +290,39 @@ def main(output_path: str | None = None) -> None:
         for surface in reflected_surfaces
     )
 
-    def display_offset(summary):
+    def display_offset(summary: Any) -> Any:
+        """Scale a simulated reflected spot center for the visible card readout.
+
+        Parameters
+        ----------
+        summary
+            Reflected spot summary to scale.
+
+        Returns
+        -------
+        object
+            Spot offset object with exaggerated Y/Z coordinates.
+        """
+
         return type(summary.center)(
             y_mm=summary.center.y_mm * params["exaggeration"],
             z_mm=summary.center.z_mm * params["exaggeration"],
         )
 
-    def display_radius(summary):
+    def display_radius(summary: Any) -> float:
+        """Scale and clamp a simulated reflected spot diameter for display.
+
+        Parameters
+        ----------
+        summary
+            Reflected spot summary to scale.
+
+        Returns
+        -------
+        float
+            Display radius in millimeters.
+        """
+
         return max(0.18, min(1.4, summary.diameter_mm * params["exaggeration"] * 0.5))
 
     spot_a = create_return_spot(

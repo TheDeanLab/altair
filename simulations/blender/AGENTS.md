@@ -78,6 +78,10 @@ pytest checks.
 
 - Keep modules import-safe without Blender. Import `bpy` lazily inside functions
   that need it.
+- All Python functions and methods in `simulations` should have explicit type
+  hints and numpydoc-style docstrings. Include `Parameters`, `Returns`, or
+  `Yields` sections when they apply.
+- Run Black on simulation Python files after edits.
 - Put reusable helpers in `altair_blender/`.
 - Put scene-specific timelines in `scenes/`.
 - Put repeatable render/export workflows in `scripts/`.

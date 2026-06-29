@@ -2,20 +2,57 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 import math
+from typing import Any
 
 from .optics import spherical_surface_x
-from .prescriptions import AC254_100_A, LMR1_MOUNT
+from .prescriptions import (
+    AC254_100_A,
+    LMR1_MOUNT,
+    AchromatPrescription,
+    LensMountPrescription,
+    LensSurface,
+)
 from .scene import get_bpy
 
 
-def _link_to_collection(obj, collection) -> None:
+def _link_to_collection(obj: Any, collection: Any) -> None:
+    """Move an object into the requested collection only.
+
+    Parameters
+    ----------
+    obj
+        Blender object to relink.
+    collection
+        Blender collection that should own the object.
+    """
+
     for existing in obj.users_collection:
         existing.objects.unlink(obj)
     collection.objects.link(obj)
 
 
-def _new_parent(name: str, *, collection, location: tuple[float, float, float]):
+def _new_parent(
+    name: str, *, collection: Any, location: tuple[float, float, float]
+) -> Any:
+    """Create an empty parent object in a collection.
+
+    Parameters
+    ----------
+    name
+        Parent object name.
+    collection
+        Blender collection that should contain the parent.
+    location
+        Parent location in scene coordinates.
+
+    Returns
+    -------
+    object
+        Blender empty object.
+    """
+
     bpy = get_bpy()
     parent = bpy.data.objects.new(name, None)
     parent.empty_display_type = "PLAIN_AXES"
@@ -25,7 +62,19 @@ def _new_parent(name: str, *, collection, location: tuple[float, float, float]):
     return parent
 
 
-def _add_soft_edges(obj, *, width_mm: float, segments: int = 2) -> None:
+def _add_soft_edges(obj: Any, *, width_mm: float, segments: int = 2) -> None:
+    """Add bevel and weighted-normal modifiers for cleaner rendered edges.
+
+    Parameters
+    ----------
+    obj
+        Blender mesh object to modify.
+    width_mm
+        Bevel width in millimeters.
+    segments
+        Number of bevel segments.
+    """
+
     bevel = obj.modifiers.new("Softened Edges", "BEVEL")
     bevel.width = width_mm
     bevel.segments = segments
@@ -37,7 +86,38 @@ def _add_soft_edges(obj, *, width_mm: float, segments: int = 2) -> None:
     obj.modifiers.new("Weighted Normals", "WEIGHTED_NORMAL")
 
 
-def _mesh_object(name: str, *, collection, parent, vertices, faces, material):
+def _mesh_object(
+    name: str,
+    *,
+    collection: Any,
+    parent: Any | None,
+    vertices: Sequence[tuple[float, float, float]],
+    faces: Sequence[tuple[int, ...]],
+    material: Any,
+) -> Any:
+    """Create a smooth mesh object from raw vertex and face data.
+
+    Parameters
+    ----------
+    name
+        Mesh and object name.
+    collection
+        Blender collection that should contain the mesh object.
+    parent
+        Optional parent object.
+    vertices
+        Mesh vertices in object-local coordinates.
+    faces
+        Mesh faces expressed as vertex indices.
+    material
+        Material to assign to the mesh.
+
+    Returns
+    -------
+    object
+        Blender mesh object.
+    """
+
     bpy = get_bpy()
     mesh = bpy.data.meshes.new(name)
     mesh.from_pydata(vertices, [], faces)
@@ -56,12 +136,35 @@ def _mesh_object(name: str, *, collection, parent, vertices, faces, material):
 def _box_object(
     name: str,
     *,
-    collection,
-    parent,
+    collection: Any,
+    parent: Any | None,
     dimensions: tuple[float, float, float],
     location: tuple[float, float, float],
-    material,
-):
+    material: Any,
+) -> Any:
+    """Create a softened rectangular prism mesh.
+
+    Parameters
+    ----------
+    name
+        Object name.
+    collection
+        Blender collection that should contain the box.
+    parent
+        Optional parent object.
+    dimensions
+        Box dimensions in millimeters.
+    location
+        Box center location relative to its parent.
+    material
+        Material to assign to the box.
+
+    Returns
+    -------
+    object
+        Blender mesh object.
+    """
+
     dx, dy, dz = (dimension / 2.0 for dimension in dimensions)
     cx, cy, cz = location
     vertices = [
@@ -94,7 +197,26 @@ def _box_object(
     return obj
 
 
-def _surface_vertices(surface, *, radial_steps: int, angular_steps: int):
+def _surface_vertices(
+    surface: LensSurface, *, radial_steps: int, angular_steps: int
+) -> list[tuple[float, float, float]]:
+    """Sample vertices across a spherical lens surface.
+
+    Parameters
+    ----------
+    surface
+        Lens surface to sample.
+    radial_steps
+        Number of radial subdivisions.
+    angular_steps
+        Number of angular subdivisions.
+
+    Returns
+    -------
+    list[tuple[float, float, float]]
+        Surface vertices in lens-local coordinates.
+    """
+
     vertices = []
     for radial_index in range(radial_steps + 1):
         radial = surface.clear_radius_mm * (radial_index / radial_steps)
@@ -108,14 +230,41 @@ def _surface_vertices(surface, *, radial_steps: int, angular_steps: int):
 def _element_mesh(
     name: str,
     *,
-    collection,
-    parent,
-    front_surface,
-    back_surface,
-    material,
+    collection: Any,
+    parent: Any,
+    front_surface: LensSurface,
+    back_surface: LensSurface,
+    material: Any,
     radial_steps: int = 18,
     angular_steps: int = 96,
-):
+) -> Any:
+    """Create a lens element mesh bounded by two spherical surfaces.
+
+    Parameters
+    ----------
+    name
+        Element object name.
+    collection
+        Blender collection that should contain the element.
+    parent
+        Parent object for the lens assembly.
+    front_surface
+        Front optical surface.
+    back_surface
+        Back optical surface.
+    material
+        Material to assign to the element.
+    radial_steps
+        Number of radial mesh subdivisions.
+    angular_steps
+        Number of angular mesh subdivisions.
+
+    Returns
+    -------
+    object
+        Blender mesh object.
+    """
+
     front_vertices = _surface_vertices(
         front_surface, radial_steps=radial_steps, angular_steps=angular_steps
     )
@@ -164,6 +313,23 @@ def _element_mesh(
 def _grid_offsets(
     *, span_mm: float, spacing_mm: float, border_mm: float
 ) -> tuple[float, ...]:
+    """Return centered grid offsets within a bounded span.
+
+    Parameters
+    ----------
+    span_mm
+        Total span available for grid points.
+    spacing_mm
+        Grid spacing in millimeters.
+    border_mm
+        Minimum distance from each edge to the nearest grid point.
+
+    Returns
+    -------
+    tuple[float, ...]
+        Symmetric offsets from the span center.
+    """
+
     if spacing_mm <= 0.0:
         raise ValueError("spacing_mm must be positive.")
     if border_mm < 0.0:
@@ -182,7 +348,24 @@ def optical_table_hole_centers(
     spacing_mm: float = 25.4,
     border_mm: float = 12.7,
 ) -> tuple[tuple[float, float], ...]:
-    """Return local XY centers for a 1 inch / 25.4 mm optical-table hole grid."""
+    """Return local XY centers for a 1 inch / 25.4 mm optical-table hole grid.
+
+    Parameters
+    ----------
+    length_mm
+        Table length in millimeters.
+    width_mm
+        Table width in millimeters.
+    spacing_mm
+        Hole spacing in millimeters.
+    border_mm
+        Minimum border from the table edge to a hole center.
+
+    Returns
+    -------
+    tuple[tuple[float, float], ...]
+        Hole-center offsets in the table-local XY plane.
+    """
 
     return tuple(
         (x_mm, y_mm)
@@ -201,6 +384,23 @@ def optical_table_hole_geometry(
     table_thickness_mm: float,
     well_recess_mm: float = 0.28,
 ) -> dict[str, float]:
+    """Compute Z positions and depths for optical-table hole details.
+
+    Parameters
+    ----------
+    table_z_mm
+        Table center Z position in millimeters.
+    table_thickness_mm
+        Table thickness in millimeters.
+    well_recess_mm
+        Recess depth below the table top.
+
+    Returns
+    -------
+    dict[str, float]
+        Named Z positions and depths for cutters and visible wells.
+    """
+
     table_top_z = table_z_mm + (table_thickness_mm / 2.0)
     cutter_depth = table_thickness_mm + 0.4
     well_depth = table_thickness_mm - (well_recess_mm * 2.0)
@@ -217,7 +417,7 @@ def optical_table_hole_geometry(
 
 def create_optical_table(
     *,
-    collection,
+    collection: Any,
     materials: dict[str, object],
     length_mm: float = 220.0,
     width_mm: float = 90.0,
@@ -225,7 +425,34 @@ def create_optical_table(
     hole_diameter_mm: float = 5.6,
     hole_border_mm: float = 12.7,
     hole_recess_mm: float = 0.28,
-):
+) -> Any:
+    """Create the optical table surface and visible grid of threaded holes.
+
+    Parameters
+    ----------
+    collection
+        Blender collection that should contain the table objects.
+    materials
+        Material palette returned by ``create_materials``.
+    length_mm
+        Table length in millimeters.
+    width_mm
+        Table width in millimeters.
+    hole_spacing_mm
+        Grid spacing between holes in millimeters.
+    hole_diameter_mm
+        Diameter of each visual table hole.
+    hole_border_mm
+        Minimum border from table edge to hole centers.
+    hole_recess_mm
+        Recess distance below the table top.
+
+    Returns
+    -------
+    object
+        Blender mesh object for the table body.
+    """
+
     bpy = get_bpy()
     table_x = 70.0
     table_z = -8.0
@@ -300,12 +527,33 @@ def create_optical_table(
 
 def create_studio_backdrop(
     *,
-    collection,
+    collection: Any,
     materials: dict[str, object],
     center_x_mm: float = 70.0,
     y_mm: float = 58.0,
     center_z_mm: float = 38.0,
-):
+) -> Any:
+    """Create a neutral vertical backdrop behind the scene.
+
+    Parameters
+    ----------
+    collection
+        Blender collection that should contain the backdrop.
+    materials
+        Material palette returned by ``create_materials``.
+    center_x_mm
+        Backdrop center X position.
+    y_mm
+        Backdrop Y position.
+    center_z_mm
+        Backdrop center Z position.
+
+    Returns
+    -------
+    object
+        Blender mesh object for the backdrop.
+    """
+
     half_width = 130.0
     half_height = 60.0
     vertices = [
@@ -326,14 +574,39 @@ def create_studio_backdrop(
 
 def create_business_card(
     *,
-    collection,
+    collection: Any,
     materials: dict[str, object],
     x_mm: float,
     width_mm: float,
     height_mm: float,
     aperture_diameter_mm: float,
     optical_axis_z_mm: float = 15.0,
-):
+) -> tuple[Any, Any]:
+    """Create the aperture card and visible aperture ring.
+
+    Parameters
+    ----------
+    collection
+        Blender collection that should contain the card objects.
+    materials
+        Material palette returned by ``create_materials``.
+    x_mm
+        Card X position in millimeters.
+    width_mm
+        Card width in millimeters.
+    height_mm
+        Card height in millimeters.
+    aperture_diameter_mm
+        Aperture diameter in millimeters.
+    optical_axis_z_mm
+        Optical-axis height in millimeters.
+
+    Returns
+    -------
+    tuple[object, object]
+        Blender objects for the card body and aperture ring.
+    """
+
     bpy = get_bpy()
     bpy.ops.mesh.primitive_cube_add(size=1, location=(x_mm, 0.0, optical_axis_z_mm))
     card = bpy.context.object
@@ -359,13 +632,36 @@ def create_business_card(
 
 def create_scene_label(
     *,
-    collection,
+    collection: Any,
     materials: dict[str, object],
     name: str,
     text: str,
     location: tuple[float, float, float],
     size_mm: float = 3.0,
-):
+) -> Any:
+    """Create a small text label for a teaching scene.
+
+    Parameters
+    ----------
+    collection
+        Blender collection that should contain the label.
+    materials
+        Material palette returned by ``create_materials``.
+    name
+        Label object name.
+    text
+        Text displayed in the scene.
+    location
+        Label location in scene coordinates.
+    size_mm
+        Text size in millimeters.
+
+    Returns
+    -------
+    object
+        Blender text object.
+    """
+
     bpy = get_bpy()
     bpy.ops.object.text_add(
         location=location,
@@ -386,14 +682,39 @@ def create_scene_label(
 
 def create_achromat(
     *,
-    collection,
+    collection: Any,
     materials: dict[str, object],
     x_mm: float,
     diameter_mm: float | None = None,
     thickness_mm: float | None = None,
     optical_axis_z_mm: float = 15.0,
-    prescription=AC254_100_A,
-):
+    prescription: AchromatPrescription = AC254_100_A,
+) -> Any:
+    """Create the cemented achromat assembly from its prescription.
+
+    Parameters
+    ----------
+    collection
+        Blender collection that should contain the achromat.
+    materials
+        Material palette returned by ``create_materials``.
+    x_mm
+        Lens X position in millimeters.
+    diameter_mm
+        Deprecated compatibility parameter; the prescription controls diameter.
+    thickness_mm
+        Deprecated compatibility parameter; the prescription controls thickness.
+    optical_axis_z_mm
+        Optical-axis height in millimeters.
+    prescription
+        Source-backed achromat prescription.
+
+    Returns
+    -------
+    object
+        Parent Blender object for the achromat assembly.
+    """
+
     del diameter_mm, thickness_mm
     parent = _new_parent(
         "AC254-100-A Doublet Assembly",
@@ -431,13 +752,37 @@ def create_achromat(
 
 def create_lens_mount(
     *,
-    collection,
+    collection: Any,
     materials: dict[str, object],
     x_mm: float,
     diameter_mm: float | None = None,
     optical_axis_z_mm: float = 15.0,
-    mount=LMR1_MOUNT,
-):
+    mount: LensMountPrescription = LMR1_MOUNT,
+) -> Any:
+    """Create a simplified LMR1-style lens mount.
+
+    Parameters
+    ----------
+    collection
+        Blender collection that should contain the mount.
+    materials
+        Material palette returned by ``create_materials``.
+    x_mm
+        Mount X position in millimeters.
+    diameter_mm
+        Deprecated compatibility parameter; the mount prescription controls
+        aperture size.
+    optical_axis_z_mm
+        Optical-axis height in millimeters.
+    mount
+        Source-backed lens-mount prescription.
+
+    Returns
+    -------
+    object
+        Parent Blender object for the lens mount assembly.
+    """
+
     del diameter_mm
     bpy = get_bpy()
     parent = _new_parent(

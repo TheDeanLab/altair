@@ -8,8 +8,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import math
+from typing import Any
 
 from .prescriptions import LensSurface
+
+
+VectorTuple = tuple[float, float, float]
+Matrix3 = tuple[VectorTuple, ...]
 
 
 @dataclass(frozen=True)
@@ -40,14 +45,35 @@ class ReflectedSpotSummary:
 
 
 def validate_positive(name: str, value: float) -> None:
-    """Raise a clear error when a physical size or scale is not positive."""
+    """Raise a clear error when a physical size or scale is not positive.
+
+    Parameters
+    ----------
+    name
+        Name of the value being validated.
+    value
+        Numeric value that must be finite and positive.
+    """
 
     if not math.isfinite(value) or value <= 0:
         raise ValueError(f"{name} must be positive; got {value!r}")
 
 
 def spherical_surface_x(surface: LensSurface, *, radial_mm: float) -> float:
-    """Return local X coordinate for a spherical surface at radial distance."""
+    """Return local X coordinate for a spherical surface at radial distance.
+
+    Parameters
+    ----------
+    surface
+        Lens surface to evaluate.
+    radial_mm
+        Radial distance from the optical axis in millimeters.
+
+    Returns
+    -------
+    float
+        Lens-local X coordinate in millimeters.
+    """
 
     if radial_mm < 0 or radial_mm > surface.clear_radius_mm:
         raise ValueError(
@@ -66,7 +92,22 @@ def spherical_surface_x(surface: LensSurface, *, radial_mm: float) -> float:
 def spherical_surface_normal(
     surface: LensSurface, *, y_mm: float, z_mm: float
 ) -> Vector3Mm:
-    """Return the unit normal of a spherical surface at a local Y/Z point."""
+    """Return the unit normal of a spherical surface at a local Y/Z point.
+
+    Parameters
+    ----------
+    surface
+        Lens surface to evaluate.
+    y_mm
+        Lens-local Y coordinate in millimeters.
+    z_mm
+        Lens-local Z coordinate in millimeters.
+
+    Returns
+    -------
+    Vector3Mm
+        Unit normal vector in lens-local coordinates.
+    """
 
     radial_mm = math.hypot(y_mm, z_mm)
     point_x = spherical_surface_x(surface, radial_mm=radial_mm)
@@ -81,37 +122,117 @@ def spherical_surface_normal(
     )
 
 
-def _dot(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
+def _dot(a: VectorTuple, b: VectorTuple) -> float:
+    """Return the dot product of two 3D vectors.
+
+    Parameters
+    ----------
+    a
+        First vector.
+    b
+        Second vector.
+
+    Returns
+    -------
+    float
+        Dot product.
+    """
+
     return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2])
 
 
-def _sub(
-    a: tuple[float, float, float], b: tuple[float, float, float]
-) -> tuple[float, float, float]:
+def _sub(a: VectorTuple, b: VectorTuple) -> VectorTuple:
+    """Subtract one 3D vector from another.
+
+    Parameters
+    ----------
+    a
+        Left-hand vector.
+    b
+        Right-hand vector.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Difference vector.
+    """
+
     return (a[0] - b[0], a[1] - b[1], a[2] - b[2])
 
 
-def _add(
-    a: tuple[float, float, float], b: tuple[float, float, float]
-) -> tuple[float, float, float]:
+def _add(a: VectorTuple, b: VectorTuple) -> VectorTuple:
+    """Add two 3D vectors.
+
+    Parameters
+    ----------
+    a
+        First vector.
+    b
+        Second vector.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Sum vector.
+    """
+
     return (a[0] + b[0], a[1] + b[1], a[2] + b[2])
 
 
-def _scale(
-    vector: tuple[float, float, float], scalar: float
-) -> tuple[float, float, float]:
+def _scale(vector: VectorTuple, scalar: float) -> VectorTuple:
+    """Scale a 3D vector by a scalar.
+
+    Parameters
+    ----------
+    vector
+        Vector to scale.
+    scalar
+        Scalar multiplier.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Scaled vector.
+    """
+
     return (vector[0] * scalar, vector[1] * scalar, vector[2] * scalar)
 
 
-def _normalize(vector: tuple[float, float, float]) -> tuple[float, float, float]:
+def _normalize(vector: VectorTuple) -> VectorTuple:
+    """Normalize a 3D vector.
+
+    Parameters
+    ----------
+    vector
+        Vector to normalize.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Unit-length vector.
+    """
+
     length = math.sqrt(_dot(vector, vector))
     validate_positive("vector_length", length)
     return (vector[0] / length, vector[1] / length, vector[2] / length)
 
 
-def _matmul_vec(
-    matrix: tuple[tuple[float, float, float], ...], vector: tuple[float, float, float]
-) -> tuple[float, float, float]:
+def _matmul_vec(matrix: Matrix3, vector: VectorTuple) -> VectorTuple:
+    """Multiply a 3x3 matrix by a 3D vector.
+
+    Parameters
+    ----------
+    matrix
+        Matrix rows.
+    vector
+        Vector to transform.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Transformed vector.
+    """
+
     return (
         _dot(matrix[0], vector),
         _dot(matrix[1], vector),
@@ -119,9 +240,20 @@ def _matmul_vec(
     )
 
 
-def _transpose(
-    matrix: tuple[tuple[float, float, float], ...],
-) -> tuple[tuple[float, float, float], ...]:
+def _transpose(matrix: Matrix3) -> Matrix3:
+    """Transpose a 3x3 matrix.
+
+    Parameters
+    ----------
+    matrix
+        Matrix rows to transpose.
+
+    Returns
+    -------
+    tuple[tuple[float, float, float], ...]
+        Transposed matrix rows.
+    """
+
     return (
         (matrix[0][0], matrix[1][0], matrix[2][0]),
         (matrix[0][1], matrix[1][1], matrix[2][1]),
@@ -129,10 +261,21 @@ def _transpose(
     )
 
 
-def _rotation_matrix(
-    *, tilt_y_deg: float, tilt_z_deg: float
-) -> tuple[tuple[float, float, float], ...]:
-    """Return a lens-local to world rotation matrix for teaching tilts."""
+def _rotation_matrix(*, tilt_y_deg: float, tilt_z_deg: float) -> Matrix3:
+    """Return a lens-local to world rotation matrix for teaching tilts.
+
+    Parameters
+    ----------
+    tilt_y_deg
+        Y-axis tilt in degrees.
+    tilt_z_deg
+        Z-axis tilt in degrees.
+
+    Returns
+    -------
+    tuple[tuple[float, float, float], ...]
+        Rotation matrix rows.
+    """
 
     yaw = math.radians(tilt_y_deg)
     pitch = math.radians(-tilt_z_deg)
@@ -165,6 +308,21 @@ def _rotation_matrix(
 def _sample_bundle(
     beam_diameter_mm: float, sample_rings: int
 ) -> list[tuple[float, float]]:
+    """Sample a circular collimated beam bundle.
+
+    Parameters
+    ----------
+    beam_diameter_mm
+        Diameter of the incident beam in millimeters.
+    sample_rings
+        Number of radial rings to sample around the center ray.
+
+    Returns
+    -------
+    list[tuple[float, float]]
+        Sampled Y/Z offsets in the incident beam.
+    """
+
     validate_positive("beam_diameter_mm", beam_diameter_mm)
     if sample_rings < 1:
         raise ValueError("sample_rings must be at least 1")
@@ -185,9 +343,26 @@ def _sample_bundle(
 def _intersect_spherical_surface(
     *,
     surface: LensSurface,
-    origin: tuple[float, float, float],
-    direction: tuple[float, float, float],
-) -> tuple[float, float, float]:
+    origin: VectorTuple,
+    direction: VectorTuple,
+) -> VectorTuple:
+    """Intersect a ray with a spherical lens surface.
+
+    Parameters
+    ----------
+    surface
+        Lens surface to intersect.
+    origin
+        Ray origin in lens-local coordinates.
+    direction
+        Unit ray direction in lens-local coordinates.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Nearest valid intersection point.
+    """
+
     center = (surface.vertex_x_mm + surface.radius_mm, 0.0, 0.0)
     oc = _sub(origin, center)
     a = _dot(direction, direction)
@@ -222,7 +397,32 @@ def reflect_ray_bundle_from_surface(
     decenter_z_mm: float,
     sample_rings: int = 3,
 ) -> ReflectedSpotSummary:
-    """Reflect a collimated ray bundle from one spherical surface to the card."""
+    """Reflect a collimated ray bundle from one spherical surface to the card.
+
+    Parameters
+    ----------
+    surface
+        Lens surface used for the reflection.
+    beam_diameter_mm
+        Incident beam diameter in millimeters.
+    card_to_lens_mm
+        Distance from the aperture card to the lens center in millimeters.
+    tilt_y_deg
+        Lens tilt around the Z axis, expressed as horizontal beam walk.
+    tilt_z_deg
+        Lens tilt around the Y axis, expressed as vertical beam walk.
+    decenter_y_mm
+        Lens decenter in the Y direction.
+    decenter_z_mm
+        Lens decenter in the Z direction.
+    sample_rings
+        Number of radial rings used to sample the incident beam bundle.
+
+    Returns
+    -------
+    ReflectedSpotSummary
+        Center, footprint, and sampled return points on the aperture card.
+    """
 
     validate_positive("card_to_lens_mm", card_to_lens_mm)
 
@@ -295,6 +495,28 @@ def compute_return_spots(
     decenter splits the two surface reflections in opposite directions. The two
     surfaces are given slightly different tilt sensitivity so the viewer can
     distinguish the two return spots during correction.
+
+    Parameters
+    ----------
+    tilt_y_deg
+        Lens tilt driving horizontal spot displacement.
+    tilt_z_deg
+        Lens tilt driving vertical spot displacement.
+    decenter_y_mm
+        Lens decenter in the Y direction.
+    decenter_z_mm
+        Lens decenter in the Z direction.
+    card_to_lens_mm
+        Distance from card to lens in millimeters.
+    exaggeration
+        Visual exaggeration factor for display offsets.
+    decenter_response
+        Relative strength of decenter-induced spot splitting.
+
+    Returns
+    -------
+    tuple[SpotOffset, SpotOffset]
+        Teaching-level offsets for two return spots.
     """
 
     validate_positive("card_to_lens_mm", card_to_lens_mm)
@@ -323,12 +545,33 @@ def create_beam_between(
     start_xyz: tuple[float, float, float],
     end_xyz: tuple[float, float, float],
     radius_mm: float,
-    material,
-    collection,
-):
-    """Create a glowing cylindrical beam between two scene points."""
+    material: Any,
+    collection: Any,
+) -> Any:
+    """Create a glowing cylindrical beam between two scene points.
 
-    from mathutils import Vector  # type: ignore[import-not-found]
+    Parameters
+    ----------
+    name
+        Beam object name.
+    start_xyz
+        Beam start point in scene coordinates.
+    end_xyz
+        Beam end point in scene coordinates.
+    radius_mm
+        Beam cylinder radius in millimeters.
+    material
+        Blender material assigned to the beam.
+    collection
+        Blender collection that should contain the beam.
+
+    Returns
+    -------
+    object
+        Blender mesh object for the beam.
+    """
+
+    from mathutils import Vector  # pyright: ignore[reportMissingImports]
 
     from .scene import get_bpy
 
@@ -360,11 +603,34 @@ def create_return_spot(
     card_x_mm: float,
     offset: SpotOffset,
     radius_mm: float,
-    material,
-    collection,
+    material: Any,
+    collection: Any,
     optical_axis_z_mm: float = 15.0,
-):
-    """Create a small return spot on the card face."""
+) -> Any:
+    """Create a small return spot on the card face.
+
+    Parameters
+    ----------
+    name
+        Spot object name.
+    card_x_mm
+        Aperture card X position in millimeters.
+    offset
+        Spot offset on the aperture card.
+    radius_mm
+        Spot radius in millimeters.
+    material
+        Blender material assigned to the spot.
+    collection
+        Blender collection that should contain the spot.
+    optical_axis_z_mm
+        Optical-axis height in millimeters.
+
+    Returns
+    -------
+    object
+        Blender mesh object for the spot.
+    """
 
     from .scene import get_bpy
 

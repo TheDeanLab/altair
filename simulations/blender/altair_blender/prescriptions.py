@@ -35,14 +35,38 @@ class AchromatPrescription:
 
     @property
     def clear_aperture_mm(self) -> float:
+        """Return the usable optical aperture diameter.
+
+        Returns
+        -------
+        float
+            Clear aperture diameter in millimeters.
+        """
+
         return self.diameter_mm * self.clear_aperture_fraction
 
     @property
     def clear_radius_mm(self) -> float:
+        """Return the usable optical aperture radius.
+
+        Returns
+        -------
+        float
+            Clear aperture radius in millimeters.
+        """
+
         return self.clear_aperture_mm / 2.0
 
     @property
     def center_thickness_mm(self) -> float:
+        """Return total center thickness of the cemented doublet.
+
+        Returns
+        -------
+        float
+            Combined element center thickness in millimeters.
+        """
+
         return (
             self.first_element_center_thickness_mm
             + self.second_element_center_thickness_mm

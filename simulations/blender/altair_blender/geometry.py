@@ -195,6 +195,26 @@ def optical_table_hole_centers(
     )
 
 
+def optical_table_hole_geometry(
+    *,
+    table_z_mm: float,
+    table_thickness_mm: float,
+    well_recess_mm: float = 0.28,
+) -> dict[str, float]:
+    table_top_z = table_z_mm + (table_thickness_mm / 2.0)
+    cutter_depth = table_thickness_mm + 0.4
+    well_depth = table_thickness_mm - (well_recess_mm * 2.0)
+    well_top_z = table_top_z - well_recess_mm
+    return {
+        "table_top_z_mm": table_top_z,
+        "cutter_center_z_mm": table_z_mm,
+        "cutter_depth_mm": cutter_depth,
+        "well_center_z_mm": well_top_z - (well_depth / 2.0),
+        "well_depth_mm": well_depth,
+        "well_top_z_mm": well_top_z,
+    }
+
+
 def create_optical_table(
     *,
     collection,
@@ -204,6 +224,7 @@ def create_optical_table(
     hole_spacing_mm: float = 25.4,
     hole_diameter_mm: float = 5.6,
     hole_border_mm: float = 12.7,
+    hole_recess_mm: float = 0.28,
 ):
     bpy = get_bpy()
     table_x = 70.0
@@ -213,12 +234,16 @@ def create_optical_table(
     table = bpy.context.object
     table.name = "Optical Table"
     table.dimensions = (length_mm, width_mm, table_thickness)
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
     table.data.materials.append(materials["table"])
-    _add_soft_edges(table, width_mm=0.5, segments=3)
     _link_to_collection(table, collection)
 
     hole_radius = hole_diameter_mm / 2.0
-    hole_z = table_z + (table_thickness / 2.0) + 0.018
+    hole_geometry = optical_table_hole_geometry(
+        table_z_mm=table_z,
+        table_thickness_mm=table_thickness,
+        well_recess_mm=hole_recess_mm,
+    )
     for index, (x_mm, y_mm) in enumerate(
         optical_table_hole_centers(
             length_mm=length_mm,
@@ -229,16 +254,47 @@ def create_optical_table(
         start=1,
     ):
         bpy.ops.mesh.primitive_cylinder_add(
-            vertices=32,
+            vertices=48,
             radius=hole_radius,
-            depth=0.035,
-            location=(table_x + x_mm, y_mm, hole_z),
+            depth=hole_geometry["cutter_depth_mm"],
+            location=(
+                table_x + x_mm,
+                y_mm,
+                hole_geometry["cutter_center_z_mm"],
+            ),
         )
-        hole = bpy.context.object
-        hole.name = f"Optical Table Hole {index:03d}"
-        hole.data.materials.append(materials["table_hole"])
-        _link_to_collection(hole, collection)
+        cutter = bpy.context.object
+        cutter.name = f"Optical Table Hole Cutter {index:03d}"
+        boolean = table.modifiers.new(f"Hole Cut {index:03d}", "BOOLEAN")
+        boolean.operation = "DIFFERENCE"
+        boolean.object = cutter
+        if hasattr(boolean, "solver"):
+            try:
+                boolean.solver = "EXACT"
+            except (TypeError, ValueError):
+                pass
+        bpy.context.view_layer.objects.active = table
+        table.select_set(True)
+        bpy.ops.object.modifier_apply(modifier=boolean.name)
+        bpy.data.objects.remove(cutter, do_unlink=True)
 
+        bpy.ops.mesh.primitive_cylinder_add(
+            vertices=48,
+            radius=hole_radius * 0.88,
+            depth=hole_geometry["well_depth_mm"],
+            location=(
+                table_x + x_mm,
+                y_mm,
+                hole_geometry["well_center_z_mm"],
+            ),
+        )
+        well = bpy.context.object
+        well.name = f"Optical Table Hole Well {index:03d}"
+        well.data.materials.append(materials["table_hole"])
+        _link_to_collection(well, collection)
+        bpy.ops.object.shade_smooth()
+
+    _add_soft_edges(table, width_mm=0.16, segments=2)
     return table
 
 

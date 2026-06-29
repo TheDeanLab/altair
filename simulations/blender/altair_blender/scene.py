@@ -18,7 +18,7 @@ RENDER_PRESETS = {
     },
 }
 
-WORLD_BACKGROUND_COLOR = (0.11, 0.12, 0.13)
+WORLD_BACKGROUND_COLOR = (0.24, 0.25, 0.26)
 
 
 def get_bpy() -> ModuleType:

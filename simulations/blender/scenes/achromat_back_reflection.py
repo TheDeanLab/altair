@@ -170,6 +170,12 @@ def main(output_path: str | None = None) -> None:
         name="Large Softbox", location=(35.0, -75.0, 95.0), power=700.0, size=65.0
     )
     add_area_light(
+        name="Table Satin Reflection",
+        location=(78.0, -8.0, 118.0),
+        power=420.0,
+        size=130.0,
+    )
+    add_area_light(
         name="Card Glint Fill", location=(-35.0, -25.0, 55.0), power=160.0, size=20.0
     )
     add_area_light(

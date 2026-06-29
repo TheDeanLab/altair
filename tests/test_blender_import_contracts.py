@@ -46,14 +46,29 @@ def test_optical_table_hole_grid_uses_one_inch_spacing():
     assert centers == ((-25.4, 0.0), (0.0, 0.0), (25.4, 0.0))
 
 
+def test_optical_table_hole_geometry_recesses_wells_below_tabletop():
+    geometry = importlib.import_module("simulations.blender.altair_blender.geometry")
+
+    spec = geometry.optical_table_hole_geometry(
+        table_z_mm=-8.0,
+        table_thickness_mm=6.0,
+        well_recess_mm=0.28,
+    )
+
+    assert spec["table_top_z_mm"] == -5.0
+    assert spec["cutter_depth_mm"] > 6.0
+    assert spec["well_top_z_mm"] < spec["table_top_z_mm"]
+
+
 def test_scene_palette_uses_lighter_table_and_backdrop_constants():
     materials = importlib.import_module("simulations.blender.altair_blender.materials")
     scene = importlib.import_module("simulations.blender.altair_blender.scene")
 
-    assert materials.TABLE_STAINLESS_COLOR[0] > 0.45
-    assert materials.BACKDROP_NEUTRAL_COLOR[0] > 0.25
+    assert materials.TABLE_STAINLESS_COLOR[0] > 0.78
+    assert materials.TABLE_BRUSH_HIGH_COLOR[0] > materials.TABLE_STAINLESS_COLOR[0]
+    assert materials.BACKDROP_NEUTRAL_COLOR[0] > 0.50
     assert materials.TABLE_HOLE_COLOR[0] < materials.TABLE_STAINLESS_COLOR[0]
-    assert scene.WORLD_BACKGROUND_COLOR[0] > 0.05
+    assert scene.WORLD_BACKGROUND_COLOR[0] > 0.20
 
 
 def test_get_bpy_reports_clear_error_outside_blender():

@@ -9,4 +9,8 @@ docs/build/*
 *.doctree
 *.pyc
 /docs/PDF
+
+# Generated simulation outputs. Raw Blender frame sequences are large,
+# reproducible intermediates and should not be committed.
 /output/
+/output/**/frames/

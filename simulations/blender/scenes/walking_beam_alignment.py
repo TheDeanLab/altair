@@ -47,6 +47,14 @@ class BeamPathPoint(NamedTuple):
     xyz: tuple[float, float, float]
 
 
+class CameraPose(NamedTuple):
+    """Import-safe camera pose used by scene contract tests."""
+
+    location_xyz: tuple[float, float, float]
+    target_xyz: tuple[float, float, float]
+    lens_mm: float
+
+
 DEFAULT_PARAMETERS: dict[str, Any] = {
     "wavelength_nm": 561.0,
     "beam_diameter_mm": 1.0,
@@ -79,6 +87,9 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "wide_camera_name": "Wide Setup Camera",
     "iris_closeup_camera_name": "Iris Close-Up Camera",
     "hero_camera_name": "Hero Camera",
+    "iris_closeup_lens_mm": 48.0,
+    "iris_closeup_distance_y_mm": 155.0,
+    "iris_closeup_elevation_mm": 28.0,
     "default_render_preset": "final",
     "render_presets": RENDER_PRESETS,
     "final_video_output_stem": "walking_beam_alignment",
@@ -328,12 +339,38 @@ def _display_intercepts(
     )
 
 
+def _iris_closeup_camera_pose(params: Mapping[str, Any]) -> CameraPose:
+    """Return a close-up camera pose that frames both irises.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    CameraPose
+        Camera location, target, and lens length.
+    """
+
+    centers = _component_centers(params)
+    midpoint_x = (centers["iris_1"][0] + centers["iris_2"][0]) / 2.0
+    axis_z = float(params["optical_axis_z_mm"])
+    return CameraPose(
+        location_xyz=(
+            midpoint_x,
+            -float(params["iris_closeup_distance_y_mm"]),
+            axis_z + float(params["iris_closeup_elevation_mm"]),
+        ),
+        target_xyz=(midpoint_x, 0.0, axis_z),
+        lens_mm=float(params["iris_closeup_lens_mm"]),
+    )
+
+
 def _create_iris_closeup_camera(
     *,
     name: str,
-    iris1_x_mm: float,
-    iris2_x_mm: float,
-    optical_axis_z_mm: float,
+    pose: CameraPose,
 ) -> Any:
     """Create a camera looking down the iris row.
 
@@ -341,12 +378,8 @@ def _create_iris_closeup_camera(
     ----------
     name
         Camera object name.
-    iris1_x_mm
-        Iris 1 X position in millimeters.
-    iris2_x_mm
-        Iris 2 X position in millimeters.
-    optical_axis_z_mm
-        Shared optical-axis height in millimeters.
+    pose
+        Camera pose returned by ``_iris_closeup_camera_pose``.
 
     Returns
     -------
@@ -359,21 +392,13 @@ def _create_iris_closeup_camera(
     from simulations.blender.altair_blender.scene import get_bpy
 
     bpy = get_bpy()
-    target = Vector(
-        (
-            (iris1_x_mm + iris2_x_mm) / 2.0,
-            0.0,
-            optical_axis_z_mm,
-        )
-    )
-    bpy.ops.object.camera_add(
-        location=(iris1_x_mm - 42.0, -88.0, optical_axis_z_mm + 18.0)
-    )
+    target = Vector(pose.target_xyz)
+    bpy.ops.object.camera_add(location=pose.location_xyz)
     camera = bpy.context.object
     camera.name = name
     direction = target - camera.location
     camera.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
-    camera.data.lens = 92
+    camera.data.lens = pose.lens_mm
     camera.data.dof.use_dof = True
     camera.data.dof.focus_distance = direction.length
     return camera
@@ -683,9 +708,7 @@ def main(output_path: str | None = None) -> None:
     )
     _create_iris_closeup_camera(
         name=str(params["iris_closeup_camera_name"]),
-        iris1_x_mm=centers["iris_1"][0],
-        iris2_x_mm=centers["iris_2"][0],
-        optical_axis_z_mm=axis_z,
+        pose=_iris_closeup_camera_pose(params),
     )
     create_hero_camera(
         target=(38.0, -4.0, axis_z + 4.0),

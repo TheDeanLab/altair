@@ -119,6 +119,20 @@ def test_scene_beam_path_uses_mirror_surface_points_not_mount_centers():
     assert path[2].xyz[0] < path[3].xyz[0]
 
 
+def test_iris_closeup_camera_pose_frames_both_irises():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    centers = module._component_centers(params)
+    pose = module._iris_closeup_camera_pose(params)
+    iris_midpoint_x = (centers["iris_1"][0] + centers["iris_2"][0]) / 2.0
+
+    assert pose.target_xyz[0] == pytest.approx(iris_midpoint_x)
+    assert pose.location_xyz[0] == pytest.approx(iris_midpoint_x)
+    assert pose.location_xyz[1] < -120.0
+    assert pose.location_xyz[2] > params["optical_axis_z_mm"]
+    assert pose.lens_mm <= 55.0
+
+
 def test_scene_defines_explicit_walking_beam_storyboard():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

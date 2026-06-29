@@ -276,7 +276,23 @@ def _mirror_reflective_normal(yaw_deg: float) -> tuple[float, float, float]:
 def _mirror_plane_point(
     center: tuple[float, float, float], *, yaw_deg: float, offset_mm: float
 ) -> tuple[float, float, float]:
-    """Return one point on the visible mirror face plane."""
+    """Return one point on the visible mirror face plane.
+
+    Parameters
+    ----------
+    center
+        Optical center of the mirror mount.
+    yaw_deg
+        Mirror mount yaw in degrees.
+    offset_mm
+        Offset from mount center to the visible mirror face along local
+        negative X.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        World-space point on the mirror face plane.
+    """
 
     yaw_rad = math.radians(yaw_deg)
     return (
@@ -293,7 +309,24 @@ def _ray_plane_intersection(
     plane_point: tuple[float, float, float],
     plane_normal: tuple[float, float, float],
 ) -> tuple[float, float, float]:
-    """Return the intersection between a ray and a plane."""
+    """Return the intersection between a ray and a plane.
+
+    Parameters
+    ----------
+    origin
+        World-space ray origin.
+    direction
+        Unit or non-unit ray direction.
+    plane_point
+        Any world-space point on the plane.
+    plane_normal
+        Plane normal direction.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        World-space ray-plane intersection point.
+    """
 
     denominator = sum(direction[index] * plane_normal[index] for index in range(3))
     if abs(denominator) < 1e-9:
@@ -398,7 +431,18 @@ def _beam_path_points(params: Mapping[str, Any]) -> tuple[BeamPathPoint, ...]:
 
 
 def _trace_z_fold_ray(params: Mapping[str, Any]) -> tuple[BeamPathPoint, ...]:
-    """Trace the nominal Z-fold beam path from mirror planes and reflections."""
+    """Trace the nominal Z-fold beam path from mirror planes and reflections.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    tuple[BeamPathPoint, ...]
+        Source, mirror hit, and iris-row exit points.
+    """
 
     centers = _component_centers(params)
     offset = float(params["mirror_surface_offset_mm"])
@@ -509,7 +553,20 @@ def _alignment_states(params: Mapping[str, Any]) -> tuple[BeamWalkingState, ...]
 def _storyboard_captions_for_states(
     params: Mapping[str, Any], states: tuple[BeamWalkingState, ...]
 ) -> tuple[StoryboardCaption, ...]:
-    """Return one caption for each storyboard alignment state."""
+    """Return one caption for each storyboard alignment state.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    states
+        Ordered alignment states in the storyboard.
+
+    Returns
+    -------
+    tuple[StoryboardCaption, ...]
+        Caption records aligned with the supplied states.
+    """
 
     caption_texts = params["storyboard_captions"]
     return tuple(
@@ -523,7 +580,18 @@ def _storyboard_captions_for_states(
 
 
 def _label_style(params: Mapping[str, Any]) -> LabelStyle:
-    """Return the scene-local label material style."""
+    """Return the scene-local label material style.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    LabelStyle
+        Color and emission settings for scene labels.
+    """
 
     red, green, blue, alpha = params["label_color"]
     return LabelStyle(
@@ -533,7 +601,17 @@ def _label_style(params: Mapping[str, Any]) -> LabelStyle:
 
 
 def _set_material_input_if_present(material: Any, input_name: str, value: Any) -> None:
-    """Set one Principled BSDF input when the Blender runtime exposes it."""
+    """Set one Principled BSDF input when the Blender runtime exposes it.
+
+    Parameters
+    ----------
+    material
+        Blender material whose shader node should be updated.
+    input_name
+        Name of the Principled BSDF input.
+    value
+        Value assigned to the input when it exists.
+    """
 
     bsdf = material.node_tree.nodes.get("Principled BSDF")
     if bsdf is not None and input_name in bsdf.inputs:
@@ -541,7 +619,15 @@ def _set_material_input_if_present(material: Any, input_name: str, value: Any) -
 
 
 def _apply_label_style(materials: Mapping[str, Any], style: LabelStyle) -> None:
-    """Apply scene-local label styling to the generated material palette."""
+    """Apply scene-local label styling to the generated material palette.
+
+    Parameters
+    ----------
+    materials
+        Material palette returned by ``create_materials``.
+    style
+        Scene-local label color and emission settings.
+    """
 
     label = materials["label"]
     label.diffuse_color = style.color
@@ -582,13 +668,35 @@ def _display_intercepts(
 
 
 def _beam_visual_radius(params: Mapping[str, Any]) -> float:
-    """Return the rendered beam radius without changing physical beam math."""
+    """Return the rendered beam radius without changing physical beam math.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    float
+        Rendered beam radius in millimeters.
+    """
 
     return float(params["beam_visual_diameter_mm"]) / 2.0
 
 
 def _iris_spot_radius(params: Mapping[str, Any]) -> float:
-    """Return the rendered iris spot radius."""
+    """Return the rendered iris spot radius.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    float
+        Rendered spot radius in millimeters.
+    """
 
     return float(params["iris_spot_radius_mm"])
 

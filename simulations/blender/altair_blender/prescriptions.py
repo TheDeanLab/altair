@@ -87,6 +87,56 @@ class LensMountPrescription:
     source_notes: str
 
 
+@dataclass(frozen=True)
+class IrisPrescription:
+    """Simplified source-backed dimensions for a post-mounted iris."""
+
+    name: str
+    min_aperture_mm: float
+    max_aperture_mm: float
+    outer_diameter_mm: float
+    thickness_mm: float
+    leaf_count: int
+    source_notes: str
+
+
+@dataclass(frozen=True)
+class PostHolderPrescription:
+    """Simplified source-backed dimensions for a post holder."""
+
+    name: str
+    accepted_post_diameter_mm: float
+    length_mm: float
+    source_notes: str
+
+
+@dataclass(frozen=True)
+class OpticalPostPrescription:
+    """Simplified source-backed dimensions for an optical post."""
+
+    name: str
+    diameter_mm: float
+    length_mm: float
+    top_thread: str
+    bottom_thread: str
+    source_notes: str
+
+
+@dataclass(frozen=True)
+class MirrorMountPrescription:
+    """Simplified source-backed dimensions for a kinematic mirror mount."""
+
+    name: str
+    optic_diameter_mm: float
+    clear_aperture_mm: float
+    body_width_mm: float
+    body_height_mm: float
+    body_depth_mm: float
+    angular_range_deg: float
+    adjuster_mrad_per_revolution: float
+    source_notes: str
+
+
 _AC254_DIAMETER_MM = 25.4
 _AC254_CLEAR_RADIUS_MM = (_AC254_DIAMETER_MM * 0.90) / 2.0
 
@@ -149,5 +199,62 @@ LMR1_MOUNT = LensMountPrescription(
         "Thorlabs LMR1/M drawing provides body width, body height, body depth, "
         "clear aperture, optical axis height, retaining-ring depth, and SM1 "
         "thread context for the simplified visual mount."
+    ),
+)
+
+ID25_IRIS = IrisPrescription(
+    name="ID25",
+    min_aperture_mm=1.4,
+    max_aperture_mm=25.0,
+    outer_diameter_mm=43.7,
+    thickness_mm=6.6,
+    leaf_count=14,
+    source_notes=(
+        "Thorlabs post-mountable iris diaphragm table lists ID25 with "
+        "1.4 mm to 25.0 mm aperture range, 14 leaves, and 1.72 in / "
+        "0.26 in (43.7 mm / 6.6 mm) outer diameter and thickness."
+    ),
+)
+
+PH2_POST_HOLDER = PostHolderPrescription(
+    name="PH2",
+    accepted_post_diameter_mm=12.7,
+    length_mm=50.8,
+    source_notes=(
+        "Thorlabs PH2 product page lists a spring-loaded hex-locking "
+        "thumbscrew post holder for 1/2 in (12.7 mm) posts with L = 2 in "
+        "(50.8 mm)."
+    ),
+)
+
+TR15_POST = OpticalPostPrescription(
+    name="TR1.5",
+    diameter_mm=12.7,
+    length_mm=38.1,
+    top_thread="8-32",
+    bottom_thread="1/4-20",
+    source_notes=(
+        "Thorlabs TR1.5 product page lists a 1/2 in (12.7 mm) stainless "
+        "optical post with L = 1.5 in (38.1 mm), an 8-32 setscrew, and a "
+        "1/4-20 tap."
+    ),
+)
+
+KM100CP_MOUNT = MirrorMountPrescription(
+    name="KM100CP",
+    optic_diameter_mm=25.4,
+    clear_aperture_mm=23.9,
+    body_width_mm=49.9,
+    body_height_mm=49.9,
+    body_depth_mm=10.2,
+    angular_range_deg=4.0,
+    adjuster_mrad_per_revolution=8.0,
+    source_notes=(
+        "Thorlabs KM100CP product page identifies the post-centered "
+        "kinematic mirror mount for 1 in (25.4 mm) optics with two 1/4-80 "
+        "adjusters, +/-4 deg angular range, and 8 mrad per revolution "
+        "adjustment. The KM100-family drawing gives a 0.94 in (23.9 mm) "
+        "clear aperture and 1.97 in (49.9 mm) front-plate width and height "
+        "for the simplified visual model."
     ),
 )

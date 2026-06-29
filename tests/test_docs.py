@@ -6,7 +6,7 @@ import os
 
 class TestDocs(unittest.TestCase):
     def setUp(self):
-        os.chdir(os.path.join(os.getcwd(), 'docs'))
+        os.chdir(os.path.join(os.getcwd(), "docs"))
         print("Current Directory:", os.getcwd())
 
     def test_sphinx_build(self):
@@ -25,15 +25,15 @@ class TestDocs(unittest.TestCase):
 
         # Check that all images are found.
         missing_image_pattern = re.compile(
-            r"WARNING: image file not readable",
-            re.IGNORECASE)
+            r"WARNING: image file not readable", re.IGNORECASE
+        )
         match = missing_image_pattern.search(result.stderr)
         self.assertIsNone(
             match,
             "There are missing images in the documentation! "
-            "Check Sphinx warnings above."
+            "Check Sphinx warnings above.",
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

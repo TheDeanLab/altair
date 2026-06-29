@@ -1,7 +1,6 @@
 import ast
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SIMULATION_FILES = tuple(sorted((REPO_ROOT / "simulations").glob("**/*.py")))
 

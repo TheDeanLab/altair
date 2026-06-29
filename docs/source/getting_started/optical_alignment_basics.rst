@@ -31,6 +31,7 @@ Available Tutorials
    :maxdepth: 1
 
    optical_alignment_back_reflections
+   optical_alignment_walking_beam
 
 
 Tentative Tutorial Roadmap

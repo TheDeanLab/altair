@@ -12,6 +12,9 @@ def test_core_modules_import_without_blender():
     cameras = importlib.import_module("simulations.blender.altair_blender.cameras")
     animation = importlib.import_module("simulations.blender.altair_blender.animation")
     optics = importlib.import_module("simulations.blender.altair_blender.optics")
+    beam_walking = importlib.import_module(
+        "simulations.blender.altair_blender.beam_walking"
+    )
 
     assert callable(scene.get_bpy)
     assert callable(scene.reset_scene)
@@ -23,6 +26,10 @@ def test_core_modules_import_without_blender():
     assert callable(geometry.create_business_card)
     assert callable(geometry.create_achromat)
     assert callable(geometry.create_lens_mount)
+    assert callable(geometry.create_post_holder)
+    assert callable(geometry.create_optical_post)
+    assert callable(geometry.create_post_mounted_iris)
+    assert callable(geometry.create_kinematic_mirror_mount)
     assert callable(geometry.create_scene_label)
     assert callable(cameras.create_wide_camera)
     assert callable(cameras.create_card_closeup_camera)
@@ -32,6 +39,8 @@ def test_core_modules_import_without_blender():
     assert callable(optics.create_beam_between)
     assert callable(optics.create_return_spot)
     assert callable(optics.trace_ray_branches_through_surfaces)
+    assert callable(beam_walking.compute_beam_intercepts)
+    assert callable(beam_walking.iterative_alignment_sequence)
 
 
 def test_optical_table_hole_grid_uses_one_inch_spacing():
@@ -107,6 +116,52 @@ def test_hero_camera_exposes_animation_and_focus_controls():
     ):
         assert parameter in signature.parameters
         assert signature.parameters[parameter].kind is inspect.Parameter.KEYWORD_ONLY
+
+
+def test_hardware_builders_expose_keyword_only_geometry_controls():
+    geometry = importlib.import_module("simulations.blender.altair_blender.geometry")
+
+    for function_name, required_parameters in {
+        "create_post_holder": (
+            "collection",
+            "materials",
+            "x_mm",
+            "y_mm",
+            "table_top_z_mm",
+            "holder",
+        ),
+        "create_optical_post": (
+            "collection",
+            "materials",
+            "x_mm",
+            "y_mm",
+            "table_top_z_mm",
+            "post",
+        ),
+        "create_post_mounted_iris": (
+            "collection",
+            "materials",
+            "x_mm",
+            "y_mm",
+            "optical_axis_z_mm",
+            "iris",
+        ),
+        "create_kinematic_mirror_mount": (
+            "collection",
+            "materials",
+            "x_mm",
+            "y_mm",
+            "optical_axis_z_mm",
+            "yaw_deg",
+            "mount",
+        ),
+    }.items():
+        signature = inspect.signature(getattr(geometry, function_name))
+        for parameter in required_parameters:
+            assert parameter in signature.parameters
+            assert (
+                signature.parameters[parameter].kind is inspect.Parameter.KEYWORD_ONLY
+            )
 
 
 def test_render_engine_setter_does_not_depend_on_stale_enum_listing():

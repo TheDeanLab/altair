@@ -9,6 +9,9 @@ SCRIPT = REPO_ROOT / "simulations/blender/scripts/render_walking_beam_alignment.
 LINUX_SCRIPT = (
     REPO_ROOT / "simulations/blender/scripts/render_walking_beam_alignment_linux.sh"
 )
+STILL_SCRIPT = (
+    REPO_ROOT / "simulations/blender/scripts/render_walking_beam_alignment_stills.sh"
+)
 PROJECT_BLENDER = "/project/bioinformatics/Danuser_lab/Dean/dean/blender/blender"
 
 
@@ -20,6 +23,11 @@ def test_render_script_is_executable() -> None:
 def test_linux_render_script_is_executable() -> None:
     assert LINUX_SCRIPT.exists()
     assert os.access(LINUX_SCRIPT, os.X_OK)
+
+
+def test_still_render_script_is_executable() -> None:
+    assert STILL_SCRIPT.exists()
+    assert os.access(STILL_SCRIPT, os.X_OK)
 
 
 def test_render_script_help_documents_artifacts_and_overrides() -> None:
@@ -164,3 +172,32 @@ def test_linux_render_script_dry_run_sets_hpc_defaults(tmp_path: Path) -> None:
     assert "FFMPEG_MODULE=ffmpeg/7.1" in result.stdout
     assert f"{PROJECT_BLENDER} --background" in result.stdout
     assert "Cycles device: CUDA" in result.stdout
+
+
+def test_still_render_script_dry_run_lists_four_png_perspectives(
+    tmp_path: Path,
+) -> None:
+    output_dir = tmp_path / "stills"
+    result = subprocess.run(
+        ["bash", str(STILL_SCRIPT), "--dry-run", str(output_dir)],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    dry_run = result.stdout
+    for expected in (
+        str(output_dir / "walking_beam_alignment.blend"),
+        str(output_dir / "wide.png"),
+        str(output_dir / "iris_closeup.png"),
+        str(output_dir / "hero.png"),
+        str(output_dir / "stacked.png"),
+        "Frame: 168",
+        "Wide Setup Camera",
+        "Iris Close-Up Camera",
+        "Hero Camera",
+        "vstack=inputs=2",
+    ):
+        assert expected in dry_run

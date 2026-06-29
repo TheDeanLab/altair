@@ -657,6 +657,44 @@ def optical_table_hole_geometry(
     }
 
 
+def iris_reticle_face_offsets(
+    *,
+    iris_thickness_mm: float,
+    face_selection: str,
+    face_clearance_mm: float = 0.62,
+) -> tuple[float, ...]:
+    """Return local X offsets for iris reticle face placement.
+
+    Parameters
+    ----------
+    iris_thickness_mm
+        Iris body thickness along local X.
+    face_selection
+        Face selection: ``front``, ``back``, or ``both``.
+    face_clearance_mm
+        Distance outside the iris body face for the reticle geometry.
+
+    Returns
+    -------
+    tuple[float, ...]
+        Local X offsets for one or two reticle faces.
+    """
+
+    if iris_thickness_mm <= 0.0:
+        raise ValueError("iris_thickness_mm must be positive.")
+    if face_clearance_mm < 0.0:
+        raise ValueError("face_clearance_mm must be non-negative.")
+
+    face_offset = (iris_thickness_mm / 2.0) + face_clearance_mm
+    if face_selection == "front":
+        return (-face_offset,)
+    if face_selection == "back":
+        return (face_offset,)
+    if face_selection == "both":
+        return (-face_offset, face_offset)
+    raise ValueError("face_selection must be 'front', 'back', or 'both'.")
+
+
 def create_optical_table(
     *,
     collection: Any,
@@ -1253,6 +1291,7 @@ def create_post_mounted_iris(
     display_aperture_mm: float | None = None,
     show_alignment_reticle: bool = True,
     reticle_radius_mm: float | None = None,
+    reticle_faces: str = "front",
     holder: PostHolderPrescription = PH2_POST_HOLDER,
     post: OpticalPostPrescription = TR15_POST,
     table_top_z_mm: float = -5.0,
@@ -1284,6 +1323,8 @@ def create_post_mounted_iris(
     reticle_radius_mm
         Optional radius for the alignment reticle ring. Defaults just outside
         the displayed aperture.
+    reticle_faces
+        Reticle face selection: ``front``, ``back``, or ``both``.
     holder
         Source-backed post-holder prescription.
     post
@@ -1365,50 +1406,58 @@ def create_post_mounted_iris(
         vertices=96,
     )
     if show_alignment_reticle:
-        reticle_x = -(iris.thickness_mm / 2.0) - 0.62
-        _torus_object(
-            f"{iris.name} Alignment Reticle Ring",
-            collection=collection,
-            parent=parent,
-            major_radius_mm=reticle_radius,
-            minor_radius_mm=0.10,
-            location=(reticle_x, 0.0, optical_axis_z_mm),
-            material=reticle_material,
-            major_segments=96,
-            minor_segments=8,
-            rotation=(0.0, math.radians(90.0), 0.0),
-        )
-        tick_offset = reticle_radius + 0.9
-        for tick_name, tick_location, tick_dimensions in (
-            (
-                "Top",
-                (reticle_x, 0.0, optical_axis_z_mm + tick_offset),
-                (0.24, 1.35, 0.10),
+        for face_index, reticle_x in enumerate(
+            iris_reticle_face_offsets(
+                iris_thickness_mm=iris.thickness_mm,
+                face_selection=reticle_faces,
             ),
-            (
-                "Bottom",
-                (reticle_x, 0.0, optical_axis_z_mm - tick_offset),
-                (0.24, 1.35, 0.10),
-            ),
-            (
-                "Left",
-                (reticle_x, -tick_offset, optical_axis_z_mm),
-                (0.24, 0.10, 1.35),
-            ),
-            (
-                "Right",
-                (reticle_x, tick_offset, optical_axis_z_mm),
-                (0.24, 0.10, 1.35),
-            ),
+            start=1,
         ):
-            _box_object(
-                f"{iris.name} Alignment Reticle {tick_name} Tick",
+            face_name = "Front" if reticle_x < 0.0 else "Back"
+            _torus_object(
+                f"{iris.name} {face_name} Alignment Reticle Ring",
                 collection=collection,
                 parent=parent,
-                dimensions=tick_dimensions,
-                location=tick_location,
+                major_radius_mm=reticle_radius,
+                minor_radius_mm=0.10,
+                location=(reticle_x, 0.0, optical_axis_z_mm),
                 material=reticle_material,
+                major_segments=96,
+                minor_segments=8,
+                rotation=(0.0, math.radians(90.0), 0.0),
             )
+            tick_offset = reticle_radius + 0.9
+            for tick_name, tick_location, tick_dimensions in (
+                (
+                    "Top",
+                    (reticle_x, 0.0, optical_axis_z_mm + tick_offset),
+                    (0.24, 1.35, 0.10),
+                ),
+                (
+                    "Bottom",
+                    (reticle_x, 0.0, optical_axis_z_mm - tick_offset),
+                    (0.24, 1.35, 0.10),
+                ),
+                (
+                    "Left",
+                    (reticle_x, -tick_offset, optical_axis_z_mm),
+                    (0.24, 0.10, 1.35),
+                ),
+                (
+                    "Right",
+                    (reticle_x, tick_offset, optical_axis_z_mm),
+                    (0.24, 0.10, 1.35),
+                ),
+            ):
+                _box_object(
+                    f"{iris.name} {face_name} Alignment Reticle {tick_name} "
+                    f"Tick {face_index}",
+                    collection=collection,
+                    parent=parent,
+                    dimensions=tick_dimensions,
+                    location=tick_location,
+                    material=reticle_material,
+                )
     _box_object(
         f"{iris.name} Lever",
         collection=collection,

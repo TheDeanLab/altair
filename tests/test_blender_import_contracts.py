@@ -160,6 +160,7 @@ def test_hardware_builders_expose_keyword_only_geometry_controls():
             "display_aperture_mm",
             "show_alignment_reticle",
             "reticle_radius_mm",
+            "reticle_faces",
             "support_visual_top_z_mm",
         ),
         "create_kinematic_mirror_mount": (
@@ -180,6 +181,29 @@ def test_hardware_builders_expose_keyword_only_geometry_controls():
             assert (
                 signature.parameters[parameter].kind is inspect.Parameter.KEYWORD_ONLY
             )
+
+
+def test_iris_reticle_face_offsets_support_double_sided_targets():
+    geometry = importlib.import_module("simulations.blender.altair_blender.geometry")
+
+    assert geometry.iris_reticle_face_offsets(
+        iris_thickness_mm=6.0,
+        face_selection="front",
+    ) == pytest.approx((-3.62,))
+    assert geometry.iris_reticle_face_offsets(
+        iris_thickness_mm=6.0,
+        face_selection="back",
+    ) == pytest.approx((3.62,))
+    assert geometry.iris_reticle_face_offsets(
+        iris_thickness_mm=6.0,
+        face_selection="both",
+    ) == pytest.approx((-3.62, 3.62))
+
+    with pytest.raises(ValueError, match="front"):
+        geometry.iris_reticle_face_offsets(
+            iris_thickness_mm=6.0,
+            face_selection="side",
+        )
 
 
 def test_render_engine_setter_does_not_depend_on_stale_enum_listing():

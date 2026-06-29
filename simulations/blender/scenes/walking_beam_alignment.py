@@ -72,6 +72,7 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "alignment_aperture_diameter_mm": 2.5,
     "iris_display_aperture_mm": 2.5,
     "iris_reticle_radius_mm": 4.0,
+    "iris_reticle_faces": "both",
     "hole_grid_spacing_mm": 25.4,
     "hole_grid_layout": {
         "m1": (-2, -2),
@@ -638,6 +639,7 @@ def main(output_path: str | None = None) -> None:
         optical_axis_z_mm=axis_z,
         display_aperture_mm=float(params["iris_display_aperture_mm"]),
         reticle_radius_mm=float(params["iris_reticle_radius_mm"]),
+        reticle_faces=str(params["iris_reticle_faces"]),
         table_top_z_mm=table_top_z,
         name="Iris 1 ID25-Style Assembly",
     )
@@ -649,6 +651,7 @@ def main(output_path: str | None = None) -> None:
         optical_axis_z_mm=axis_z,
         display_aperture_mm=float(params["iris_display_aperture_mm"]),
         reticle_radius_mm=float(params["iris_reticle_radius_mm"]),
+        reticle_faces=str(params["iris_reticle_faces"]),
         table_top_z_mm=table_top_z,
         name="Iris 2 ID25-Style Assembly",
     )

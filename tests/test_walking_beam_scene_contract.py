@@ -76,6 +76,7 @@ def test_scene_uses_narrow_visible_iris_apertures_with_reticles():
         params["alignment_aperture_diameter_mm"]
     )
     assert params["iris_reticle_radius_mm"] > params["iris_display_aperture_mm"] / 2.0
+    assert params["iris_reticle_faces"] == "both"
 
 
 def test_scene_uses_requested_one_inch_hole_grid_layout():

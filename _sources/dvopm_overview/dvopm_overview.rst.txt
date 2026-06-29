@@ -43,5 +43,3 @@ axis of the light-sheet and Z′ defines the light-sheet thickness. The stage X 
 ------------------------------
 
 The detailed optical design and implementation of the detection and illumination subsystems are described in the following section.
-
-------------------------------

@@ -12,9 +12,11 @@ artifacts.
 `scenes/achromat_back_reflection.py` generates a teaching scene for aligning a
 mounted achromatic doublet with a narrow collimated 561 nm laser beam. The beam
 passes through a small aperture in a business card, reaches the lens, and two
-back-reflection spots return to the card. The animation shows tilt correction
-followed by decenter correction until both return spots are centered on the
-aperture.
+back-reflection spots return to the card. The animation shows separate
+ray-traced alignment states: rotation correction moves both spots together,
+horizontal translation splits and recenters the spots left/right, vertical
+translation splits and recenters the spots up/down, and final alignment centers
+both return spots on the aperture.
 
 The model is intentionally hybrid: it is geometrically plausible and uses
 teaching-scale dimensions, but it exaggerates small alignment errors so the
@@ -69,7 +71,15 @@ simulations/blender/scripts/render_achromat_back_reflection.sh
 ```
 
 The default render mode is `final`, which applies the Cycles beauty preset. Use
-`--preview` or `RENDER_MODE=preview` for faster EEVEE iteration.
+`--draft` for fast card-only timing checks, or `--preview` /
+`RENDER_MODE=preview` for full-pipeline EEVEE iteration.
+
+For a fast draft render that only writes the card close-up movie at lower
+resolution with frame stepping:
+
+```bash
+simulations/blender/scripts/render_achromat_back_reflection.sh --draft output/draft
+```
 
 By default, outputs are written under `output/achromat_back_reflection/`:
 
@@ -96,6 +106,7 @@ Run a dry-run plan without invoking Blender or `ffmpeg`:
 
 ```bash
 simulations/blender/scripts/render_achromat_back_reflection.sh --dry-run
+simulations/blender/scripts/render_achromat_back_reflection.sh --draft --dry-run
 simulations/blender/scripts/render_achromat_back_reflection.sh --preview --dry-run
 ```
 

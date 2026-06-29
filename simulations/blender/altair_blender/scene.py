@@ -7,6 +7,11 @@ from types import ModuleType
 from typing import Any
 
 RENDER_PRESETS = {
+    "draft": {
+        "engine": "BLENDER_WORKBENCH",
+        "samples": 16,
+        "description": "Fast Workbench draft render for checking animation timing.",
+    },
     "preview": {
         "engine": "BLENDER_EEVEE",
         "samples": 96,
@@ -164,6 +169,16 @@ def apply_render_preset(preset_name: str) -> str:
             _try_setattr(scene.cycles, "diffuse_bounces", 3)
             _try_setattr(scene.cycles, "glossy_bounces", 4)
             _try_setattr(scene.cycles, "transparent_max_bounces", 8)
+    elif preset_name == "draft":
+        actual_engine = _set_render_engine(
+            scene, requested_engine, ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE")
+        )
+        display = getattr(scene, "display", None)
+        shading = getattr(display, "shading", None)
+        if shading is not None:
+            _try_setattr(shading, "light", "STUDIO")
+            _try_setattr(shading, "color_type", "MATERIAL")
+            _try_setattr(shading, "show_shadows", False)
     else:
         actual_engine = _set_render_engine(
             scene, requested_engine, ("BLENDER_EEVEE_NEXT",)

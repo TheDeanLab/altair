@@ -6,7 +6,7 @@ usage() {
 Render the achromat back-reflection Blender scene as teaching movies.
 
 Usage:
-  simulations/blender/scripts/render_achromat_back_reflection.sh [--preview|--final] [--dry-run] [OUTPUT_DIR]
+  simulations/blender/scripts/render_achromat_back_reflection.sh [--draft|--preview|--final] [--dry-run] [OUTPUT_DIR]
   simulations/blender/scripts/render_achromat_back_reflection.sh --help
 
 Artifacts:
@@ -15,10 +15,12 @@ Artifacts:
   OUTPUT_DIR/frames/card_closeup/frame_0001.png ...
   OUTPUT_DIR/frames/hero/frame_0001.png ...
   OUTPUT_DIR/frames/stacked/frame_0001.png ...
+  OUTPUT_DIR/frames/draft_card/frame_0001.png ...
   OUTPUT_DIR/achromat_back_reflection_wide.mp4
   OUTPUT_DIR/achromat_back_reflection_card_closeup.mp4
   OUTPUT_DIR/achromat_back_reflection_hero.mp4
   OUTPUT_DIR/achromat_back_reflection_stacked.mp4
+  OUTPUT_DIR/achromat_back_reflection_draft_card_closeup.mp4
 
 Environment overrides:
   BLENDER_BIN    Blender executable. Defaults to blender on PATH, then
@@ -26,9 +28,10 @@ Environment overrides:
   FFMPEG_BIN     ffmpeg executable. Defaults to ffmpeg on PATH.
   CYCLES_DEVICE  Optional Cycles render device for final renders, such as
                  CUDA, OPTIX, CUDA+CPU, or CPU. Defaults to Blender settings.
-  RENDER_MODE    Render preset: final or preview. Defaults to final.
+  RENDER_MODE    Render preset: draft, preview, or final. Defaults to final.
   FRAME_START    Optional first frame to render.
   FRAME_END      Optional last frame to render.
+  FRAME_STEP     Optional frame step. Defaults to 4 for draft, 1 otherwise.
   FPS            Movie framerate. Defaults to 24.
   RESOLUTION_X   Render width. Defaults to the scene setting, currently 1920.
   RESOLUTION_Y   Render height. Defaults to the scene setting, currently 1080.
@@ -36,6 +39,7 @@ Environment overrides:
 
 Examples:
   simulations/blender/scripts/render_achromat_back_reflection.sh
+  simulations/blender/scripts/render_achromat_back_reflection.sh --draft output/draft
   simulations/blender/scripts/render_achromat_back_reflection.sh --preview output/preview
   FRAME_START=1 FRAME_END=24 RESOLUTION_X=960 RESOLUTION_Y=540 \
     simulations/blender/scripts/render_achromat_back_reflection.sh --preview output/smoke
@@ -85,6 +89,9 @@ while (($#)); do
     --dry-run)
       dry_run=1
       ;;
+    --draft)
+      render_mode="draft"
+      ;;
     --preview)
       render_mode="preview"
       ;;
@@ -120,8 +127,8 @@ if (($#)); then
 fi
 
 case "$render_mode" in
-  preview|final) ;;
-  *) die "RENDER_MODE must be 'preview' or 'final', got '$render_mode'." ;;
+  draft|preview|final) ;;
+  *) die "RENDER_MODE must be 'draft', 'preview', or 'final', got '$render_mode'." ;;
 esac
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -139,26 +146,56 @@ crf="${CRF:-18}"
 frame_number_start="${FRAME_START:-1}"
 cycles_device="${CYCLES_DEVICE:-}"
 cycles_device_display="${cycles_device:-default}"
+if [[ "$render_mode" == "draft" ]]; then
+  frame_step="${FRAME_STEP:-4}"
+  resolution_x="${RESOLUTION_X:-960}"
+  resolution_y="${RESOLUTION_Y:-540}"
+else
+  frame_step="${FRAME_STEP:-1}"
+  resolution_x="${RESOLUTION_X:-}"
+  resolution_y="${RESOLUTION_Y:-}"
+fi
 
 blend_path="$output_dir/achromat_back_reflection.blend"
 wide_frame_dir="$output_dir/frames/wide"
 card_frame_dir="$output_dir/frames/card_closeup"
 hero_frame_dir="$output_dir/frames/hero"
 stacked_frame_dir="$output_dir/frames/stacked"
+draft_frame_dir="$output_dir/frames/draft_card"
 wide_frame_prefix="$wide_frame_dir/frame_"
 card_frame_prefix="$card_frame_dir/frame_"
 hero_frame_prefix="$hero_frame_dir/frame_"
+draft_frame_prefix="$draft_frame_dir/frame_"
 wide_movie="$output_dir/achromat_back_reflection_wide.mp4"
 card_movie="$output_dir/achromat_back_reflection_card_closeup.mp4"
 hero_movie="$output_dir/achromat_back_reflection_hero.mp4"
 stacked_movie="$output_dir/achromat_back_reflection_stacked.mp4"
+draft_movie="$output_dir/achromat_back_reflection_draft_card_closeup.mp4"
 
 if (( dry_run )); then
   blender_display="${BLENDER_BIN:-$(command -v blender || printf '/Applications/Blender.app/Contents/MacOS/Blender')}"
   ffmpeg_display="${FFMPEG_BIN:-$(command -v ffmpeg || printf 'ffmpeg')}"
-  cat <<EOF
+  if [[ "$render_mode" == "draft" ]]; then
+    cat <<EOF
 Would create:
   Render mode: $render_mode
+  Frame step: $frame_step
+  Resolution: ${resolution_x}x${resolution_y}
+  Cycles device: $cycles_device_display
+  $blend_path
+  $draft_frame_prefix
+  $draft_movie
+
+Would run:
+  RENDER_MODE=$render_mode CYCLES_DEVICE=$cycles_device $blender_display --background --python $scene_script -- $blend_path
+  Render Card Close-Up Camera frames to $draft_frame_prefix
+  $ffmpeg_display encode $draft_movie
+EOF
+  else
+    cat <<EOF
+Would create:
+  Render mode: $render_mode
+  Frame step: $frame_step
   Cycles device: $cycles_device_display
   $blend_path
   $wide_frame_prefix
@@ -181,6 +218,7 @@ Would run:
   $ffmpeg_display encode $hero_movie
   $ffmpeg_display encode $stacked_movie
 EOF
+  fi
   exit 0
 fi
 
@@ -217,12 +255,15 @@ frame_start = os.environ.get("FRAME_START")
 frame_end = os.environ.get("FRAME_END")
 resolution_x = os.environ.get("RESOLUTION_X")
 resolution_y = os.environ.get("RESOLUTION_Y")
+frame_step = os.environ.get("FRAME_STEP")
 
 if frame_start:
     scene.frame_start = int(frame_start)
     scene.frame_set(scene.frame_start)
 if frame_end:
     scene.frame_end = int(frame_end)
+if frame_step:
+    scene.frame_step = int(frame_step)
 if resolution_x:
     scene.render.resolution_x = int(resolution_x)
 if resolution_y:
@@ -245,9 +286,10 @@ render_view() {
     RENDER_MODE="$render_mode" \
     FRAME_START="${FRAME_START:-}" \
     FRAME_END="${FRAME_END:-}" \
+    FRAME_STEP="$frame_step" \
     FPS="$fps" \
-    RESOLUTION_X="${RESOLUTION_X:-}" \
-    RESOLUTION_Y="${RESOLUTION_Y:-}" \
+    RESOLUTION_X="$resolution_x" \
+    RESOLUTION_Y="$resolution_y" \
     CYCLES_DEVICE="$cycles_device" \
     "$blender_bin" --background "$blend_path" --python-expr "$render_expr"
 }
@@ -269,15 +311,37 @@ encode_movie() {
 
 printf 'Output directory: %s\n' "$output_dir"
 printf 'Render mode: %s\n' "$render_mode"
+printf 'Frame step: %s\n' "$frame_step"
+if [[ -n "$resolution_x" && -n "$resolution_y" ]]; then
+  printf 'Resolution: %sx%s\n' "$resolution_x" "$resolution_y"
+fi
 printf 'Cycles device: %s\n' "$cycles_device_display"
 mkdir -p "$output_dir"
-rm -rf "$wide_frame_dir" "$card_frame_dir" "$hero_frame_dir" "$stacked_frame_dir"
-mkdir -p "$wide_frame_dir" "$card_frame_dir" "$hero_frame_dir" "$stacked_frame_dir"
+if [[ "$render_mode" == "draft" ]]; then
+  rm -rf "$draft_frame_dir"
+  mkdir -p "$draft_frame_dir"
+else
+  rm -rf "$wide_frame_dir" "$card_frame_dir" "$hero_frame_dir" "$stacked_frame_dir"
+  mkdir -p "$wide_frame_dir" "$card_frame_dir" "$hero_frame_dir" "$stacked_frame_dir"
+fi
 
 printf '\n==> Creating Blender scene file %s\n' "$blend_path"
 RENDER_MODE="$render_mode" \
   CYCLES_DEVICE="$cycles_device" \
   "$blender_bin" --background --python "$scene_script" -- "$blend_path"
+
+if [[ "$render_mode" == "draft" ]]; then
+  render_view "Card Close-Up Camera" "$draft_frame_prefix"
+  encode_movie "$draft_frame_dir" "$draft_movie"
+
+  cat <<EOF
+
+Done.
+  Blend file:     $blend_path
+  Draft movie:    $draft_movie
+EOF
+  exit 0
+fi
 
 render_view "Wide Setup Camera" "$wide_frame_prefix"
 render_view "Card Close-Up Camera" "$card_frame_prefix"

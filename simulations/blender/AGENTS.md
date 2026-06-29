@@ -62,7 +62,8 @@ background runtime.
 
 The achromat script preserves the wide, card close-up, and stacked movies and
 adds a hero movie. Its default render mode is `final` for Cycles output; use
-`--preview` or `RENDER_MODE=preview` for fast EEVEE iteration and smoke tests.
+`--draft` for card-only timing checks, and use `--preview` or
+`RENDER_MODE=preview` for full-pipeline EEVEE iteration.
 Keep the render preset machinery in `altair_blender.scene` reusable for future
 videos instead of hard-coding engine settings in scene scripts.
 

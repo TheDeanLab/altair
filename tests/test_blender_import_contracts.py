@@ -145,6 +145,7 @@ def test_hardware_builders_expose_keyword_only_geometry_controls():
             "y_mm",
             "optical_axis_z_mm",
             "iris",
+            "support_visual_top_z_mm",
         ),
         "create_kinematic_mirror_mount": (
             "collection",
@@ -154,6 +155,8 @@ def test_hardware_builders_expose_keyword_only_geometry_controls():
             "optical_axis_z_mm",
             "yaw_deg",
             "mount",
+            "support_x_offset_mm",
+            "support_visual_top_z_mm",
         ),
     }.items():
         signature = inspect.signature(getattr(geometry, function_name))

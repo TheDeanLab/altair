@@ -1079,6 +1079,7 @@ def create_post_mounted_iris(
     holder: PostHolderPrescription = PH2_POST_HOLDER,
     post: OpticalPostPrescription = TR15_POST,
     table_top_z_mm: float = -5.0,
+    support_visual_top_z_mm: float | None = None,
     name: str = "ID25-Style Post-Mounted Iris",
 ) -> Any:
     """Create a simplified post-mounted iris with its aperture on axis.
@@ -1103,6 +1104,9 @@ def create_post_mounted_iris(
         Source-backed optical-post prescription.
     table_top_z_mm
         Z coordinate of the optical table top.
+    support_visual_top_z_mm
+        Optional visual top of the post-holder support. Defaults below the
+        iris body so the post does not pass through the aperture.
     name
         Parent object name.
 
@@ -1116,14 +1120,18 @@ def create_post_mounted_iris(
     metal = materials["metal"]
     dark = materials["aperture"]
     post_material = materials.get("post_steel", materials["table"])
+    support_top_z = support_visual_top_z_mm
+    if support_top_z is None:
+        support_top_z = optical_axis_z_mm - (iris.outer_diameter_mm / 2.0) - 2.0
+    support_length = max(6.0, support_top_z - table_top_z_mm)
 
     _cylinder_object(
         f"{post.name} Iris Support Post",
         collection=collection,
         parent=parent,
         radius_mm=post.diameter_mm / 2.0,
-        depth_mm=post.length_mm,
-        location=(0.0, 0.0, table_top_z_mm + (post.length_mm / 2.0)),
+        depth_mm=support_length,
+        location=(0.0, 0.0, table_top_z_mm + (support_length / 2.0)),
         material=post_material,
         vertices=72,
     )
@@ -1132,10 +1140,18 @@ def create_post_mounted_iris(
         collection=collection,
         parent=parent,
         radius_mm=(holder.accepted_post_diameter_mm / 2.0) + 3.0,
-        depth_mm=holder.length_mm,
-        location=(0.0, 0.0, table_top_z_mm + (holder.length_mm / 2.0)),
+        depth_mm=support_length,
+        location=(0.0, 0.0, table_top_z_mm + (support_length / 2.0)),
         material=metal,
         vertices=72,
+    )
+    _box_object(
+        f"{iris.name} Pedestal Clamp",
+        collection=collection,
+        parent=parent,
+        dimensions=(iris.thickness_mm + 2.0, 11.0, 3.0),
+        location=(0.0, 0.0, support_top_z + 1.5),
+        material=metal,
     )
     _cylinder_object(
         f"{iris.name} Iris Body",
@@ -1193,6 +1209,8 @@ def create_kinematic_mirror_mount(
     holder: PostHolderPrescription = PH2_POST_HOLDER,
     post: OpticalPostPrescription = TR15_POST,
     table_top_z_mm: float = -5.0,
+    support_x_offset_mm: float | None = None,
+    support_visual_top_z_mm: float | None = None,
     name: str = "KM100CP-Style Kinematic Mirror Mount",
 ) -> Any:
     """Create a simplified post-centered kinematic mirror mount.
@@ -1219,6 +1237,12 @@ def create_kinematic_mirror_mount(
         Source-backed optical-post prescription used for the support.
     table_top_z_mm
         Z coordinate of the optical table top.
+    support_x_offset_mm
+        Optional mount-local X offset for the post support. Defaults behind
+        the mirror frame so the support does not pass through the optic.
+    support_visual_top_z_mm
+        Optional visual top of the post-holder support. Defaults below the
+        mirror frame bottom.
     name
         Parent object name.
 
@@ -1237,14 +1261,25 @@ def create_kinematic_mirror_mount(
     post_material = materials.get("post_steel", materials["table"])
     dark = materials["aperture"]
     local_table_top_z = table_top_z_mm - optical_axis_z_mm
+    support_x = (
+        support_x_offset_mm
+        if support_x_offset_mm is not None
+        else (mount.body_depth_mm / 2.0) + 9.0
+    )
+    frame_bottom_z = -(mount.body_height_mm / 2.0)
+    support_top_z = support_visual_top_z_mm
+    if support_top_z is None:
+        support_top_z = optical_axis_z_mm + frame_bottom_z - 1.0
+    local_support_top_z = support_top_z - optical_axis_z_mm
+    support_length = max(6.0, local_support_top_z - local_table_top_z)
 
     _cylinder_object(
         f"{post.name} Mirror Support Post",
         collection=collection,
         parent=parent,
         radius_mm=post.diameter_mm / 2.0,
-        depth_mm=post.length_mm,
-        location=(0.0, 0.0, local_table_top_z + (post.length_mm / 2.0)),
+        depth_mm=support_length,
+        location=(support_x, 0.0, local_table_top_z + (support_length / 2.0)),
         material=post_material,
         vertices=72,
     )
@@ -1253,8 +1288,8 @@ def create_kinematic_mirror_mount(
         collection=collection,
         parent=parent,
         radius_mm=(holder.accepted_post_diameter_mm / 2.0) + 3.0,
-        depth_mm=holder.length_mm,
-        location=(0.0, 0.0, local_table_top_z + (holder.length_mm / 2.0)),
+        depth_mm=support_length,
+        location=(support_x, 0.0, local_table_top_z + (support_length / 2.0)),
         material=metal,
         vertices=72,
     )
@@ -1292,6 +1327,14 @@ def create_kinematic_mirror_mount(
         location=(0.0, 0.0, -((mount.clear_aperture_mm + cap_height) / 2.0)),
         material=metal,
     )
+    _box_object(
+        f"{mount.name} Rear Support Bracket",
+        collection=collection,
+        parent=parent,
+        dimensions=(abs(support_x) + 3.0, 9.0, 3.0),
+        location=(support_x / 2.0, 0.0, frame_bottom_z - 1.5),
+        material=metal,
+    )
     _cylinder_object(
         f"{mount.name} Mirror Optic",
         collection=collection,
@@ -1305,18 +1348,29 @@ def create_kinematic_mirror_mount(
     )
     for index, (y_mm, z_mm) in enumerate(
         (
-            (mount.body_width_mm / 2.0 + 4.0, mount.body_height_mm / 2.0 - 6.0),
-            (mount.body_width_mm / 2.0 + 4.0, -mount.body_height_mm / 2.0 + 6.0),
+            (mount.body_width_mm / 2.0 - 5.5, mount.body_height_mm / 2.0 - 6.0),
+            (mount.body_width_mm / 2.0 - 5.5, -mount.body_height_mm / 2.0 + 6.0),
         ),
         start=1,
     ):
+        _cylinder_object(
+            f"{mount.name} Adjuster Shaft {index}",
+            collection=collection,
+            parent=parent,
+            radius_mm=1.0,
+            depth_mm=9.0,
+            location=(mount.body_depth_mm / 2.0 + 4.5, y_mm, z_mm),
+            material=metal,
+            vertices=24,
+            rotation=(0.0, math.radians(90.0), 0.0),
+        )
         _cylinder_object(
             f"{mount.name} Adjuster Knob {index}",
             collection=collection,
             parent=parent,
             radius_mm=2.7,
-            depth_mm=8.0,
-            location=(mount.body_depth_mm / 2.0 + 4.0, y_mm, z_mm),
+            depth_mm=3.6,
+            location=(mount.body_depth_mm / 2.0 + 10.0, y_mm, z_mm),
             material=dark,
             vertices=32,
             rotation=(0.0, math.radians(90.0), 0.0),

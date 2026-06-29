@@ -4,6 +4,19 @@ from __future__ import annotations
 
 from .scene import get_bpy
 
+TABLE_STAINLESS_COLOR = (0.82, 0.84, 0.83, 1.0)
+TABLE_BRUSH_LOW_COLOR = (0.74, 0.76, 0.75, 1.0)
+TABLE_BRUSH_HIGH_COLOR = (0.95, 0.96, 0.93, 1.0)
+TABLE_HOLE_COLOR = (0.035, 0.038, 0.04, 1.0)
+BACKDROP_NEUTRAL_COLOR = (0.56, 0.58, 0.59, 1.0)
+
+
+def _set_input_if_present(bsdf, names: tuple[str, ...], value) -> None:
+    for name in names:
+        if name in bsdf.inputs:
+            bsdf.inputs[name].default_value = value
+            return
+
 
 def _material(
     name: str,
@@ -13,6 +26,7 @@ def _material(
     roughness: float = 0.45,
     metallic: float = 0.0,
     transmission: float = 0.0,
+    anisotropic: float = 0.0,
 ):
     bpy = get_bpy()
     material = bpy.data.materials.new(name)
@@ -20,31 +34,86 @@ def _material(
     material.use_nodes = True
     bsdf = material.node_tree.nodes.get("Principled BSDF")
     if bsdf is not None:
-        bsdf.inputs["Base Color"].default_value = color
-        bsdf.inputs["Alpha"].default_value = color[3]
-        if "Emission Color" in bsdf.inputs:
-            bsdf.inputs["Emission Color"].default_value = color
-        if "Emission Strength" in bsdf.inputs:
-            bsdf.inputs["Emission Strength"].default_value = emission
-        if "Roughness" in bsdf.inputs:
-            bsdf.inputs["Roughness"].default_value = roughness
-        if "Metallic" in bsdf.inputs:
-            bsdf.inputs["Metallic"].default_value = metallic
-        if "Transmission Weight" in bsdf.inputs:
-            bsdf.inputs["Transmission Weight"].default_value = transmission
-        if "IOR" in bsdf.inputs:
-            bsdf.inputs["IOR"].default_value = 1.52
+        _set_input_if_present(bsdf, ("Base Color",), color)
+        _set_input_if_present(bsdf, ("Alpha",), color[3])
+        _set_input_if_present(bsdf, ("Emission Color",), color)
+        _set_input_if_present(bsdf, ("Emission Strength",), emission)
+        _set_input_if_present(bsdf, ("Roughness",), roughness)
+        _set_input_if_present(bsdf, ("Metallic",), metallic)
+        _set_input_if_present(bsdf, ("Transmission Weight",), transmission)
+        _set_input_if_present(bsdf, ("IOR",), 1.52)
+        _set_input_if_present(
+            bsdf, ("Anisotropic", "Anisotropic IOR Level"), anisotropic
+        )
     material.blend_method = "BLEND"
     material.use_screen_refraction = color[3] < 1.0
     return material
 
 
+def _add_brushed_steel_nodes(material) -> None:
+    """Add subtle directional brushing to the optical table material."""
+
+    nodes = material.node_tree.nodes
+    links = material.node_tree.links
+    bsdf = nodes.get("Principled BSDF")
+    if bsdf is None:
+        return
+
+    wave = nodes.new("ShaderNodeTexWave")
+    wave.name = "Long Brushed Grain"
+    if hasattr(wave, "wave_type"):
+        wave.wave_type = "BANDS"
+    if hasattr(wave, "bands_direction"):
+        wave.bands_direction = "Y"
+    _set_input_if_present(wave, ("Scale",), 36.0)
+    _set_input_if_present(wave, ("Distortion",), 8.0)
+
+    ramp = nodes.new("ShaderNodeValToRGB")
+    ramp.name = "Brushed Steel Tone"
+    ramp.color_ramp.elements[0].position = 0.22
+    ramp.color_ramp.elements[0].color = TABLE_BRUSH_LOW_COLOR
+    ramp.color_ramp.elements[1].position = 1.0
+    ramp.color_ramp.elements[1].color = TABLE_BRUSH_HIGH_COLOR
+
+    bump = nodes.new("ShaderNodeBump")
+    bump.name = "Fine Brushed Relief"
+    _set_input_if_present(bump, ("Strength",), 0.01)
+    _set_input_if_present(bump, ("Distance",), 0.022)
+
+    links.new(wave.outputs["Color"], ramp.inputs["Fac"])
+    links.new(ramp.outputs["Color"], bsdf.inputs["Base Color"])
+    links.new(wave.outputs["Color"], bump.inputs["Height"])
+    if "Normal" in bsdf.inputs:
+        links.new(bump.outputs["Normal"], bsdf.inputs["Normal"])
+
+
 def create_materials() -> dict[str, object]:
     """Create the standard material palette for the simulation."""
 
+    table = _material(
+        "Brushed Ferromagnetic Stainless Optical Table",
+        TABLE_STAINLESS_COLOR,
+        emission=0.06,
+        roughness=0.24,
+        metallic=0.24,
+        anisotropic=0.65,
+    )
+    _add_brushed_steel_nodes(table)
+
     return {
-        "table": _material("Optical Table Matte Black", (0.05, 0.055, 0.06, 1.0)),
-        "backdrop": _material("Dark Studio Backdrop", (0.07, 0.075, 0.082, 1.0)),
+        "table": table,
+        "table_hole": _material(
+            "Recessed Table Hole",
+            TABLE_HOLE_COLOR,
+            roughness=0.36,
+            metallic=0.25,
+        ),
+        "backdrop": _material(
+            "Neutral Gray Studio Backdrop",
+            BACKDROP_NEUTRAL_COLOR,
+            emission=0.05,
+            roughness=0.62,
+        ),
         "metal": _material(
             "Black Anodized Metal", (0.12, 0.125, 0.13, 1.0), roughness=0.32
         ),

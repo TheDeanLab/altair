@@ -1,7 +1,7 @@
 import importlib.util
+import math
 from pathlib import Path
 import sys
-
 
 SCENE_PATH = Path("simulations/blender/scenes/achromat_back_reflection.py")
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -57,6 +57,7 @@ def test_scene_default_parameters_match_first_demo():
     assert params["initial_tilt_y_deg"] != 0.0
     assert params["initial_decenter_y_mm"] != 0.0
     assert params["exaggeration"] > 1.0
+    assert params["alignment_display_exaggeration"] > params["exaggeration"]
 
 
 def test_scene_default_parameters_include_cinematic_video_contract():
@@ -76,3 +77,43 @@ def test_scene_default_parameters_include_cinematic_video_contract():
         "LMR1 mount",
         "Two return reflections",
     )
+
+
+def test_scene_exaggerates_displayed_lens_alignment_for_wide_view():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    lens_x = params["lens_x_mm"]
+    axis_z = params["optical_axis_z_mm"]
+    exaggeration = params["alignment_display_exaggeration"]
+
+    initial_rotation, initial_location = module._alignment_display_pose(
+        params, lens_x=lens_x, axis_z=axis_z
+    )
+    tilt_corrected_rotation, tilt_corrected_location = module._alignment_display_pose(
+        params,
+        lens_x=lens_x,
+        axis_z=axis_z,
+        tilt_corrected=True,
+    )
+    final_rotation, final_location = module._alignment_display_pose(
+        params,
+        lens_x=lens_x,
+        axis_z=axis_z,
+        tilt_corrected=True,
+        decenter_corrected=True,
+    )
+
+    assert initial_rotation == (
+        0.0,
+        math.radians(-params["initial_tilt_z_deg"] * exaggeration),
+        math.radians(params["initial_tilt_y_deg"] * exaggeration),
+    )
+    assert initial_location == (
+        lens_x,
+        params["initial_decenter_y_mm"] * exaggeration,
+        axis_z + (params["initial_decenter_z_mm"] * exaggeration),
+    )
+    assert tilt_corrected_rotation == (0.0, 0.0, 0.0)
+    assert tilt_corrected_location == initial_location
+    assert final_rotation == (0.0, 0.0, 0.0)
+    assert final_location == (lens_x, 0.0, axis_z)

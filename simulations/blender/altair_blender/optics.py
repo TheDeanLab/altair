@@ -44,6 +44,27 @@ class ReflectedSpotSummary:
     reflected_points: tuple[SpotOffset, ...]
 
 
+@dataclass(frozen=True)
+class SequentialRayBranch:
+    """One branch produced by sequential reflection/refraction tracing."""
+
+    surface_name: str
+    branch_kind: str
+    origin: Vector3Mm
+    direction: Vector3Mm
+    medium: str
+    intensity_fraction: float
+    generation: int
+    path: tuple[str, ...]
+
+
+REFRACTIVE_INDICES = {
+    "air": 1.0,
+    "N-BK7": 1.518,
+    "SF5": 1.673,
+}
+
+
 def validate_positive(name: str, value: float) -> None:
     """Raise a clear error when a physical size or scale is not positive.
 
@@ -217,6 +238,23 @@ def _normalize(vector: VectorTuple) -> VectorTuple:
     return (vector[0] / length, vector[1] / length, vector[2] / length)
 
 
+def _vector3(vector: VectorTuple) -> Vector3Mm:
+    """Convert a tuple vector to the public millimeter vector container.
+
+    Parameters
+    ----------
+    vector
+        Vector tuple to convert.
+
+    Returns
+    -------
+    Vector3Mm
+        Vector container with named components.
+    """
+
+    return Vector3Mm(x_mm=vector[0], y_mm=vector[1], z_mm=vector[2])
+
+
 def _matmul_vec(matrix: Matrix3, vector: VectorTuple) -> VectorTuple:
     """Multiply a 3x3 matrix by a 3D vector.
 
@@ -363,6 +401,40 @@ def _intersect_spherical_surface(
         Nearest valid intersection point.
     """
 
+    point, _distance = _intersect_spherical_surface_with_distance(
+        surface=surface,
+        origin=origin,
+        direction=direction,
+    )
+    return point
+
+
+def _intersect_spherical_surface_with_distance(
+    *,
+    surface: LensSurface,
+    origin: VectorTuple,
+    direction: VectorTuple,
+    epsilon: float = 1e-6,
+) -> tuple[VectorTuple, float]:
+    """Intersect a ray with a spherical surface and return travel distance.
+
+    Parameters
+    ----------
+    surface
+        Lens surface to intersect.
+    origin
+        Ray origin in lens-local coordinates.
+    direction
+        Unit ray direction in lens-local coordinates.
+    epsilon
+        Minimum positive ray distance used to avoid self-intersections.
+
+    Returns
+    -------
+    tuple[tuple[float, float, float], float]
+        Nearest valid intersection point and positive ray distance.
+    """
+
     center = (surface.vertex_x_mm + surface.radius_mm, 0.0, 0.0)
     oc = _sub(origin, center)
     a = _dot(direction, direction)
@@ -374,16 +446,415 @@ def _intersect_spherical_surface(
 
     root = math.sqrt(discriminant)
     candidates = [(-b - root) / (2.0 * a), (-b + root) / (2.0 * a)]
-    points: list[tuple[float, float, float]] = []
+    points: list[tuple[VectorTuple, float]] = []
     for candidate in candidates:
-        if candidate <= 1e-9:
+        if candidate <= epsilon:
             continue
         point = _add(origin, _scale(direction, candidate))
         if math.hypot(point[1], point[2]) <= surface.clear_radius_mm:
-            points.append(point)
+            points.append((point, candidate))
     if not points:
         raise ValueError(f"ray misses clear aperture on surface {surface.name}")
-    return min(points, key=lambda point: point[0])
+    return min(points, key=lambda item: item[1])
+
+
+def _next_surface_intersection(
+    *,
+    surfaces: tuple[LensSurface, ...],
+    origin: VectorTuple,
+    direction: VectorTuple,
+    epsilon: float = 1e-6,
+) -> tuple[LensSurface, VectorTuple, float] | None:
+    """Find the nearest surface intersected by a ray.
+
+    Parameters
+    ----------
+    surfaces
+        Candidate lens surfaces.
+    origin
+        Ray origin in lens-local coordinates.
+    direction
+        Unit ray direction in lens-local coordinates.
+    epsilon
+        Minimum vertex-plane distance for considering upstream or downstream
+        physical surface caps.
+
+    Returns
+    -------
+    tuple[LensSurface, tuple[float, float, float], float] or None
+        Nearest intersected surface, hit point, and ray distance. Returns
+        ``None`` when the ray leaves the modeled surfaces.
+    """
+
+    intersections: list[tuple[float, LensSurface, VectorTuple]] = []
+    for surface in surfaces:
+        if direction[0] > 0.0 and surface.vertex_x_mm <= origin[0] + epsilon:
+            continue
+        if direction[0] < 0.0 and surface.vertex_x_mm >= origin[0] - epsilon:
+            continue
+        try:
+            hit, distance = _intersect_spherical_surface_with_distance(
+                surface=surface,
+                origin=origin,
+                direction=direction,
+            )
+        except ValueError:
+            continue
+        intersections.append((distance, surface, hit))
+    if not intersections:
+        return None
+    distance, surface, hit = min(intersections, key=lambda item: item[0])
+    return surface, hit, distance
+
+
+def _surface_media_for_direction(
+    surface: LensSurface, direction: VectorTuple
+) -> tuple[str, str]:
+    """Return incident and transmitted media for a ray crossing a surface.
+
+    Parameters
+    ----------
+    surface
+        Surface being crossed.
+    direction
+        Ray direction in lens-local coordinates.
+
+    Returns
+    -------
+    tuple[str, str]
+        Incident medium and transmitted medium.
+    """
+
+    if direction[0] >= 0.0:
+        return surface.glass_before, surface.glass_after
+    return surface.glass_after, surface.glass_before
+
+
+def _refractive_index(medium: str) -> float:
+    """Return the scalar refractive index for a named medium.
+
+    Parameters
+    ----------
+    medium
+        Medium name from the lens prescription.
+
+    Returns
+    -------
+    float
+        Refractive index used by the geometric teaching model.
+    """
+
+    try:
+        return REFRACTIVE_INDICES[medium]
+    except KeyError as exc:
+        raise ValueError(f"Unknown optical medium {medium!r}") from exc
+
+
+def _fresnel_reflectance(n_incident: float, n_transmitted: float) -> float:
+    """Approximate normal-incidence Fresnel reflectance.
+
+    Parameters
+    ----------
+    n_incident
+        Refractive index of the incident medium.
+    n_transmitted
+        Refractive index of the transmitted medium.
+
+    Returns
+    -------
+    float
+        Fractional reflected intensity at normal incidence.
+    """
+
+    validate_positive("n_incident", n_incident)
+    validate_positive("n_transmitted", n_transmitted)
+    return ((n_incident - n_transmitted) / (n_incident + n_transmitted)) ** 2
+
+
+def _oriented_normal(normal: VectorTuple, direction: VectorTuple) -> VectorTuple:
+    """Orient a surface normal against the incident ray direction.
+
+    Parameters
+    ----------
+    normal
+        Surface normal vector.
+    direction
+        Incident ray direction.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Unit normal oriented against the incident ray.
+    """
+
+    unit_normal = _normalize(normal)
+    if _dot(unit_normal, direction) > 0.0:
+        return _scale(unit_normal, -1.0)
+    return unit_normal
+
+
+def _reflect_direction(direction: VectorTuple, normal: VectorTuple) -> VectorTuple:
+    """Reflect a ray direction about a surface normal.
+
+    Parameters
+    ----------
+    direction
+        Incident unit direction.
+    normal
+        Surface unit normal.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Reflected unit direction.
+    """
+
+    return _normalize(_sub(direction, _scale(normal, 2.0 * _dot(direction, normal))))
+
+
+def _refract_direction(
+    *,
+    direction: VectorTuple,
+    normal: VectorTuple,
+    n_incident: float,
+    n_transmitted: float,
+) -> VectorTuple | None:
+    """Refract a ray direction using Snell's law.
+
+    Parameters
+    ----------
+    direction
+        Incident unit direction.
+    normal
+        Surface normal oriented against the incident ray.
+    n_incident
+        Refractive index of the incident medium.
+    n_transmitted
+        Refractive index of the transmitted medium.
+
+    Returns
+    -------
+    tuple[float, float, float] or None
+        Refracted unit direction, or ``None`` for total internal reflection.
+    """
+
+    eta = n_incident / n_transmitted
+    cos_incident = -_dot(normal, direction)
+    sin_transmitted_squared = eta * eta * (1.0 - (cos_incident * cos_incident))
+    if sin_transmitted_squared > 1.0:
+        return None
+    cos_transmitted = math.sqrt(max(0.0, 1.0 - sin_transmitted_squared))
+    return _normalize(
+        _add(
+            _scale(direction, eta),
+            _scale(normal, (eta * cos_incident) - cos_transmitted),
+        )
+    )
+
+
+def _branch_intensities(
+    *,
+    surface: LensSurface,
+    n_incident: float,
+    n_transmitted: float,
+    intensity_fraction: float,
+    total_internal_reflection: bool,
+) -> tuple[float, float]:
+    """Compute reflected and transmitted branch intensities.
+
+    Parameters
+    ----------
+    surface
+        Surface creating the branches.
+    n_incident
+        Refractive index of the incident medium.
+    n_transmitted
+        Refractive index of the transmitted medium.
+    intensity_fraction
+        Parent-ray intensity fraction.
+    total_internal_reflection
+        Whether the transmitted branch is suppressed.
+
+    Returns
+    -------
+    tuple[float, float]
+        Reflected and transmitted intensity fractions.
+    """
+
+    if total_internal_reflection:
+        return intensity_fraction, 0.0
+    reflected_fraction = min(
+        0.95,
+        max(
+            0.0,
+            _fresnel_reflectance(n_incident, n_transmitted) * surface.reflection_weight,
+        ),
+    )
+    return (
+        intensity_fraction * reflected_fraction,
+        intensity_fraction * (1.0 - reflected_fraction),
+    )
+
+
+def trace_ray_branches_through_surfaces(
+    *,
+    surfaces: tuple[LensSurface, ...],
+    origin: VectorTuple,
+    direction: VectorTuple,
+    initial_medium: str = "air",
+    initial_intensity: float = 1.0,
+    max_depth: int = 8,
+    intensity_floor: float = 1e-6,
+) -> tuple[SequentialRayBranch, ...]:
+    """Trace reflected and transmitted branches through ordered lens surfaces.
+
+    Parameters
+    ----------
+    surfaces
+        Ordered lens surfaces used for sequential geometric tracing.
+    origin
+        Starting ray origin in lens-local coordinates.
+    direction
+        Starting ray direction in lens-local coordinates.
+    initial_medium
+        Medium containing the starting ray.
+    initial_intensity
+        Starting ray intensity fraction.
+    max_depth
+        Maximum number of surface interactions per branch.
+    intensity_floor
+        Minimum branch intensity retained for further tracing.
+
+    Returns
+    -------
+    tuple[SequentialRayBranch, ...]
+        Reflected, transmitted, and escaped branches produced by the trace.
+    """
+
+    validate_positive("initial_intensity", initial_intensity)
+    validate_positive("intensity_floor", intensity_floor)
+    if max_depth < 1:
+        raise ValueError("max_depth must be at least 1")
+
+    normalized_direction = _normalize(direction)
+    queue: list[tuple[VectorTuple, VectorTuple, str, float, int, tuple[str, ...]]] = [
+        (
+            origin,
+            normalized_direction,
+            initial_medium,
+            initial_intensity,
+            0,
+            (),
+        )
+    ]
+    branches: list[SequentialRayBranch] = []
+
+    while queue:
+        (
+            ray_origin,
+            ray_direction,
+            medium,
+            intensity_fraction,
+            generation,
+            path,
+        ) = queue.pop(0)
+        intersection = _next_surface_intersection(
+            surfaces=surfaces,
+            origin=ray_origin,
+            direction=ray_direction,
+        )
+        if intersection is None or generation >= max_depth:
+            branches.append(
+                SequentialRayBranch(
+                    surface_name="escape",
+                    branch_kind="escaped",
+                    origin=_vector3(ray_origin),
+                    direction=_vector3(ray_direction),
+                    medium=medium,
+                    intensity_fraction=intensity_fraction,
+                    generation=generation,
+                    path=path,
+                )
+            )
+            continue
+
+        surface, hit, _distance = intersection
+        n_incident_name, n_transmitted_name = _surface_media_for_direction(
+            surface, ray_direction
+        )
+        n_incident = _refractive_index(n_incident_name)
+        n_transmitted = _refractive_index(n_transmitted_name)
+        normal = spherical_surface_normal(surface, y_mm=hit[1], z_mm=hit[2])
+        normal_tuple = (normal.x_mm, normal.y_mm, normal.z_mm)
+        oriented_normal = _oriented_normal(normal_tuple, ray_direction)
+        reflected_direction = _reflect_direction(ray_direction, oriented_normal)
+        transmitted_direction = _refract_direction(
+            direction=ray_direction,
+            normal=oriented_normal,
+            n_incident=n_incident,
+            n_transmitted=n_transmitted,
+        )
+        reflected_intensity, transmitted_intensity = _branch_intensities(
+            surface=surface,
+            n_incident=n_incident,
+            n_transmitted=n_transmitted,
+            intensity_fraction=intensity_fraction,
+            total_internal_reflection=transmitted_direction is None,
+        )
+        next_generation = generation + 1
+
+        reflected_path = (*path, f"{surface.name}:reflected")
+        reflected_branch = SequentialRayBranch(
+            surface_name=surface.name,
+            branch_kind="reflected",
+            origin=_vector3(hit),
+            direction=_vector3(reflected_direction),
+            medium=n_incident_name,
+            intensity_fraction=reflected_intensity,
+            generation=next_generation,
+            path=reflected_path,
+        )
+        branches.append(reflected_branch)
+        if reflected_intensity >= intensity_floor:
+            queue.append(
+                (
+                    hit,
+                    reflected_direction,
+                    n_incident_name,
+                    reflected_intensity,
+                    next_generation,
+                    reflected_path,
+                )
+            )
+
+        if transmitted_direction is None:
+            continue
+
+        transmitted_path = (*path, f"{surface.name}:transmitted")
+        transmitted_branch = SequentialRayBranch(
+            surface_name=surface.name,
+            branch_kind="transmitted",
+            origin=_vector3(hit),
+            direction=_vector3(transmitted_direction),
+            medium=n_transmitted_name,
+            intensity_fraction=transmitted_intensity,
+            generation=next_generation,
+            path=transmitted_path,
+        )
+        branches.append(transmitted_branch)
+        if transmitted_intensity >= intensity_floor:
+            queue.append(
+                (
+                    hit,
+                    transmitted_direction,
+                    n_transmitted_name,
+                    transmitted_intensity,
+                    next_generation,
+                    transmitted_path,
+                )
+            )
+
+    return tuple(branches)
 
 
 def reflect_ray_bundle_from_surface(

@@ -39,10 +39,13 @@ drawings. The AC-series surface prescription is used for the educational
 geometric model so the rendered doublet and reflected spots respond to surface
 curvature.
 
-The ray model traces reflections from spherical surfaces back to the card plane.
-It does not yet model refraction through the glass, wavelength-dependent coating
-reflectance, ghost intensity, or diffraction at the aperture. Spot positions and
-diameters are physically motivated, then visually scaled for legibility.
+The spot animation traces reflected ray bundles from selected spherical
+surfaces back to the card plane. The optics helpers also include a sequential
+geometric tracer that branches rays into reflected and transmitted paths through
+all modeled achromat surfaces. The model does not yet include wavelength-
+dependent coating reflectance, polarization, diffraction at the aperture, or
+Gaussian beam propagation. Spot positions and diameters are physically
+motivated, then visually scaled for legibility.
 
 ## Run
 

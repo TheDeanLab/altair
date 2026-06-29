@@ -295,6 +295,23 @@ def test_scene_storyboard_reduces_alignment_error_to_zero():
     assert errors[-1] == pytest.approx(0.0, abs=1e-9)
 
 
+def test_scene_storyboard_captions_cover_alignment_sequence():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    states = module._alignment_states(params)
+    captions = module._storyboard_captions_for_states(params, states)
+
+    assert [caption.frame for caption in captions] == [state.frame for state in states]
+    assert [caption.state_name for caption in captions] == [
+        state.name for state in states
+    ]
+    assert captions[0].text == "Start: beam misses both irises"
+    assert "M1 adjust" in captions[1].text
+    assert "M2 adjust" in captions[2].text
+    assert captions[-1].text == "Aligned: both irises centered"
+    assert params["storyboard_caption_location_mm"][2] > params["optical_axis_z_mm"]
+
+
 def test_downstream_beam_path_tracks_iterative_alignment_states():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

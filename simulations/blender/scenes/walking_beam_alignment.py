@@ -87,6 +87,14 @@ class WideCameraPlan(NamedTuple):
     end_elevation_mm: float
 
 
+class StoryboardCaption(NamedTuple):
+    """Caption text for one alignment storyboard state."""
+
+    state_name: str
+    frame: int
+    text: str
+
+
 DEFAULT_PARAMETERS: dict[str, Any] = {
     "wavelength_nm": 561.0,
     "beam_diameter_mm": 1.0,
@@ -122,6 +130,17 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "post_source": TR15_POST.source_notes,
     "mirror_mount_source": KM100CP_MOUNT.source_notes,
     "show_minimal_labels": True,
+    "show_storyboard_captions": True,
+    "storyboard_caption_location_mm": (76.2, -45.0, 86.0),
+    "storyboard_caption_size_mm": 3.4,
+    "storyboard_captions": {
+        "gross_misalignment": "Start: beam misses both irises",
+        "m1_centers_iris1": "M1 adjust: center Iris 1",
+        "m2_centers_iris2": "M2 adjust: center Iris 2",
+        "m1_refinement": "M1 refine: recenter Iris 1",
+        "m2_refinement": "M2 refine: recenter Iris 2",
+        "aligned_hold": "Aligned: both irises centered",
+    },
     "wide_camera_name": "Wide Setup Camera",
     "iris_closeup_camera_name": "Iris Close-Up Camera",
     "hero_camera_name": "Hero Camera",
@@ -475,6 +494,22 @@ def _alignment_states(params: Mapping[str, Any]) -> tuple[BeamWalkingState, ...]
             int(params["frame_m2_refinement"]),
             int(params["frame_end"]),
         ),
+    )
+
+
+def _storyboard_captions_for_states(
+    params: Mapping[str, Any], states: tuple[BeamWalkingState, ...]
+) -> tuple[StoryboardCaption, ...]:
+    """Return one caption for each storyboard alignment state."""
+
+    caption_texts = params["storyboard_captions"]
+    return tuple(
+        StoryboardCaption(
+            state_name=state.name,
+            frame=state.frame,
+            text=str(caption_texts[state.name]),
+        )
+        for state in states
     )
 
 
@@ -837,6 +872,9 @@ def main(output_path: str | None = None) -> None:
     validate_positive("iris_spot_radius_mm", params["iris_spot_radius_mm"])
     validate_positive("iris_display_aperture_mm", params["iris_display_aperture_mm"])
     validate_positive("iris_reticle_radius_mm", params["iris_reticle_radius_mm"])
+    validate_positive(
+        "storyboard_caption_size_mm", params["storyboard_caption_size_mm"]
+    )
     validate_positive("hole_grid_spacing_mm", params["hole_grid_spacing_mm"])
 
     bpy = get_bpy()
@@ -1121,6 +1159,34 @@ def main(output_path: str | None = None) -> None:
             ),
             size_mm=1.8,
         )
+
+    if params["show_storyboard_captions"]:
+        caption_location = tuple(
+            float(component) for component in params["storyboard_caption_location_mm"]
+        )
+        caption_size = float(params["storyboard_caption_size_mm"])
+        caption_objects = {
+            caption.state_name: create_scene_label(
+                collection=collection,
+                materials=materials,
+                name=f"Storyboard Caption {caption.state_name}",
+                text=caption.text,
+                location=caption_location,
+                size_mm=caption_size,
+            )
+            for caption in _storyboard_captions_for_states(params, states)
+        }
+        for active_caption in _storyboard_captions_for_states(params, states):
+            for state_name, caption_obj in caption_objects.items():
+                hidden = state_name != active_caption.state_name
+                caption_obj.hide_viewport = hidden
+                caption_obj.hide_render = hidden
+                caption_obj.keyframe_insert(
+                    data_path="hide_viewport", frame=active_caption.frame
+                )
+                caption_obj.keyframe_insert(
+                    data_path="hide_render", frame=active_caption.frame
+                )
 
     wide_plan = _wide_camera_plan(params)
     create_wide_camera(

@@ -144,6 +144,32 @@ def test_scene_mirror_yaws_trace_ninety_degree_reflections():
     assert outgoing[1] == pytest.approx(0.0, abs=1e-9)
 
 
+def test_scene_static_z_fold_path_is_ray_traced_from_mirror_planes():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+
+    trace = module._trace_z_fold_ray(params)
+    assert trace == module._beam_path_points(params)
+
+    source, m1_hit, m2_hit, exit_point = (point.xyz for point in trace)
+
+    def unit_vector(start, end):
+        delta = tuple(end[index] - start[index] for index in range(3))
+        length = math.sqrt(sum(component * component for component in delta))
+        return tuple(component / length for component in delta)
+
+    incoming = unit_vector(source, m1_hit)
+    folded = unit_vector(m1_hit, m2_hit)
+    outgoing = unit_vector(m2_hit, exit_point)
+
+    assert module._reflect_direction(
+        incoming, module._mirror_reflective_normal(params["m1_yaw_deg"])
+    ) == pytest.approx(folded, abs=1e-9)
+    assert module._reflect_direction(
+        folded, module._mirror_reflective_normal(params["m2_yaw_deg"])
+    ) == pytest.approx(outgoing, abs=1e-9)
+
+
 def test_scene_beam_path_uses_mirror_surface_points_not_mount_centers():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

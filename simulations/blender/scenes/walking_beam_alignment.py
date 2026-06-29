@@ -243,6 +243,41 @@ def _mirror_reflective_normal(yaw_deg: float) -> tuple[float, float, float]:
     return (-math.cos(yaw_rad), -math.sin(yaw_rad), 0.0)
 
 
+def _mirror_plane_point(
+    center: tuple[float, float, float], *, yaw_deg: float, offset_mm: float
+) -> tuple[float, float, float]:
+    """Return one point on the visible mirror face plane."""
+
+    yaw_rad = math.radians(yaw_deg)
+    return (
+        center[0] - (offset_mm * math.cos(yaw_rad)),
+        center[1] - (offset_mm * math.sin(yaw_rad)),
+        center[2],
+    )
+
+
+def _ray_plane_intersection(
+    *,
+    origin: tuple[float, float, float],
+    direction: tuple[float, float, float],
+    plane_point: tuple[float, float, float],
+    plane_normal: tuple[float, float, float],
+) -> tuple[float, float, float]:
+    """Return the intersection between a ray and a plane."""
+
+    denominator = sum(direction[index] * plane_normal[index] for index in range(3))
+    if abs(denominator) < 1e-9:
+        raise ValueError("Ray is parallel to mirror plane.")
+    distance = (
+        sum(
+            (plane_point[index] - origin[index]) * plane_normal[index]
+            for index in range(3)
+        )
+        / denominator
+    )
+    return tuple(origin[index] + (distance * direction[index]) for index in range(3))
+
+
 def _mirror_face_point_at_y(
     center: tuple[float, float, float],
     *,
@@ -329,30 +364,54 @@ def _beam_path_points(params: Mapping[str, Any]) -> tuple[BeamPathPoint, ...]:
         Source, mirror-surface, and downstream beam path anchors.
     """
 
+    return _trace_z_fold_ray(params)
+
+
+def _trace_z_fold_ray(params: Mapping[str, Any]) -> tuple[BeamPathPoint, ...]:
+    """Trace the nominal Z-fold beam path from mirror planes and reflections."""
+
     centers = _component_centers(params)
     offset = float(params["mirror_surface_offset_mm"])
-    m2_surface = _mirror_face_point_at_y(
-        centers["m2"],
-        yaw_deg=float(params["m2_yaw_deg"]),
-        offset_mm=offset,
-        y_mm=centers["iris_1"][1],
+    incoming_direction = (1.0, 0.0, 0.0)
+
+    m1_normal = _mirror_reflective_normal(float(params["m1_yaw_deg"]))
+    folded_direction = _reflect_direction(incoming_direction, m1_normal)
+    m2_normal = _mirror_reflective_normal(float(params["m2_yaw_deg"]))
+    outgoing_direction = _reflect_direction(folded_direction, m2_normal)
+
+    m2_surface = _ray_plane_intersection(
+        origin=centers["iris_1"],
+        direction=tuple(-component for component in outgoing_direction),
+        plane_point=_mirror_plane_point(
+            centers["m2"],
+            yaw_deg=float(params["m2_yaw_deg"]),
+            offset_mm=offset,
+        ),
+        plane_normal=m2_normal,
     )
-    m1_surface = _mirror_face_point_at_x(
-        centers["m1"],
-        yaw_deg=float(params["m1_yaw_deg"]),
-        offset_mm=offset,
-        x_mm=m2_surface[0],
+    m1_surface = _ray_plane_intersection(
+        origin=m2_surface,
+        direction=tuple(-component for component in folded_direction),
+        plane_point=_mirror_plane_point(
+            centers["m1"],
+            yaw_deg=float(params["m1_yaw_deg"]),
+            offset_mm=offset,
+        ),
+        plane_normal=m1_normal,
     )
-    iris_exit = (
-        centers["iris_2"][0] + (1.5 * float(params["hole_grid_spacing_mm"])),
-        centers["iris_2"][1],
-        centers["iris_2"][2],
+    source = tuple(
+        m1_surface[index] - (50.0 * incoming_direction[index]) for index in range(3)
+    )
+    exit_x = centers["iris_2"][0] + (1.5 * float(params["hole_grid_spacing_mm"]))
+    if abs(outgoing_direction[0]) < 1e-9:
+        raise ValueError("Outgoing ray cannot be solved at fixed X.")
+    exit_distance = (exit_x - m2_surface[0]) / outgoing_direction[0]
+    iris_exit = tuple(
+        m2_surface[index] + (exit_distance * outgoing_direction[index])
+        for index in range(3)
     )
     return (
-        BeamPathPoint(
-            name="source",
-            xyz=(m1_surface[0] - 50.0, m1_surface[1], m1_surface[2]),
-        ),
+        BeamPathPoint(name="source", xyz=source),
         BeamPathPoint(name="m1_surface", xyz=m1_surface),
         BeamPathPoint(name="m2_surface", xyz=m2_surface),
         BeamPathPoint(name="iris_row_exit", xyz=iris_exit),

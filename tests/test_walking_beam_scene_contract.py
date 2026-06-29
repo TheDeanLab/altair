@@ -79,6 +79,16 @@ def test_scene_uses_narrow_visible_iris_apertures_with_reticles():
     assert params["iris_reticle_faces"] == "both"
 
 
+def test_scene_uses_consistent_display_exaggeration_for_beam_and_spots():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+
+    assert params["beam_path_offset_exaggeration"] == pytest.approx(
+        params["spot_display_exaggeration"]
+    )
+    assert params["beam_path_offset_exaggeration"] > 1.0
+
+
 def test_scene_uses_requested_one_inch_hole_grid_layout():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

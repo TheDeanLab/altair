@@ -100,7 +100,7 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "initial_horizontal_angle_mrad": -90.0,
     "initial_vertical_offset_mm": -4.0,
     "initial_vertical_angle_mrad": 55.0,
-    "beam_path_offset_exaggeration": 1.0,
+    "beam_path_offset_exaggeration": 2.0,
     "spot_display_exaggeration": 2.0,
     "mirror_display_exaggeration": 0.18,
     "iris_source": ID25_IRIS.source_notes,

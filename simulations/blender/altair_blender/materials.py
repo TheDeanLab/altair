@@ -11,6 +11,14 @@ TABLE_BRUSH_LOW_COLOR = (0.74, 0.76, 0.75, 1.0)
 TABLE_BRUSH_HIGH_COLOR = (0.95, 0.96, 0.93, 1.0)
 TABLE_HOLE_COLOR = (0.035, 0.038, 0.04, 1.0)
 BACKDROP_NEUTRAL_COLOR = (0.56, 0.58, 0.59, 1.0)
+BLACK_ANODIZED_COLOR = (0.10, 0.105, 0.11, 1.0)
+POST_STEEL_COLOR = (0.78, 0.80, 0.78, 1.0)
+MIRROR_COLOR = (0.82, 0.92, 1.0, 1.0)
+LASER_COLOR = (0.20, 1.0, 0.05, 0.88)
+REFLECTION_BEAM_COLOR = (0.20, 1.0, 0.30, 0.32)
+SPOT_A_COLOR = (0.48, 1.0, 0.18, 1.0)
+SPOT_B_COLOR = (0.12, 0.78, 1.0, 1.0)
+LABEL_COLOR = (1.0, 1.0, 0.97, 1.0)
 
 
 def _set_input_if_present(bsdf: Any, names: tuple[str, ...], value: Any) -> None:
@@ -166,20 +174,24 @@ def create_materials() -> dict[str, object]:
             roughness=0.62,
         ),
         "metal": _material(
-            "Black Anodized Metal", (0.12, 0.125, 0.13, 1.0), roughness=0.32
+            "Black Anodized Metal",
+            BLACK_ANODIZED_COLOR,
+            emission=0.015,
+            roughness=0.28,
+            metallic=0.06,
         ),
         "post_steel": _material(
             "Polished Stainless Optical Post",
-            (0.70, 0.72, 0.70, 1.0),
+            POST_STEEL_COLOR,
             roughness=0.22,
             metallic=0.55,
         ),
         "mirror": _material(
             "Protected Silver Mirror",
-            (0.88, 0.93, 0.96, 1.0),
-            emission=0.02,
-            roughness=0.08,
-            metallic=0.78,
+            MIRROR_COLOR,
+            emission=0.04,
+            roughness=0.045,
+            metallic=0.86,
         ),
         "card": _material("Business Card Stock", (0.92, 0.88, 0.78, 1.0)),
         "aperture": _material("Aperture Edge", (0.02, 0.02, 0.018, 1.0)),
@@ -201,11 +213,11 @@ def create_materials() -> dict[str, object]:
             transmission=0.32,
         ),
         "coating": _material("BBAR Coating Glint", (0.48, 0.95, 0.72, 0.22)),
-        "laser": _material("561 nm Laser Beam", (0.35, 1.0, 0.18, 0.65), emission=2.5),
+        "laser": _material("561 nm Laser Beam", LASER_COLOR, emission=4.2),
         "reflection_beam": _material(
-            "Faint Reflected Beam", (0.28, 1.0, 0.35, 0.24), emission=1.2
+            "Faint Reflected Beam", REFLECTION_BEAM_COLOR, emission=1.5
         ),
-        "spot_a": _material("Return Spot A", (0.45, 1.0, 0.22, 1.0), emission=3.0),
-        "spot_b": _material("Return Spot B", (0.18, 0.85, 1.0, 1.0), emission=2.6),
-        "label": _material("Subtle Label", (0.95, 0.98, 1.0, 1.0), emission=0.38),
+        "spot_a": _material("Return Spot A", SPOT_A_COLOR, emission=3.4),
+        "spot_b": _material("Return Spot B", SPOT_B_COLOR, emission=3.0),
+        "label": _material("Subtle Label", LABEL_COLOR, emission=0.62),
     }

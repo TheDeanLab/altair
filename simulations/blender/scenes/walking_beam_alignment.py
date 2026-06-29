@@ -87,9 +87,13 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "wide_camera_name": "Wide Setup Camera",
     "iris_closeup_camera_name": "Iris Close-Up Camera",
     "hero_camera_name": "Hero Camera",
-    "iris_closeup_lens_mm": 48.0,
-    "iris_closeup_distance_y_mm": 155.0,
-    "iris_closeup_elevation_mm": 28.0,
+    "iris_closeup_lens_mm": 32.0,
+    "iris_closeup_distance_y_mm": 215.0,
+    "iris_closeup_elevation_mm": 38.0,
+    "softbox_power": 900.0,
+    "softbox_size_mm": 86.0,
+    "fill_power": 330.0,
+    "rim_light_power": 420.0,
     "default_render_preset": "final",
     "render_presets": RENDER_PRESETS,
     "final_video_output_stem": "walking_beam_alignment",
@@ -497,14 +501,20 @@ def main(output_path: str | None = None) -> None:
     add_area_light(
         name="Walking Beam Softbox",
         location=(-5.0, -92.0, 128.0),
-        power=760.0,
-        size=78.0,
+        power=float(params["softbox_power"]),
+        size=float(params["softbox_size_mm"]),
     )
     add_area_light(
         name="Iris Row Fill",
         location=(70.0, -42.0, 80.0),
-        power=240.0,
+        power=float(params["fill_power"]),
         size=36.0,
+    )
+    add_area_light(
+        name="Mirror Edge Rim",
+        location=(-118.0, 42.0, 82.0),
+        power=float(params["rim_light_power"]),
+        size=30.0,
     )
 
     m1 = create_kinematic_mirror_mount(

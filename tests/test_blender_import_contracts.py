@@ -81,6 +81,16 @@ def test_scene_palette_uses_lighter_table_and_backdrop_constants():
     assert scene.WORLD_BACKGROUND_COLOR[0] > 0.20
 
 
+def test_scene_palette_exposes_high_contrast_optics_constants():
+    materials = importlib.import_module("simulations.blender.altair_blender.materials")
+
+    assert materials.LASER_COLOR[1] > 0.95
+    assert materials.LASER_COLOR[3] >= 0.80
+    assert materials.MIRROR_COLOR[2] > materials.MIRROR_COLOR[0]
+    assert materials.SPOT_B_COLOR[2] > materials.SPOT_B_COLOR[1]
+    assert min(materials.LABEL_COLOR[:3]) > 0.95
+
+
 def test_get_bpy_reports_clear_error_outside_blender():
     scene = importlib.import_module("simulations.blender.altair_blender.scene")
 

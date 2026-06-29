@@ -128,9 +128,9 @@ def test_iris_closeup_camera_pose_frames_both_irises():
 
     assert pose.target_xyz[0] == pytest.approx(iris_midpoint_x)
     assert pose.location_xyz[0] == pytest.approx(iris_midpoint_x)
-    assert pose.location_xyz[1] < -120.0
+    assert pose.location_xyz[1] < -180.0
     assert pose.location_xyz[2] > params["optical_axis_z_mm"]
-    assert pose.lens_mm <= 55.0
+    assert pose.lens_mm <= 40.0
 
 
 def test_scene_defines_explicit_walking_beam_storyboard():

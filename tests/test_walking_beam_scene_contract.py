@@ -288,6 +288,34 @@ def test_downstream_beam_path_tracks_iterative_alignment_states():
     assert aligned.exit_xyz[0] > aligned.iris2_xyz[0]
 
 
+def test_folded_beam_path_shares_animated_m2_hit_point():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    states = module._alignment_states(params)
+    static_path = module._beam_path_points(params)
+
+    folded_paths = {
+        state.name: module._folded_beam_path_for_state(params, model, state)
+        for state in states
+    }
+    downstream_paths = {
+        state.name: module._downstream_beam_path_for_state(params, model, state)
+        for state in states
+    }
+
+    for state in states:
+        folded = folded_paths[state.name]
+        downstream = downstream_paths[state.name]
+        assert folded.start_xyz == pytest.approx(static_path[1].xyz)
+        assert folded.end_xyz == pytest.approx(downstream.start_xyz)
+
+    assert (
+        math.dist(folded_paths["gross_misalignment"].end_xyz, static_path[2].xyz) > 0.1
+    )
+    assert folded_paths["aligned_hold"].end_xyz == pytest.approx(static_path[2].xyz)
+
+
 def test_downstream_beam_path_stops_at_first_blocking_iris():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

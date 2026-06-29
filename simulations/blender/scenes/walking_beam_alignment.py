@@ -61,6 +61,13 @@ class DownstreamBeamPath(NamedTuple):
     blocked_at: str
 
 
+class BeamSegmentPath(NamedTuple):
+    """World-space start and end points for one displayed beam segment."""
+
+    start_xyz: tuple[float, float, float]
+    end_xyz: tuple[float, float, float]
+
+
 class CameraPose(NamedTuple):
     """Import-safe camera pose used by scene contract tests."""
 
@@ -580,6 +587,37 @@ def _iris_spot_visibility(path: DownstreamBeamPath) -> tuple[bool, bool]:
     return (True, path.blocked_at != "iris_1")
 
 
+def _folded_beam_path_for_state(
+    params: Mapping[str, Any],
+    model: BeamWalkingModel,
+    state: BeamWalkingState,
+) -> BeamSegmentPath:
+    """Return the animated M1-to-M2 beam segment for one alignment state.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    model
+        Beam-walking model used to compute the shared M2 hit point.
+    state
+        Alignment state to display.
+
+    Returns
+    -------
+    BeamSegmentPath
+        Beam segment from M1's visible surface to the same M2 point used by
+        the downstream beam.
+    """
+
+    beam_path = _beam_path_points(params)
+    downstream_path = _downstream_beam_path_for_state(params, model, state)
+    return BeamSegmentPath(
+        start_xyz=beam_path[1].xyz,
+        end_xyz=downstream_path.start_xyz,
+    )
+
+
 def _iris_closeup_camera_pose(params: Mapping[str, Any]) -> CameraPose:
     """Return a close-up camera pose that frames both irises.
 
@@ -838,19 +876,20 @@ def main(output_path: str | None = None) -> None:
         material=materials["laser"],
         collection=collection,
     )
-    create_beam_between(
-        name="M1 to M2 Folded Beam",
-        start_xyz=beam_path[1].xyz,
-        end_xyz=beam_path[2].xyz,
-        radius_mm=beam_radius,
-        material=materials["laser"],
-        collection=collection,
-    )
     first_display = _display_intercepts(
         compute_beam_intercepts(model, states[0]),
         exaggeration=float(params["spot_display_exaggeration"]),
     )
+    first_folded_path = _folded_beam_path_for_state(params, model, states[0])
     first_downstream_path = _downstream_beam_path_for_state(params, model, states[0])
+    folded_beam = create_beam_between(
+        name="Animated M1 to M2 Beam",
+        start_xyz=first_folded_path.start_xyz,
+        end_xyz=first_folded_path.end_xyz,
+        radius_mm=beam_radius,
+        material=materials["laser"],
+        collection=collection,
+    )
     final_beam = create_beam_between(
         name="Animated Beam After M2",
         start_xyz=first_downstream_path.start_xyz,
@@ -885,7 +924,16 @@ def main(output_path: str | None = None) -> None:
     )
 
     for state in states:
+        folded_path = _folded_beam_path_for_state(params, model, state)
         downstream_path = _downstream_beam_path_for_state(params, model, state)
+        set_beam_between(
+            beam=folded_beam,
+            start_xyz=folded_path.start_xyz,
+            end_xyz=folded_path.end_xyz,
+        )
+        folded_beam.keyframe_insert(data_path="location", frame=state.frame)
+        folded_beam.keyframe_insert(data_path="rotation_euler", frame=state.frame)
+        folded_beam.keyframe_insert(data_path="scale", frame=state.frame)
         set_beam_between(
             beam=final_beam,
             start_xyz=downstream_path.start_xyz,
@@ -946,7 +994,7 @@ def main(output_path: str | None = None) -> None:
             ),
         )
 
-    for obj in (m1, m2, spot1, spot2, final_beam):
+    for obj in (m1, m2, spot1, spot2, folded_beam, final_beam):
         set_linear_interpolation(obj)
 
     if params["show_minimal_labels"]:

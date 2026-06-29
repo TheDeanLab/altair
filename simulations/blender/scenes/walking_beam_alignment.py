@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import sys
 from typing import Any
+from typing import NamedTuple
 
 
 def _ensure_repo_root_on_path() -> None:
@@ -39,6 +40,13 @@ from simulations.blender.altair_blender.scene import RENDER_PRESETS  # noqa: E40
 SCENE_NAME = "walking_beam_alignment"
 
 
+class BeamPathPoint(NamedTuple):
+    """Named world-space point on the displayed beam path."""
+
+    name: str
+    xyz: tuple[float, float, float]
+
+
 DEFAULT_PARAMETERS: dict[str, Any] = {
     "wavelength_nm": 561.0,
     "beam_diameter_mm": 1.0,
@@ -48,12 +56,12 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
         "m1": (-2, -2),
         "m2": (-2, 0),
         "iris_1": (1, 0),
-        "iris_2": (3, 0),
+        "iris_2": (6, 0),
     },
     "table_center_x_mm": 0.0,
     "table_center_y_mm": 0.0,
     "table_center_z_mm": -8.0,
-    "table_length_mm": 220.0,
+    "table_length_mm": 330.0,
     "table_width_mm": 115.0,
     "table_top_z_mm": -5.0,
     "optical_axis_z_mm": 45.8,
@@ -81,8 +89,9 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
         "Iris 2",
         "same beam height",
     ),
-    "m1_yaw_deg": 45.0,
-    "m2_yaw_deg": -45.0,
+    "mirror_surface_offset_mm": 7.0,
+    "m1_yaw_deg": 225.0,
+    "m2_yaw_deg": 135.0,
     "frame_start": 1,
     "frame_m1_centers_iris1": 36,
     "frame_m2_centers_iris2": 72,
@@ -159,6 +168,76 @@ def _component_centers(
         name: (*_grid_position_mm(params, name), axis_z)
         for name in ("m1", "m2", "iris_1", "iris_2")
     }
+
+
+def _mirror_surface_point(
+    center: tuple[float, float, float], *, yaw_deg: float, offset_mm: float
+) -> tuple[float, float, float]:
+    """Return the displayed reflective surface point for a mirror mount.
+
+    Parameters
+    ----------
+    center
+        Optical center of the mirror mount.
+    yaw_deg
+        Mirror mount yaw in degrees.
+    offset_mm
+        Offset from mount center to the visible mirror surface.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        World-space point on the mirror surface.
+    """
+
+    yaw_rad = math.radians(yaw_deg)
+    return (
+        center[0] + (math.cos(yaw_rad) * offset_mm),
+        center[1] + (math.sin(yaw_rad) * offset_mm),
+        center[2],
+    )
+
+
+def _beam_path_points(params: Mapping[str, Any]) -> tuple[BeamPathPoint, ...]:
+    """Return named beam path anchors for the Z-fold display.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    tuple[BeamPathPoint, ...]
+        Source, mirror-surface, and downstream beam path anchors.
+    """
+
+    centers = _component_centers(params)
+    offset = float(params["mirror_surface_offset_mm"])
+    m1_surface = _mirror_surface_point(
+        centers["m1"],
+        yaw_deg=float(params["m1_yaw_deg"]),
+        offset_mm=offset,
+    )
+    m2_surface = _mirror_surface_point(
+        centers["m2"],
+        yaw_deg=float(params["m2_yaw_deg"]),
+        offset_mm=offset,
+    )
+    iris_exit = (
+        centers["iris_2"][0] + (1.5 * float(params["hole_grid_spacing_mm"])),
+        centers["iris_2"][1],
+        centers["iris_2"][2],
+    )
+    return (
+        BeamPathPoint(
+            name="source",
+            xyz=(m1_surface[0] - 50.0, m1_surface[1], m1_surface[2]),
+        ),
+        BeamPathPoint(name="m1_surface", xyz=m1_surface),
+        BeamPathPoint(name="m2_surface", xyz=m2_surface),
+        BeamPathPoint(name="iris_row_exit", xyz=iris_exit),
+    )
 
 
 def _walking_beam_model(params: Mapping[str, Any]) -> BeamWalkingModel:
@@ -367,6 +446,7 @@ def main(output_path: str | None = None) -> None:
     collection = ensure_collection("Walking Beam Alignment")
     materials = create_materials()
     centers = _component_centers(params)
+    beam_path = _beam_path_points(params)
     model = _walking_beam_model(params)
     states = _alignment_states(params)
     axis_z = float(params["optical_axis_z_mm"])
@@ -443,24 +523,24 @@ def main(output_path: str | None = None) -> None:
 
     create_beam_between(
         name="Incoming 561 nm Beam",
-        start_xyz=(centers["m1"][0] - 42.0, centers["m1"][1], axis_z),
-        end_xyz=centers["m1"],
+        start_xyz=beam_path[0].xyz,
+        end_xyz=beam_path[1].xyz,
         radius_mm=beam_radius,
         material=materials["laser"],
         collection=collection,
     )
     create_beam_between(
         name="M1 to M2 Folded Beam",
-        start_xyz=centers["m1"],
-        end_xyz=centers["m2"],
+        start_xyz=beam_path[1].xyz,
+        end_xyz=beam_path[2].xyz,
         radius_mm=beam_radius,
         material=materials["laser"],
         collection=collection,
     )
     create_beam_between(
         name="Final Beam Down Iris Row",
-        start_xyz=centers["m2"],
-        end_xyz=(centers["iris_2"][0] + 36.0, centers["iris_2"][1], axis_z),
+        start_xyz=beam_path[2].xyz,
+        end_xyz=beam_path[3].xyz,
         radius_mm=beam_radius,
         material=materials["laser"],
         collection=collection,
@@ -592,14 +672,14 @@ def main(output_path: str | None = None) -> None:
         )
 
     create_wide_camera(
-        target=(10.0, -4.0, axis_z + 4.0),
-        distance_mm=245.0,
-        elevation_mm=108.0,
+        target=(35.0, -4.0, axis_z + 4.0),
+        distance_mm=295.0,
+        elevation_mm=118.0,
         frame_start=int(params["frame_start"]),
         frame_end=int(params["frame_end"]),
-        end_target=(18.0, -2.0, axis_z + 5.0),
-        end_distance_mm=218.0,
-        end_elevation_mm=94.0,
+        end_target=(42.0, -2.0, axis_z + 5.0),
+        end_distance_mm=268.0,
+        end_elevation_mm=104.0,
     )
     _create_iris_closeup_camera(
         name=str(params["iris_closeup_camera_name"]),
@@ -608,10 +688,10 @@ def main(output_path: str | None = None) -> None:
         optical_axis_z_mm=axis_z,
     )
     create_hero_camera(
-        target=(16.0, -4.0, axis_z + 4.0),
+        target=(38.0, -4.0, axis_z + 4.0),
         frame_start=int(params["frame_start"]),
         frame_end=int(params["frame_end"]),
-        focus_distance_mm=205.0,
+        focus_distance_mm=235.0,
     )
 
     output = validate_output_path(output_path)

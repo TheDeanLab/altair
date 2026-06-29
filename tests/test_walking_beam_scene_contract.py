@@ -76,18 +76,47 @@ def test_scene_uses_requested_one_inch_hole_grid_layout():
         "m1": (-2, -2),
         "m2": (-2, 0),
         "iris_1": (1, 0),
-        "iris_2": (3, 0),
+        "iris_2": (6, 0),
     }
     assert module._grid_position_mm(params, "m1") == pytest.approx((-50.8, -50.8))
     assert module._grid_position_mm(params, "m2") == pytest.approx((-50.8, 0.0))
     assert module._grid_position_mm(params, "iris_1") == pytest.approx((25.4, 0.0))
-    assert module._grid_position_mm(params, "iris_2") == pytest.approx((76.2, 0.0))
+    assert module._grid_position_mm(params, "iris_2") == pytest.approx((152.4, 0.0))
 
     centers = module._component_centers(params)
     assert centers["m1"][2] == pytest.approx(params["optical_axis_z_mm"])
     assert centers["m2"][2] == pytest.approx(params["optical_axis_z_mm"])
     assert centers["iris_1"][2] == pytest.approx(params["optical_axis_z_mm"])
     assert centers["iris_2"][2] == pytest.approx(params["optical_axis_z_mm"])
+    assert centers["iris_2"][0] - centers["iris_1"][0] == pytest.approx(127.0)
+
+
+def test_scene_orients_mirror_mount_faces_toward_the_beam_path():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+
+    assert params["m1_yaw_deg"] == pytest.approx(225.0)
+    assert params["m2_yaw_deg"] == pytest.approx(135.0)
+
+
+def test_scene_beam_path_uses_mirror_surface_points_not_mount_centers():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    centers = module._component_centers(params)
+    path = module._beam_path_points(params)
+
+    assert [point.name for point in path] == [
+        "source",
+        "m1_surface",
+        "m2_surface",
+        "iris_row_exit",
+    ]
+    assert path[1].xyz != centers["m1"]
+    assert path[2].xyz != centers["m2"]
+    assert path[1].xyz[2] == pytest.approx(params["optical_axis_z_mm"])
+    assert path[2].xyz[2] == pytest.approx(params["optical_axis_z_mm"])
+    assert path[0].xyz[0] < path[1].xyz[0]
+    assert path[2].xyz[0] < path[3].xyz[0]
 
 
 def test_scene_defines_explicit_walking_beam_storyboard():

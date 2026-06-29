@@ -207,4 +207,3 @@ References
 * Intel Management Engine resources (vendor support pages)
 * `C-state guidance - Part 1 <https://edc.intel.com/content/www/us/en/design/products/ethernet/appnote-perf-tuning-guide-700-series-linux/%E2%80%8Bc-state-control/>`_
 * `C-state guidance - Part 2 <https://www.cisco.com/c/en/us/products/collateral/servers-unified-computing/ucs-c-series-rack-servers/bios-tuning-guide-ucs-m8-intel-xeon-wp.html>`_
-* `Node interleaving background <https://frankdenneman.nl/2010/12/28/node-interleaving-enable-or-disable>`_

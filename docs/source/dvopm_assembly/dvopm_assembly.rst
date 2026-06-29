@@ -502,5 +502,3 @@ The following figure shows the front view of the complete assembly where the D-S
     :alt: Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
 
     **Figure 36:** Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
-
-------------------

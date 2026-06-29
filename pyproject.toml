@@ -28,6 +28,7 @@ docs = [
     "sphinx-design",
     "pyyaml",
     "pydata_sphinx_theme==0.10.0rc2",
+    "pytest",
     "sphinx-toolbox",
     "livereload",
     "typos",

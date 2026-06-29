@@ -89,6 +89,18 @@ def test_scene_uses_consistent_display_exaggeration_for_beam_and_spots():
     assert params["beam_path_offset_exaggeration"] > 1.0
 
 
+def test_scene_separates_physical_beam_size_from_rendered_readability():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+
+    assert params["beam_diameter_mm"] == pytest.approx(1.0)
+    assert params["beam_visual_diameter_mm"] > params["beam_diameter_mm"]
+    assert module._beam_visual_radius(params) == pytest.approx(
+        params["beam_visual_diameter_mm"] / 2.0
+    )
+    assert module._iris_spot_radius(params) > 0.85
+
+
 def test_scene_uses_requested_one_inch_hole_grid_layout():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

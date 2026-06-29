@@ -90,8 +90,10 @@ class WideCameraPlan(NamedTuple):
 DEFAULT_PARAMETERS: dict[str, Any] = {
     "wavelength_nm": 561.0,
     "beam_diameter_mm": 1.0,
+    "beam_visual_diameter_mm": 1.35,
     "alignment_aperture_diameter_mm": 2.5,
     "iris_display_aperture_mm": 2.5,
+    "iris_spot_radius_mm": 1.25,
     "iris_reticle_radius_mm": 4.0,
     "iris_reticle_faces": "both",
     "hole_grid_spacing_mm": 25.4,
@@ -506,6 +508,18 @@ def _display_intercepts(
     )
 
 
+def _beam_visual_radius(params: Mapping[str, Any]) -> float:
+    """Return the rendered beam radius without changing physical beam math."""
+
+    return float(params["beam_visual_diameter_mm"]) / 2.0
+
+
+def _iris_spot_radius(params: Mapping[str, Any]) -> float:
+    """Return the rendered iris spot radius."""
+
+    return float(params["iris_spot_radius_mm"])
+
+
 def _lerp_transverse_at_x(
     *,
     x_mm: float,
@@ -816,9 +830,11 @@ def main(output_path: str | None = None) -> None:
 
     params = DEFAULT_PARAMETERS
     validate_positive("beam_diameter_mm", params["beam_diameter_mm"])
+    validate_positive("beam_visual_diameter_mm", params["beam_visual_diameter_mm"])
     validate_positive(
         "alignment_aperture_diameter_mm", params["alignment_aperture_diameter_mm"]
     )
+    validate_positive("iris_spot_radius_mm", params["iris_spot_radius_mm"])
     validate_positive("iris_display_aperture_mm", params["iris_display_aperture_mm"])
     validate_positive("iris_reticle_radius_mm", params["iris_reticle_radius_mm"])
     validate_positive("hole_grid_spacing_mm", params["hole_grid_spacing_mm"])
@@ -845,7 +861,8 @@ def main(output_path: str | None = None) -> None:
     states = _alignment_states(params)
     axis_z = float(params["optical_axis_z_mm"])
     table_top_z = float(params["table_top_z_mm"])
-    beam_radius = float(params["beam_diameter_mm"]) / 2.0
+    beam_radius = _beam_visual_radius(params)
+    iris_spot_radius = _iris_spot_radius(params)
 
     create_optical_table(
         collection=collection,
@@ -964,7 +981,7 @@ def main(output_path: str | None = None) -> None:
             y_mm=first_display.iris1.y_mm,
             z_mm=first_display.iris1.z_mm,
         ),
-        radius_mm=0.85,
+        radius_mm=iris_spot_radius,
         material=materials["spot_a"],
         collection=collection,
         optical_axis_z_mm=axis_z,
@@ -976,7 +993,7 @@ def main(output_path: str | None = None) -> None:
             y_mm=first_display.iris2.y_mm,
             z_mm=first_display.iris2.z_mm,
         ),
-        radius_mm=0.85,
+        radius_mm=iris_spot_radius,
         material=materials["spot_b"],
         collection=collection,
         optical_axis_z_mm=axis_z,

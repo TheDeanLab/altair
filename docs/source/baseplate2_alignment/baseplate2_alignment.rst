@@ -797,7 +797,7 @@ Add the RFO back in, then adjust the XY on the RFO mount until the back reflecti
 .. card:: Achromat Back-Reflection Alignment
 
    The general method for centering back reflections on an aperture card is described in
-   :ref:`Basics of Optical Alignment <optical_alignment_basics>`. Use that procedure here to align the RFO before
+   :ref:`Back-Reflection Alignment <optical_alignment_back_reflections>`. Use that procedure here to align the RFO before
    continuing with the baseplate-specific beam-walking steps.
 
 .. figure:: Images/alignment/PCBaseplateV2LaserAlignment5.png

@@ -3,7 +3,10 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 INDEX = REPO_ROOT / "docs/source/index.rst"
-PAGE = REPO_ROOT / "docs/source/getting_started/optical_alignment_basics.rst"
+LANDING = REPO_ROOT / "docs/source/getting_started/optical_alignment_basics.rst"
+BACK_REFLECTIONS = REPO_ROOT / (
+    "docs/source/getting_started/optical_alignment_back_reflections.rst"
+)
 BASEPLATE_ALIGNMENT = REPO_ROOT / (
     "docs/source/baseplate2_alignment/baseplate2_alignment.rst"
 )
@@ -26,20 +29,38 @@ def test_optical_alignment_basics_is_in_first_toc():
     )
 
 
-def test_optical_alignment_basics_embeds_video_with_fallback():
-    assert VIDEO.exists()
-    page = PAGE.read_text()
+def test_optical_alignment_basics_is_landing_page_for_alignment_tutorials():
+    page = LANDING.read_text()
 
     assert ".. _optical_alignment_basics:" in page
     assert "Basics of Optical Alignment" in page
+    assert ".. toctree::" in page
+    assert "optical_alignment_back_reflections" in page
+    assert "in development" in page
+    assert "GitHub feature requests" in page
+    for expected in (
+        "Finding the focus of a beam",
+        "Collimating a beam",
+        "Walking a beam",
+        "Setting up an alignment laser",
+    ):
+        assert expected in page
+
+
+def test_back_reflection_alignment_embeds_video_with_fallback():
+    assert VIDEO.exists()
+    page = BACK_REFLECTIONS.read_text()
+
+    assert ".. _optical_alignment_back_reflections:" in page
+    assert "Back-Reflection Alignment" in page
     assert '<video controls preload="metadata"' in page
     assert VIDEO_SOURCE in page
     assert "`Download the alignment movie" in page
     assert "goal is to make the optic normal to the incoming beam" in page
 
 
-def test_optical_alignment_basics_contains_protocol_and_interpretation():
-    page = PAGE.read_text()
+def test_back_reflection_alignment_contains_protocol_and_interpretation():
+    page = BACK_REFLECTIONS.read_text()
 
     for expected in (
         "Why This Works",
@@ -55,4 +76,7 @@ def test_optical_alignment_basics_contains_protocol_and_interpretation():
 def test_baseplate_alignment_links_to_canonical_alignment_page():
     page = BASEPLATE_ALIGNMENT.read_text()
 
-    assert ":ref:`Basics of Optical Alignment <optical_alignment_basics>`" in page
+    assert (
+        ":ref:`Back-Reflection Alignment <optical_alignment_back_reflections>`"
+        in page
+    )

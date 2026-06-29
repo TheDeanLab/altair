@@ -12,7 +12,6 @@ from typing import Any
 
 from .prescriptions import LensSurface
 
-
 VectorTuple = tuple[float, float, float]
 Matrix3 = tuple[VectorTuple, ...]
 

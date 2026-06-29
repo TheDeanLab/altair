@@ -168,6 +168,19 @@ def create_materials() -> dict[str, object]:
         "metal": _material(
             "Black Anodized Metal", (0.12, 0.125, 0.13, 1.0), roughness=0.32
         ),
+        "post_steel": _material(
+            "Polished Stainless Optical Post",
+            (0.70, 0.72, 0.70, 1.0),
+            roughness=0.22,
+            metallic=0.55,
+        ),
+        "mirror": _material(
+            "Protected Silver Mirror",
+            (0.88, 0.93, 0.96, 1.0),
+            emission=0.02,
+            roughness=0.08,
+            metallic=0.78,
+        ),
         "card": _material("Business Card Stock", (0.92, 0.88, 0.78, 1.0)),
         "aperture": _material("Aperture Edge", (0.02, 0.02, 0.018, 1.0)),
         "glass": _material(

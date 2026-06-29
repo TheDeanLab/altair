@@ -1,6 +1,6 @@
 import math
 
-import pytest
+import pytest  # pyright: ignore[reportMissingImports]
 
 from simulations.blender.altair_blender.optics import (
     SpotOffset,
@@ -8,6 +8,7 @@ from simulations.blender.altair_blender.optics import (
     reflect_ray_bundle_from_surface,
     spherical_surface_normal,
     spherical_surface_x,
+    trace_ray_branches_through_surfaces,
     validate_positive,
 )
 from simulations.blender.altair_blender.prescriptions import AC254_100_A
@@ -189,3 +190,56 @@ def test_reflected_ray_bundle_uses_surface_curvature_for_different_spot_sizes():
     assert front.diameter_mm != pytest.approx(rear.diameter_mm)
     assert front.surface_name == "front_bk7_air"
     assert rear.surface_name == "rear_sf5_air"
+
+
+def test_sequential_ray_trace_splits_reflected_and_transmitted_branches():
+    branches = trace_ray_branches_through_surfaces(
+        surfaces=AC254_100_A.surfaces,
+        origin=(-75.0, 0.05, 0.0),
+        direction=(1.0, 0.0, 0.0),
+        max_depth=6,
+        intensity_floor=1e-8,
+    )
+    interaction_branches = [
+        branch for branch in branches if branch.branch_kind != "escaped"
+    ]
+
+    assert {branch.branch_kind for branch in interaction_branches} >= {
+        "reflected",
+        "transmitted",
+    }
+    assert {
+        branch.surface_name
+        for branch in interaction_branches
+        if branch.branch_kind == "transmitted"
+    } >= {"front_bk7_air", "cemented_bk7_sf5", "rear_sf5_air"}
+    assert {
+        branch.surface_name
+        for branch in interaction_branches
+        if branch.branch_kind == "reflected"
+    } >= {"front_bk7_air", "cemented_bk7_sf5", "rear_sf5_air"}
+    assert all(branch.intensity_fraction > 0.0 for branch in branches)
+
+
+def test_sequential_ray_trace_returns_escaped_source_and_downstream_branches():
+    branches = trace_ray_branches_through_surfaces(
+        surfaces=AC254_100_A.surfaces,
+        origin=(-75.0, 0.05, 0.0),
+        direction=(1.0, 0.0, 0.0),
+        max_depth=8,
+        intensity_floor=1e-8,
+    )
+    escaped = [branch for branch in branches if branch.branch_kind == "escaped"]
+
+    assert any(
+        branch.medium == "air"
+        and branch.direction.x_mm < 0.0
+        and any("reflected" in step for step in branch.path)
+        for branch in escaped
+    )
+    assert any(
+        branch.medium == "air"
+        and branch.direction.x_mm > 0.0
+        and branch.path[-1] == "rear_sf5_air:transmitted"
+        for branch in escaped
+    )

@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 import math
 import os
 from pathlib import Path
 import sys
+from typing import Any, NamedTuple
 
 
 def _ensure_repo_root_on_path() -> None:
+    """Ensure direct script execution can import the repository package."""
+
     repo_root = Path(__file__).resolve().parents[3]
     if str(repo_root) not in sys.path:
         sys.path.insert(0, str(repo_root))
@@ -19,12 +23,38 @@ _ensure_repo_root_on_path()
 from simulations.blender.altair_blender.prescriptions import (  # noqa: E402
     AC254_100_A,
     LMR1_MOUNT,
+    LensSurface,
+)
+from simulations.blender.altair_blender.optics import (  # noqa: E402
+    ReflectedSpotSummary,
+    SpotOffset,
+    reflect_ray_bundle_from_surface,
 )
 from simulations.blender.altair_blender.scene import RENDER_PRESETS  # noqa: E402
 
 SCENE_NAME = "achromat_back_reflection"
 
-DEFAULT_PARAMETERS = {
+
+class AlignmentState(NamedTuple):
+    """One ray-traced alignment state in the teaching timeline."""
+
+    name: str
+    frame: int
+    tilt_y_deg: float
+    tilt_z_deg: float
+    decenter_y_mm: float
+    decenter_z_mm: float
+
+
+class SpotKeyframe(NamedTuple):
+    """Displayed spot position and radius for one timeline keyframe."""
+
+    frame: int
+    offset: SpotOffset
+    radius_mm: float
+
+
+DEFAULT_PARAMETERS: dict[str, Any] = {
     "wavelength_nm": 561.0,
     "beam_diameter_mm": 1.0,
     "aperture_diameter_mm": 1.0,
@@ -54,13 +84,30 @@ DEFAULT_PARAMETERS = {
     "exaggeration": 5.0,
     "alignment_display_exaggeration": 20.0,
     "frame_start": 1,
-    "frame_tilt_corrected": 72,
-    "frame_decenter_corrected": 132,
+    "frame_tilt_corrected": 36,
+    "frame_horizontal_decentered": 60,
+    "frame_horizontal_corrected": 96,
+    "frame_vertical_decentered": 120,
+    "frame_vertical_corrected": 156,
+    "frame_decenter_corrected": 156,
     "frame_end": 168,
 }
 
 
 def _parse_output_path(argv: list[str]) -> str | None:
+    """Parse the optional Blender output path from script arguments.
+
+    Parameters
+    ----------
+    argv
+        Process argument vector supplied by Blender or Python.
+
+    Returns
+    -------
+    str or None
+        Output path after Blender's ``--`` separator, when provided.
+    """
+
     if "--" not in argv:
         return None
     separator = argv.index("--")
@@ -70,25 +117,114 @@ def _parse_output_path(argv: list[str]) -> str | None:
     return extra[0]
 
 
+def _alignment_states(params: Mapping[str, Any]) -> tuple[AlignmentState, ...]:
+    """Create the explicit alignment sequence used by the animation.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    tuple[AlignmentState, ...]
+        Ordered states for rotation, horizontal translation, vertical
+        translation, and final alignment.
+    """
+
+    return (
+        AlignmentState(
+            name="rotation_error",
+            frame=int(params["frame_start"]),
+            tilt_y_deg=float(params["initial_tilt_y_deg"]),
+            tilt_z_deg=0.0,
+            decenter_y_mm=0.0,
+            decenter_z_mm=0.0,
+        ),
+        AlignmentState(
+            name="angle_corrected",
+            frame=int(params["frame_tilt_corrected"]),
+            tilt_y_deg=0.0,
+            tilt_z_deg=0.0,
+            decenter_y_mm=0.0,
+            decenter_z_mm=0.0,
+        ),
+        AlignmentState(
+            name="horizontal_decenter",
+            frame=int(params["frame_horizontal_decentered"]),
+            tilt_y_deg=0.0,
+            tilt_z_deg=0.0,
+            decenter_y_mm=float(params["initial_decenter_y_mm"]),
+            decenter_z_mm=0.0,
+        ),
+        AlignmentState(
+            name="horizontal_corrected",
+            frame=int(params["frame_horizontal_corrected"]),
+            tilt_y_deg=0.0,
+            tilt_z_deg=0.0,
+            decenter_y_mm=0.0,
+            decenter_z_mm=0.0,
+        ),
+        AlignmentState(
+            name="vertical_decenter",
+            frame=int(params["frame_vertical_decentered"]),
+            tilt_y_deg=0.0,
+            tilt_z_deg=0.0,
+            decenter_y_mm=0.0,
+            decenter_z_mm=float(params["initial_decenter_z_mm"]),
+        ),
+        AlignmentState(
+            name="aligned",
+            frame=int(params["frame_vertical_corrected"]),
+            tilt_y_deg=0.0,
+            tilt_z_deg=0.0,
+            decenter_y_mm=0.0,
+            decenter_z_mm=0.0,
+        ),
+        AlignmentState(
+            name="aligned_hold",
+            frame=int(params["frame_end"]),
+            tilt_y_deg=0.0,
+            tilt_z_deg=0.0,
+            decenter_y_mm=0.0,
+            decenter_z_mm=0.0,
+        ),
+    )
+
+
 def _alignment_display_pose(
-    params,
+    params: Mapping[str, Any],
+    state: AlignmentState,
     *,
     lens_x: float,
     axis_z: float,
-    tilt_corrected: bool = False,
-    decenter_corrected: bool = False,
 ) -> tuple[tuple[float, float, float], tuple[float, float, float]]:
+    """Return the exaggerated lens pose used in the visible alignment animation.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    state
+        Alignment state to display.
+    lens_x
+        Lens X position in millimeters.
+    axis_z
+        Optical-axis height in millimeters.
+
+    Returns
+    -------
+    tuple[tuple[float, float, float], tuple[float, float, float]]
+        Euler rotation and location for the lens and mount.
+    """
+
     exaggeration = float(
         params.get("alignment_display_exaggeration", params["exaggeration"])
     )
-    tilt_y_deg = 0.0 if tilt_corrected else params["initial_tilt_y_deg"] * exaggeration
-    tilt_z_deg = 0.0 if tilt_corrected else params["initial_tilt_z_deg"] * exaggeration
-    decenter_y_mm = (
-        0.0 if decenter_corrected else params["initial_decenter_y_mm"] * exaggeration
-    )
-    decenter_z_mm = (
-        0.0 if decenter_corrected else params["initial_decenter_z_mm"] * exaggeration
-    )
+    tilt_y_deg = state.tilt_y_deg * exaggeration
+    tilt_z_deg = state.tilt_z_deg * exaggeration
+    decenter_y_mm = state.decenter_y_mm * exaggeration
+    decenter_z_mm = state.decenter_z_mm * exaggeration
 
     return (
         (0.0, math.radians(-tilt_z_deg), math.radians(tilt_y_deg)),
@@ -96,7 +232,154 @@ def _alignment_display_pose(
     )
 
 
+def _reflected_summaries_for_state(
+    *,
+    state: AlignmentState,
+    reflected_surfaces: Sequence[LensSurface],
+    beam_diameter_mm: float,
+    card_to_lens_mm: float,
+    sample_rings: int = 4,
+) -> tuple[ReflectedSpotSummary, ...]:
+    """Trace reflected ray bundles for all displayed surfaces at one state.
+
+    Parameters
+    ----------
+    state
+        Alignment state to trace.
+    reflected_surfaces
+        Lens surfaces whose back reflections should be displayed.
+    beam_diameter_mm
+        Incident beam diameter in millimeters.
+    card_to_lens_mm
+        Distance from the aperture card to the lens center in millimeters.
+    sample_rings
+        Number of radial rings used to sample each ray bundle.
+
+    Returns
+    -------
+    tuple[ReflectedSpotSummary, ...]
+        Reflected spot summaries in the same order as ``reflected_surfaces``.
+    """
+
+    return tuple(
+        reflect_ray_bundle_from_surface(
+            surface=surface,
+            beam_diameter_mm=beam_diameter_mm,
+            card_to_lens_mm=card_to_lens_mm,
+            tilt_y_deg=state.tilt_y_deg,
+            tilt_z_deg=state.tilt_z_deg,
+            decenter_y_mm=state.decenter_y_mm,
+            decenter_z_mm=state.decenter_z_mm,
+            sample_rings=sample_rings,
+        )
+        for surface in reflected_surfaces
+    )
+
+
+def _display_offset(
+    summary: ReflectedSpotSummary, *, exaggeration: float
+) -> SpotOffset:
+    """Scale a simulated reflected spot center for the visible card readout.
+
+    Parameters
+    ----------
+    summary
+        Reflected spot summary to scale.
+    exaggeration
+        Visual exaggeration factor.
+
+    Returns
+    -------
+    SpotOffset
+        Spot offset with exaggerated Y/Z coordinates.
+    """
+
+    return SpotOffset(
+        y_mm=summary.center.y_mm * exaggeration,
+        z_mm=summary.center.z_mm * exaggeration,
+    )
+
+
+def _display_radius(summary: ReflectedSpotSummary, *, exaggeration: float) -> float:
+    """Scale and clamp a simulated reflected spot diameter for display.
+
+    Parameters
+    ----------
+    summary
+        Reflected spot summary to scale.
+    exaggeration
+        Visual exaggeration factor.
+
+    Returns
+    -------
+    float
+        Display radius in millimeters.
+    """
+
+    return max(0.18, min(1.4, summary.diameter_mm * exaggeration * 0.5))
+
+
+def _spot_keyframes_for_states(
+    *,
+    states: Sequence[AlignmentState],
+    reflected_surfaces: Sequence[LensSurface],
+    beam_diameter_mm: float,
+    card_to_lens_mm: float,
+    exaggeration: float,
+    sample_rings: int = 4,
+) -> tuple[tuple[SpotKeyframe, ...], ...]:
+    """Compute displayed spot keyframes from ray-traced alignment states.
+
+    Parameters
+    ----------
+    states
+        Ordered alignment states.
+    reflected_surfaces
+        Lens surfaces whose back reflections should be displayed.
+    beam_diameter_mm
+        Incident beam diameter in millimeters.
+    card_to_lens_mm
+        Distance from the aperture card to the lens center in millimeters.
+    exaggeration
+        Visual exaggeration factor for card offsets and spot radii.
+    sample_rings
+        Number of radial rings used to sample each ray bundle.
+
+    Returns
+    -------
+    tuple[tuple[SpotKeyframe, ...], ...]
+        One tuple per alignment state, containing one spot keyframe per
+        reflected surface.
+    """
+
+    return tuple(
+        tuple(
+            SpotKeyframe(
+                frame=state.frame,
+                offset=_display_offset(summary, exaggeration=exaggeration),
+                radius_mm=_display_radius(summary, exaggeration=exaggeration),
+            )
+            for summary in _reflected_summaries_for_state(
+                state=state,
+                reflected_surfaces=reflected_surfaces,
+                beam_diameter_mm=beam_diameter_mm,
+                card_to_lens_mm=card_to_lens_mm,
+                sample_rings=sample_rings,
+            )
+        )
+        for state in states
+    )
+
+
 def main(output_path: str | None = None) -> None:
+    """Generate the achromat back-reflection teaching scene.
+
+    Parameters
+    ----------
+    output_path
+        Optional path where the generated ``.blend`` file should be saved.
+    """
+
     _ensure_repo_root_on_path()
 
     from simulations.blender.altair_blender.animation import (
@@ -120,7 +403,6 @@ def main(output_path: str | None = None) -> None:
     from simulations.blender.altair_blender.optics import (
         create_beam_between,
         create_return_spot,
-        reflect_ray_bundle_from_surface,
         validate_positive,
     )
     from simulations.blender.altair_blender.scene import (
@@ -217,47 +499,21 @@ def main(output_path: str | None = None) -> None:
         collection=collection,
     )
 
-    initial_summaries = tuple(
-        reflect_ray_bundle_from_surface(
-            surface=surface,
-            beam_diameter_mm=params["beam_diameter_mm"],
-            card_to_lens_mm=lens_x - card_x,
-            tilt_y_deg=params["initial_tilt_y_deg"],
-            tilt_z_deg=params["initial_tilt_z_deg"],
-            decenter_y_mm=params["initial_decenter_y_mm"],
-            decenter_z_mm=params["initial_decenter_z_mm"],
-            sample_rings=4,
-        )
-        for surface in reflected_surfaces
+    states = _alignment_states(params)
+    spot_keyframes = _spot_keyframes_for_states(
+        states=states,
+        reflected_surfaces=reflected_surfaces,
+        beam_diameter_mm=params["beam_diameter_mm"],
+        card_to_lens_mm=lens_x - card_x,
+        exaggeration=params["exaggeration"],
+        sample_rings=4,
     )
-    centered_summaries = tuple(
-        reflect_ray_bundle_from_surface(
-            surface=surface,
-            beam_diameter_mm=params["beam_diameter_mm"],
-            card_to_lens_mm=lens_x - card_x,
-            tilt_y_deg=0.0,
-            tilt_z_deg=0.0,
-            decenter_y_mm=0.0,
-            decenter_z_mm=0.0,
-            sample_rings=4,
-        )
-        for surface in reflected_surfaces
-    )
-
-    def display_offset(summary):
-        return type(summary.center)(
-            y_mm=summary.center.y_mm * params["exaggeration"],
-            z_mm=summary.center.z_mm * params["exaggeration"],
-        )
-
-    def display_radius(summary):
-        return max(0.18, min(1.4, summary.diameter_mm * params["exaggeration"] * 0.5))
 
     spot_a = create_return_spot(
         name="Return Spot A",
         card_x_mm=card_x,
-        offset=display_offset(initial_summaries[0]),
-        radius_mm=display_radius(initial_summaries[0]),
+        offset=spot_keyframes[0][0].offset,
+        radius_mm=spot_keyframes[0][0].radius_mm,
         material=materials["spot_a"],
         collection=collection,
         optical_axis_z_mm=axis_z,
@@ -265,70 +521,42 @@ def main(output_path: str | None = None) -> None:
     spot_b = create_return_spot(
         name="Return Spot B",
         card_x_mm=card_x,
-        offset=display_offset(initial_summaries[1]),
-        radius_mm=display_radius(initial_summaries[1]),
+        offset=spot_keyframes[0][1].offset,
+        radius_mm=spot_keyframes[0][1].radius_mm,
         material=materials["spot_b"],
         collection=collection,
         optical_axis_z_mm=axis_z,
     )
 
-    initial_rotation, initial_location = _alignment_display_pose(
-        params, lens_x=lens_x, axis_z=axis_z
-    )
-    tilt_corrected_rotation, tilt_corrected_location = _alignment_display_pose(
-        params,
-        lens_x=lens_x,
-        axis_z=axis_z,
-        tilt_corrected=True,
-    )
-    final_rotation, final_location = _alignment_display_pose(
-        params,
-        lens_x=lens_x,
-        axis_z=axis_z,
-        tilt_corrected=True,
-        decenter_corrected=True,
-    )
     for obj in (lens, mount):
-        keyframe_transform(
-            obj,
-            frame=int(params["frame_start"]),
-            rotation_euler=initial_rotation,
-            location=initial_location,
-        )
-        keyframe_transform(
-            obj,
-            frame=int(params["frame_tilt_corrected"]),
-            rotation_euler=tilt_corrected_rotation,
-            location=tilt_corrected_location,
-        )
-        keyframe_transform(
-            obj,
-            frame=int(params["frame_decenter_corrected"]),
-            rotation_euler=final_rotation,
-            location=final_location,
-        )
+        for state in states:
+            rotation, location = _alignment_display_pose(
+                params, state, lens_x=lens_x, axis_z=axis_z
+            )
+            keyframe_transform(
+                obj,
+                frame=state.frame,
+                rotation_euler=rotation,
+                location=location,
+            )
         set_linear_interpolation(obj)
 
-    for spot, initial_summary, final_summary in zip(
-        (spot_a, spot_b), initial_summaries, centered_summaries
-    ):
-        spot.keyframe_insert(data_path="location", frame=int(params["frame_start"]))
-        spot.keyframe_insert(data_path="scale", frame=int(params["frame_start"]))
-        final_offset = display_offset(final_summary)
-        final_radius = display_radius(final_summary)
-        initial_radius = display_radius(initial_summary)
-        spot.location = (card_x - 0.9, final_offset.y_mm, axis_z + final_offset.z_mm)
-        spot.scale = (
-            0.18,
-            final_radius / initial_radius,
-            final_radius / initial_radius,
-        )
-        spot.keyframe_insert(
-            data_path="location", frame=int(params["frame_decenter_corrected"])
-        )
-        spot.keyframe_insert(
-            data_path="scale", frame=int(params["frame_decenter_corrected"])
-        )
+    for spot_index, spot in enumerate((spot_a, spot_b)):
+        base_radius = spot_keyframes[0][spot_index].radius_mm
+        for state_keyframes in spot_keyframes:
+            keyframe = state_keyframes[spot_index]
+            spot.location = (
+                card_x - 0.9,
+                keyframe.offset.y_mm,
+                axis_z + keyframe.offset.z_mm,
+            )
+            spot.scale = (
+                0.18,
+                keyframe.radius_mm / base_radius,
+                keyframe.radius_mm / base_radius,
+            )
+            spot.keyframe_insert(data_path="location", frame=keyframe.frame)
+            spot.keyframe_insert(data_path="scale", frame=keyframe.frame)
         set_linear_interpolation(spot)
 
     if params["show_minimal_labels"]:

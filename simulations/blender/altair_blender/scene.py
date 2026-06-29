@@ -4,8 +4,14 @@ from __future__ import annotations
 
 from pathlib import Path
 from types import ModuleType
+from typing import Any
 
 RENDER_PRESETS = {
+    "draft": {
+        "engine": "BLENDER_WORKBENCH",
+        "samples": 16,
+        "description": "Fast Workbench draft render for checking animation timing.",
+    },
     "preview": {
         "engine": "BLENDER_EEVEE",
         "samples": 96,
@@ -22,10 +28,16 @@ WORLD_BACKGROUND_COLOR = (0.24, 0.25, 0.26)
 
 
 def get_bpy() -> ModuleType:
-    """Return Blender's `bpy` module or raise a clear runtime error."""
+    """Return Blender's `bpy` module or raise a clear runtime error.
+
+    Returns
+    -------
+    ModuleType
+        Imported Blender Python module.
+    """
 
     try:
-        import bpy  # type: ignore[import-not-found]
+        import bpy  # pyright: ignore[reportMissingImports]
     except ModuleNotFoundError as exc:
         raise RuntimeError(
             "This function must be run inside Blender with bpy available."
@@ -41,11 +53,28 @@ def reset_scene() -> None:
     bpy.ops.object.delete()
 
 
-def _set_render_engine(scene, preferred: str, fallbacks: tuple[str, ...]) -> str:
+def _set_render_engine(scene: Any, preferred: str, fallbacks: tuple[str, ...]) -> str:
+    """Select the first render engine accepted by the active Blender runtime.
+
+    Parameters
+    ----------
+    scene
+        Blender scene whose render engine should be configured.
+    preferred
+        Preferred render engine identifier.
+    fallbacks
+        Render engine identifiers to try if the preferred engine fails.
+
+    Returns
+    -------
+    str
+        Actual render engine selected by Blender.
+    """
+
     for engine in (preferred, *fallbacks):
         if engine == "CYCLES":
             try:
-                import addon_utils  # type: ignore[import-not-found]
+                import addon_utils  # pyright: ignore[reportMissingImports]
 
                 addon_utils.enable("cycles", default_set=False, persistent=False)
             except Exception:
@@ -59,14 +88,34 @@ def _set_render_engine(scene, preferred: str, fallbacks: tuple[str, ...]) -> str
     return scene.render.engine
 
 
-def _try_setattr(obj, attr: str, value) -> None:
+def _try_setattr(obj: Any, attr: str, value: Any) -> None:
+    """Set an optional Blender attribute when the runtime supports it.
+
+    Parameters
+    ----------
+    obj
+        Object whose attribute should be assigned.
+    attr
+        Attribute name.
+    value
+        Attribute value.
+    """
+
     try:
         setattr(obj, attr, value)
     except (AttributeError, TypeError, ValueError):
         return
 
 
-def _configure_color_management(scene) -> None:
+def _configure_color_management(scene: Any) -> None:
+    """Apply robust color-management defaults across Blender versions.
+
+    Parameters
+    ----------
+    scene
+        Blender scene whose view settings should be configured.
+    """
+
     for view_transform in ("Filmic", "AgX"):
         try:
             scene.view_settings.view_transform = view_transform
@@ -86,7 +135,18 @@ def _configure_color_management(scene) -> None:
 
 
 def apply_render_preset(preset_name: str) -> str:
-    """Apply a reusable preview or final render preset to the active scene."""
+    """Apply a reusable preview or final render preset to the active scene.
+
+    Parameters
+    ----------
+    preset_name
+        Name of the render preset to apply.
+
+    Returns
+    -------
+    str
+        Actual render engine selected by Blender.
+    """
 
     if preset_name not in RENDER_PRESETS:
         valid = ", ".join(sorted(RENDER_PRESETS))
@@ -109,6 +169,16 @@ def apply_render_preset(preset_name: str) -> str:
             _try_setattr(scene.cycles, "diffuse_bounces", 3)
             _try_setattr(scene.cycles, "glossy_bounces", 4)
             _try_setattr(scene.cycles, "transparent_max_bounces", 8)
+    elif preset_name == "draft":
+        actual_engine = _set_render_engine(
+            scene, requested_engine, ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE")
+        )
+        display = getattr(scene, "display", None)
+        shading = getattr(display, "shading", None)
+        if shading is not None:
+            _try_setattr(shading, "light", "STUDIO")
+            _try_setattr(shading, "color_type", "MATERIAL")
+            _try_setattr(shading, "show_shadows", False)
     else:
         actual_engine = _set_render_engine(
             scene, requested_engine, ("BLENDER_EEVEE_NEXT",)
@@ -127,7 +197,19 @@ def apply_render_preset(preset_name: str) -> str:
 
 
 def configure_cycles_device(device_name: str) -> str:
-    """Configure the active Cycles scene to use a requested render device."""
+    """Configure the active Cycles scene to use a requested render device.
+
+    Parameters
+    ----------
+    device_name
+        Requested Cycles device name, such as ``CPU``, ``CUDA``, or
+        ``OPTIX+CPU``.
+
+    Returns
+    -------
+    str
+        Device selection status.
+    """
 
     requested = device_name.strip().upper()
     if not requested or requested == "DEFAULT":
@@ -145,7 +227,7 @@ def configure_cycles_device(device_name: str) -> str:
         return "CPU"
 
     try:
-        import addon_utils  # type: ignore[import-not-found]
+        import addon_utils  # pyright: ignore[reportMissingImports]
 
         addon_utils.enable("cycles", default_set=False, persistent=False)
         preferences = bpy.context.preferences.addons["cycles"].preferences
@@ -174,7 +256,19 @@ def configure_scene(
     fps: int = 24,
     render_preset: str = "preview",
 ) -> None:
-    """Configure units, timeline, render defaults, and world background."""
+    """Configure units, timeline, render defaults, and world background.
+
+    Parameters
+    ----------
+    frame_start
+        First frame in the scene timeline.
+    frame_end
+        Last frame in the scene timeline.
+    fps
+        Rendered movie frame rate.
+    render_preset
+        Render preset name to apply.
+    """
 
     bpy = get_bpy()
     scene = bpy.context.scene
@@ -196,8 +290,25 @@ def add_area_light(
     location: tuple[float, float, float],
     power: float,
     size: float,
-):
-    """Add a soft area light suitable for shadowed educational renders."""
+) -> Any:
+    """Add a soft area light suitable for shadowed educational renders.
+
+    Parameters
+    ----------
+    name
+        Name for the light object.
+    location
+        World-space light location in millimeters.
+    power
+        Light energy in Blender units.
+    size
+        Area-light size in millimeters.
+
+    Returns
+    -------
+    object
+        Blender light object.
+    """
 
     bpy = get_bpy()
     bpy.ops.object.light_add(type="AREA", location=location)
@@ -208,8 +319,19 @@ def add_area_light(
     return light
 
 
-def ensure_collection(name: str):
-    """Return a named collection, creating and linking it when needed."""
+def ensure_collection(name: str) -> Any:
+    """Return a named collection, creating and linking it when needed.
+
+    Parameters
+    ----------
+    name
+        Collection name.
+
+    Returns
+    -------
+    object
+        Blender collection object.
+    """
 
     bpy = get_bpy()
     collection = bpy.data.collections.get(name)
@@ -220,7 +342,18 @@ def ensure_collection(name: str):
 
 
 def validate_output_path(output_path: str | None) -> Path | None:
-    """Validate an optional `.blend` output path."""
+    """Validate an optional `.blend` output path.
+
+    Parameters
+    ----------
+    output_path
+        Optional path where the generated Blender file should be saved.
+
+    Returns
+    -------
+    pathlib.Path or None
+        Expanded output path, or ``None`` when no output was requested.
+    """
 
     if output_path is None:
         return None

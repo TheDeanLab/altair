@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from .scene import get_bpy
 
 TABLE_STAINLESS_COLOR = (0.82, 0.84, 0.83, 1.0)
@@ -11,7 +13,19 @@ TABLE_HOLE_COLOR = (0.035, 0.038, 0.04, 1.0)
 BACKDROP_NEUTRAL_COLOR = (0.56, 0.58, 0.59, 1.0)
 
 
-def _set_input_if_present(bsdf, names: tuple[str, ...], value) -> None:
+def _set_input_if_present(bsdf: Any, names: tuple[str, ...], value: Any) -> None:
+    """Set the first available node input from a list of candidate names.
+
+    Parameters
+    ----------
+    bsdf
+        Blender shader node whose inputs should be inspected.
+    names
+        Candidate input names in preference order.
+    value
+        Value to assign to the first matching input.
+    """
+
     for name in names:
         if name in bsdf.inputs:
             bsdf.inputs[name].default_value = value
@@ -27,7 +41,32 @@ def _material(
     metallic: float = 0.0,
     transmission: float = 0.0,
     anisotropic: float = 0.0,
-):
+) -> Any:
+    """Create a Blender material with a configured Principled BSDF.
+
+    Parameters
+    ----------
+    name
+        Material name.
+    color
+        RGBA diffuse and base color.
+    emission
+        Emission strength.
+    roughness
+        Surface roughness value.
+    metallic
+        Metallic material value.
+    transmission
+        Transmission weight when supported by the Blender runtime.
+    anisotropic
+        Anisotropy value when supported by the Blender runtime.
+
+    Returns
+    -------
+    object
+        Blender material object.
+    """
+
     bpy = get_bpy()
     material = bpy.data.materials.new(name)
     material.diffuse_color = color
@@ -50,8 +89,14 @@ def _material(
     return material
 
 
-def _add_brushed_steel_nodes(material) -> None:
-    """Add subtle directional brushing to the optical table material."""
+def _add_brushed_steel_nodes(material: Any) -> None:
+    """Add subtle directional brushing to the optical table material.
+
+    Parameters
+    ----------
+    material
+        Blender material to receive procedural brushing nodes.
+    """
 
     nodes = material.node_tree.nodes
     links = material.node_tree.links
@@ -88,7 +133,13 @@ def _add_brushed_steel_nodes(material) -> None:
 
 
 def create_materials() -> dict[str, object]:
-    """Create the standard material palette for the simulation."""
+    """Create the standard material palette for the simulation.
+
+    Returns
+    -------
+    dict[str, object]
+        Mapping from semantic material names to Blender material objects.
+    """
 
     table = _material(
         "Brushed Ferromagnetic Stainless Optical Table",

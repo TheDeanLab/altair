@@ -611,6 +611,25 @@ def _reflect_direction(direction: VectorTuple, normal: VectorTuple) -> VectorTup
     return _normalize(_sub(direction, _scale(normal, 2.0 * _dot(direction, normal))))
 
 
+def reflect_direction(direction: VectorTuple, normal: VectorTuple) -> VectorTuple:
+    """Reflect a ray direction about a surface normal.
+
+    Parameters
+    ----------
+    direction
+        Incident ray direction.
+    normal
+        Surface normal.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Reflected unit direction.
+    """
+
+    return _reflect_direction(_normalize(direction), _normalize(normal))
+
+
 def _refract_direction(
     *,
     direction: VectorTuple,

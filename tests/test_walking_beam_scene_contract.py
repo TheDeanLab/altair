@@ -117,7 +117,7 @@ def test_scene_orients_mirror_mount_faces_toward_the_beam_path():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS
 
-    assert params["m1_yaw_deg"] == pytest.approx(45.0)
+    assert params["m1_yaw_deg"] == pytest.approx(-45.0)
     assert params["m2_yaw_deg"] == pytest.approx(135.0)
 
     m1_reflective_normal = (
@@ -125,6 +125,23 @@ def test_scene_orients_mirror_mount_faces_toward_the_beam_path():
         -math.sin(math.radians(params["m1_yaw_deg"])),
     )
     assert m1_reflective_normal[0] < 0.0
+    assert m1_reflective_normal[1] > 0.0
+
+
+def test_scene_mirror_yaws_trace_ninety_degree_reflections():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+
+    incoming = (1.0, 0.0, 0.0)
+    m1_normal = module._mirror_reflective_normal(params["m1_yaw_deg"])
+    folded = module._reflect_direction(incoming, m1_normal)
+    m2_normal = module._mirror_reflective_normal(params["m2_yaw_deg"])
+    outgoing = module._reflect_direction(folded, m2_normal)
+
+    assert folded[0] == pytest.approx(0.0, abs=1e-9)
+    assert folded[1] > 0.0
+    assert outgoing[0] > 0.0
+    assert outgoing[1] == pytest.approx(0.0, abs=1e-9)
 
 
 def test_scene_beam_path_uses_mirror_surface_points_not_mount_centers():
@@ -301,3 +318,22 @@ def test_downstream_beam_path_stops_at_first_blocking_iris():
     assert paths["aligned_hold"].visible_end_xyz == pytest.approx(
         paths["aligned_hold"].exit_xyz
     )
+
+
+def test_iris_spot_visibility_follows_first_blocking_iris():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    states = module._alignment_states(params)
+
+    visibility = {
+        state.name: module._iris_spot_visibility(
+            module._downstream_beam_path_for_state(params, model, state)
+        )
+        for state in states
+    }
+
+    assert visibility["gross_misalignment"] == (True, False)
+    assert visibility["m1_centers_iris1"] == (True, True)
+    assert visibility["m2_centers_iris2"] == (True, False)
+    assert visibility["aligned_hold"] == (True, True)

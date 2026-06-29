@@ -35,6 +35,9 @@ from simulations.blender.altair_blender.prescriptions import (  # noqa: E402
     PH2_POST_HOLDER,
     TR15_POST,
 )
+from simulations.blender.altair_blender.optics import (  # noqa: E402
+    reflect_direction as _reflect_direction,
+)
 from simulations.blender.altair_blender.scene import RENDER_PRESETS  # noqa: E402
 
 SCENE_NAME = "walking_beam_alignment"
@@ -135,7 +138,7 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
         "same beam height",
     ),
     "mirror_surface_offset_mm": 7.0,
-    "m1_yaw_deg": 45.0,
+    "m1_yaw_deg": -45.0,
     "m2_yaw_deg": 135.0,
     "frame_start": 1,
     "frame_m1_centers_iris1": 36,
@@ -213,6 +216,24 @@ def _component_centers(
         name: (*_grid_position_mm(params, name), axis_z)
         for name in ("m1", "m2", "iris_1", "iris_2")
     }
+
+
+def _mirror_reflective_normal(yaw_deg: float) -> tuple[float, float, float]:
+    """Return the world-space normal of the visible mirror face.
+
+    Parameters
+    ----------
+    yaw_deg
+        Mirror mount yaw in degrees.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Unit normal of the local negative-X mirror face.
+    """
+
+    yaw_rad = math.radians(yaw_deg)
+    return (-math.cos(yaw_rad), -math.sin(yaw_rad), 0.0)
 
 
 def _mirror_face_point_at_y(
@@ -542,6 +563,23 @@ def _downstream_beam_path_for_state(
     )
 
 
+def _iris_spot_visibility(path: DownstreamBeamPath) -> tuple[bool, bool]:
+    """Return visible spot flags for Iris 1 and Iris 2.
+
+    Parameters
+    ----------
+    path
+        Downstream beam path with physical blocking status.
+
+    Returns
+    -------
+    tuple[bool, bool]
+        Visibility for Iris 1 and Iris 2 readout spots.
+    """
+
+    return (True, path.blocked_at != "iris_1")
+
+
 def _iris_closeup_camera_pose(params: Mapping[str, Any]) -> CameraPose:
     """Return a close-up camera pose that frames both irises.
 
@@ -856,6 +894,14 @@ def main(output_path: str | None = None) -> None:
         final_beam.keyframe_insert(data_path="location", frame=state.frame)
         final_beam.keyframe_insert(data_path="rotation_euler", frame=state.frame)
         final_beam.keyframe_insert(data_path="scale", frame=state.frame)
+        spot1_visible, spot2_visible = _iris_spot_visibility(downstream_path)
+        spot1.hide_viewport = not spot1_visible
+        spot1.hide_render = not spot1_visible
+        spot2.hide_viewport = not spot2_visible
+        spot2.hide_render = not spot2_visible
+        for spot in (spot1, spot2):
+            spot.keyframe_insert(data_path="hide_viewport", frame=state.frame)
+            spot.keyframe_insert(data_path="hide_render", frame=state.frame)
 
         display = _display_intercepts(
             compute_beam_intercepts(model, state),

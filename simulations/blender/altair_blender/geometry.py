@@ -265,6 +265,69 @@ def _cylinder_object(
     return cylinder
 
 
+def _torus_object(
+    name: str,
+    *,
+    collection: Any,
+    parent: Any | None,
+    major_radius_mm: float,
+    minor_radius_mm: float,
+    location: tuple[float, float, float],
+    material: Any,
+    major_segments: int = 96,
+    minor_segments: int = 8,
+    rotation: tuple[float, float, float] = (0.0, 0.0, 0.0),
+) -> Any:
+    """Create a smoothed torus mesh.
+
+    Parameters
+    ----------
+    name
+        Object name.
+    collection
+        Blender collection that should contain the torus.
+    parent
+        Optional parent object.
+    major_radius_mm
+        Distance from torus center to tube centerline.
+    minor_radius_mm
+        Tube radius.
+    location
+        Torus center location relative to the parent.
+    material
+        Material to assign to the torus.
+    major_segments
+        Number of torus ring segments.
+    minor_segments
+        Number of tube segments.
+    rotation
+        Euler rotation applied when the torus is created.
+
+    Returns
+    -------
+    object
+        Blender mesh object.
+    """
+
+    bpy = get_bpy()
+    bpy.ops.mesh.primitive_torus_add(
+        major_segments=major_segments,
+        minor_segments=minor_segments,
+        major_radius=major_radius_mm,
+        minor_radius=minor_radius_mm,
+        location=(0.0, 0.0, 0.0),
+        rotation=rotation,
+    )
+    torus = bpy.context.object
+    torus.name = name
+    torus.parent = parent
+    torus.location = location
+    torus.data.materials.append(material)
+    _link_to_collection(torus, collection)
+    bpy.ops.object.shade_smooth()
+    return torus
+
+
 def _annular_cylinder_x_object(
     name: str,
     *,
@@ -1188,6 +1251,8 @@ def create_post_mounted_iris(
     optical_axis_z_mm: float,
     iris: IrisPrescription = ID25_IRIS,
     display_aperture_mm: float | None = None,
+    show_alignment_reticle: bool = True,
+    reticle_radius_mm: float | None = None,
     holder: PostHolderPrescription = PH2_POST_HOLDER,
     post: OpticalPostPrescription = TR15_POST,
     table_top_z_mm: float = -5.0,
@@ -1213,6 +1278,12 @@ def create_post_mounted_iris(
     display_aperture_mm
         Optional visual aperture diameter. Defaults to the iris maximum
         aperture so the beam passes through a real open hole in the mesh.
+    show_alignment_reticle
+        Whether to draw a high-contrast ring and ticks around the displayed
+        aperture.
+    reticle_radius_mm
+        Optional radius for the alignment reticle ring. Defaults just outside
+        the displayed aperture.
     holder
         Source-backed post-holder prescription.
     post
@@ -1235,11 +1306,13 @@ def create_post_mounted_iris(
     metal = materials["metal"]
     dark = materials["aperture"]
     post_material = materials.get("post_steel", materials["table"])
+    reticle_material = materials.get("alignment_reference", materials["spot_a"])
     support_top_z = support_visual_top_z_mm
     if support_top_z is None:
         support_top_z = optical_axis_z_mm - (iris.outer_diameter_mm / 2.0) - 2.0
     support_length = max(6.0, support_top_z - table_top_z_mm)
     aperture_diameter = display_aperture_mm or iris.max_aperture_mm
+    reticle_radius = reticle_radius_mm or ((aperture_diameter / 2.0) + 1.6)
 
     _cylinder_object(
         f"{post.name} Iris Support Post",
@@ -1291,6 +1364,51 @@ def create_post_mounted_iris(
         material=dark,
         vertices=96,
     )
+    if show_alignment_reticle:
+        reticle_x = -(iris.thickness_mm / 2.0) - 0.62
+        _torus_object(
+            f"{iris.name} Alignment Reticle Ring",
+            collection=collection,
+            parent=parent,
+            major_radius_mm=reticle_radius,
+            minor_radius_mm=0.10,
+            location=(reticle_x, 0.0, optical_axis_z_mm),
+            material=reticle_material,
+            major_segments=96,
+            minor_segments=8,
+            rotation=(0.0, math.radians(90.0), 0.0),
+        )
+        tick_offset = reticle_radius + 0.9
+        for tick_name, tick_location, tick_dimensions in (
+            (
+                "Top",
+                (reticle_x, 0.0, optical_axis_z_mm + tick_offset),
+                (0.24, 1.35, 0.10),
+            ),
+            (
+                "Bottom",
+                (reticle_x, 0.0, optical_axis_z_mm - tick_offset),
+                (0.24, 1.35, 0.10),
+            ),
+            (
+                "Left",
+                (reticle_x, -tick_offset, optical_axis_z_mm),
+                (0.24, 0.10, 1.35),
+            ),
+            (
+                "Right",
+                (reticle_x, tick_offset, optical_axis_z_mm),
+                (0.24, 0.10, 1.35),
+            ),
+        ):
+            _box_object(
+                f"{iris.name} Alignment Reticle {tick_name} Tick",
+                collection=collection,
+                parent=parent,
+                dimensions=tick_dimensions,
+                location=tick_location,
+                material=reticle_material,
+            )
     _box_object(
         f"{iris.name} Lever",
         collection=collection,

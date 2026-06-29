@@ -68,6 +68,16 @@ def test_scene_default_parameters_include_hardware_sources_and_video_contract():
         assert "Thorlabs" in params[source_key]
 
 
+def test_scene_uses_narrow_visible_iris_apertures_with_reticles():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+
+    assert params["iris_display_aperture_mm"] == pytest.approx(
+        params["alignment_aperture_diameter_mm"]
+    )
+    assert params["iris_reticle_radius_mm"] > params["iris_display_aperture_mm"] / 2.0
+
+
 def test_scene_uses_requested_one_inch_hole_grid_layout():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

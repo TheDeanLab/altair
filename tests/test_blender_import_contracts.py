@@ -88,6 +88,8 @@ def test_scene_palette_exposes_high_contrast_optics_constants():
     assert materials.LASER_COLOR[3] >= 0.80
     assert materials.MIRROR_COLOR[2] > materials.MIRROR_COLOR[0]
     assert materials.SPOT_B_COLOR[2] > materials.SPOT_B_COLOR[1]
+    assert materials.ALIGNMENT_REFERENCE_COLOR[0] > 0.90
+    assert materials.ALIGNMENT_REFERENCE_COLOR[1] > 0.70
     assert min(materials.LABEL_COLOR[:3]) > 0.95
 
 
@@ -156,6 +158,8 @@ def test_hardware_builders_expose_keyword_only_geometry_controls():
             "optical_axis_z_mm",
             "iris",
             "display_aperture_mm",
+            "show_alignment_reticle",
+            "reticle_radius_mm",
             "support_visual_top_z_mm",
         ),
         "create_kinematic_mirror_mount": (

@@ -70,6 +70,8 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "wavelength_nm": 561.0,
     "beam_diameter_mm": 1.0,
     "alignment_aperture_diameter_mm": 2.5,
+    "iris_display_aperture_mm": 2.5,
+    "iris_reticle_radius_mm": 4.0,
     "hole_grid_spacing_mm": 25.4,
     "hole_grid_layout": {
         "m1": (-2, -2),
@@ -545,6 +547,8 @@ def main(output_path: str | None = None) -> None:
     validate_positive(
         "alignment_aperture_diameter_mm", params["alignment_aperture_diameter_mm"]
     )
+    validate_positive("iris_display_aperture_mm", params["iris_display_aperture_mm"])
+    validate_positive("iris_reticle_radius_mm", params["iris_reticle_radius_mm"])
     validate_positive("hole_grid_spacing_mm", params["hole_grid_spacing_mm"])
 
     bpy = get_bpy()
@@ -632,6 +636,8 @@ def main(output_path: str | None = None) -> None:
         x_mm=centers["iris_1"][0],
         y_mm=centers["iris_1"][1],
         optical_axis_z_mm=axis_z,
+        display_aperture_mm=float(params["iris_display_aperture_mm"]),
+        reticle_radius_mm=float(params["iris_reticle_radius_mm"]),
         table_top_z_mm=table_top_z,
         name="Iris 1 ID25-Style Assembly",
     )
@@ -641,6 +647,8 @@ def main(output_path: str | None = None) -> None:
         x_mm=centers["iris_2"][0],
         y_mm=centers["iris_2"][1],
         optical_axis_z_mm=axis_z,
+        display_aperture_mm=float(params["iris_display_aperture_mm"]),
+        reticle_radius_mm=float(params["iris_reticle_radius_mm"]),
         table_top_z_mm=table_top_z,
         name="Iris 2 ID25-Style Assembly",
     )

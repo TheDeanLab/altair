@@ -312,6 +312,15 @@ def test_scene_storyboard_captions_cover_alignment_sequence():
     assert params["storyboard_caption_location_mm"][2] > params["optical_axis_z_mm"]
 
 
+def test_scene_uses_high_contrast_label_style_for_caption_readability():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    style = module._label_style(params)
+
+    assert style.color == pytest.approx((1.0, 0.96, 0.7, 1.0))
+    assert style.emission_strength >= 1.4
+
+
 def test_downstream_beam_path_tracks_iterative_alignment_states():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

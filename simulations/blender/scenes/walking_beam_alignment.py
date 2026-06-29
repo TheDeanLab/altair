@@ -95,6 +95,13 @@ class StoryboardCaption(NamedTuple):
     text: str
 
 
+class LabelStyle(NamedTuple):
+    """Scene-local label material styling."""
+
+    color: tuple[float, float, float, float]
+    emission_strength: float
+
+
 DEFAULT_PARAMETERS: dict[str, Any] = {
     "wavelength_nm": 561.0,
     "beam_diameter_mm": 1.0,
@@ -130,6 +137,8 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "post_source": TR15_POST.source_notes,
     "mirror_mount_source": KM100CP_MOUNT.source_notes,
     "show_minimal_labels": True,
+    "label_color": (1.0, 0.96, 0.7, 1.0),
+    "label_emission_strength": 1.55,
     "show_storyboard_captions": True,
     "storyboard_caption_location_mm": (76.2, -45.0, 86.0),
     "storyboard_caption_size_mm": 3.4,
@@ -513,6 +522,35 @@ def _storyboard_captions_for_states(
     )
 
 
+def _label_style(params: Mapping[str, Any]) -> LabelStyle:
+    """Return the scene-local label material style."""
+
+    red, green, blue, alpha = params["label_color"]
+    return LabelStyle(
+        color=(float(red), float(green), float(blue), float(alpha)),
+        emission_strength=float(params["label_emission_strength"]),
+    )
+
+
+def _set_material_input_if_present(material: Any, input_name: str, value: Any) -> None:
+    """Set one Principled BSDF input when the Blender runtime exposes it."""
+
+    bsdf = material.node_tree.nodes.get("Principled BSDF")
+    if bsdf is not None and input_name in bsdf.inputs:
+        bsdf.inputs[input_name].default_value = value
+
+
+def _apply_label_style(materials: Mapping[str, Any], style: LabelStyle) -> None:
+    """Apply scene-local label styling to the generated material palette."""
+
+    label = materials["label"]
+    label.diffuse_color = style.color
+    _set_material_input_if_present(label, "Base Color", style.color)
+    _set_material_input_if_present(label, "Alpha", style.color[3])
+    _set_material_input_if_present(label, "Emission Color", style.color)
+    _set_material_input_if_present(label, "Emission Strength", style.emission_strength)
+
+
 def _display_intercepts(
     intercepts: BeamIntercepts, *, exaggeration: float
 ) -> BeamIntercepts:
@@ -872,6 +910,7 @@ def main(output_path: str | None = None) -> None:
     validate_positive("iris_spot_radius_mm", params["iris_spot_radius_mm"])
     validate_positive("iris_display_aperture_mm", params["iris_display_aperture_mm"])
     validate_positive("iris_reticle_radius_mm", params["iris_reticle_radius_mm"])
+    validate_positive("label_emission_strength", params["label_emission_strength"])
     validate_positive(
         "storyboard_caption_size_mm", params["storyboard_caption_size_mm"]
     )
@@ -893,6 +932,7 @@ def main(output_path: str | None = None) -> None:
 
     collection = ensure_collection("Walking Beam Alignment")
     materials = create_materials()
+    _apply_label_style(materials, _label_style(params))
     centers = _component_centers(params)
     beam_path = _beam_path_points(params)
     model = _walking_beam_model(params)

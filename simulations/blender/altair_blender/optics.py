@@ -1041,30 +1041,55 @@ def create_beam_between(
         Blender mesh object for the beam.
     """
 
-    from mathutils import Vector  # pyright: ignore[reportMissingImports]
-
     from .scene import get_bpy
 
     validate_positive("radius_mm", radius_mm)
     bpy = get_bpy()
+    bpy.ops.mesh.primitive_cylinder_add(
+        vertices=32,
+        radius=radius_mm,
+        depth=1.0,
+        location=(0.0, 0.0, 0.0),
+    )
+    beam = bpy.context.object
+    beam.name = name
+    beam.data.materials.append(material)
+    for existing in beam.users_collection:
+        existing.objects.unlink(beam)
+    collection.objects.link(beam)
+    set_beam_between(beam=beam, start_xyz=start_xyz, end_xyz=end_xyz)
+    return beam
+
+
+def set_beam_between(
+    *,
+    beam: Any,
+    start_xyz: tuple[float, float, float],
+    end_xyz: tuple[float, float, float],
+) -> None:
+    """Set a cylindrical beam object between two scene points.
+
+    Parameters
+    ----------
+    beam
+        Blender cylinder object whose local Z axis is the beam axis.
+    start_xyz
+        Beam start point in scene coordinates.
+    end_xyz
+        Beam end point in scene coordinates.
+    """
+
+    from mathutils import Vector  # pyright: ignore[reportMissingImports]
+
     start = Vector(start_xyz)
     end = Vector(end_xyz)
     direction = end - start
     length = direction.length
     validate_positive("beam_length", length)
 
-    midpoint = start + (direction * 0.5)
-    bpy.ops.mesh.primitive_cylinder_add(
-        vertices=32, radius=radius_mm, depth=length, location=midpoint
-    )
-    beam = bpy.context.object
-    beam.name = name
+    beam.location = start + (direction * 0.5)
     beam.rotation_euler = direction.to_track_quat("Z", "Y").to_euler()
-    beam.data.materials.append(material)
-    for existing in beam.users_collection:
-        existing.objects.unlink(beam)
-    collection.objects.link(beam)
-    return beam
+    beam.scale = (1.0, 1.0, length)
 
 
 def create_return_spot(

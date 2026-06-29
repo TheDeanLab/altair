@@ -47,6 +47,15 @@ class BeamPathPoint(NamedTuple):
     xyz: tuple[float, float, float]
 
 
+class DownstreamBeamPath(NamedTuple):
+    """Named points for the animated beam after the second mirror."""
+
+    start_xyz: tuple[float, float, float]
+    iris1_xyz: tuple[float, float, float]
+    iris2_xyz: tuple[float, float, float]
+    exit_xyz: tuple[float, float, float]
+
+
 class CameraPose(NamedTuple):
     """Import-safe camera pose used by scene contract tests."""
 
@@ -91,6 +100,7 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "initial_horizontal_angle_mrad": -90.0,
     "initial_vertical_offset_mm": -4.0,
     "initial_vertical_angle_mrad": 55.0,
+    "beam_path_offset_exaggeration": 1.0,
     "spot_display_exaggeration": 2.0,
     "mirror_display_exaggeration": 0.18,
     "iris_source": ID25_IRIS.source_notes,
@@ -407,6 +417,114 @@ def _display_intercepts(
     )
 
 
+def _lerp_transverse_at_x(
+    *,
+    x_mm: float,
+    x1_mm: float,
+    y1_mm: float,
+    z1_mm: float,
+    x2_mm: float,
+    y2_mm: float,
+    z2_mm: float,
+) -> tuple[float, float]:
+    """Linearly interpolate or extrapolate transverse beam coordinates.
+
+    Parameters
+    ----------
+    x_mm
+        X coordinate where the transverse coordinates are requested.
+    x1_mm
+        First reference X coordinate.
+    y1_mm
+        First reference Y coordinate.
+    z1_mm
+        First reference Z coordinate.
+    x2_mm
+        Second reference X coordinate.
+    y2_mm
+        Second reference Y coordinate.
+    z2_mm
+        Second reference Z coordinate.
+
+    Returns
+    -------
+    tuple[float, float]
+        Interpolated Y and Z coordinates.
+    """
+
+    denominator = x2_mm - x1_mm
+    if abs(denominator) < 1e-9:
+        raise ValueError("Reference X coordinates must be distinct.")
+    fraction = (x_mm - x1_mm) / denominator
+    return (
+        y1_mm + ((y2_mm - y1_mm) * fraction),
+        z1_mm + ((z2_mm - z1_mm) * fraction),
+    )
+
+
+def _downstream_beam_path_for_state(
+    params: Mapping[str, Any],
+    model: BeamWalkingModel,
+    state: BeamWalkingState,
+) -> DownstreamBeamPath:
+    """Return animated downstream beam points for one alignment state.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    model
+        Beam-walking model used to compute iris intercepts.
+    state
+        Alignment state to display.
+
+    Returns
+    -------
+    DownstreamBeamPath
+        Beam start, iris intercepts, and downstream exit point.
+    """
+
+    centers = _component_centers(params)
+    beam_path = _beam_path_points(params)
+    intercepts = compute_beam_intercepts(model, state)
+    offset_scale = float(params["beam_path_offset_exaggeration"])
+
+    iris1_xyz = (
+        centers["iris_1"][0],
+        centers["iris_1"][1] + (intercepts.iris1.y_mm * offset_scale),
+        centers["iris_1"][2] + (intercepts.iris1.z_mm * offset_scale),
+    )
+    iris2_xyz = (
+        centers["iris_2"][0],
+        centers["iris_2"][1] + (intercepts.iris2.y_mm * offset_scale),
+        centers["iris_2"][2] + (intercepts.iris2.z_mm * offset_scale),
+    )
+    start_y, start_z = _lerp_transverse_at_x(
+        x_mm=beam_path[2].xyz[0],
+        x1_mm=iris1_xyz[0],
+        y1_mm=iris1_xyz[1],
+        z1_mm=iris1_xyz[2],
+        x2_mm=iris2_xyz[0],
+        y2_mm=iris2_xyz[1],
+        z2_mm=iris2_xyz[2],
+    )
+    exit_y, exit_z = _lerp_transverse_at_x(
+        x_mm=beam_path[3].xyz[0],
+        x1_mm=iris1_xyz[0],
+        y1_mm=iris1_xyz[1],
+        z1_mm=iris1_xyz[2],
+        x2_mm=iris2_xyz[0],
+        y2_mm=iris2_xyz[1],
+        z2_mm=iris2_xyz[2],
+    )
+    return DownstreamBeamPath(
+        start_xyz=(beam_path[2].xyz[0], start_y, start_z),
+        iris1_xyz=iris1_xyz,
+        iris2_xyz=iris2_xyz,
+        exit_xyz=(beam_path[3].xyz[0], exit_y, exit_z),
+    )
+
+
 def _iris_closeup_camera_pose(params: Mapping[str, Any]) -> CameraPose:
     """Return a close-up camera pose that frames both irises.
 
@@ -531,6 +649,7 @@ def main(output_path: str | None = None) -> None:
         SpotOffset,
         create_beam_between,
         create_return_spot,
+        set_beam_between,
         validate_positive,
     )
     from simulations.blender.altair_blender.scene import (
@@ -672,18 +791,18 @@ def main(output_path: str | None = None) -> None:
         material=materials["laser"],
         collection=collection,
     )
-    create_beam_between(
-        name="Final Beam Down Iris Row",
-        start_xyz=beam_path[2].xyz,
-        end_xyz=beam_path[3].xyz,
-        radius_mm=beam_radius,
-        material=materials["laser"],
-        collection=collection,
-    )
-
     first_display = _display_intercepts(
         compute_beam_intercepts(model, states[0]),
         exaggeration=float(params["spot_display_exaggeration"]),
+    )
+    first_downstream_path = _downstream_beam_path_for_state(params, model, states[0])
+    final_beam = create_beam_between(
+        name="Animated Beam After M2",
+        start_xyz=first_downstream_path.start_xyz,
+        end_xyz=first_downstream_path.exit_xyz,
+        radius_mm=beam_radius,
+        material=materials["laser"],
+        collection=collection,
     )
     spot1 = create_return_spot(
         name="Iris 1 Beam Spot",
@@ -711,6 +830,16 @@ def main(output_path: str | None = None) -> None:
     )
 
     for state in states:
+        downstream_path = _downstream_beam_path_for_state(params, model, state)
+        set_beam_between(
+            beam=final_beam,
+            start_xyz=downstream_path.start_xyz,
+            end_xyz=downstream_path.exit_xyz,
+        )
+        final_beam.keyframe_insert(data_path="location", frame=state.frame)
+        final_beam.keyframe_insert(data_path="rotation_euler", frame=state.frame)
+        final_beam.keyframe_insert(data_path="scale", frame=state.frame)
+
         display = _display_intercepts(
             compute_beam_intercepts(model, state),
             exaggeration=float(params["spot_display_exaggeration"]),
@@ -754,7 +883,7 @@ def main(output_path: str | None = None) -> None:
             ),
         )
 
-    for obj in (m1, m2, spot1, spot2):
+    for obj in (m1, m2, spot1, spot2, final_beam):
         set_linear_interpolation(obj)
 
     if params["show_minimal_labels"]:

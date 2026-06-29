@@ -37,6 +37,7 @@ def test_core_modules_import_without_blender():
     assert callable(animation.keyframe_transform)
     assert callable(animation.set_linear_interpolation)
     assert callable(optics.create_beam_between)
+    assert callable(optics.set_beam_between)
     assert callable(optics.create_return_spot)
     assert callable(optics.trace_ray_branches_through_surfaces)
     assert callable(beam_walking.compute_beam_intercepts)

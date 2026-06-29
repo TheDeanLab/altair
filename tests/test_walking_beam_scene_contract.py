@@ -228,3 +228,34 @@ def test_scene_storyboard_reduces_alignment_error_to_zero():
     assert errors[3] < errors[2]
     assert errors[4] < errors[3]
     assert errors[-1] == pytest.approx(0.0, abs=1e-9)
+
+
+def test_downstream_beam_path_tracks_iterative_alignment_states():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    states = module._alignment_states(params)
+    centers = module._component_centers(params)
+
+    paths = {
+        state.name: module._downstream_beam_path_for_state(params, model, state)
+        for state in states
+    }
+
+    gross = paths["gross_misalignment"]
+    assert gross.iris1_xyz[1:] != pytest.approx(centers["iris_1"][1:])
+    assert gross.iris2_xyz[1:] != pytest.approx(centers["iris_2"][1:])
+
+    m1_centered = paths["m1_centers_iris1"]
+    assert m1_centered.iris1_xyz[1:] == pytest.approx(centers["iris_1"][1:])
+    assert m1_centered.iris2_xyz[1:] != pytest.approx(centers["iris_2"][1:])
+
+    m2_centered = paths["m2_centers_iris2"]
+    assert m2_centered.iris1_xyz[1:] != pytest.approx(centers["iris_1"][1:])
+    assert m2_centered.iris2_xyz[1:] == pytest.approx(centers["iris_2"][1:])
+
+    aligned = paths["aligned_hold"]
+    assert aligned.iris1_xyz[1:] == pytest.approx(centers["iris_1"][1:])
+    assert aligned.iris2_xyz[1:] == pytest.approx(centers["iris_2"][1:])
+    assert aligned.start_xyz[0] < aligned.iris1_xyz[0]
+    assert aligned.exit_xyz[0] > aligned.iris2_xyz[0]

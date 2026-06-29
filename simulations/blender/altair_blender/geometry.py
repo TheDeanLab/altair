@@ -265,6 +265,117 @@ def _cylinder_object(
     return cylinder
 
 
+def _annular_cylinder_x_object(
+    name: str,
+    *,
+    collection: Any,
+    parent: Any | None,
+    outer_radius_mm: float,
+    inner_radius_mm: float,
+    depth_mm: float,
+    location: tuple[float, float, float],
+    material: Any,
+    vertices: int = 96,
+) -> Any:
+    """Create an annular cylinder whose open aperture runs along local X.
+
+    Parameters
+    ----------
+    name
+        Object name.
+    collection
+        Blender collection that should contain the annular cylinder.
+    parent
+        Optional parent object.
+    outer_radius_mm
+        Outer radius in millimeters.
+    inner_radius_mm
+        Inner open radius in millimeters.
+    depth_mm
+        Cylinder depth along local X in millimeters.
+    location
+        Annulus center location relative to its parent.
+    material
+        Material to assign to the annular cylinder.
+    vertices
+        Number of radial vertices.
+
+    Returns
+    -------
+    object
+        Blender mesh object.
+    """
+
+    if inner_radius_mm <= 0.0 or outer_radius_mm <= inner_radius_mm:
+        raise ValueError("outer_radius_mm must be larger than inner_radius_mm.")
+
+    half_depth = depth_mm / 2.0
+    cx, cy, cz = location
+    mesh_vertices = []
+    for x_mm in (cx - half_depth, cx + half_depth):
+        for radius in (outer_radius_mm, inner_radius_mm):
+            for index in range(vertices):
+                angle = (2.0 * math.pi * index) / vertices
+                mesh_vertices.append(
+                    (
+                        x_mm,
+                        cy + (radius * math.cos(angle)),
+                        cz + (radius * math.sin(angle)),
+                    )
+                )
+
+    front_outer = 0
+    front_inner = vertices
+    back_outer = vertices * 2
+    back_inner = vertices * 3
+    faces = []
+    for index in range(vertices):
+        next_index = (index + 1) % vertices
+        faces.append(
+            (
+                front_outer + index,
+                front_outer + next_index,
+                back_outer + next_index,
+                back_outer + index,
+            )
+        )
+        faces.append(
+            (
+                front_inner + next_index,
+                front_inner + index,
+                back_inner + index,
+                back_inner + next_index,
+            )
+        )
+        faces.append(
+            (
+                front_outer + next_index,
+                front_outer + index,
+                front_inner + index,
+                front_inner + next_index,
+            )
+        )
+        faces.append(
+            (
+                back_outer + index,
+                back_outer + next_index,
+                back_inner + next_index,
+                back_inner + index,
+            )
+        )
+
+    obj = _mesh_object(
+        name,
+        collection=collection,
+        parent=parent,
+        vertices=mesh_vertices,
+        faces=faces,
+        material=material,
+    )
+    _add_soft_edges(obj, width_mm=0.08, segments=1)
+    return obj
+
+
 def _surface_vertices(
     surface: LensSurface, *, radial_steps: int, angular_steps: int
 ) -> list[tuple[float, float, float]]:
@@ -1076,6 +1187,7 @@ def create_post_mounted_iris(
     y_mm: float,
     optical_axis_z_mm: float,
     iris: IrisPrescription = ID25_IRIS,
+    display_aperture_mm: float | None = None,
     holder: PostHolderPrescription = PH2_POST_HOLDER,
     post: OpticalPostPrescription = TR15_POST,
     table_top_z_mm: float = -5.0,
@@ -1098,6 +1210,9 @@ def create_post_mounted_iris(
         Shared optical-axis height in millimeters.
     iris
         Source-backed iris prescription.
+    display_aperture_mm
+        Optional visual aperture diameter. Defaults to the iris maximum
+        aperture so the beam passes through a real open hole in the mesh.
     holder
         Source-backed post-holder prescription.
     post
@@ -1124,6 +1239,7 @@ def create_post_mounted_iris(
     if support_top_z is None:
         support_top_z = optical_axis_z_mm - (iris.outer_diameter_mm / 2.0) - 2.0
     support_length = max(6.0, support_top_z - table_top_z_mm)
+    aperture_diameter = display_aperture_mm or iris.max_aperture_mm
 
     _cylinder_object(
         f"{post.name} Iris Support Post",
@@ -1153,38 +1269,27 @@ def create_post_mounted_iris(
         location=(0.0, 0.0, support_top_z + 1.5),
         material=metal,
     )
-    _cylinder_object(
+    _annular_cylinder_x_object(
         f"{iris.name} Iris Body",
         collection=collection,
         parent=parent,
-        radius_mm=iris.outer_diameter_mm / 2.0,
+        outer_radius_mm=iris.outer_diameter_mm / 2.0,
+        inner_radius_mm=aperture_diameter / 2.0,
         depth_mm=iris.thickness_mm,
         location=(0.0, 0.0, optical_axis_z_mm),
         material=metal,
         vertices=96,
-        rotation=(0.0, math.radians(90.0), 0.0),
     )
-    _cylinder_object(
-        f"{iris.name} Open Aperture",
-        collection=collection,
-        parent=parent,
-        radius_mm=iris.max_aperture_mm / 2.0,
-        depth_mm=iris.thickness_mm + 0.25,
-        location=(-0.18, 0.0, optical_axis_z_mm),
-        material=dark,
-        vertices=96,
-        rotation=(0.0, math.radians(90.0), 0.0),
-    )
-    _cylinder_object(
+    _annular_cylinder_x_object(
         f"{iris.name} Aperture Edge Ring",
         collection=collection,
         parent=parent,
-        radius_mm=(iris.max_aperture_mm / 2.0) + 0.75,
+        outer_radius_mm=(aperture_diameter / 2.0) + 0.9,
+        inner_radius_mm=aperture_diameter / 2.0,
         depth_mm=0.35,
         location=(-(iris.thickness_mm / 2.0) - 0.3, 0.0, optical_axis_z_mm),
         material=dark,
         vertices=96,
-        rotation=(0.0, math.radians(90.0), 0.0),
     )
     _box_object(
         f"{iris.name} Lever",

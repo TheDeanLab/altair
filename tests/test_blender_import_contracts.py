@@ -145,6 +145,7 @@ def test_hardware_builders_expose_keyword_only_geometry_controls():
             "y_mm",
             "optical_axis_z_mm",
             "iris",
+            "display_aperture_mm",
             "support_visual_top_z_mm",
         ),
         "create_kinematic_mirror_mount": (

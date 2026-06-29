@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ASLM/CTASLM Baseplate Example Images &mdash; altair  documentation</title>
+  <title>Basics of Optical Alignment &mdash; altair  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
@@ -24,8 +24,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Introduction" href="../dvopm_overview/dvopm_overview.html" />
-    <link rel="prev" title="ASLM/CTASLM Baseplate Assembly &amp; Alignment" href="../baseplate2_alignment/baseplate2_alignment.html" /> 
+    <link rel="next" title="Back-Reflection Alignment" href="optical_alignment_back_reflections.html" />
+    <link rel="prev" title="Remote Focus Actuator" href="../hardware/voicecoil.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,13 +49,20 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../introduction/introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../introduction/background.html">Overview of Subcellular Light-Sheet Microscope Technologies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../design_principles/required_software.html">Software</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../hardware/index.html">Room and Hardware Considerations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started/optical_alignment_basics.html">Basics of Optical Alignment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basics of Optical Alignment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#available-tutorials">Available Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="optical_alignment_back_reflections.html">Back-Reflection Alignment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tentative-tutorial-roadmap">Tentative Tutorial Roadmap</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Altair-SPIM v1</span></p>
@@ -67,13 +74,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../live_cell/live_cell.html">Live-Cell Imaging</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Altair-ASLM/CTASLM/SPIM v1</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ASLM/CTASLM Baseplate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ASLM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">ASLM/CTASLM Baseplate Example Images</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#fluorescent-collagen">Fluorescent Collagen</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ASLM/CTASLM Baseplate Example Images</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Altair-dvOPM</span></p>
 <ul>
@@ -97,9 +101,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">ASLM/CTASLM Baseplate Example Images</li>
+      <li class="breadcrumb-item active">Basics of Optical Alignment</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/baseplate2_exampleimages/baseplate2_exampleimages.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/getting_started/optical_alignment_basics.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -107,16 +111,41 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="aslm-ctaslm-baseplate-example-images">
-<span id="aslmimages-home"></span><h1>ASLM/CTASLM Baseplate Example Images<a class="headerlink" href="#aslm-ctaslm-baseplate-example-images" title="Permalink to this heading"></a></h1>
-<section id="fluorescent-collagen">
-<h2>Fluorescent Collagen<a class="headerlink" href="#fluorescent-collagen" title="Permalink to this heading"></a></h2>
-<figure class="align-center" id="id1">
-<img alt="Fluorescent Collagen" src="../_images/1_15_cell07_labeled.png" />
-<figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> Fluorescent collagen fibers imaged using our Altair-ASLM system.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
+  <section id="basics-of-optical-alignment">
+<span id="optical-alignment-basics"></span><h1>Basics of Optical Alignment<a class="headerlink" href="#basics-of-optical-alignment" title="Permalink to this heading"></a></h1>
+<p>Optical alignment determines how efficiently light moves through the microscope
+and how faithfully the optical train produces the intended illumination and
+detection geometry. Small errors in beam height, beam angle, collimation, or
+optic centering can reduce throughput, introduce aberrations, make the field
+less uniform, and lower the signal-to-background ratio. Those errors also tend
+to compound as additional mirrors, lenses, scanners, and objectives are added.</p>
+<p>The tutorials in this section are intended to make common alignment operations
+more explicit and repeatable. Each tutorial will state the goal of the
+alignment step, explain why the measurement works, and give a protocol that can
+be used at the optical table.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section is in development. We are starting with a back-reflection
+tutorial and plan to add additional alignment tutorials as the documentation
+grows. Please submit requests for new tutorials as <a class="reference external" href="https://github.com/TheDeanLab/altair/issues">GitHub feature requests</a>.</p>
+</div>
+<section id="available-tutorials">
+<h2>Available Tutorials<a class="headerlink" href="#available-tutorials" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="optical_alignment_back_reflections.html">Back-Reflection Alignment</a></li>
+</ul>
+</div>
+</section>
+<section id="tentative-tutorial-roadmap">
+<h2>Tentative Tutorial Roadmap<a class="headerlink" href="#tentative-tutorial-roadmap" title="Permalink to this heading"></a></h2>
+<p>Future tutorials may include:</p>
+<ul class="simple">
+<li><p>Setting up an alignment laser.</p></li>
+<li><p>Walking a beam.</p></li>
+<li><p>Collimating a beam.</p></li>
+<li><p>Finding the focus of a beam.</p></li>
+</ul>
 </section>
 </section>
 
@@ -124,8 +153,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../baseplate2_alignment/baseplate2_alignment.html" class="btn btn-neutral float-left" title="ASLM/CTASLM Baseplate Assembly &amp; Alignment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../dvopm_overview/dvopm_overview.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../hardware/voicecoil.html" class="btn btn-neutral float-left" title="Remote Focus Actuator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="optical_alignment_back_reflections.html" class="btn btn-neutral float-right" title="Back-Reflection Alignment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

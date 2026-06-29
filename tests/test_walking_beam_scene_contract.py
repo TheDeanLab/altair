@@ -133,6 +133,20 @@ def test_iris_closeup_camera_pose_frames_both_irises():
     assert pose.lens_mm <= 40.0
 
 
+def test_wide_camera_plan_keeps_final_still_on_full_layout():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    centers = module._component_centers(params)
+    plan = module._wide_camera_plan(params)
+    span_midpoint_x = (centers["m1"][0] + centers["iris_2"][0]) / 2.0
+
+    assert plan.target_xyz[0] == pytest.approx(span_midpoint_x)
+    assert plan.end_target_xyz[0] == pytest.approx(span_midpoint_x)
+    assert plan.distance_mm >= 330.0
+    assert plan.end_distance_mm >= 320.0
+    assert plan.end_elevation_mm >= 118.0
+
+
 def test_scene_defines_explicit_walking_beam_storyboard():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

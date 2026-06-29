@@ -55,6 +55,17 @@ class CameraPose(NamedTuple):
     lens_mm: float
 
 
+class WideCameraPlan(NamedTuple):
+    """Import-safe wide camera motion plan used by scene contract tests."""
+
+    target_xyz: tuple[float, float, float]
+    distance_mm: float
+    elevation_mm: float
+    end_target_xyz: tuple[float, float, float]
+    end_distance_mm: float
+    end_elevation_mm: float
+
+
 DEFAULT_PARAMETERS: dict[str, Any] = {
     "wavelength_nm": 561.0,
     "beam_diameter_mm": 1.0,
@@ -94,6 +105,10 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "softbox_size_mm": 86.0,
     "fill_power": 330.0,
     "rim_light_power": 420.0,
+    "wide_camera_distance_mm": 345.0,
+    "wide_camera_elevation_mm": 136.0,
+    "wide_camera_end_distance_mm": 330.0,
+    "wide_camera_end_elevation_mm": 122.0,
     "default_render_preset": "final",
     "render_presets": RENDER_PRESETS,
     "final_video_output_stem": "walking_beam_alignment",
@@ -368,6 +383,34 @@ def _iris_closeup_camera_pose(params: Mapping[str, Any]) -> CameraPose:
         ),
         target_xyz=(midpoint_x, 0.0, axis_z),
         lens_mm=float(params["iris_closeup_lens_mm"]),
+    )
+
+
+def _wide_camera_plan(params: Mapping[str, Any]) -> WideCameraPlan:
+    """Return a wide camera plan that keeps the full layout in frame.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    WideCameraPlan
+        Animated wide-camera target, distance, and elevation values.
+    """
+
+    centers = _component_centers(params)
+    midpoint_x = (centers["m1"][0] + centers["iris_2"][0]) / 2.0
+    axis_z = float(params["optical_axis_z_mm"])
+    target = (midpoint_x, -5.0, axis_z + 6.0)
+    return WideCameraPlan(
+        target_xyz=target,
+        distance_mm=float(params["wide_camera_distance_mm"]),
+        elevation_mm=float(params["wide_camera_elevation_mm"]),
+        end_target_xyz=target,
+        end_distance_mm=float(params["wide_camera_end_distance_mm"]),
+        end_elevation_mm=float(params["wide_camera_end_elevation_mm"]),
     )
 
 
@@ -706,15 +749,16 @@ def main(output_path: str | None = None) -> None:
             size_mm=1.8,
         )
 
+    wide_plan = _wide_camera_plan(params)
     create_wide_camera(
-        target=(35.0, -4.0, axis_z + 4.0),
-        distance_mm=295.0,
-        elevation_mm=118.0,
+        target=wide_plan.target_xyz,
+        distance_mm=wide_plan.distance_mm,
+        elevation_mm=wide_plan.elevation_mm,
         frame_start=int(params["frame_start"]),
         frame_end=int(params["frame_end"]),
-        end_target=(42.0, -2.0, axis_z + 5.0),
-        end_distance_mm=268.0,
-        end_elevation_mm=104.0,
+        end_target=wide_plan.end_target_xyz,
+        end_distance_mm=wide_plan.end_distance_mm,
+        end_elevation_mm=wide_plan.end_elevation_mm,
     )
     _create_iris_closeup_camera(
         name=str(params["iris_closeup_camera_name"]),

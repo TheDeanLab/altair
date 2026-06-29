@@ -62,7 +62,8 @@ background runtime.
 
 The achromat script preserves the wide, card close-up, and stacked movies and
 adds a hero movie. Its default render mode is `final` for Cycles output; use
-`--preview` or `RENDER_MODE=preview` for fast EEVEE iteration and smoke tests.
+`--draft` for card-only timing checks, and use `--preview` or
+`RENDER_MODE=preview` for full-pipeline EEVEE iteration.
 Keep the render preset machinery in `altair_blender.scene` reusable for future
 videos instead of hard-coding engine settings in scene scripts.
 
@@ -78,6 +79,10 @@ pytest checks.
 
 - Keep modules import-safe without Blender. Import `bpy` lazily inside functions
   that need it.
+- All Python functions and methods in `simulations` should have explicit type
+  hints and numpydoc-style docstrings. Include `Parameters`, `Returns`, or
+  `Yields` sections when they apply.
+- Run Black on simulation Python files after edits.
 - Put reusable helpers in `altair_blender/`.
 - Put scene-specific timelines in `scenes/`.
 - Put repeatable render/export workflows in `scripts/`.

@@ -39,6 +39,7 @@ def test_render_script_help_documents_artifacts_and_overrides() -> None:
         "achromat_back_reflection_card_closeup.mp4",
         "achromat_back_reflection_stacked.mp4",
         "achromat_back_reflection_hero.mp4",
+        "--draft",
         "--preview",
         "--final",
         "BLENDER_BIN",
@@ -47,6 +48,7 @@ def test_render_script_help_documents_artifacts_and_overrides() -> None:
         "RENDER_MODE",
         "FRAME_START",
         "FRAME_END",
+        "FRAME_STEP",
         "RESOLUTION_X",
         "RESOLUTION_Y",
     ):
@@ -99,6 +101,33 @@ def test_render_script_preview_flag_overrides_default_render_mode(
 
     assert result.returncode == 0
     assert "Render mode: preview" in result.stdout
+
+
+def test_render_script_draft_mode_uses_fast_card_only_pipeline(
+    tmp_path: Path,
+) -> None:
+    output_dir = tmp_path / "movie"
+    result = subprocess.run(
+        ["bash", str(SCRIPT), "--draft", "--dry-run", str(output_dir)],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    dry_run = result.stdout
+    assert "Render mode: draft" in dry_run
+    assert "Frame step: 4" in dry_run
+    assert "Resolution: 960x540" in dry_run
+    assert str(output_dir / "frames/draft_card/frame_") in dry_run
+    assert (
+        str(output_dir / "achromat_back_reflection_draft_card_closeup.mp4") in dry_run
+    )
+    assert "Card Close-Up Camera" in dry_run
+    assert "Wide Setup Camera" not in dry_run
+    assert "Hero Camera" not in dry_run
+    assert "vstack=inputs=2" not in dry_run
 
 
 def test_render_script_dry_run_lists_cycles_device_override(

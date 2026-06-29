@@ -2,7 +2,7 @@ import importlib
 import inspect
 from types import SimpleNamespace
 
-import pytest
+import pytest  # pyright: ignore[reportMissingImports]
 
 
 def test_core_modules_import_without_blender():
@@ -31,6 +31,7 @@ def test_core_modules_import_without_blender():
     assert callable(animation.set_linear_interpolation)
     assert callable(optics.create_beam_between)
     assert callable(optics.create_return_spot)
+    assert callable(optics.trace_ray_branches_through_surfaces)
 
 
 def test_optical_table_hole_grid_uses_one_inch_spacing():

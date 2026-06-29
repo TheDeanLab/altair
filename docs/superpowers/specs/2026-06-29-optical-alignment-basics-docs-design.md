@@ -36,9 +36,11 @@ docs/source/_static/baseplate2_alignment/alignment/videos/achromat_back_reflecti
 ```
 
 Use the existing Sphinx raw-HTML video pattern already present in the repository.
-The new page becomes the canonical home for the video. The existing
-`baseplate2_alignment` Step 7 section should keep a short contextual card and
-link to the new canonical page instead of duplicating the full explanation.
+The raw HTML video block must be accompanied by a normal RST fallback link to
+the MP4 so the movie is still reachable outside normal HTML playback. The new
+page becomes the canonical home for the video. The existing `baseplate2_alignment`
+Step 7 section should keep a short contextual card and link to the new canonical
+page instead of duplicating the full explanation.
 
 ## Page Content
 

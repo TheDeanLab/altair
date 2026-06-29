@@ -107,8 +107,14 @@ def test_scene_orients_mirror_mount_faces_toward_the_beam_path():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS
 
-    assert params["m1_yaw_deg"] == pytest.approx(225.0)
+    assert params["m1_yaw_deg"] == pytest.approx(45.0)
     assert params["m2_yaw_deg"] == pytest.approx(135.0)
+
+    m1_reflective_normal = (
+        -math.cos(math.radians(params["m1_yaw_deg"])),
+        -math.sin(math.radians(params["m1_yaw_deg"])),
+    )
+    assert m1_reflective_normal[0] < 0.0
 
 
 def test_scene_beam_path_uses_mirror_surface_points_not_mount_centers():

@@ -123,7 +123,7 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
         "same beam height",
     ),
     "mirror_surface_offset_mm": 7.0,
-    "m1_yaw_deg": 225.0,
+    "m1_yaw_deg": 45.0,
     "m2_yaw_deg": 135.0,
     "frame_start": 1,
     "frame_m1_centers_iris1": 36,

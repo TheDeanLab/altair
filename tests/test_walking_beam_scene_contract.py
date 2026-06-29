@@ -269,3 +269,35 @@ def test_downstream_beam_path_tracks_iterative_alignment_states():
     assert aligned.iris2_xyz[1:] == pytest.approx(centers["iris_2"][1:])
     assert aligned.start_xyz[0] < aligned.iris1_xyz[0]
     assert aligned.exit_xyz[0] > aligned.iris2_xyz[0]
+
+
+def test_downstream_beam_path_stops_at_first_blocking_iris():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    states = module._alignment_states(params)
+
+    paths = {
+        state.name: module._downstream_beam_path_for_state(params, model, state)
+        for state in states
+    }
+
+    assert paths["gross_misalignment"].blocked_at == "iris_1"
+    assert paths["gross_misalignment"].visible_end_xyz == pytest.approx(
+        paths["gross_misalignment"].iris1_xyz
+    )
+
+    assert paths["m1_centers_iris1"].blocked_at == "iris_2"
+    assert paths["m1_centers_iris1"].visible_end_xyz == pytest.approx(
+        paths["m1_centers_iris1"].iris2_xyz
+    )
+
+    assert paths["m2_centers_iris2"].blocked_at == "iris_1"
+    assert paths["m2_centers_iris2"].visible_end_xyz == pytest.approx(
+        paths["m2_centers_iris2"].iris1_xyz
+    )
+
+    assert paths["aligned_hold"].blocked_at == ""
+    assert paths["aligned_hold"].visible_end_xyz == pytest.approx(
+        paths["aligned_hold"].exit_xyz
+    )

@@ -54,6 +54,8 @@ class DownstreamBeamPath(NamedTuple):
     iris1_xyz: tuple[float, float, float]
     iris2_xyz: tuple[float, float, float]
     exit_xyz: tuple[float, float, float]
+    visible_end_xyz: tuple[float, float, float]
+    blocked_at: str
 
 
 class CameraPose(NamedTuple):
@@ -517,11 +519,26 @@ def _downstream_beam_path_for_state(
         y2_mm=iris2_xyz[1],
         z2_mm=iris2_xyz[2],
     )
+    exit_xyz = (beam_path[3].xyz[0], exit_y, exit_z)
+    iris1_radius = math.hypot(intercepts.iris1.y_mm, intercepts.iris1.z_mm)
+    iris2_radius = math.hypot(intercepts.iris2.y_mm, intercepts.iris2.z_mm)
+    if iris1_radius > model.iris_radius_mm:
+        visible_end_xyz = iris1_xyz
+        blocked_at = "iris_1"
+    elif iris2_radius > model.iris_radius_mm:
+        visible_end_xyz = iris2_xyz
+        blocked_at = "iris_2"
+    else:
+        visible_end_xyz = exit_xyz
+        blocked_at = ""
+
     return DownstreamBeamPath(
         start_xyz=(beam_path[2].xyz[0], start_y, start_z),
         iris1_xyz=iris1_xyz,
         iris2_xyz=iris2_xyz,
-        exit_xyz=(beam_path[3].xyz[0], exit_y, exit_z),
+        exit_xyz=exit_xyz,
+        visible_end_xyz=visible_end_xyz,
+        blocked_at=blocked_at,
     )
 
 
@@ -799,7 +816,7 @@ def main(output_path: str | None = None) -> None:
     final_beam = create_beam_between(
         name="Animated Beam After M2",
         start_xyz=first_downstream_path.start_xyz,
-        end_xyz=first_downstream_path.exit_xyz,
+        end_xyz=first_downstream_path.visible_end_xyz,
         radius_mm=beam_radius,
         material=materials["laser"],
         collection=collection,
@@ -834,7 +851,7 @@ def main(output_path: str | None = None) -> None:
         set_beam_between(
             beam=final_beam,
             start_xyz=downstream_path.start_xyz,
-            end_xyz=downstream_path.exit_xyz,
+            end_xyz=downstream_path.visible_end_xyz,
         )
         final_beam.keyframe_insert(data_path="location", frame=state.frame)
         final_beam.keyframe_insert(data_path="rotation_euler", frame=state.frame)

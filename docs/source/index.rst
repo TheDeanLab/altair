@@ -57,6 +57,7 @@ In bead-based benchmarking, Altair-LSFM achieved average FWHM values of 328 nm (
    introduction/background
    design_principles/required_software
    hardware/index.rst
+   getting_started/optical_alignment_basics
    getting_started/getting_started.rst
    future/index
 

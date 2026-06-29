@@ -796,15 +796,9 @@ Add the RFO back in, then adjust the XY on the RFO mount until the back reflecti
 
 .. card:: Achromat Back-Reflection Alignment
 
-   The simulation below shows the wide alignment view and aperture-card close-up during the back-reflection alignment
-   process. As tilt and decenter are corrected, the two return reflections converge toward the aperture.
-
-   .. raw:: html
-
-      <video controls style="width:100%;">
-        <source src="../_static/baseplate2_alignment/alignment/videos/achromat_back_reflection_stacked.mp4" type="video/mp4">
-        your browser doesn't support video
-      </video>
+   The general method for centering back reflections on an aperture card is described in
+   :ref:`Basics of Optical Alignment <optical_alignment_basics>`. Use that procedure here to align the RFO before
+   continuing with the baseplate-specific beam-walking steps.
 
 .. figure:: Images/alignment/PCBaseplateV2LaserAlignment5.png
     :align: center

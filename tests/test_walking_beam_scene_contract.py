@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import math
 from pathlib import Path
 import sys
 
@@ -117,6 +118,31 @@ def test_scene_beam_path_uses_mirror_surface_points_not_mount_centers():
     assert path[2].xyz[2] == pytest.approx(params["optical_axis_z_mm"])
     assert path[0].xyz[0] < path[1].xyz[0]
     assert path[2].xyz[0] < path[3].xyz[0]
+
+
+def test_scene_beam_path_hits_visible_mirror_face_planes_and_iris_row():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    centers = module._component_centers(params)
+    path = module._beam_path_points(params)
+
+    for component_name, yaw_key, point in (
+        ("m1", "m1_yaw_deg", path[1]),
+        ("m2", "m2_yaw_deg", path[2]),
+    ):
+        yaw_rad = math.radians(params[yaw_key])
+        normal_xy = (math.cos(yaw_rad), math.sin(yaw_rad))
+        center = centers[component_name]
+        face_offset = (point.xyz[0] - center[0]) * normal_xy[0] + (
+            point.xyz[1] - center[1]
+        ) * normal_xy[1]
+
+        assert face_offset == pytest.approx(-params["mirror_surface_offset_mm"])
+
+    assert path[0].xyz[1] == pytest.approx(path[1].xyz[1])
+    assert path[1].xyz[0] == pytest.approx(path[2].xyz[0])
+    assert path[2].xyz[1] == pytest.approx(centers["iris_1"][1])
+    assert path[2].xyz[1] == pytest.approx(path[3].xyz[1])
 
 
 def test_iris_closeup_camera_pose_frames_both_irises():

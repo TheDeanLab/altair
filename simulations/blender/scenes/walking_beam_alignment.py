@@ -200,10 +200,14 @@ def _component_centers(
     }
 
 
-def _mirror_surface_point(
-    center: tuple[float, float, float], *, yaw_deg: float, offset_mm: float
+def _mirror_face_point_at_y(
+    center: tuple[float, float, float],
+    *,
+    yaw_deg: float,
+    offset_mm: float,
+    y_mm: float,
 ) -> tuple[float, float, float]:
-    """Return the displayed reflective surface point for a mirror mount.
+    """Return a point on the visible mirror face at a requested Y row.
 
     Parameters
     ----------
@@ -212,20 +216,60 @@ def _mirror_surface_point(
     yaw_deg
         Mirror mount yaw in degrees.
     offset_mm
-        Offset from mount center to the visible mirror surface.
+        Offset from mount center to the visible mirror face along local
+        negative X.
+    y_mm
+        Desired world-space Y coordinate.
 
     Returns
     -------
     tuple[float, float, float]
-        World-space point on the mirror surface.
+        World-space point on the mirror face.
     """
 
     yaw_rad = math.radians(yaw_deg)
-    return (
-        center[0] + (math.cos(yaw_rad) * offset_mm),
-        center[1] + (math.sin(yaw_rad) * offset_mm),
-        center[2],
-    )
+    normal_x = math.cos(yaw_rad)
+    normal_y = math.sin(yaw_rad)
+    if abs(normal_x) < 1e-9:
+        raise ValueError("Mirror face cannot be solved at fixed Y for this yaw.")
+    x_mm = center[0] + ((-offset_mm - (normal_y * (y_mm - center[1]))) / normal_x)
+    return (x_mm, y_mm, center[2])
+
+
+def _mirror_face_point_at_x(
+    center: tuple[float, float, float],
+    *,
+    yaw_deg: float,
+    offset_mm: float,
+    x_mm: float,
+) -> tuple[float, float, float]:
+    """Return a point on the visible mirror face at a requested X column.
+
+    Parameters
+    ----------
+    center
+        Optical center of the mirror mount.
+    yaw_deg
+        Mirror mount yaw in degrees.
+    offset_mm
+        Offset from mount center to the visible mirror face along local
+        negative X.
+    x_mm
+        Desired world-space X coordinate.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        World-space point on the mirror face.
+    """
+
+    yaw_rad = math.radians(yaw_deg)
+    normal_x = math.cos(yaw_rad)
+    normal_y = math.sin(yaw_rad)
+    if abs(normal_y) < 1e-9:
+        raise ValueError("Mirror face cannot be solved at fixed X for this yaw.")
+    y_mm = center[1] + ((-offset_mm - (normal_x * (x_mm - center[0]))) / normal_y)
+    return (x_mm, y_mm, center[2])
 
 
 def _beam_path_points(params: Mapping[str, Any]) -> tuple[BeamPathPoint, ...]:
@@ -244,15 +288,17 @@ def _beam_path_points(params: Mapping[str, Any]) -> tuple[BeamPathPoint, ...]:
 
     centers = _component_centers(params)
     offset = float(params["mirror_surface_offset_mm"])
-    m1_surface = _mirror_surface_point(
-        centers["m1"],
-        yaw_deg=float(params["m1_yaw_deg"]),
-        offset_mm=offset,
-    )
-    m2_surface = _mirror_surface_point(
+    m2_surface = _mirror_face_point_at_y(
         centers["m2"],
         yaw_deg=float(params["m2_yaw_deg"]),
         offset_mm=offset,
+        y_mm=centers["iris_1"][1],
+    )
+    m1_surface = _mirror_face_point_at_x(
+        centers["m1"],
+        yaw_deg=float(params["m1_yaw_deg"]),
+        offset_mm=offset,
+        x_mm=m2_surface[0],
     )
     iris_exit = (
         centers["iris_2"][0] + (1.5 * float(params["hole_grid_spacing_mm"])),

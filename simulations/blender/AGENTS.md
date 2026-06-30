@@ -38,6 +38,10 @@ Altair educational optics-alignment videos.
 - The current ray model traces geometric surface reflections but does not model
   wavelength-dependent refraction through the cemented doublet or coating
   Fresnel coefficients.
+- The current walking-beam movie is a storyboard prototype, not a physically
+  valid ray trace. Before revising it, read
+  `walking_beam_physical_accuracy_audit.md`; future fixes should use one
+  continuous finite-aperture ray chain from laser to M1 to M2 to both irises.
 - Use minimal in-scene labels for teaching videos when they clarify the setup.
   Keep labels unobtrusive and reusable through `geometry.create_scene_label`.
 

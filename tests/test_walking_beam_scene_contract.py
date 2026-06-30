@@ -471,6 +471,29 @@ def test_mirror_display_rotations_follow_physical_solver_adjustments():
     )
 
 
+def test_mirror_footprints_are_derived_from_trace_interactions():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    state = module._alignment_states(params)[0]
+    trace = module._physical_trace_for_state(params, model, state)
+
+    footprints = module._mirror_footprints_for_state(params, model, state)
+
+    assert [footprint.element_name for footprint in footprints] == ["M1", "M2"]
+    assert [footprint.visible for footprint in footprints] == [True, True]
+    assert footprints[0].center_xyz == pytest.approx(trace.interactions[0].point_xyz_mm)
+    assert footprints[1].center_xyz == pytest.approx(trace.interactions[1].point_xyz_mm)
+    assert footprints[0].radius_mm > params["beam_visual_diameter_mm"] / 2.0
+    assert footprints[1].radius_mm > params["beam_visual_diameter_mm"] / 2.0
+    assert math.sqrt(
+        sum(component * component for component in footprints[0].normal_xyz)
+    ) == pytest.approx(1.0)
+    assert math.sqrt(
+        sum(component * component for component in footprints[1].normal_xyz)
+    ) == pytest.approx(1.0)
+
+
 def test_folded_beam_path_shares_animated_m2_hit_point():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

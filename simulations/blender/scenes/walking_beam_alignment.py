@@ -80,6 +80,16 @@ class BeamSegmentPath(NamedTuple):
     end_xyz: tuple[float, float, float]
 
 
+class MirrorFootprint(NamedTuple):
+    """Trace-derived visual footprint on one mirror surface."""
+
+    element_name: str
+    center_xyz: tuple[float, float, float]
+    normal_xyz: tuple[float, float, float]
+    radius_mm: float
+    visible: bool
+
+
 class CameraPose(NamedTuple):
     """Import-safe camera pose used by scene contract tests."""
 
@@ -712,6 +722,41 @@ def _mirror_rotation_euler_for_state(
     )
 
 
+def _adjusted_mirrors_for_state(
+    params: Mapping[str, Any],
+    model: BeamWalkingModel,
+    state: BeamWalkingState,
+) -> tuple[PlaneMirror, PlaneMirror]:
+    """Return adjusted physical mirrors for one storyboard state.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    model
+        Beam-walking model used for the storyboard.
+    state
+        Storyboard state to convert.
+
+    Returns
+    -------
+    tuple[PlaneMirror, PlaneMirror]
+        Adjusted M1 and M2 physical mirrors.
+    """
+
+    m1_adjustment, m2_adjustment = _mirror_adjustments_for_state(params, model, state)
+    return (
+        adjusted_plane_mirror(
+            _physical_mirror(params, "m1"),
+            adjustment=m1_adjustment,
+        ),
+        adjusted_plane_mirror(
+            _physical_mirror(params, "m2"),
+            adjustment=m2_adjustment,
+        ),
+    )
+
+
 def _physical_trace_for_state(
     params: Mapping[str, Any],
     model: BeamWalkingModel,
@@ -734,20 +779,96 @@ def _physical_trace_for_state(
         Physical trace for the supplied state.
     """
 
-    m1_adjustment, m2_adjustment = _mirror_adjustments_for_state(params, model, state)
+    m1, m2 = _adjusted_mirrors_for_state(params, model, state)
     return trace_two_mirror_two_iris_system(
         source_ray=_nominal_source_ray(params),
-        m1=adjusted_plane_mirror(
-            _physical_mirror(params, "m1"),
-            adjustment=m1_adjustment,
-        ),
-        m2=adjusted_plane_mirror(
-            _physical_mirror(params, "m2"),
-            adjustment=m2_adjustment,
-        ),
+        m1=m1,
+        m2=m2,
         iris1=_physical_iris(params, "iris_1"),
         iris2=_physical_iris(params, "iris_2"),
         downstream_length_mm=1.5 * float(params["hole_grid_spacing_mm"]),
+    )
+
+
+def _mirror_footprints_for_state(
+    params: Mapping[str, Any],
+    model: BeamWalkingModel,
+    state: BeamWalkingState,
+) -> tuple[MirrorFootprint, MirrorFootprint]:
+    """Return mirror beam footprints for one physical storyboard trace.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    model
+        Beam-walking model used for the storyboard.
+    state
+        Storyboard state to trace.
+
+    Returns
+    -------
+    tuple[MirrorFootprint, MirrorFootprint]
+        Trace-derived M1 and M2 footprint records.
+    """
+
+    trace = _physical_trace_for_state(params, model, state)
+    adjusted_mirrors = _adjusted_mirrors_for_state(params, model, state)
+    interactions = {
+        interaction.element_name: interaction for interaction in trace.interactions
+    }
+    radius_mm = _beam_visual_radius(params) * 1.25
+    footprints: list[MirrorFootprint] = []
+    for element_name, mirror in zip(("M1", "M2"), adjusted_mirrors, strict=True):
+        interaction = interactions.get(element_name)
+        visible = interaction is not None and interaction.status == "hit"
+        center_xyz = (
+            interaction.point_xyz_mm
+            if interaction is not None
+            else mirror.center_xyz_mm
+        )
+        footprints.append(
+            MirrorFootprint(
+                element_name=element_name,
+                center_xyz=center_xyz,
+                normal_xyz=mirror.normal_xyz,
+                radius_mm=radius_mm,
+                visible=visible,
+            )
+        )
+    return (footprints[0], footprints[1])
+
+
+def _footprint_disk_segment(
+    footprint: MirrorFootprint, *, thickness_mm: float = 0.18
+) -> BeamSegmentPath:
+    """Return a short segment normal to a footprint disk.
+
+    Parameters
+    ----------
+    footprint
+        Mirror footprint to display.
+    thickness_mm
+        Visible disk thickness along the mirror normal.
+
+    Returns
+    -------
+    BeamSegmentPath
+        Segment used to orient a thin cylinder on the mirror surface.
+    """
+
+    half_thickness = thickness_mm / 2.0
+    return BeamSegmentPath(
+        start_xyz=(
+            footprint.center_xyz[0] - (footprint.normal_xyz[0] * half_thickness),
+            footprint.center_xyz[1] - (footprint.normal_xyz[1] * half_thickness),
+            footprint.center_xyz[2] - (footprint.normal_xyz[2] * half_thickness),
+        ),
+        end_xyz=(
+            footprint.center_xyz[0] + (footprint.normal_xyz[0] * half_thickness),
+            footprint.center_xyz[1] + (footprint.normal_xyz[1] * half_thickness),
+            footprint.center_xyz[2] + (footprint.normal_xyz[2] * half_thickness),
+        ),
     )
 
 
@@ -1463,6 +1584,7 @@ def main(output_path: str | None = None) -> None:
     first_folded_path = _folded_beam_path_for_state(params, model, states[0])
     first_downstream_path = _downstream_beam_path_for_state(params, model, states[0])
     first_display = _iris_spot_offsets_for_path(params, first_downstream_path)
+    first_footprints = _mirror_footprints_for_state(params, model, states[0])
     folded_beam = create_beam_between(
         name="Animated M1 to M2 Beam",
         start_xyz=first_folded_path.start_xyz,
@@ -1503,10 +1625,24 @@ def main(output_path: str | None = None) -> None:
         collection=collection,
         optical_axis_z_mm=axis_z,
     )
+    mirror_footprints = []
+    for footprint in first_footprints:
+        disk_segment = _footprint_disk_segment(footprint)
+        mirror_footprints.append(
+            create_beam_between(
+                name=f"{footprint.element_name} Beam Footprint",
+                start_xyz=disk_segment.start_xyz,
+                end_xyz=disk_segment.end_xyz,
+                radius_mm=footprint.radius_mm,
+                material=materials["reflection_beam"],
+                collection=collection,
+            )
+        )
 
     for state in states:
         folded_path = _folded_beam_path_for_state(params, model, state)
         downstream_path = _downstream_beam_path_for_state(params, model, state)
+        footprints = _mirror_footprints_for_state(params, model, state)
         set_beam_between(
             beam=folded_beam,
             start_xyz=folded_path.start_xyz,
@@ -1560,8 +1696,26 @@ def main(output_path: str | None = None) -> None:
             frame=state.frame,
             rotation_euler=_mirror_rotation_euler_for_state(params, model, state, "m2"),
         )
+        for footprint_obj, footprint in zip(
+            mirror_footprints,
+            footprints,
+            strict=True,
+        ):
+            disk_segment = _footprint_disk_segment(footprint)
+            set_beam_between(
+                beam=footprint_obj,
+                start_xyz=disk_segment.start_xyz,
+                end_xyz=disk_segment.end_xyz,
+            )
+            footprint_obj.hide_viewport = not footprint.visible
+            footprint_obj.hide_render = not footprint.visible
+            footprint_obj.keyframe_insert(data_path="location", frame=state.frame)
+            footprint_obj.keyframe_insert(data_path="rotation_euler", frame=state.frame)
+            footprint_obj.keyframe_insert(data_path="scale", frame=state.frame)
+            footprint_obj.keyframe_insert(data_path="hide_viewport", frame=state.frame)
+            footprint_obj.keyframe_insert(data_path="hide_render", frame=state.frame)
 
-    for obj in (m1, m2, spot1, spot2, folded_beam, final_beam):
+    for obj in (m1, m2, spot1, spot2, folded_beam, final_beam, *mirror_footprints):
         set_linear_interpolation(obj)
 
     if params["show_minimal_labels"]:

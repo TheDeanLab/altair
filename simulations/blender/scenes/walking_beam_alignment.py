@@ -24,6 +24,7 @@ _ensure_repo_root_on_path()
 from simulations.blender.altair_blender.beam_walking import (  # noqa: E402
     BeamIntercepts,
     BeamWalkingAxisModel,
+    BeamWalkingAxisState,
     BeamWalkingModel,
     BeamWalkingState,
     CircularAperture,
@@ -215,6 +216,7 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "frame_m1_refinement": 108,
     "frame_m2_refinement": 144,
     "frame_end": 168,
+    "trace_keyframe_step": 6,
 }
 
 
@@ -992,6 +994,117 @@ def _alignment_states(params: Mapping[str, Any]) -> tuple[BeamWalkingState, ...]
     )
 
 
+def _interpolate_axis_state(
+    start: BeamWalkingAxisState,
+    end: BeamWalkingAxisState,
+    *,
+    fraction: float,
+) -> BeamWalkingAxisState:
+    """Interpolate one transverse-axis walking-beam state.
+
+    Parameters
+    ----------
+    start
+        Axis state at the beginning of the interval.
+    end
+        Axis state at the end of the interval.
+    fraction
+        Linear interpolation fraction in ``[0, 1]``.
+
+    Returns
+    -------
+    BeamWalkingAxisState
+        Interpolated axis correction state.
+    """
+
+    return BeamWalkingAxisState(
+        m1_offset_mm=start.m1_offset_mm
+        + ((end.m1_offset_mm - start.m1_offset_mm) * fraction),
+        m2_angle_mrad=start.m2_angle_mrad
+        + ((end.m2_angle_mrad - start.m2_angle_mrad) * fraction),
+    )
+
+
+def _interpolate_alignment_state(
+    start: BeamWalkingState,
+    end: BeamWalkingState,
+    *,
+    frame: int,
+) -> BeamWalkingState:
+    """Interpolate a walking-beam state for a timeline frame.
+
+    Parameters
+    ----------
+    start
+        Storyboard state at the start of the interval.
+    end
+        Storyboard state at the end of the interval.
+    frame
+        Timeline frame to sample.
+
+    Returns
+    -------
+    BeamWalkingState
+        Interpolated state at the requested frame.
+    """
+
+    if frame == start.frame:
+        return start
+    if frame == end.frame:
+        return end
+    if end.frame <= start.frame:
+        raise ValueError("Alignment states must be ordered by increasing frame.")
+
+    fraction = (frame - start.frame) / (end.frame - start.frame)
+    return BeamWalkingState(
+        name=f"sample_{frame:03d}_{start.name}_to_{end.name}",
+        frame=frame,
+        horizontal=_interpolate_axis_state(
+            start.horizontal,
+            end.horizontal,
+            fraction=fraction,
+        ),
+        vertical=_interpolate_axis_state(
+            start.vertical,
+            end.vertical,
+            fraction=fraction,
+        ),
+    )
+
+
+def _sampled_alignment_states(
+    params: Mapping[str, Any],
+    states: tuple[BeamWalkingState, ...],
+) -> tuple[BeamWalkingState, ...]:
+    """Return dense physical trace keyframes across storyboard intervals.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    states
+        Ordered milestone states used for captions and instructional beats.
+
+    Returns
+    -------
+    tuple[BeamWalkingState, ...]
+        Storyboard states plus interpolated states with bounded frame spacing.
+    """
+
+    if len(states) < 2:
+        return states
+    step = int(params["trace_keyframe_step"])
+    if step <= 0:
+        raise ValueError("trace_keyframe_step must be positive.")
+
+    sampled: list[BeamWalkingState] = [states[0]]
+    for start, end in zip(states, states[1:]):
+        for frame in range(start.frame + step, end.frame, step):
+            sampled.append(_interpolate_alignment_state(start, end, frame=frame))
+        sampled.append(end)
+    return tuple(sampled)
+
+
 def _storyboard_captions_for_states(
     params: Mapping[str, Any], states: tuple[BeamWalkingState, ...]
 ) -> tuple[StoryboardCaption, ...]:
@@ -1570,6 +1683,7 @@ def main(output_path: str | None = None) -> None:
     centers = _component_centers(params)
     model = _walking_beam_model(params)
     states = _alignment_states(params)
+    trace_states = _sampled_alignment_states(params, states)
     axis_z = float(params["optical_axis_z_mm"])
     table_top_z = float(params["table_top_z_mm"])
     beam_radius = _beam_visual_radius(params)
@@ -1655,10 +1769,18 @@ def main(output_path: str | None = None) -> None:
         name="Iris 2 ID25-Style Assembly",
     )
 
-    first_downstream_path = _downstream_beam_path_for_state(params, model, states[0])
-    first_display_segments = _display_beam_segments_for_state(params, model, states[0])
+    first_downstream_path = _downstream_beam_path_for_state(
+        params,
+        model,
+        trace_states[0],
+    )
+    first_display_segments = _display_beam_segments_for_state(
+        params,
+        model,
+        trace_states[0],
+    )
     first_display = _iris_spot_offsets_for_path(params, first_downstream_path)
-    first_footprints = _mirror_footprints_for_state(params, model, states[0])
+    first_footprints = _mirror_footprints_for_state(params, model, trace_states[0])
     beam_segment_objects = []
     for display_segment in first_display_segments:
         beam_obj = create_beam_between(
@@ -1710,7 +1832,7 @@ def main(output_path: str | None = None) -> None:
             )
         )
 
-    for state in states:
+    for state in trace_states:
         downstream_path = _downstream_beam_path_for_state(params, model, state)
         display_segments = _display_beam_segments_for_state(params, model, state)
         footprints = _mirror_footprints_for_state(params, model, state)

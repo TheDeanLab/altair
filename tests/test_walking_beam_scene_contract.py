@@ -312,6 +312,43 @@ def test_scene_defines_explicit_walking_beam_storyboard():
     ]
 
 
+def test_sampled_alignment_states_fill_storyboard_intervals():
+    module = load_scene_module()
+    params = {**module.DEFAULT_PARAMETERS, "trace_keyframe_step": 7}
+    states = module._alignment_states(params)
+
+    sampled = module._sampled_alignment_states(params, states)
+    sampled_frames = [state.frame for state in sampled]
+
+    assert sampled_frames == sorted(set(sampled_frames))
+    assert len(sampled) > len(states)
+    assert {state.frame for state in states}.issubset(sampled_frames)
+    assert (
+        max(
+            later - earlier
+            for earlier, later in zip(sampled_frames, sampled_frames[1:])
+        )
+        <= params["trace_keyframe_step"]
+    )
+
+    first = states[0]
+    second = states[1]
+    intermediate = next(
+        state for state in sampled if first.frame < state.frame < second.frame
+    )
+    fraction = (intermediate.frame - first.frame) / (second.frame - first.frame)
+    expected_horizontal_m1 = first.horizontal.m1_offset_mm + (
+        (second.horizontal.m1_offset_mm - first.horizontal.m1_offset_mm) * fraction
+    )
+    expected_vertical_m2 = first.vertical.m2_angle_mrad + (
+        (second.vertical.m2_angle_mrad - first.vertical.m2_angle_mrad) * fraction
+    )
+
+    assert intermediate.name.startswith("sample_")
+    assert intermediate.horizontal.m1_offset_mm == pytest.approx(expected_horizontal_m1)
+    assert intermediate.vertical.m2_angle_mrad == pytest.approx(expected_vertical_m2)
+
+
 def test_scene_storyboard_reduces_alignment_error_to_zero():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

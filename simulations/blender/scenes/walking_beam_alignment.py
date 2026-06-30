@@ -23,20 +23,22 @@ _ensure_repo_root_on_path()
 
 from simulations.blender.altair_blender.beam_walking import (  # noqa: E402
     BeamIntercepts,
+    BeamWalkingAxisModel,
     BeamWalkingModel,
     BeamWalkingState,
-    BeamWalkingAxisModel,
+    CircularAperture,
+    PlaneMirror,
+    Ray3D,
+    RayTraceResult,
     compute_beam_intercepts,
     iterative_alignment_sequence,
+    trace_two_mirror_two_iris_system,
 )
 from simulations.blender.altair_blender.prescriptions import (  # noqa: E402
     ID25_IRIS,
     KM100CP_MOUNT,
     PH2_POST_HOLDER,
     TR15_POST,
-)
-from simulations.blender.altair_blender.optics import (  # noqa: E402
-    reflect_direction as _reflect_direction,
 )
 from simulations.blender.altair_blender.scene import RENDER_PRESETS  # noqa: E402
 
@@ -273,6 +275,35 @@ def _mirror_reflective_normal(yaw_deg: float) -> tuple[float, float, float]:
     return (-math.cos(yaw_rad), -math.sin(yaw_rad), 0.0)
 
 
+def _reflect_direction(
+    direction: tuple[float, float, float],
+    normal: tuple[float, float, float],
+) -> tuple[float, float, float]:
+    """Reflect a direction vector about a mirror normal.
+
+    Parameters
+    ----------
+    direction
+        Incident direction vector.
+    normal
+        Mirror normal vector.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Unit reflected direction vector.
+    """
+
+    dot_product = sum(direction[index] * normal[index] for index in range(3))
+    reflected = tuple(
+        direction[index] - (2.0 * dot_product * normal[index]) for index in range(3)
+    )
+    length = math.sqrt(sum(component * component for component in reflected))
+    if length <= 0.0:
+        raise ValueError("Reflected direction must have positive length.")
+    return tuple(component / length for component in reflected)
+
+
 def _mirror_plane_point(
     center: tuple[float, float, float], *, yaw_deg: float, offset_mm: float
 ) -> tuple[float, float, float]:
@@ -444,51 +475,127 @@ def _trace_z_fold_ray(params: Mapping[str, Any]) -> tuple[BeamPathPoint, ...]:
         Source, mirror hit, and iris-row exit points.
     """
 
-    centers = _component_centers(params)
-    offset = float(params["mirror_surface_offset_mm"])
-    incoming_direction = (1.0, 0.0, 0.0)
-
-    m1_normal = _mirror_reflective_normal(float(params["m1_yaw_deg"]))
-    folded_direction = _reflect_direction(incoming_direction, m1_normal)
-    m2_normal = _mirror_reflective_normal(float(params["m2_yaw_deg"]))
-    outgoing_direction = _reflect_direction(folded_direction, m2_normal)
-
-    m2_surface = _ray_plane_intersection(
-        origin=centers["iris_1"],
-        direction=tuple(-component for component in outgoing_direction),
-        plane_point=_mirror_plane_point(
-            centers["m2"],
-            yaw_deg=float(params["m2_yaw_deg"]),
-            offset_mm=offset,
-        ),
-        plane_normal=m2_normal,
-    )
-    m1_surface = _ray_plane_intersection(
-        origin=m2_surface,
-        direction=tuple(-component for component in folded_direction),
-        plane_point=_mirror_plane_point(
-            centers["m1"],
-            yaw_deg=float(params["m1_yaw_deg"]),
-            offset_mm=offset,
-        ),
-        plane_normal=m1_normal,
-    )
-    source = tuple(
-        m1_surface[index] - (50.0 * incoming_direction[index]) for index in range(3)
-    )
-    exit_x = centers["iris_2"][0] + (1.5 * float(params["hole_grid_spacing_mm"]))
-    if abs(outgoing_direction[0]) < 1e-9:
-        raise ValueError("Outgoing ray cannot be solved at fixed X.")
-    exit_distance = (exit_x - m2_surface[0]) / outgoing_direction[0]
-    iris_exit = tuple(
-        m2_surface[index] + (exit_distance * outgoing_direction[index])
-        for index in range(3)
-    )
+    trace = _nominal_physical_trace(params)
+    if len(trace.segments) < 5:
+        raise ValueError("Nominal physical trace did not reach the iris row.")
+    source = trace.segments[0].start_xyz_mm
+    m1_surface = trace.interactions[0].point_xyz_mm
+    m2_surface = trace.interactions[1].point_xyz_mm
+    iris_exit = trace.segments[-1].end_xyz_mm
     return (
         BeamPathPoint(name="source", xyz=source),
         BeamPathPoint(name="m1_surface", xyz=m1_surface),
         BeamPathPoint(name="m2_surface", xyz=m2_surface),
         BeamPathPoint(name="iris_row_exit", xyz=iris_exit),
+    )
+
+
+def _nominal_source_ray(params: Mapping[str, Any]) -> Ray3D:
+    """Return the incoming ray for the nominal walking-beam fold.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    Ray3D
+        Incoming laser ray that reaches the first steering mirror.
+    """
+
+    centers = _component_centers(params)
+    source_to_m1_mm = float(params["hole_grid_spacing_mm"]) * 2.0
+    return Ray3D(
+        origin_xyz_mm=(
+            centers["m1"][0] - source_to_m1_mm,
+            centers["m1"][1],
+            centers["m1"][2],
+        ),
+        direction_xyz=(1.0, 0.0, 0.0),
+        beam_radius_mm=float(params["beam_diameter_mm"]) / 2.0,
+        wavelength_nm=float(params["wavelength_nm"]),
+    )
+
+
+def _physical_mirror(params: Mapping[str, Any], component_name: str) -> PlaneMirror:
+    """Return a finite plane mirror derived from scene component geometry.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    component_name
+        Component key, either ``m1`` or ``m2``.
+
+    Returns
+    -------
+    PlaneMirror
+        Physical mirror used by import-safe ray tracing.
+    """
+
+    if component_name not in {"m1", "m2"}:
+        raise ValueError(f"Unsupported mirror component {component_name!r}")
+    yaw_key = f"{component_name}_yaw_deg"
+    centers = _component_centers(params)
+    return PlaneMirror(
+        name=component_name.upper(),
+        center_xyz_mm=centers[component_name],
+        normal_xyz=_mirror_reflective_normal(float(params[yaw_key])),
+        clear_radius_mm=KM100CP_MOUNT.clear_aperture_mm / 2.0,
+    )
+
+
+def _physical_iris(params: Mapping[str, Any], component_name: str) -> CircularAperture:
+    """Return a finite circular aperture derived from scene geometry.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    component_name
+        Component key, either ``iris_1`` or ``iris_2``.
+
+    Returns
+    -------
+    CircularAperture
+        Physical aperture used by import-safe ray tracing.
+    """
+
+    if component_name not in {"iris_1", "iris_2"}:
+        raise ValueError(f"Unsupported iris component {component_name!r}")
+    centers = _component_centers(params)
+    label = "Iris 1" if component_name == "iris_1" else "Iris 2"
+    return CircularAperture(
+        name=label,
+        center_xyz_mm=centers[component_name],
+        normal_xyz=(-1.0, 0.0, 0.0),
+        aperture_radius_mm=float(params["alignment_aperture_diameter_mm"]) / 2.0,
+        body_radius_mm=ID25_IRIS.outer_diameter_mm / 2.0,
+    )
+
+
+def _nominal_physical_trace(params: Mapping[str, Any]) -> RayTraceResult:
+    """Trace the nominal aligned beam through finite scene elements.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    RayTraceResult
+        Ordered physical trace through M1, M2, Iris 1, and Iris 2.
+    """
+
+    return trace_two_mirror_two_iris_system(
+        source_ray=_nominal_source_ray(params),
+        m1=_physical_mirror(params, "m1"),
+        m2=_physical_mirror(params, "m2"),
+        iris1=_physical_iris(params, "iris_1"),
+        iris2=_physical_iris(params, "iris_2"),
+        downstream_length_mm=1.5 * float(params["hole_grid_spacing_mm"]),
     )
 
 

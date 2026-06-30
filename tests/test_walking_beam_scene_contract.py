@@ -182,11 +182,12 @@ def test_scene_static_z_fold_path_is_ray_traced_from_mirror_planes():
     ) == pytest.approx(outgoing, abs=1e-9)
 
 
-def test_scene_beam_path_uses_mirror_surface_points_not_mount_centers():
+def test_scene_beam_path_uses_nominal_physical_trace_points():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS
     centers = module._component_centers(params)
     path = module._beam_path_points(params)
+    trace = module._nominal_physical_trace(params)
 
     assert [point.name for point in path] == [
         "source",
@@ -194,37 +195,58 @@ def test_scene_beam_path_uses_mirror_surface_points_not_mount_centers():
         "m2_surface",
         "iris_row_exit",
     ]
-    assert path[1].xyz != centers["m1"]
-    assert path[2].xyz != centers["m2"]
+    assert path[0].xyz == pytest.approx(trace.segments[0].start_xyz_mm)
+    assert path[1].xyz == pytest.approx(trace.interactions[0].point_xyz_mm)
+    assert path[2].xyz == pytest.approx(trace.interactions[1].point_xyz_mm)
+    assert path[3].xyz == pytest.approx(trace.segments[-1].end_xyz_mm)
+    assert path[1].xyz == pytest.approx(centers["m1"])
+    assert path[2].xyz == pytest.approx(centers["m2"])
     assert path[1].xyz[2] == pytest.approx(params["optical_axis_z_mm"])
     assert path[2].xyz[2] == pytest.approx(params["optical_axis_z_mm"])
     assert path[0].xyz[0] < path[1].xyz[0]
     assert path[2].xyz[0] < path[3].xyz[0]
 
 
-def test_scene_beam_path_hits_visible_mirror_face_planes_and_iris_row():
+def test_scene_beam_path_hits_finite_mirrors_and_iris_row():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS
     centers = module._component_centers(params)
     path = module._beam_path_points(params)
+    trace = module._nominal_physical_trace(params)
 
-    for component_name, yaw_key, point in (
-        ("m1", "m1_yaw_deg", path[1]),
-        ("m2", "m2_yaw_deg", path[2]),
-    ):
-        yaw_rad = math.radians(params[yaw_key])
-        normal_xy = (math.cos(yaw_rad), math.sin(yaw_rad))
-        center = centers[component_name]
-        face_offset = (point.xyz[0] - center[0]) * normal_xy[0] + (
-            point.xyz[1] - center[1]
-        ) * normal_xy[1]
-
-        assert face_offset == pytest.approx(-params["mirror_surface_offset_mm"])
+    assert trace.interactions[0].element_name == "M1"
+    assert trace.interactions[1].element_name == "M2"
+    assert trace.interactions[0].clearance_margin_mm > 0.0
+    assert trace.interactions[1].clearance_margin_mm > 0.0
 
     assert path[0].xyz[1] == pytest.approx(path[1].xyz[1])
     assert path[1].xyz[0] == pytest.approx(path[2].xyz[0])
     assert path[2].xyz[1] == pytest.approx(centers["iris_1"][1])
     assert path[2].xyz[1] == pytest.approx(path[3].xyz[1])
+
+
+def test_scene_nominal_physical_trace_hits_all_finite_elements():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+
+    trace = module._nominal_physical_trace(params)
+
+    assert trace.blocked_at == ""
+    assert [interaction.element_name for interaction in trace.interactions] == [
+        "M1",
+        "M2",
+        "Iris 1",
+        "Iris 2",
+    ]
+    assert [interaction.status for interaction in trace.interactions] == [
+        "hit",
+        "hit",
+        "passed",
+        "passed",
+    ]
+    assert all(
+        interaction.clearance_margin_mm > 0.0 for interaction in trace.interactions
+    )
 
 
 def test_iris_closeup_camera_pose_frames_both_irises():

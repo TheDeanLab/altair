@@ -146,6 +146,13 @@ class LabelStyle(NamedTuple):
     emission_strength: float
 
 
+class ReticleStyle(NamedTuple):
+    """Scene-local iris reticle material styling."""
+
+    color: tuple[float, float, float, float]
+    emission_strength: float
+
+
 DEFAULT_PARAMETERS: dict[str, Any] = {
     "wavelength_nm": 561.0,
     "beam_diameter_mm": 1.0,
@@ -154,7 +161,9 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "iris_display_aperture_mm": 2.5,
     "iris_spot_radius_mm": 1.25,
     "iris_reticle_radius_mm": 4.0,
-    "iris_reticle_faces": "both",
+    "iris_reticle_faces": "front",
+    "iris_reticle_color": (0.95, 0.8, 0.36, 0.42),
+    "iris_reticle_emission_strength": 0.32,
     "iris_clipped_spot_radius_scale": 1.55,
     "iris_blocked_spot_radius_scale": 1.25,
     "iris_clipped_spot_power_scale": 0.45,
@@ -1170,6 +1179,27 @@ def _label_style(params: Mapping[str, Any]) -> LabelStyle:
     )
 
 
+def _iris_reticle_style(params: Mapping[str, Any]) -> ReticleStyle:
+    """Return the scene-local iris reticle material style.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    ReticleStyle
+        Color and emission settings for iris reticles.
+    """
+
+    red, green, blue, alpha = params["iris_reticle_color"]
+    return ReticleStyle(
+        color=(float(red), float(green), float(blue), float(alpha)),
+        emission_strength=float(params["iris_reticle_emission_strength"]),
+    )
+
+
 def _set_material_input_if_present(material: Any, input_name: str, value: Any) -> None:
     """Set one Principled BSDF input when the Blender runtime exposes it.
 
@@ -1205,6 +1235,32 @@ def _apply_label_style(materials: Mapping[str, Any], style: LabelStyle) -> None:
     _set_material_input_if_present(label, "Alpha", style.color[3])
     _set_material_input_if_present(label, "Emission Color", style.color)
     _set_material_input_if_present(label, "Emission Strength", style.emission_strength)
+
+
+def _apply_iris_reticle_style(
+    materials: Mapping[str, Any],
+    style: ReticleStyle,
+) -> None:
+    """Apply scene-local iris reticle styling to the material palette.
+
+    Parameters
+    ----------
+    materials
+        Material palette returned by ``create_materials``.
+    style
+        Scene-local iris reticle color and emission settings.
+    """
+
+    reticle = materials["alignment_reference"]
+    reticle.diffuse_color = style.color
+    _set_material_input_if_present(reticle, "Base Color", style.color)
+    _set_material_input_if_present(reticle, "Alpha", style.color[3])
+    _set_material_input_if_present(reticle, "Emission Color", style.color)
+    _set_material_input_if_present(
+        reticle,
+        "Emission Strength",
+        style.emission_strength,
+    )
 
 
 def _beam_visual_radius(params: Mapping[str, Any]) -> float:
@@ -1822,6 +1878,10 @@ def main(output_path: str | None = None) -> None:
     validate_positive("iris_spot_radius_mm", params["iris_spot_radius_mm"])
     validate_positive("iris_display_aperture_mm", params["iris_display_aperture_mm"])
     validate_positive("iris_reticle_radius_mm", params["iris_reticle_radius_mm"])
+    validate_positive(
+        "iris_reticle_emission_strength",
+        params["iris_reticle_emission_strength"],
+    )
     validate_positive("label_emission_strength", params["label_emission_strength"])
     validate_positive(
         "storyboard_caption_size_mm", params["storyboard_caption_size_mm"]
@@ -1845,6 +1905,7 @@ def main(output_path: str | None = None) -> None:
     collection = ensure_collection("Walking Beam Alignment")
     materials = create_materials()
     _apply_label_style(materials, _label_style(params))
+    _apply_iris_reticle_style(materials, _iris_reticle_style(params))
     centers = _component_centers(params)
     model = _walking_beam_model(params)
     states = _alignment_states(params)

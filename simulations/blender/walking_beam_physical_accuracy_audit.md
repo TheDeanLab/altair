@@ -40,6 +40,36 @@ Remaining limitations:
 - Intermediate animation frames are Blender interpolation between ray-traced
   keyframes; future work could sample every rendered frame through the solver.
 
+## Latest Render Review: 2026-06-30
+
+The latest rendered movies reviewed were:
+
+- `/Users/Dean/Downloads/walking_beam_alignment_wide.mp4`
+- `/Users/Dean/Downloads/walking_beam_alignment_hero.mp4`
+- `/Users/Dean/Downloads/walking_beam_alignment_stacked.mp4`
+- `/Users/Dean/Downloads/walking_beam_alignment_iris_closeup.mp4`
+
+Representative frames confirm several visual defects that remain after the
+first physical-trace pass:
+
+| Defect | Observed behavior | Likely source in the current scene |
+| --- | --- | --- |
+| Rectangular glow at M1 | The first mirror shows a bright rectangular/slot-like feature instead of a circular beam footprint. | The ray-traced mirror plane uses the mount origin, while the visible mirror optic is offset inside the KM100CP visual model. The beam endpoint and mirror mesh are therefore not the same physical surface. |
+| Hidden M1-to-M2 beam | The folded beam segment is weak or partly hidden, especially in the hero view. | The scene renders only one animated folded cylinder and one downstream cylinder, with no segment-specific visual diagnostics or camera guarantee that the folded path is visible. |
+| Ambiguous M2 direction | In the hero movie the downstream beam can read as if it is coming from the wrong side of M2. | The hero camera is nearly collinear with the downstream path and does not show enough of the Z-fold geometry. A top-down/oblique path camera is needed. |
+| Glowing iris ring | The iris ring/ticks can be mistaken for a laser spot. | `create_post_mounted_iris` uses the emissive `alignment_reference` material on both reticle faces, while beam spots are also emissive and similarly colored. |
+| Spot/clip fidelity | Iris clipping is hard to distinguish from a centered pass. | `create_return_spot` creates one flattened emissive sphere per iris; the visual does not encode passed, clipped, and blocked interactions distinctly. |
+
+The current physical trace still has a coherent segment order:
+
+```text
+source -> M1 -> M2 -> Iris 1 -> Iris 2 -> downstream
+```
+
+For example, frame 72 (`m2_centers_iris2`) traces M1 and M2 hits, clips Iris 1,
+passes Iris 2, and halves the downstream power. The visual system does not yet
+make those distinctions obvious enough for a teaching movie.
+
 ## Reference Procedure
 
 Standard beam walking uses two steering mirrors upstream of two same-height

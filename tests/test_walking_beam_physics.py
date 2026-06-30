@@ -5,11 +5,15 @@ import math
 import pytest
 
 from simulations.blender.altair_blender.beam_walking import (
+    BeamIntercepts,
     CircularAperture,
+    IrisOffset,
     MirrorAdjustment,
     PlaneMirror,
     Ray3D,
     adjusted_plane_mirror,
+    solve_two_mirror_alignment,
+    trace_two_mirror_iris_intercepts,
     trace_two_mirror_two_iris_system,
     trace_circular_aperture,
     trace_plane_mirror,
@@ -255,3 +259,64 @@ def test_two_mirror_two_iris_trace_stops_at_missed_second_mirror() -> None:
     assert trace.segments[-1].end_xyz_mm == pytest.approx(
         trace.interactions[-1].point_xyz_mm
     )
+
+
+def test_two_mirror_alignment_solver_hits_requested_iris_offsets() -> None:
+    diagonal_normal = (-(2**-0.5), 2**-0.5, 0.0)
+    source = Ray3D(
+        origin_xyz_mm=(-20.0, 0.0, 0.0),
+        direction_xyz=(1.0, 0.0, 0.0),
+        beam_radius_mm=0.5,
+    )
+    m1 = PlaneMirror(
+        name="M1",
+        center_xyz_mm=(0.0, 0.0, 0.0),
+        normal_xyz=diagonal_normal,
+        clear_radius_mm=12.0,
+    )
+    m2 = PlaneMirror(
+        name="M2",
+        center_xyz_mm=(0.0, 20.0, 0.0),
+        normal_xyz=diagonal_normal,
+        clear_radius_mm=12.0,
+    )
+    iris1 = CircularAperture(
+        name="Iris 1",
+        center_xyz_mm=(25.0, 20.0, 0.0),
+        normal_xyz=(-1.0, 0.0, 0.0),
+        aperture_radius_mm=1.25,
+        body_radius_mm=20.0,
+    )
+    iris2 = CircularAperture(
+        name="Iris 2",
+        center_xyz_mm=(50.0, 20.0, 0.0),
+        normal_xyz=(-1.0, 0.0, 0.0),
+        aperture_radius_mm=1.25,
+        body_radius_mm=20.0,
+    )
+    targets = BeamIntercepts(
+        iris1=IrisOffset(y_mm=0.45, z_mm=0.25),
+        iris2=IrisOffset(y_mm=0.85, z_mm=-0.35),
+    )
+
+    solution = solve_two_mirror_alignment(
+        source_ray=source,
+        m1=m1,
+        m2=m2,
+        iris1=iris1,
+        iris2=iris2,
+        target_offsets=targets,
+    )
+    actual = trace_two_mirror_iris_intercepts(
+        source_ray=source,
+        m1=adjusted_plane_mirror(m1, adjustment=solution.m1_adjustment),
+        m2=adjusted_plane_mirror(m2, adjustment=solution.m2_adjustment),
+        iris1=iris1,
+        iris2=iris2,
+    )
+
+    assert solution.residual_mm < 1e-3
+    assert actual.iris1.y_mm == pytest.approx(targets.iris1.y_mm, abs=1e-3)
+    assert actual.iris1.z_mm == pytest.approx(targets.iris1.z_mm, abs=1e-3)
+    assert actual.iris2.y_mm == pytest.approx(targets.iris2.y_mm, abs=1e-3)
+    assert actual.iris2.z_mm == pytest.approx(targets.iris2.z_mm, abs=1e-3)

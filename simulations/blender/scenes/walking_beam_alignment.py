@@ -33,8 +33,9 @@ from simulations.blender.altair_blender.beam_walking import (  # noqa: E402
     Ray3D,
     RayTraceResult,
     adjusted_plane_mirror,
-    exact_alignment_state,
+    compute_beam_intercepts,
     iterative_alignment_sequence,
+    solve_two_mirror_alignment,
     trace_two_mirror_two_iris_system,
 )
 from simulations.blender.altair_blender.prescriptions import (  # noqa: E402
@@ -606,12 +607,16 @@ def _nominal_physical_trace(params: Mapping[str, Any]) -> RayTraceResult:
 
 
 def _mirror_adjustments_for_state(
-    model: BeamWalkingModel, state: BeamWalkingState
+    params: Mapping[str, Any],
+    model: BeamWalkingModel,
+    state: BeamWalkingState,
 ) -> tuple[MirrorAdjustment, MirrorAdjustment]:
     """Return physical mirror adjustments for a storyboard state.
 
     Parameters
     ----------
+    params
+        Scene parameter mapping.
     model
         Beam-walking model used for the storyboard.
     state
@@ -623,19 +628,17 @@ def _mirror_adjustments_for_state(
         M1 and M2 physical mirror adjustments.
     """
 
-    aligned = exact_alignment_state(model, name="aligned_reference", frame=state.frame)
-    return (
-        MirrorAdjustment(
-            yaw_mrad=state.horizontal.m1_offset_mm - aligned.horizontal.m1_offset_mm,
-            pitch_mrad=state.vertical.m1_offset_mm - aligned.vertical.m1_offset_mm,
-        ),
-        MirrorAdjustment(
-            yaw_mrad=(state.horizontal.m2_angle_mrad - aligned.horizontal.m2_angle_mrad)
-            / 2.0,
-            pitch_mrad=(state.vertical.m2_angle_mrad - aligned.vertical.m2_angle_mrad)
-            / 2.0,
-        ),
+    solution = solve_two_mirror_alignment(
+        source_ray=_nominal_source_ray(params),
+        m1=_physical_mirror(params, "m1"),
+        m2=_physical_mirror(params, "m2"),
+        iris1=_physical_iris(params, "iris_1"),
+        iris2=_physical_iris(params, "iris_2"),
+        target_offsets=compute_beam_intercepts(model, state),
+        tolerance_mm=0.01,
+        max_iterations=30,
     )
+    return (solution.m1_adjustment, solution.m2_adjustment)
 
 
 def _physical_trace_for_state(
@@ -660,7 +663,7 @@ def _physical_trace_for_state(
         Physical trace for the supplied state.
     """
 
-    m1_adjustment, m2_adjustment = _mirror_adjustments_for_state(model, state)
+    m1_adjustment, m2_adjustment = _mirror_adjustments_for_state(params, model, state)
     return trace_two_mirror_two_iris_system(
         source_ray=_nominal_source_ray(params),
         m1=adjusted_plane_mirror(
@@ -975,8 +978,31 @@ def _downstream_beam_path_for_state(
         Beam start, iris intercepts, and downstream exit point.
     """
 
+    return _downstream_beam_path_from_trace(
+        params,
+        _physical_trace_for_state(params, model, state),
+    )
+
+
+def _downstream_beam_path_from_trace(
+    params: Mapping[str, Any], trace: RayTraceResult
+) -> DownstreamBeamPath:
+    """Return animated downstream beam points for one physical trace.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    trace
+        Finite-element trace through the walking-beam optics.
+
+    Returns
+    -------
+    DownstreamBeamPath
+        Beam start, iris intercepts, visibility, and blocking status.
+    """
+
     centers = _component_centers(params)
-    trace = _physical_trace_for_state(params, model, state)
     interactions_by_name = {
         interaction.element_name: interaction for interaction in trace.interactions
     }

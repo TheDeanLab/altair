@@ -369,6 +369,38 @@ def test_downstream_beam_path_tracks_iterative_alignment_states():
     assert aligned.exit_xyz[0] > aligned.iris2_xyz[0]
 
 
+def test_physical_storyboard_m1_step_centers_near_iris():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    states = {state.name: state for state in module._alignment_states(params)}
+    gross = module._downstream_beam_path_for_state(
+        params,
+        model,
+        states["gross_misalignment"],
+    )
+    m1_centered = module._downstream_beam_path_for_state(
+        params,
+        model,
+        states["m1_centers_iris1"],
+    )
+    centers = module._component_centers(params)
+
+    gross_radius = math.hypot(
+        gross.iris1_xyz[1] - centers["iris_1"][1],
+        gross.iris1_xyz[2] - centers["iris_1"][2],
+    )
+    m1_radius = math.hypot(
+        m1_centered.iris1_xyz[1] - centers["iris_1"][1],
+        m1_centered.iris1_xyz[2] - centers["iris_1"][2],
+    )
+
+    assert m1_centered.iris1_visible is True
+    assert m1_centered.blocked_at in {"", "iris_2"}
+    assert m1_radius < 0.25
+    assert m1_radius < gross_radius
+
+
 def test_folded_beam_path_shares_animated_m2_hit_point():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS
@@ -424,23 +456,18 @@ def test_displayed_beam_paths_are_derived_from_physical_trace_segments():
 def test_hidden_downstream_beam_keeps_nonzero_placeholder_segment():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS
-    model = module._walking_beam_model(params)
-    aligned = module.exact_alignment_state(
-        model,
-        name="m2_miss_regression",
-        frame=1,
-    )
-    missed_m2 = module.BeamWalkingState(
-        name=aligned.name,
-        frame=aligned.frame,
-        horizontal=type(aligned.horizontal)(
-            m1_offset_mm=aligned.horizontal.m1_offset_mm + 600.0,
-            m2_angle_mrad=aligned.horizontal.m2_angle_mrad,
+    missed_m2_trace = module.trace_two_mirror_two_iris_system(
+        source_ray=module._nominal_source_ray(params),
+        m1=module.adjusted_plane_mirror(
+            module._physical_mirror(params, "m1"),
+            adjustment=module.MirrorAdjustment(yaw_mrad=600.0),
         ),
-        vertical=aligned.vertical,
+        m2=module._physical_mirror(params, "m2"),
+        iris1=module._physical_iris(params, "iris_1"),
+        iris2=module._physical_iris(params, "iris_2"),
     )
 
-    path = module._downstream_beam_path_for_state(params, model, missed_m2)
+    path = module._downstream_beam_path_from_trace(params, missed_m2_trace)
 
     assert path.blocked_at == "m2"
     assert path.beam_visible is False

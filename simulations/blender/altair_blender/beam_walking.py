@@ -136,6 +136,17 @@ class RayTraceResult:
     blocked_at: str
 
 
+@dataclass(frozen=True)
+class MirrorAlignmentSolution:
+    """Numerical solution for steering two mirrors to target iris offsets."""
+
+    m1_adjustment: MirrorAdjustment
+    m2_adjustment: MirrorAdjustment
+    residual_mm: float
+    iterations: int
+    converged: bool
+
+
 def _dot(a: VectorTuple, b: VectorTuple) -> float:
     """Return the dot product of two 3D vectors.
 
@@ -710,6 +721,351 @@ def trace_two_mirror_two_iris_system(
         interactions=tuple(interactions),
         segments=tuple(segments),
         blocked_at="",
+    )
+
+
+def trace_two_mirror_iris_intercepts(
+    *,
+    source_ray: Ray3D,
+    m1: PlaneMirror,
+    m2: PlaneMirror,
+    iris1: CircularAperture,
+    iris2: CircularAperture,
+) -> BeamIntercepts:
+    """Return downstream iris offsets after two finite mirror reflections.
+
+    The mirror clear apertures are enforced. The iris apertures are treated as
+    measurement planes so this helper can solve and report off-aperture target
+    positions without prematurely clipping the beam.
+
+    Parameters
+    ----------
+    source_ray
+        Incoming ray before the first mirror.
+    m1
+        First steering mirror.
+    m2
+        Second steering mirror.
+    iris1
+        Near iris measurement plane.
+    iris2
+        Far iris measurement plane.
+
+    Returns
+    -------
+    BeamIntercepts
+        World-Y and world-Z offsets at the two iris planes.
+
+    Raises
+    ------
+    ValueError
+        If either mirror is missed or either iris plane is unreachable.
+    """
+
+    m1_interaction, after_m1 = trace_plane_mirror(ray=source_ray, mirror=m1)
+    if after_m1 is None:
+        raise ValueError(
+            f"source ray did not reflect from {m1.name}: {m1_interaction.status}"
+        )
+    m2_interaction, after_m2 = trace_plane_mirror(ray=after_m1, mirror=m2)
+    if after_m2 is None:
+        raise ValueError(
+            f"beam did not reflect from {m2.name}: {m2_interaction.status}"
+        )
+
+    iris1_hit = _ray_plane_hit(
+        origin=after_m2.origin_xyz_mm,
+        direction=after_m2.direction_xyz,
+        plane_point=iris1.center_xyz_mm,
+        plane_normal=iris1.normal_xyz,
+    )
+    iris2_hit = _ray_plane_hit(
+        origin=after_m2.origin_xyz_mm,
+        direction=after_m2.direction_xyz,
+        plane_point=iris2.center_xyz_mm,
+        plane_normal=iris2.normal_xyz,
+    )
+    if iris1_hit is None or iris2_hit is None:
+        raise ValueError("reflected beam does not reach both iris planes")
+
+    return BeamIntercepts(
+        iris1=IrisOffset(
+            y_mm=iris1_hit[1] - iris1.center_xyz_mm[1],
+            z_mm=iris1_hit[2] - iris1.center_xyz_mm[2],
+        ),
+        iris2=IrisOffset(
+            y_mm=iris2_hit[1] - iris2.center_xyz_mm[1],
+            z_mm=iris2_hit[2] - iris2.center_xyz_mm[2],
+        ),
+    )
+
+
+def _intercepts_vector(intercepts: BeamIntercepts) -> tuple[float, float, float, float]:
+    """Return a four-component vector from two iris intercepts.
+
+    Parameters
+    ----------
+    intercepts
+        Two-iris intercept record.
+
+    Returns
+    -------
+    tuple[float, float, float, float]
+        Iris 1 Y/Z followed by Iris 2 Y/Z.
+    """
+
+    return (
+        intercepts.iris1.y_mm,
+        intercepts.iris1.z_mm,
+        intercepts.iris2.y_mm,
+        intercepts.iris2.z_mm,
+    )
+
+
+def _vector_norm(values: Sequence[float]) -> float:
+    """Return the Euclidean norm of a numeric vector.
+
+    Parameters
+    ----------
+    values
+        Numeric vector components.
+
+    Returns
+    -------
+    float
+        Euclidean norm.
+    """
+
+    return math.sqrt(sum(value * value for value in values))
+
+
+def _solve_linear_system(
+    matrix: Sequence[Sequence[float]], vector: Sequence[float]
+) -> tuple[float, ...]:
+    """Solve a small dense linear system with partial pivoting.
+
+    Parameters
+    ----------
+    matrix
+        Square coefficient matrix.
+    vector
+        Right-hand side vector.
+
+    Returns
+    -------
+    tuple[float, ...]
+        Solution vector.
+
+    Raises
+    ------
+    ValueError
+        If the system is singular or dimensions are inconsistent.
+    """
+
+    size = len(vector)
+    if size == 0 or len(matrix) != size or any(len(row) != size for row in matrix):
+        raise ValueError("linear system dimensions are inconsistent")
+
+    augmented = [list(matrix[row]) + [float(vector[row])] for row in range(size)]
+    for column in range(size):
+        pivot = max(range(column, size), key=lambda row: abs(augmented[row][column]))
+        if abs(augmented[pivot][column]) < 1e-12:
+            raise ValueError("linear system is singular")
+        augmented[column], augmented[pivot] = augmented[pivot], augmented[column]
+
+        pivot_value = augmented[column][column]
+        for index in range(column, size + 1):
+            augmented[column][index] /= pivot_value
+
+        for row in range(size):
+            if row == column:
+                continue
+            factor = augmented[row][column]
+            for index in range(column, size + 1):
+                augmented[row][index] -= factor * augmented[column][index]
+
+    return tuple(augmented[row][size] for row in range(size))
+
+
+def solve_two_mirror_alignment(
+    *,
+    source_ray: Ray3D,
+    m1: PlaneMirror,
+    m2: PlaneMirror,
+    iris1: CircularAperture,
+    iris2: CircularAperture,
+    target_offsets: BeamIntercepts,
+    initial_m1_adjustment: MirrorAdjustment | None = None,
+    initial_m2_adjustment: MirrorAdjustment | None = None,
+    tolerance_mm: float = 1e-3,
+    max_iterations: int = 25,
+    finite_difference_step_mrad: float = 0.1,
+    max_step_mrad: float = 100.0,
+) -> MirrorAlignmentSolution:
+    """Solve mirror pitch/yaw settings for requested iris offsets.
+
+    Parameters
+    ----------
+    source_ray
+        Incoming ray before the first mirror.
+    m1
+        First finite steering mirror.
+    m2
+        Second finite steering mirror.
+    iris1
+        Near iris measurement plane.
+    iris2
+        Far iris measurement plane.
+    target_offsets
+        Requested world-Y/Z offsets at the two iris planes.
+    initial_m1_adjustment
+        Optional starting pitch/yaw adjustment for M1.
+    initial_m2_adjustment
+        Optional starting pitch/yaw adjustment for M2.
+    tolerance_mm
+        Residual norm below which the solution is considered converged.
+    max_iterations
+        Maximum damped Newton iterations.
+    finite_difference_step_mrad
+        Perturbation used to estimate the numerical Jacobian.
+    max_step_mrad
+        Maximum absolute Newton step per variable before damping.
+
+    Returns
+    -------
+    MirrorAlignmentSolution
+        Best mirror adjustments found by the numerical solve.
+
+    Raises
+    ------
+    ValueError
+        If the initial mirror geometry cannot produce iris-plane intercepts.
+    """
+
+    if tolerance_mm <= 0.0:
+        raise ValueError("tolerance_mm must be positive")
+    if finite_difference_step_mrad <= 0.0:
+        raise ValueError("finite_difference_step_mrad must be positive")
+    if max_step_mrad <= 0.0:
+        raise ValueError("max_step_mrad must be positive")
+    target = _intercepts_vector(target_offsets)
+    start_m1 = initial_m1_adjustment or MirrorAdjustment()
+    start_m2 = initial_m2_adjustment or MirrorAdjustment()
+    values = [
+        start_m1.yaw_mrad,
+        start_m1.pitch_mrad,
+        start_m2.yaw_mrad,
+        start_m2.pitch_mrad,
+    ]
+
+    def evaluate(candidate: Sequence[float]) -> tuple[float, ...] | None:
+        adjusted_m1 = adjusted_plane_mirror(
+            m1,
+            adjustment=MirrorAdjustment(
+                yaw_mrad=candidate[0],
+                pitch_mrad=candidate[1],
+            ),
+        )
+        adjusted_m2 = adjusted_plane_mirror(
+            m2,
+            adjustment=MirrorAdjustment(
+                yaw_mrad=candidate[2],
+                pitch_mrad=candidate[3],
+            ),
+        )
+        try:
+            intercepts = trace_two_mirror_iris_intercepts(
+                source_ray=source_ray,
+                m1=adjusted_m1,
+                m2=adjusted_m2,
+                iris1=iris1,
+                iris2=iris2,
+            )
+        except ValueError:
+            return None
+        actual = _intercepts_vector(intercepts)
+        return tuple(actual[index] - target[index] for index in range(4))
+
+    residual = evaluate(values)
+    if residual is None:
+        raise ValueError("initial mirror adjustments do not reach both iris planes")
+    best_values = list(values)
+    best_residual = residual
+    best_norm = _vector_norm(best_residual)
+    iterations = 0
+
+    for iterations in range(1, max_iterations + 1):
+        if best_norm <= tolerance_mm:
+            break
+
+        columns: list[tuple[float, ...]] = []
+        for column in range(4):
+            perturbed = list(best_values)
+            perturbed[column] += finite_difference_step_mrad
+            perturbed_residual = evaluate(perturbed)
+            if perturbed_residual is None:
+                perturbed = list(best_values)
+                perturbed[column] -= finite_difference_step_mrad
+                perturbed_residual = evaluate(perturbed)
+                scale = -finite_difference_step_mrad
+            else:
+                scale = finite_difference_step_mrad
+            if perturbed_residual is None:
+                raise ValueError("unable to estimate alignment Jacobian")
+            columns.append(
+                tuple(
+                    (perturbed_residual[row] - best_residual[row]) / scale
+                    for row in range(4)
+                )
+            )
+
+        jacobian = [[columns[column][row] for column in range(4)] for row in range(4)]
+        try:
+            delta = _solve_linear_system(
+                jacobian,
+                tuple(-component for component in best_residual),
+            )
+        except ValueError:
+            break
+
+        largest_step = max(abs(component) for component in delta)
+        if largest_step > max_step_mrad:
+            delta = tuple(
+                component * max_step_mrad / largest_step for component in delta
+            )
+
+        accepted = False
+        damping = 1.0
+        for _attempt in range(12):
+            candidate = [
+                best_values[index] + (damping * delta[index]) for index in range(4)
+            ]
+            candidate_residual = evaluate(candidate)
+            if candidate_residual is not None:
+                candidate_norm = _vector_norm(candidate_residual)
+                if candidate_norm < best_norm:
+                    best_values = candidate
+                    best_residual = candidate_residual
+                    best_norm = candidate_norm
+                    accepted = True
+                    break
+            damping *= 0.5
+
+        if not accepted:
+            break
+
+    return MirrorAlignmentSolution(
+        m1_adjustment=MirrorAdjustment(
+            yaw_mrad=best_values[0],
+            pitch_mrad=best_values[1],
+        ),
+        m2_adjustment=MirrorAdjustment(
+            yaw_mrad=best_values[2],
+            pitch_mrad=best_values[3],
+        ),
+        residual_mm=best_norm,
+        iterations=iterations,
+        converged=best_norm <= tolerance_mm,
     )
 
 

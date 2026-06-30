@@ -1,9 +1,44 @@
 # Walking-Beam Alignment Physical Accuracy Audit
 
-This audit documents why the current walking-beam alignment render is not yet a
+This audit documents why the first-pass walking-beam alignment render was not a
 physically faithful model of the two-mirror, two-iris alignment procedure. It is
-intended to guide the next implementation pass, not to justify the current
-movie.
+kept as historical design context and as a checklist for future review passes.
+
+## Current Branch Status
+
+The current PR draft branch has replaced the first-pass manual beam animation
+with a finite-aperture geometric ray chain and a reusable physical mirror
+solver:
+
+- `altair_blender.beam_walking` contains import-safe 3D ray, mirror, aperture,
+  trace, and two-mirror solver helpers.
+- `scenes/walking_beam_alignment.py` derives folded/downstream beam cylinders,
+  iris spot positions, spot visibility, blocking state, and mirror display
+  rotations from the physical trace.
+- The default tutorial sequence is now tuned to be physically reachable by the
+  modeled KM100CP mirror aperture and 2.5 mm iris apertures.
+
+Current traced storyboard summary:
+
+| State | First block | Iris 1 radius | Iris 2 radius | Teaching role |
+| --- | --- | ---: | ---: | --- |
+| `gross_misalignment` | Iris 1 | 1.793 mm | not reached | Initial beam clips/stops at the near iris. |
+| `m1_centers_iris1` | Iris 2 | 0.000 mm | 2.505 mm | M1 correction centers the near iris. |
+| `m2_centers_iris2` | none | 0.939 mm | 0.000 mm | M2 correction reaches and centers the far iris while perturbing Iris 1. |
+| `m1_refinement` | none | 0.000 mm | 0.024 mm | M1 refinement recenters the near iris with small far residual. |
+| `m2_refinement` | none | 0.000 mm | 0.000 mm | M2 refinement removes the remaining far residual. |
+| `aligned_hold` | none | 0.000 mm | 0.000 mm | Final hold with both iris spots centered. |
+
+Remaining limitations:
+
+- This is still geometric ray tracing, not Gaussian beam propagation or wave
+  optics.
+- Iris clipping is modeled as a simple finite-radius beam/aperture interaction,
+  not a diffraction pattern or realistic partial-beam spot shape.
+- Mirror knobs are represented as pitch/yaw angles rather than screw turns or a
+  full kinematic mount mechanism.
+- Intermediate animation frames are Blender interpolation between ray-traced
+  keyframes; future work could sample every rendered frame through the solver.
 
 ## Reference Procedure
 

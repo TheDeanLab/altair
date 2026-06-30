@@ -38,10 +38,17 @@ Altair educational optics-alignment videos.
 - The current ray model traces geometric surface reflections but does not model
   wavelength-dependent refraction through the cemented doublet or coating
   Fresnel coefficients.
-- The current walking-beam movie is a storyboard prototype, not a physically
-  valid ray trace. Before revising it, read
-  `walking_beam_physical_accuracy_audit.md`; future fixes should use one
-  continuous finite-aperture ray chain from laser to M1 to M2 to both irises.
+- The walking-beam scene now uses one continuous finite-aperture geometric ray
+  chain from laser to M1 to M2 to Iris 1 to Iris 2. Beam cylinders, iris spots,
+  blocking, and mirror display rotations should remain derived from that trace.
+- Walking-beam storyboard states still use an abstract target-offset model for
+  the teaching sequence, but `beam_walking.solve_two_mirror_alignment` converts
+  those targets into physical M1/M2 pitch-yaw adjustments. Do not reintroduce
+  hand-positioned beam segments or mirror rotations that bypass the solver.
+- The default walking-beam misalignment is intentionally moderate: gross
+  alignment clips/stops at Iris 1, M1 centers Iris 1, M2 reaches and centers
+  Iris 2, then two refinements converge. Larger errors may be physically valid,
+  but can hide downstream tutorial targets behind upstream apertures.
 - Use minimal in-scene labels for teaching videos when they clarify the setup.
   Keep labels unobtrusive and reusable through `geometry.create_scene_label`.
 

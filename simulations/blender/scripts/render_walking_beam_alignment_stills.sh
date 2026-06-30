@@ -14,6 +14,7 @@ Artifacts:
   OUTPUT_DIR/wide.png
   OUTPUT_DIR/iris_closeup.png
   OUTPUT_DIR/hero.png
+  OUTPUT_DIR/top_down.png
   OUTPUT_DIR/stacked.png
 
 Environment overrides:
@@ -120,6 +121,7 @@ blend_path="$output_dir/walking_beam_alignment.blend"
 wide_png="$output_dir/wide.png"
 iris_png="$output_dir/iris_closeup.png"
 hero_png="$output_dir/hero.png"
+top_down_png="$output_dir/top_down.png"
 stacked_png="$output_dir/stacked.png"
 
 if (( dry_run )); then
@@ -134,6 +136,7 @@ Would create:
   $wide_png
   $iris_png
   $hero_png
+  $top_down_png
   $stacked_png
 
 Would run:
@@ -141,7 +144,8 @@ Would run:
   Render Wide Setup Camera still to $wide_png
   Render Iris Close-Up Camera still to $iris_png
   Render Hero Camera still to $hero_png
-  $ffmpeg_display -filter_complex vstack=inputs=2 $stacked_png
+  Render Top-Down Path Camera still to $top_down_png
+  $ffmpeg_display -filter_complex vstack=inputs=3 $stacked_png
 EOF
   exit 0
 fi
@@ -183,6 +187,7 @@ for camera_name, output_path in (
     ("Wide Setup Camera", os.environ["WIDE_PNG"]),
     ("Iris Close-Up Camera", os.environ["IRIS_PNG"]),
     ("Hero Camera", os.environ["HERO_PNG"]),
+    ("Top-Down Path Camera", os.environ["TOP_DOWN_PNG"]),
 ):
     scene.camera = bpy.data.objects[camera_name]
     scene.render.filepath = output_path
@@ -198,13 +203,15 @@ REPO_ROOT="$repo_root" \
   WIDE_PNG="$wide_png" \
   IRIS_PNG="$iris_png" \
   HERO_PNG="$hero_png" \
+  TOP_DOWN_PNG="$top_down_png" \
   "$blender_bin" --background "$blend_path" --python-expr "$render_expr"
 
-printf '\n==> Stacking wide and iris close-up stills\n'
+printf '\n==> Stacking wide, iris close-up, and top-down stills\n'
 "$ffmpeg_bin" -y \
   -i "$wide_png" \
   -i "$iris_png" \
-  -filter_complex "vstack=inputs=2" \
+  -i "$top_down_png" \
+  -filter_complex "vstack=inputs=3" \
   -frames:v 1 \
   -update 1 \
   "$stacked_png"
@@ -215,5 +222,6 @@ Done.
   Wide still:        $wide_png
   Iris close-up:    $iris_png
   Hero still:       $hero_png
+  Top-down still:   $top_down_png
   Stacked still:    $stacked_png
 EOF

@@ -56,6 +56,7 @@ def test_scene_default_parameters_include_hardware_sources_and_video_contract():
     assert params["wide_camera_name"] == "Wide Setup Camera"
     assert params["iris_closeup_camera_name"] == "Iris Close-Up Camera"
     assert params["hero_camera_name"] == "Hero Camera"
+    assert params["top_down_camera_name"] == "Top-Down Path Camera"
     assert params["render_presets"]["final"]["engine"] == "CYCLES"
     assert params["optical_axis_z_mm"] > 0.0
 
@@ -291,6 +292,21 @@ def test_wide_camera_plan_keeps_final_still_on_full_layout():
     assert plan.distance_mm >= 330.0
     assert plan.end_distance_mm >= 320.0
     assert plan.end_elevation_mm >= 118.0
+
+
+def test_top_down_camera_pose_frames_folded_beam_path():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    centers = module._component_centers(params)
+    pose = module._top_down_camera_pose(params)
+    span_midpoint_x = (centers["m1"][0] + centers["iris_2"][0]) / 2.0
+
+    assert pose.target_xyz[0] == pytest.approx(span_midpoint_x)
+    assert pose.target_xyz[1] == pytest.approx(centers["m2"][1])
+    assert pose.location_xyz[0] == pytest.approx(pose.target_xyz[0])
+    assert pose.location_xyz[1] == pytest.approx(pose.target_xyz[1])
+    assert pose.location_xyz[2] - pose.target_xyz[2] >= 260.0
+    assert pose.lens_mm <= 40.0
 
 
 def test_scene_defines_explicit_walking_beam_storyboard():

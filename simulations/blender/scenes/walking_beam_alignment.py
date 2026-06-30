@@ -210,9 +210,12 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "wide_camera_name": "Wide Setup Camera",
     "iris_closeup_camera_name": "Iris Close-Up Camera",
     "hero_camera_name": "Hero Camera",
+    "top_down_camera_name": "Top-Down Path Camera",
     "iris_closeup_lens_mm": 32.0,
     "iris_closeup_distance_y_mm": 215.0,
     "iris_closeup_elevation_mm": 38.0,
+    "top_down_camera_height_mm": 315.0,
+    "top_down_camera_lens_mm": 36.0,
     "softbox_power": 900.0,
     "softbox_size_mm": 86.0,
     "fill_power": 330.0,
@@ -1788,6 +1791,36 @@ def _wide_camera_plan(params: Mapping[str, Any]) -> WideCameraPlan:
     )
 
 
+def _top_down_camera_pose(params: Mapping[str, Any]) -> CameraPose:
+    """Return a top-down diagnostic camera pose for the beam path.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+
+    Returns
+    -------
+    CameraPose
+        Camera location, target, and lens settings.
+    """
+
+    centers = _component_centers(params)
+    axis_z = float(params["optical_axis_z_mm"])
+    span_midpoint_x = (centers["m1"][0] + centers["iris_2"][0]) / 2.0
+    target_y = centers["m2"][1]
+    target = (span_midpoint_x, target_y, axis_z)
+    return CameraPose(
+        location_xyz=(
+            span_midpoint_x,
+            target_y,
+            axis_z + float(params["top_down_camera_height_mm"]),
+        ),
+        target_xyz=target,
+        lens_mm=float(params["top_down_camera_lens_mm"]),
+    )
+
+
 def _create_iris_closeup_camera(
     *,
     name: str,
@@ -2215,6 +2248,10 @@ def main(output_path: str | None = None) -> None:
     _create_iris_closeup_camera(
         name=str(params["iris_closeup_camera_name"]),
         pose=_iris_closeup_camera_pose(params),
+    )
+    _create_iris_closeup_camera(
+        name=str(params["top_down_camera_name"]),
+        pose=_top_down_camera_pose(params),
     )
     create_hero_camera(
         target=(38.0, -4.0, axis_z + 4.0),

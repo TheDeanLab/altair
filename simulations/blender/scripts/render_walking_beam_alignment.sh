@@ -14,11 +14,13 @@ Artifacts:
   OUTPUT_DIR/frames/wide/frame_0001.png ...
   OUTPUT_DIR/frames/iris_closeup/frame_0001.png ...
   OUTPUT_DIR/frames/hero/frame_0001.png ...
+  OUTPUT_DIR/frames/top_down/frame_0001.png ...
   OUTPUT_DIR/frames/stacked/frame_0001.png ...
   OUTPUT_DIR/frames/draft_iris_closeup/frame_0001.png ...
   OUTPUT_DIR/walking_beam_alignment_wide.mp4
   OUTPUT_DIR/walking_beam_alignment_iris_closeup.mp4
   OUTPUT_DIR/walking_beam_alignment_hero.mp4
+  OUTPUT_DIR/walking_beam_alignment_top_down.mp4
   OUTPUT_DIR/walking_beam_alignment_stacked.mp4
   OUTPUT_DIR/walking_beam_alignment_draft_iris_closeup.mp4
 
@@ -160,15 +162,18 @@ blend_path="$output_dir/walking_beam_alignment.blend"
 wide_frame_dir="$output_dir/frames/wide"
 iris_frame_dir="$output_dir/frames/iris_closeup"
 hero_frame_dir="$output_dir/frames/hero"
+top_down_frame_dir="$output_dir/frames/top_down"
 stacked_frame_dir="$output_dir/frames/stacked"
 draft_frame_dir="$output_dir/frames/draft_iris_closeup"
 wide_frame_prefix="$wide_frame_dir/frame_"
 iris_frame_prefix="$iris_frame_dir/frame_"
 hero_frame_prefix="$hero_frame_dir/frame_"
+top_down_frame_prefix="$top_down_frame_dir/frame_"
 draft_frame_prefix="$draft_frame_dir/frame_"
 wide_movie="$output_dir/walking_beam_alignment_wide.mp4"
 iris_movie="$output_dir/walking_beam_alignment_iris_closeup.mp4"
 hero_movie="$output_dir/walking_beam_alignment_hero.mp4"
+top_down_movie="$output_dir/walking_beam_alignment_top_down.mp4"
 stacked_movie="$output_dir/walking_beam_alignment_stacked.mp4"
 draft_movie="$output_dir/walking_beam_alignment_draft_iris_closeup.mp4"
 
@@ -201,10 +206,12 @@ Would create:
   $wide_frame_prefix
   $iris_frame_prefix
   $hero_frame_prefix
+  $top_down_frame_prefix
   $stacked_frame_dir/frame_%04d.png
   $wide_movie
   $iris_movie
   $hero_movie
+  $top_down_movie
   $stacked_movie
 
 Would run:
@@ -212,10 +219,12 @@ Would run:
   Render Wide Setup Camera frames to $wide_frame_prefix
   Render Iris Close-Up Camera frames to $iris_frame_prefix
   Render Hero Camera frames to $hero_frame_prefix
-  $ffmpeg_display -filter_complex vstack=inputs=2 $stacked_frame_dir/frame_%04d.png
+  Render Top-Down Path Camera frames to $top_down_frame_prefix
+  $ffmpeg_display -filter_complex vstack=inputs=3 $stacked_frame_dir/frame_%04d.png
   $ffmpeg_display encode $wide_movie
   $ffmpeg_display encode $iris_movie
   $ffmpeg_display encode $hero_movie
+  $ffmpeg_display encode $top_down_movie
   $ffmpeg_display encode $stacked_movie
 EOF
   fi
@@ -321,8 +330,8 @@ if [[ "$render_mode" == "draft" ]]; then
   rm -rf "$draft_frame_dir"
   mkdir -p "$draft_frame_dir"
 else
-  rm -rf "$wide_frame_dir" "$iris_frame_dir" "$hero_frame_dir" "$stacked_frame_dir"
-  mkdir -p "$wide_frame_dir" "$iris_frame_dir" "$hero_frame_dir" "$stacked_frame_dir"
+  rm -rf "$wide_frame_dir" "$iris_frame_dir" "$hero_frame_dir" "$top_down_frame_dir" "$stacked_frame_dir"
+  mkdir -p "$wide_frame_dir" "$iris_frame_dir" "$hero_frame_dir" "$top_down_frame_dir" "$stacked_frame_dir"
 fi
 
 printf '\n==> Creating Blender scene file %s\n' "$blend_path"
@@ -346,8 +355,9 @@ fi
 render_view "Wide Setup Camera" "$wide_frame_prefix"
 render_view "Iris Close-Up Camera" "$iris_frame_prefix"
 render_view "Hero Camera" "$hero_frame_prefix"
+render_view "Top-Down Path Camera" "$top_down_frame_prefix"
 
-printf '\n==> Stacking wide and iris close-up frames\n'
+printf '\n==> Stacking wide, iris close-up, and top-down frames\n'
 "$ffmpeg_bin" -y \
   -framerate "$fps" \
   -start_number "$frame_number_start" \
@@ -355,13 +365,17 @@ printf '\n==> Stacking wide and iris close-up frames\n'
   -framerate "$fps" \
   -start_number "$frame_number_start" \
   -i "$iris_frame_dir/frame_%04d.png" \
-  -filter_complex "vstack=inputs=2" \
+  -framerate "$fps" \
+  -start_number "$frame_number_start" \
+  -i "$top_down_frame_dir/frame_%04d.png" \
+  -filter_complex "vstack=inputs=3" \
   -start_number "$frame_number_start" \
   "$stacked_frame_dir/frame_%04d.png"
 
 encode_movie "$wide_frame_dir" "$wide_movie"
 encode_movie "$iris_frame_dir" "$iris_movie"
 encode_movie "$hero_frame_dir" "$hero_movie"
+encode_movie "$top_down_frame_dir" "$top_down_movie"
 encode_movie "$stacked_frame_dir" "$stacked_movie"
 
 cat <<EOF
@@ -371,5 +385,6 @@ Done.
   Wide movie:     $wide_movie
   Iris movie:     $iris_movie
   Hero movie:     $hero_movie
+  Top-down movie: $top_down_movie
   Stacked movie:  $stacked_movie
 EOF

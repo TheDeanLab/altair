@@ -546,6 +546,61 @@ def test_displayed_beam_paths_are_derived_from_physical_trace_segments():
     assert downstream.visible_end_xyz == pytest.approx(trace.segments[-1].end_xyz_mm)
 
 
+def test_displayed_beam_segments_expose_full_trace_slots():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    states = {state.name: state for state in module._alignment_states(params)}
+
+    gross_trace = module._physical_trace_for_state(
+        params,
+        model,
+        states["gross_misalignment"],
+    )
+    gross_segments = module._display_beam_segments_for_state(
+        params,
+        model,
+        states["gross_misalignment"],
+    )
+
+    assert [segment.name for segment in gross_segments] == [
+        "incoming",
+        "m1_to_m2",
+        "m2_to_iris1",
+        "iris1_to_iris2",
+        "post_iris2",
+    ]
+    assert [segment.visible for segment in gross_segments] == [
+        True,
+        True,
+        True,
+        False,
+        False,
+    ]
+    assert gross_segments[0].start_xyz == pytest.approx(
+        gross_trace.segments[0].start_xyz_mm
+    )
+    assert gross_segments[2].end_xyz == pytest.approx(
+        gross_trace.segments[2].end_xyz_mm
+    )
+    assert gross_segments[3].power_fraction == pytest.approx(0.0)
+
+    clipped_segments = module._display_beam_segments_for_state(
+        params,
+        model,
+        states["m2_centers_iris2"],
+    )
+    assert [segment.visible for segment in clipped_segments] == [
+        True,
+        True,
+        True,
+        True,
+        True,
+    ]
+    assert clipped_segments[3].power_fraction == pytest.approx(0.5)
+    assert clipped_segments[4].power_fraction == pytest.approx(0.5)
+
+
 def test_hidden_downstream_beam_keeps_nonzero_placeholder_segment():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

@@ -90,6 +90,16 @@ class MirrorFootprint(NamedTuple):
     visible: bool
 
 
+class DisplayBeamSegment(NamedTuple):
+    """Trace-derived visible beam segment slot."""
+
+    name: str
+    start_xyz: tuple[float, float, float]
+    end_xyz: tuple[float, float, float]
+    power_fraction: float
+    visible: bool
+
+
 class CameraPose(NamedTuple):
     """Import-safe camera pose used by scene contract tests."""
 
@@ -1232,6 +1242,79 @@ def _downstream_beam_path_from_trace(
     )
 
 
+def _display_beam_segments_from_trace(
+    trace: RayTraceResult,
+) -> tuple[DisplayBeamSegment, ...]:
+    """Return fixed beam segment display slots from a physical trace.
+
+    Parameters
+    ----------
+    trace
+        Finite-element trace through the walking-beam optics.
+
+    Returns
+    -------
+    tuple[DisplayBeamSegment, ...]
+        Five stable beam segment slots with trace-derived visibility and power.
+    """
+
+    names = ("incoming", "m1_to_m2", "m2_to_iris1", "iris1_to_iris2", "post_iris2")
+    if not trace.segments:
+        raise ValueError("Physical trace must contain at least one beam segment.")
+    fallback = trace.segments[-1]
+    display_segments: list[DisplayBeamSegment] = []
+    for index, name in enumerate(names):
+        if index < len(trace.segments):
+            segment = trace.segments[index]
+            display_segments.append(
+                DisplayBeamSegment(
+                    name=name,
+                    start_xyz=segment.start_xyz_mm,
+                    end_xyz=segment.end_xyz_mm,
+                    power_fraction=segment.power_fraction,
+                    visible=True,
+                )
+            )
+        else:
+            display_segments.append(
+                DisplayBeamSegment(
+                    name=name,
+                    start_xyz=fallback.start_xyz_mm,
+                    end_xyz=fallback.end_xyz_mm,
+                    power_fraction=0.0,
+                    visible=False,
+                )
+            )
+    return tuple(display_segments)
+
+
+def _display_beam_segments_for_state(
+    params: Mapping[str, Any],
+    model: BeamWalkingModel,
+    state: BeamWalkingState,
+) -> tuple[DisplayBeamSegment, ...]:
+    """Return fixed display beam segment slots for one storyboard state.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    model
+        Beam-walking model used for the storyboard.
+    state
+        Storyboard state to trace.
+
+    Returns
+    -------
+    tuple[DisplayBeamSegment, ...]
+        Five stable beam segment slots.
+    """
+
+    return _display_beam_segments_from_trace(
+        _physical_trace_for_state(params, model, state)
+    )
+
+
 def _iris_spot_visibility(path: DownstreamBeamPath) -> tuple[bool, bool]:
     """Return visible spot flags for Iris 1 and Iris 2.
 
@@ -1485,7 +1568,6 @@ def main(output_path: str | None = None) -> None:
     materials = create_materials()
     _apply_label_style(materials, _label_style(params))
     centers = _component_centers(params)
-    beam_path = _beam_path_points(params)
     model = _walking_beam_model(params)
     states = _alignment_states(params)
     axis_z = float(params["optical_axis_z_mm"])
@@ -1573,34 +1655,23 @@ def main(output_path: str | None = None) -> None:
         name="Iris 2 ID25-Style Assembly",
     )
 
-    create_beam_between(
-        name="Incoming 561 nm Beam",
-        start_xyz=beam_path[0].xyz,
-        end_xyz=beam_path[1].xyz,
-        radius_mm=beam_radius,
-        material=materials["laser"],
-        collection=collection,
-    )
-    first_folded_path = _folded_beam_path_for_state(params, model, states[0])
     first_downstream_path = _downstream_beam_path_for_state(params, model, states[0])
+    first_display_segments = _display_beam_segments_for_state(params, model, states[0])
     first_display = _iris_spot_offsets_for_path(params, first_downstream_path)
     first_footprints = _mirror_footprints_for_state(params, model, states[0])
-    folded_beam = create_beam_between(
-        name="Animated M1 to M2 Beam",
-        start_xyz=first_folded_path.start_xyz,
-        end_xyz=first_folded_path.end_xyz,
-        radius_mm=beam_radius,
-        material=materials["laser"],
-        collection=collection,
-    )
-    final_beam = create_beam_between(
-        name="Animated Beam After M2",
-        start_xyz=first_downstream_path.start_xyz,
-        end_xyz=first_downstream_path.visible_end_xyz,
-        radius_mm=beam_radius,
-        material=materials["laser"],
-        collection=collection,
-    )
+    beam_segment_objects = []
+    for display_segment in first_display_segments:
+        beam_obj = create_beam_between(
+            name=f"Beam Segment: {display_segment.name}",
+            start_xyz=display_segment.start_xyz,
+            end_xyz=display_segment.end_xyz,
+            radius_mm=beam_radius,
+            material=materials["laser"],
+            collection=collection,
+        )
+        beam_obj.hide_viewport = not display_segment.visible
+        beam_obj.hide_render = not display_segment.visible
+        beam_segment_objects.append(beam_obj)
     spot1 = create_return_spot(
         name="Iris 1 Beam Spot",
         card_x_mm=centers["iris_1"][0],
@@ -1640,29 +1711,27 @@ def main(output_path: str | None = None) -> None:
         )
 
     for state in states:
-        folded_path = _folded_beam_path_for_state(params, model, state)
         downstream_path = _downstream_beam_path_for_state(params, model, state)
+        display_segments = _display_beam_segments_for_state(params, model, state)
         footprints = _mirror_footprints_for_state(params, model, state)
-        set_beam_between(
-            beam=folded_beam,
-            start_xyz=folded_path.start_xyz,
-            end_xyz=folded_path.end_xyz,
-        )
-        folded_beam.keyframe_insert(data_path="location", frame=state.frame)
-        folded_beam.keyframe_insert(data_path="rotation_euler", frame=state.frame)
-        folded_beam.keyframe_insert(data_path="scale", frame=state.frame)
-        set_beam_between(
-            beam=final_beam,
-            start_xyz=downstream_path.start_xyz,
-            end_xyz=downstream_path.visible_end_xyz,
-        )
-        final_beam.hide_viewport = not downstream_path.beam_visible
-        final_beam.hide_render = not downstream_path.beam_visible
-        final_beam.keyframe_insert(data_path="location", frame=state.frame)
-        final_beam.keyframe_insert(data_path="rotation_euler", frame=state.frame)
-        final_beam.keyframe_insert(data_path="scale", frame=state.frame)
-        final_beam.keyframe_insert(data_path="hide_viewport", frame=state.frame)
-        final_beam.keyframe_insert(data_path="hide_render", frame=state.frame)
+        for beam_obj, display_segment in zip(
+            beam_segment_objects,
+            display_segments,
+            strict=True,
+        ):
+            set_beam_between(
+                beam=beam_obj,
+                start_xyz=display_segment.start_xyz,
+                end_xyz=display_segment.end_xyz,
+            )
+            beam_obj.hide_viewport = not display_segment.visible
+            beam_obj.hide_render = not display_segment.visible
+            beam_obj["power_fraction"] = display_segment.power_fraction
+            beam_obj.keyframe_insert(data_path="location", frame=state.frame)
+            beam_obj.keyframe_insert(data_path="rotation_euler", frame=state.frame)
+            beam_obj.keyframe_insert(data_path="scale", frame=state.frame)
+            beam_obj.keyframe_insert(data_path="hide_viewport", frame=state.frame)
+            beam_obj.keyframe_insert(data_path="hide_render", frame=state.frame)
         spot1_visible, spot2_visible = _iris_spot_visibility(downstream_path)
         spot1.hide_viewport = not spot1_visible
         spot1.hide_render = not spot1_visible
@@ -1715,7 +1784,7 @@ def main(output_path: str | None = None) -> None:
             footprint_obj.keyframe_insert(data_path="hide_viewport", frame=state.frame)
             footprint_obj.keyframe_insert(data_path="hide_render", frame=state.frame)
 
-    for obj in (m1, m2, spot1, spot2, folded_beam, final_beam, *mirror_footprints):
+    for obj in (m1, m2, spot1, spot2, *beam_segment_objects, *mirror_footprints):
         set_linear_interpolation(obj)
 
     if params["show_minimal_labels"]:

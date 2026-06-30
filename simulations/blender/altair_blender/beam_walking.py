@@ -6,6 +6,8 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 import math
 
+VectorTuple = tuple[float, float, float]
+
 
 @dataclass(frozen=True)
 class IrisOffset:
@@ -59,6 +61,439 @@ class BeamWalkingState:
     frame: int
     horizontal: BeamWalkingAxisState
     vertical: BeamWalkingAxisState
+
+
+@dataclass(frozen=True)
+class Ray3D:
+    """Finite-radius geometric ray in millimeter scene coordinates."""
+
+    origin_xyz_mm: VectorTuple
+    direction_xyz: VectorTuple
+    beam_radius_mm: float
+    wavelength_nm: float = 561.0
+    power_fraction: float = 1.0
+
+
+@dataclass(frozen=True)
+class PlaneMirror:
+    """Finite circular plane mirror for import-safe ray tracing."""
+
+    name: str
+    center_xyz_mm: VectorTuple
+    normal_xyz: VectorTuple
+    clear_radius_mm: float
+    reflectivity: float = 1.0
+
+
+@dataclass(frozen=True)
+class CircularAperture:
+    """Finite circular aperture in an opaque body plane."""
+
+    name: str
+    center_xyz_mm: VectorTuple
+    normal_xyz: VectorTuple
+    aperture_radius_mm: float
+    body_radius_mm: float
+
+
+@dataclass(frozen=True)
+class RayInteraction:
+    """One ray interaction with a finite optical element."""
+
+    element_name: str
+    element_kind: str
+    status: str
+    point_xyz_mm: VectorTuple
+    local_y_mm: float
+    local_z_mm: float
+    radial_offset_mm: float
+    clearance_margin_mm: float
+
+
+def _dot(a: VectorTuple, b: VectorTuple) -> float:
+    """Return the dot product of two 3D vectors.
+
+    Parameters
+    ----------
+    a
+        First vector.
+    b
+        Second vector.
+
+    Returns
+    -------
+    float
+        Dot product.
+    """
+
+    return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2])
+
+
+def _add(a: VectorTuple, b: VectorTuple) -> VectorTuple:
+    """Return the sum of two 3D vectors.
+
+    Parameters
+    ----------
+    a
+        First vector.
+    b
+        Second vector.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Vector sum.
+    """
+
+    return (a[0] + b[0], a[1] + b[1], a[2] + b[2])
+
+
+def _sub(a: VectorTuple, b: VectorTuple) -> VectorTuple:
+    """Return the difference between two 3D vectors.
+
+    Parameters
+    ----------
+    a
+        Left-hand vector.
+    b
+        Right-hand vector.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Vector difference.
+    """
+
+    return (a[0] - b[0], a[1] - b[1], a[2] - b[2])
+
+
+def _scale(vector: VectorTuple, scalar: float) -> VectorTuple:
+    """Scale a 3D vector by a scalar.
+
+    Parameters
+    ----------
+    vector
+        Vector to scale.
+    scalar
+        Scalar multiplier.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Scaled vector.
+    """
+
+    return (vector[0] * scalar, vector[1] * scalar, vector[2] * scalar)
+
+
+def _cross(a: VectorTuple, b: VectorTuple) -> VectorTuple:
+    """Return the cross product of two 3D vectors.
+
+    Parameters
+    ----------
+    a
+        First vector.
+    b
+        Second vector.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Cross product.
+    """
+
+    return (
+        (a[1] * b[2]) - (a[2] * b[1]),
+        (a[2] * b[0]) - (a[0] * b[2]),
+        (a[0] * b[1]) - (a[1] * b[0]),
+    )
+
+
+def _normalize(vector: VectorTuple) -> VectorTuple:
+    """Return a unit-length 3D vector.
+
+    Parameters
+    ----------
+    vector
+        Vector to normalize.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Unit vector.
+    """
+
+    length = math.sqrt(_dot(vector, vector))
+    if not math.isfinite(length) or length <= 0.0:
+        raise ValueError(f"vector length must be positive; got {length!r}")
+    return (vector[0] / length, vector[1] / length, vector[2] / length)
+
+
+def _plane_axes(normal: VectorTuple) -> tuple[VectorTuple, VectorTuple]:
+    """Return stable local Y/Z axes tangent to a plane.
+
+    Parameters
+    ----------
+    normal
+        Plane normal vector.
+
+    Returns
+    -------
+    tuple[tuple[float, float, float], tuple[float, float, float]]
+        Local Y and local Z unit vectors.
+    """
+
+    unit_normal = _normalize(normal)
+    z_reference = (0.0, 0.0, 1.0)
+    if abs(_dot(unit_normal, z_reference)) > 0.98:
+        z_reference = (0.0, 1.0, 0.0)
+    local_z = _normalize(
+        _sub(z_reference, _scale(unit_normal, _dot(unit_normal, z_reference)))
+    )
+    local_y = _normalize(_cross(local_z, unit_normal))
+    return local_y, local_z
+
+
+def _ray_plane_hit(
+    *,
+    origin: VectorTuple,
+    direction: VectorTuple,
+    plane_point: VectorTuple,
+    plane_normal: VectorTuple,
+    epsilon: float = 1e-9,
+) -> VectorTuple | None:
+    """Return a ray-plane hit point when the plane is in front of the ray.
+
+    Parameters
+    ----------
+    origin
+        Ray origin.
+    direction
+        Ray direction.
+    plane_point
+        Point on the plane.
+    plane_normal
+        Plane normal.
+    epsilon
+        Minimum positive ray travel distance.
+
+    Returns
+    -------
+    tuple[float, float, float] or None
+        Hit point, or ``None`` when the ray is parallel or behind the origin.
+    """
+
+    unit_direction = _normalize(direction)
+    unit_normal = _normalize(plane_normal)
+    denominator = _dot(unit_direction, unit_normal)
+    if abs(denominator) < epsilon:
+        return None
+    distance = _dot(_sub(plane_point, origin), unit_normal) / denominator
+    if distance < -epsilon:
+        return None
+    if abs(distance) < epsilon:
+        distance = 0.0
+    return _add(origin, _scale(unit_direction, distance))
+
+
+def _local_plane_offsets(
+    *, point: VectorTuple, center: VectorTuple, normal: VectorTuple
+) -> tuple[float, float, float]:
+    """Return local plane offsets and radial distance.
+
+    Parameters
+    ----------
+    point
+        World-space point on the plane.
+    center
+        World-space plane center.
+    normal
+        Plane normal.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Local Y offset, local Z offset, and radial offset.
+    """
+
+    local_y_axis, local_z_axis = _plane_axes(normal)
+    delta = _sub(point, center)
+    local_y = _dot(delta, local_y_axis)
+    local_z = _dot(delta, local_z_axis)
+    return local_y, local_z, math.hypot(local_y, local_z)
+
+
+def trace_plane_mirror(
+    *, ray: Ray3D, mirror: PlaneMirror
+) -> tuple[RayInteraction, Ray3D | None]:
+    """Trace one ray to a finite plane mirror.
+
+    Parameters
+    ----------
+    ray
+        Incident ray.
+    mirror
+        Finite plane mirror.
+
+    Returns
+    -------
+    tuple[RayInteraction, Ray3D or None]
+        Mirror interaction and reflected ray when the full beam footprint fits.
+    """
+
+    hit = _ray_plane_hit(
+        origin=ray.origin_xyz_mm,
+        direction=ray.direction_xyz,
+        plane_point=mirror.center_xyz_mm,
+        plane_normal=mirror.normal_xyz,
+    )
+    if hit is None:
+        hit = ray.origin_xyz_mm
+        local_y = 0.0
+        local_z = 0.0
+        radial_offset = math.inf
+        margin = -math.inf
+        return (
+            RayInteraction(
+                element_name=mirror.name,
+                element_kind="mirror",
+                status="missed_plane",
+                point_xyz_mm=hit,
+                local_y_mm=local_y,
+                local_z_mm=local_z,
+                radial_offset_mm=radial_offset,
+                clearance_margin_mm=margin,
+            ),
+            None,
+        )
+
+    local_y, local_z, radial_offset = _local_plane_offsets(
+        point=hit,
+        center=mirror.center_xyz_mm,
+        normal=mirror.normal_xyz,
+    )
+    margin = mirror.clear_radius_mm - (radial_offset + ray.beam_radius_mm)
+    if margin < 0.0:
+        return (
+            RayInteraction(
+                element_name=mirror.name,
+                element_kind="mirror",
+                status="missed_clear_aperture",
+                point_xyz_mm=hit,
+                local_y_mm=local_y,
+                local_z_mm=local_z,
+                radial_offset_mm=radial_offset,
+                clearance_margin_mm=margin,
+            ),
+            None,
+        )
+
+    unit_direction = _normalize(ray.direction_xyz)
+    unit_normal = _normalize(mirror.normal_xyz)
+    reflected_direction = _normalize(
+        _sub(
+            unit_direction, _scale(unit_normal, 2.0 * _dot(unit_direction, unit_normal))
+        )
+    )
+    return (
+        RayInteraction(
+            element_name=mirror.name,
+            element_kind="mirror",
+            status="hit",
+            point_xyz_mm=hit,
+            local_y_mm=local_y,
+            local_z_mm=local_z,
+            radial_offset_mm=radial_offset,
+            clearance_margin_mm=margin,
+        ),
+        Ray3D(
+            origin_xyz_mm=hit,
+            direction_xyz=reflected_direction,
+            beam_radius_mm=ray.beam_radius_mm,
+            wavelength_nm=ray.wavelength_nm,
+            power_fraction=ray.power_fraction * mirror.reflectivity,
+        ),
+    )
+
+
+def trace_circular_aperture(
+    *, ray: Ray3D, aperture: CircularAperture
+) -> tuple[RayInteraction, Ray3D | None]:
+    """Trace one ray to a finite circular aperture.
+
+    Parameters
+    ----------
+    ray
+        Incident ray.
+    aperture
+        Circular aperture in an opaque body.
+
+    Returns
+    -------
+    tuple[RayInteraction, Ray3D or None]
+        Aperture interaction and transmitted ray when any beam power remains.
+    """
+
+    hit = _ray_plane_hit(
+        origin=ray.origin_xyz_mm,
+        direction=ray.direction_xyz,
+        plane_point=aperture.center_xyz_mm,
+        plane_normal=aperture.normal_xyz,
+    )
+    if hit is None:
+        hit = ray.origin_xyz_mm
+        return (
+            RayInteraction(
+                element_name=aperture.name,
+                element_kind="aperture",
+                status="missed_plane",
+                point_xyz_mm=hit,
+                local_y_mm=0.0,
+                local_z_mm=0.0,
+                radial_offset_mm=math.inf,
+                clearance_margin_mm=-math.inf,
+            ),
+            None,
+        )
+
+    local_y, local_z, radial_offset = _local_plane_offsets(
+        point=hit,
+        center=aperture.center_xyz_mm,
+        normal=aperture.normal_xyz,
+    )
+    margin = aperture.aperture_radius_mm - (radial_offset + ray.beam_radius_mm)
+    if margin >= 0.0:
+        status = "passed"
+        transmitted_power = ray.power_fraction
+    elif radial_offset - ray.beam_radius_mm <= aperture.aperture_radius_mm:
+        status = "clipped"
+        transmitted_power = ray.power_fraction * 0.5
+    else:
+        status = "blocked"
+        transmitted_power = 0.0
+
+    interaction = RayInteraction(
+        element_name=aperture.name,
+        element_kind="aperture",
+        status=status,
+        point_xyz_mm=hit,
+        local_y_mm=local_y,
+        local_z_mm=local_z,
+        radial_offset_mm=radial_offset,
+        clearance_margin_mm=margin,
+    )
+    if transmitted_power <= 0.0:
+        return interaction, None
+    return (
+        interaction,
+        Ray3D(
+            origin_xyz_mm=hit,
+            direction_xyz=_normalize(ray.direction_xyz),
+            beam_radius_mm=ray.beam_radius_mm,
+            wavelength_nm=ray.wavelength_nm,
+            power_fraction=transmitted_power,
+        ),
+    )
 
 
 DEFAULT_WALKING_BEAM_MODEL = BeamWalkingModel(

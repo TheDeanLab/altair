@@ -701,6 +701,37 @@ def test_iris_spot_visibility_follows_first_blocking_iris():
         )
 
 
+def test_iris_spot_visuals_distinguish_passed_clipped_and_blocked():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    states = {state.name: state for state in module._alignment_states(params)}
+
+    clipped_trace = module._physical_trace_for_state(
+        params,
+        model,
+        states["m2_centers_iris2"],
+    )
+    clipped_visuals = module._iris_spot_visuals_for_trace(params, clipped_trace)
+
+    assert [visual.element_name for visual in clipped_visuals] == ["Iris 1", "Iris 2"]
+    assert [visual.status for visual in clipped_visuals] == ["clipped", "passed"]
+    assert [visual.visible for visual in clipped_visuals] == [True, True]
+    assert clipped_visuals[0].power_fraction < clipped_visuals[1].power_fraction
+    assert clipped_visuals[0].radius_mm > clipped_visuals[1].radius_mm
+
+    blocked_trace = module._physical_trace_for_state(
+        params,
+        model,
+        states["gross_misalignment"],
+    )
+    blocked_visuals = module._iris_spot_visuals_for_trace(params, blocked_trace)
+
+    assert [visual.status for visual in blocked_visuals] == ["blocked", "not_reached"]
+    assert [visual.visible for visual in blocked_visuals] == [True, False]
+    assert blocked_visuals[1].power_fraction == pytest.approx(0.0)
+
+
 def test_iris_spot_offsets_are_derived_from_physical_trace_points():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

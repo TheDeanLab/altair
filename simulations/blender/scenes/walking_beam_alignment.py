@@ -101,6 +101,17 @@ class DisplayBeamSegment(NamedTuple):
     visible: bool
 
 
+class IrisSpotVisual(NamedTuple):
+    """Trace-derived visual state for one iris beam spot."""
+
+    element_name: str
+    status: str
+    offset: IrisOffset
+    radius_mm: float
+    power_fraction: float
+    visible: bool
+
+
 class CameraPose(NamedTuple):
     """Import-safe camera pose used by scene contract tests."""
 
@@ -144,6 +155,10 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "iris_spot_radius_mm": 1.25,
     "iris_reticle_radius_mm": 4.0,
     "iris_reticle_faces": "both",
+    "iris_clipped_spot_radius_scale": 1.55,
+    "iris_blocked_spot_radius_scale": 1.25,
+    "iris_clipped_spot_power_scale": 0.45,
+    "iris_blocked_spot_power_scale": 0.3,
     "hole_grid_spacing_mm": 25.4,
     "hole_grid_layout": {
         "m1": (-2, -2),
@@ -1477,6 +1492,156 @@ def _iris_spot_offsets_for_path(
     )
 
 
+def _iris_spot_visuals_for_trace(
+    params: Mapping[str, Any],
+    trace: RayTraceResult,
+) -> tuple[IrisSpotVisual, IrisSpotVisual]:
+    """Return trace-derived visual records for the two iris spots.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    trace
+        Finite-element trace through the walking-beam optics.
+
+    Returns
+    -------
+    tuple[IrisSpotVisual, IrisSpotVisual]
+        Visual records for Iris 1 and Iris 2.
+    """
+
+    centers = _component_centers(params)
+    base_radius = _iris_spot_radius(params)
+    exaggeration = float(params["spot_display_exaggeration"])
+    interaction_powers = {
+        interaction.element_name: trace.segments[index].power_fraction
+        for index, interaction in enumerate(trace.interactions)
+        if index < len(trace.segments)
+    }
+    interactions = {
+        interaction.element_name: interaction for interaction in trace.interactions
+    }
+    visuals: list[IrisSpotVisual] = []
+    for element_name, component_name in (
+        ("Iris 1", "iris_1"),
+        ("Iris 2", "iris_2"),
+    ):
+        interaction = interactions.get(element_name)
+        if interaction is None:
+            visuals.append(
+                IrisSpotVisual(
+                    element_name=element_name,
+                    status="not_reached",
+                    offset=IrisOffset(y_mm=0.0, z_mm=0.0),
+                    radius_mm=base_radius,
+                    power_fraction=0.0,
+                    visible=False,
+                )
+            )
+            continue
+
+        incident_power = interaction_powers[element_name]
+        radius = base_radius
+        power = incident_power
+        if interaction.status == "clipped":
+            radius *= float(params["iris_clipped_spot_radius_scale"])
+            power *= float(params["iris_clipped_spot_power_scale"])
+        elif interaction.status == "blocked":
+            radius *= float(params["iris_blocked_spot_radius_scale"])
+            power *= float(params["iris_blocked_spot_power_scale"])
+        elif interaction.status != "passed":
+            power = 0.0
+
+        center = centers[component_name]
+        visuals.append(
+            IrisSpotVisual(
+                element_name=element_name,
+                status=interaction.status,
+                offset=IrisOffset(
+                    y_mm=(interaction.point_xyz_mm[1] - center[1]) * exaggeration,
+                    z_mm=(interaction.point_xyz_mm[2] - center[2]) * exaggeration,
+                ),
+                radius_mm=radius,
+                power_fraction=power,
+                visible=power > 0.0,
+            )
+        )
+    return (visuals[0], visuals[1])
+
+
+def _beam_power_radius_scale(power_fraction: float) -> float:
+    """Return a rendered beam radius scale for a power fraction.
+
+    Parameters
+    ----------
+    power_fraction
+        Segment power fraction from the physical trace.
+
+    Returns
+    -------
+    float
+        Radius scale applied to the beam cylinder.
+    """
+
+    if power_fraction <= 0.0:
+        return 1.0
+    return max(0.35, math.sqrt(power_fraction))
+
+
+def _apply_display_beam_power(beam: Any, power_fraction: float) -> None:
+    """Apply trace-derived power metadata and radius scale to a beam object.
+
+    Parameters
+    ----------
+    beam
+        Blender cylinder object representing one beam segment.
+    power_fraction
+        Segment power fraction from the physical trace.
+    """
+
+    radial_scale = _beam_power_radius_scale(power_fraction)
+    beam.scale = (radial_scale, radial_scale, beam.scale[2])
+    beam["power_fraction"] = power_fraction
+
+
+def _apply_iris_spot_visual(
+    spot: Any,
+    visual: IrisSpotVisual,
+    *,
+    card_center_xyz: tuple[float, float, float],
+    base_radius_mm: float,
+    visible: bool,
+) -> None:
+    """Apply one trace-derived iris spot visual state to a Blender object.
+
+    Parameters
+    ----------
+    spot
+        Blender spot object.
+    visual
+        Trace-derived visual state for the corresponding iris interaction.
+    card_center_xyz
+        Iris center in scene coordinates.
+    base_radius_mm
+        Unscaled spot radius used to create the mesh.
+    visible
+        Whether this status-specific spot object should be displayed.
+    """
+
+    radius_scale = visual.radius_mm / base_radius_mm
+    spot.location = (
+        card_center_xyz[0] - 0.9,
+        card_center_xyz[1] + visual.offset.y_mm,
+        card_center_xyz[2] + visual.offset.z_mm,
+    )
+    spot.scale = (0.18 * radius_scale, radius_scale, radius_scale)
+    spot.hide_viewport = not visible
+    spot.hide_render = not visible
+    spot["interaction_status"] = visual.status
+    spot["power_fraction"] = visual.power_fraction
+
+
 def _folded_beam_path_for_state(
     params: Mapping[str, Any],
     model: BeamWalkingModel,
@@ -1769,17 +1934,8 @@ def main(output_path: str | None = None) -> None:
         name="Iris 2 ID25-Style Assembly",
     )
 
-    first_downstream_path = _downstream_beam_path_for_state(
-        params,
-        model,
-        trace_states[0],
-    )
-    first_display_segments = _display_beam_segments_for_state(
-        params,
-        model,
-        trace_states[0],
-    )
-    first_display = _iris_spot_offsets_for_path(params, first_downstream_path)
+    first_trace = _physical_trace_for_state(params, model, trace_states[0])
+    first_display_segments = _display_beam_segments_from_trace(first_trace)
     first_footprints = _mirror_footprints_for_state(params, model, trace_states[0])
     beam_segment_objects = []
     for display_segment in first_display_segments:
@@ -1794,30 +1950,32 @@ def main(output_path: str | None = None) -> None:
         beam_obj.hide_viewport = not display_segment.visible
         beam_obj.hide_render = not display_segment.visible
         beam_segment_objects.append(beam_obj)
-    spot1 = create_return_spot(
-        name="Iris 1 Beam Spot",
-        card_x_mm=centers["iris_1"][0],
-        offset=SpotOffset(
-            y_mm=first_display.iris1.y_mm,
-            z_mm=first_display.iris1.z_mm,
-        ),
-        radius_mm=iris_spot_radius,
-        material=materials["spot_a"],
-        collection=collection,
-        optical_axis_z_mm=axis_z,
-    )
-    spot2 = create_return_spot(
-        name="Iris 2 Beam Spot",
-        card_x_mm=centers["iris_2"][0],
-        offset=SpotOffset(
-            y_mm=first_display.iris2.y_mm,
-            z_mm=first_display.iris2.z_mm,
-        ),
-        radius_mm=iris_spot_radius,
-        material=materials["spot_b"],
-        collection=collection,
-        optical_axis_z_mm=axis_z,
-    )
+    iris_spot_objects: dict[str, dict[str, Any]] = {}
+    for element_name, component_name, passed_material_key in (
+        ("Iris 1", "iris_1", "spot_a"),
+        ("Iris 2", "iris_2", "spot_b"),
+    ):
+        iris_spot_objects[element_name] = {}
+        for status, material_key in (
+            ("passed", passed_material_key),
+            ("clipped", "spot_clipped"),
+            ("blocked", "spot_blocked"),
+        ):
+            spot_obj = create_return_spot(
+                name=f"{element_name} {status.title()} Beam Spot",
+                card_x_mm=centers[component_name][0],
+                offset=SpotOffset(y_mm=0.0, z_mm=0.0),
+                radius_mm=iris_spot_radius,
+                material=materials[material_key],
+                collection=collection,
+                optical_axis_z_mm=axis_z,
+            )
+            iris_spot_objects[element_name][status] = spot_obj
+    all_iris_spots = [
+        spot
+        for status_objects in iris_spot_objects.values()
+        for spot in status_objects.values()
+    ]
     mirror_footprints = []
     for footprint in first_footprints:
         disk_segment = _footprint_disk_segment(footprint)
@@ -1833,8 +1991,9 @@ def main(output_path: str | None = None) -> None:
         )
 
     for state in trace_states:
-        downstream_path = _downstream_beam_path_for_state(params, model, state)
-        display_segments = _display_beam_segments_for_state(params, model, state)
+        trace = _physical_trace_for_state(params, model, state)
+        display_segments = _display_beam_segments_from_trace(trace)
+        spot_visuals = _iris_spot_visuals_for_trace(params, trace)
         footprints = _mirror_footprints_for_state(params, model, state)
         for beam_obj, display_segment in zip(
             beam_segment_objects,
@@ -1848,34 +2007,29 @@ def main(output_path: str | None = None) -> None:
             )
             beam_obj.hide_viewport = not display_segment.visible
             beam_obj.hide_render = not display_segment.visible
-            beam_obj["power_fraction"] = display_segment.power_fraction
+            _apply_display_beam_power(beam_obj, display_segment.power_fraction)
             beam_obj.keyframe_insert(data_path="location", frame=state.frame)
             beam_obj.keyframe_insert(data_path="rotation_euler", frame=state.frame)
             beam_obj.keyframe_insert(data_path="scale", frame=state.frame)
             beam_obj.keyframe_insert(data_path="hide_viewport", frame=state.frame)
             beam_obj.keyframe_insert(data_path="hide_render", frame=state.frame)
-        spot1_visible, spot2_visible = _iris_spot_visibility(downstream_path)
-        spot1.hide_viewport = not spot1_visible
-        spot1.hide_render = not spot1_visible
-        spot2.hide_viewport = not spot2_visible
-        spot2.hide_render = not spot2_visible
-        for spot in (spot1, spot2):
-            spot.keyframe_insert(data_path="hide_viewport", frame=state.frame)
-            spot.keyframe_insert(data_path="hide_render", frame=state.frame)
-
-        display = _iris_spot_offsets_for_path(params, downstream_path)
-        spot1.location = (
-            centers["iris_1"][0] - 0.9,
-            centers["iris_1"][1] + display.iris1.y_mm,
-            axis_z + display.iris1.z_mm,
-        )
-        spot2.location = (
-            centers["iris_2"][0] - 0.9,
-            centers["iris_2"][1] + display.iris2.y_mm,
-            axis_z + display.iris2.z_mm,
-        )
-        spot1.keyframe_insert(data_path="location", frame=state.frame)
-        spot2.keyframe_insert(data_path="location", frame=state.frame)
+        for spot_visual, component_name in zip(
+            spot_visuals,
+            ("iris_1", "iris_2"),
+            strict=True,
+        ):
+            for status, spot_obj in iris_spot_objects[spot_visual.element_name].items():
+                _apply_iris_spot_visual(
+                    spot_obj,
+                    spot_visual,
+                    card_center_xyz=centers[component_name],
+                    base_radius_mm=iris_spot_radius,
+                    visible=spot_visual.visible and spot_visual.status == status,
+                )
+                spot_obj.keyframe_insert(data_path="location", frame=state.frame)
+                spot_obj.keyframe_insert(data_path="scale", frame=state.frame)
+                spot_obj.keyframe_insert(data_path="hide_viewport", frame=state.frame)
+                spot_obj.keyframe_insert(data_path="hide_render", frame=state.frame)
 
         keyframe_transform(
             m1,
@@ -1906,7 +2060,7 @@ def main(output_path: str | None = None) -> None:
             footprint_obj.keyframe_insert(data_path="hide_viewport", frame=state.frame)
             footprint_obj.keyframe_insert(data_path="hide_render", frame=state.frame)
 
-    for obj in (m1, m2, spot1, spot2, *beam_segment_objects, *mirror_footprints):
+    for obj in (m1, m2, *all_iris_spots, *beam_segment_objects, *mirror_footprints):
         set_linear_interpolation(obj)
 
     if params["show_minimal_labels"]:

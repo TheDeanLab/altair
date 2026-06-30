@@ -18,6 +18,8 @@ LASER_COLOR = (0.20, 1.0, 0.05, 0.88)
 REFLECTION_BEAM_COLOR = (0.20, 1.0, 0.30, 0.32)
 SPOT_A_COLOR = (0.48, 1.0, 0.18, 1.0)
 SPOT_B_COLOR = (0.12, 0.78, 1.0, 1.0)
+SPOT_CLIPPED_COLOR = (0.68, 1.0, 0.22, 0.72)
+SPOT_BLOCKED_COLOR = (0.95, 0.86, 0.32, 0.62)
 ALIGNMENT_REFERENCE_COLOR = (1.0, 0.82, 0.12, 1.0)
 LABEL_COLOR = (1.0, 1.0, 0.97, 1.0)
 
@@ -220,6 +222,12 @@ def create_materials() -> dict[str, object]:
         ),
         "spot_a": _material("Return Spot A", SPOT_A_COLOR, emission=3.4),
         "spot_b": _material("Return Spot B", SPOT_B_COLOR, emission=3.0),
+        "spot_clipped": _material(
+            "Clipped Iris Beam Spot", SPOT_CLIPPED_COLOR, emission=1.45
+        ),
+        "spot_blocked": _material(
+            "Blocked Iris Beam Spot", SPOT_BLOCKED_COLOR, emission=0.9
+        ),
         "alignment_reference": _material(
             "Alignment Reference Ring", ALIGNMENT_REFERENCE_COLOR, emission=1.25
         ),

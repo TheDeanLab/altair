@@ -38,6 +38,9 @@ from simulations.blender.altair_blender.beam_walking import (  # noqa: E402
     solve_two_mirror_alignment,
     trace_two_mirror_two_iris_system,
 )
+from simulations.blender.altair_blender.geometry import (  # noqa: E402
+    mirror_optic_surface_local_x,
+)
 from simulations.blender.altair_blender.prescriptions import (  # noqa: E402
     ID25_IRIS,
     KM100CP_MOUNT,
@@ -544,12 +547,42 @@ def _physical_mirror(params: Mapping[str, Any], component_name: str) -> PlaneMir
     if component_name not in {"m1", "m2"}:
         raise ValueError(f"Unsupported mirror component {component_name!r}")
     yaw_key = f"{component_name}_yaw_deg"
-    centers = _component_centers(params)
     return PlaneMirror(
         name=component_name.upper(),
-        center_xyz_mm=centers[component_name],
+        center_xyz_mm=_mirror_optic_surface_center(params, component_name),
         normal_xyz=_mirror_reflective_normal(float(params[yaw_key])),
         clear_radius_mm=KM100CP_MOUNT.clear_aperture_mm / 2.0,
+    )
+
+
+def _mirror_optic_surface_center(
+    params: Mapping[str, Any], component_name: str
+) -> tuple[float, float, float]:
+    """Return the world-space center of a visible mirror optic surface.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    component_name
+        Mirror component key, either ``m1`` or ``m2``.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        World-space center of the mirror surface used by the visual mesh.
+    """
+
+    if component_name not in {"m1", "m2"}:
+        raise ValueError(f"Unsupported mirror component {component_name!r}")
+    centers = _component_centers(params)
+    local_x_mm = mirror_optic_surface_local_x(KM100CP_MOUNT)
+    yaw_rad = math.radians(float(params[f"{component_name}_yaw_deg"]))
+    center = centers[component_name]
+    return (
+        center[0] + (local_x_mm * math.cos(yaw_rad)),
+        center[1] + (local_x_mm * math.sin(yaw_rad)),
+        center[2],
     )
 
 

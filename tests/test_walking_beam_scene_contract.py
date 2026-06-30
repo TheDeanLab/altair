@@ -208,6 +208,17 @@ def test_scene_beam_path_uses_nominal_physical_trace_points():
     assert path[2].xyz[0] < path[3].xyz[0]
 
 
+def test_physical_mirror_plane_matches_visible_optic_surface_center():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+
+    for component_name in ("m1", "m2"):
+        physical_mirror = module._physical_mirror(params, component_name)
+        visible_center = module._mirror_optic_surface_center(params, component_name)
+
+        assert physical_mirror.center_xyz_mm == pytest.approx(visible_center)
+
+
 def test_scene_beam_path_hits_finite_mirrors_and_iris_row():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

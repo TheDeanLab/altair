@@ -1613,7 +1613,7 @@ def create_kinematic_mirror_mount(
         parent=parent,
         radius_mm=mount.optic_diameter_mm / 2.0,
         depth_mm=1.2,
-        location=(-(mount.body_depth_mm / 2.0) - 0.7, 0.0, 0.0),
+        location=(mirror_optic_surface_local_x(mount), 0.0, 0.0),
         material=mirror,
         vertices=96,
         rotation=(0.0, math.radians(90.0), 0.0),
@@ -1648,3 +1648,22 @@ def create_kinematic_mirror_mount(
             rotation=(0.0, math.radians(90.0), 0.0),
         )
     return parent
+
+
+def mirror_optic_surface_local_x(
+    mount: MirrorMountPrescription = KM100CP_MOUNT,
+) -> float:
+    """Return the mount-local X coordinate of the visible mirror surface.
+
+    Parameters
+    ----------
+    mount
+        Source-backed mirror-mount prescription.
+
+    Returns
+    -------
+    float
+        Local X coordinate used for both the mirror mesh and ray trace.
+    """
+
+    return 0.0

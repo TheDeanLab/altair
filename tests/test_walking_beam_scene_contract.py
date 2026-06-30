@@ -487,3 +487,29 @@ def test_iris_spot_visibility_follows_first_blocking_iris():
             "Iris 1" in reached,
             "Iris 2" in reached,
         )
+
+
+def test_iris_spot_offsets_are_derived_from_physical_trace_points():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    states = module._alignment_states(params)
+    centers = module._component_centers(params)
+    exaggeration = params["spot_display_exaggeration"]
+
+    for state in states:
+        path = module._downstream_beam_path_for_state(params, model, state)
+        offsets = module._iris_spot_offsets_for_path(params, path)
+
+        assert offsets.iris1.y_mm == pytest.approx(
+            (path.iris1_xyz[1] - centers["iris_1"][1]) * exaggeration
+        )
+        assert offsets.iris1.z_mm == pytest.approx(
+            (path.iris1_xyz[2] - centers["iris_1"][2]) * exaggeration
+        )
+        assert offsets.iris2.y_mm == pytest.approx(
+            (path.iris2_xyz[1] - centers["iris_2"][1]) * exaggeration
+        )
+        assert offsets.iris2.z_mm == pytest.approx(
+            (path.iris2_xyz[2] - centers["iris_2"][2]) * exaggeration
+        )

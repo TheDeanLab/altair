@@ -27,12 +27,12 @@ from simulations.blender.altair_blender.beam_walking import (  # noqa: E402
     BeamWalkingModel,
     BeamWalkingState,
     CircularAperture,
+    IrisOffset,
     MirrorAdjustment,
     PlaneMirror,
     Ray3D,
     RayTraceResult,
     adjusted_plane_mirror,
-    compute_beam_intercepts,
     exact_alignment_state,
     iterative_alignment_sequence,
     trace_two_mirror_two_iris_system,
@@ -874,36 +874,6 @@ def _apply_label_style(materials: Mapping[str, Any], style: LabelStyle) -> None:
     _set_material_input_if_present(label, "Emission Strength", style.emission_strength)
 
 
-def _display_intercepts(
-    intercepts: BeamIntercepts, *, exaggeration: float
-) -> BeamIntercepts:
-    """Scale beam offsets for the visible iris readout.
-
-    Parameters
-    ----------
-    intercepts
-        Physical beam offsets at both irises.
-    exaggeration
-        Visual scale factor.
-
-    Returns
-    -------
-    BeamIntercepts
-        Scaled intercepts for display.
-    """
-
-    return BeamIntercepts(
-        iris1=type(intercepts.iris1)(
-            y_mm=intercepts.iris1.y_mm * exaggeration,
-            z_mm=intercepts.iris1.z_mm * exaggeration,
-        ),
-        iris2=type(intercepts.iris2)(
-            y_mm=intercepts.iris2.y_mm * exaggeration,
-            z_mm=intercepts.iris2.z_mm * exaggeration,
-        ),
-    )
-
-
 def _beam_visual_radius(params: Mapping[str, Any]) -> float:
     """Return the rendered beam radius without changing physical beam math.
 
@@ -1059,6 +1029,38 @@ def _iris_spot_visibility(path: DownstreamBeamPath) -> tuple[bool, bool]:
     """
 
     return (path.iris1_visible, path.iris2_visible)
+
+
+def _iris_spot_offsets_for_path(
+    params: Mapping[str, Any], path: DownstreamBeamPath
+) -> BeamIntercepts:
+    """Return display spot offsets derived from traced iris points.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    path
+        Trace-derived downstream beam path.
+
+    Returns
+    -------
+    BeamIntercepts
+        Display-scaled transverse offsets for the two iris cards.
+    """
+
+    centers = _component_centers(params)
+    exaggeration = float(params["spot_display_exaggeration"])
+    return BeamIntercepts(
+        iris1=IrisOffset(
+            y_mm=(path.iris1_xyz[1] - centers["iris_1"][1]) * exaggeration,
+            z_mm=(path.iris1_xyz[2] - centers["iris_1"][2]) * exaggeration,
+        ),
+        iris2=IrisOffset(
+            y_mm=(path.iris2_xyz[1] - centers["iris_2"][1]) * exaggeration,
+            z_mm=(path.iris2_xyz[2] - centers["iris_2"][2]) * exaggeration,
+        ),
+    )
 
 
 def _folded_beam_path_for_state(
@@ -1361,12 +1363,9 @@ def main(output_path: str | None = None) -> None:
         material=materials["laser"],
         collection=collection,
     )
-    first_display = _display_intercepts(
-        compute_beam_intercepts(model, states[0]),
-        exaggeration=float(params["spot_display_exaggeration"]),
-    )
     first_folded_path = _folded_beam_path_for_state(params, model, states[0])
     first_downstream_path = _downstream_beam_path_for_state(params, model, states[0])
+    first_display = _iris_spot_offsets_for_path(params, first_downstream_path)
     folded_beam = create_beam_between(
         name="Animated M1 to M2 Beam",
         start_xyz=first_folded_path.start_xyz,
@@ -1440,10 +1439,7 @@ def main(output_path: str | None = None) -> None:
             spot.keyframe_insert(data_path="hide_viewport", frame=state.frame)
             spot.keyframe_insert(data_path="hide_render", frame=state.frame)
 
-        display = _display_intercepts(
-            compute_beam_intercepts(model, state),
-            exaggeration=float(params["spot_display_exaggeration"]),
-        )
+        display = _iris_spot_offsets_for_path(params, downstream_path)
         spot1.location = (
             centers["iris_1"][0] - 0.9,
             centers["iris_1"][1] + display.iris1.y_mm,

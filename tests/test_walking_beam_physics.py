@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import math
+
 import pytest
 
 from simulations.blender.altair_blender.beam_walking import (
     CircularAperture,
+    MirrorAdjustment,
     PlaneMirror,
     Ray3D,
+    adjusted_plane_mirror,
     trace_two_mirror_two_iris_system,
     trace_circular_aperture,
     trace_plane_mirror,
@@ -57,6 +61,37 @@ def test_finite_plane_mirror_reports_missed_clear_aperture() -> None:
     assert interaction.radial_offset_mm == pytest.approx(13.0)
     assert interaction.clearance_margin_mm == pytest.approx(-1.5)
     assert reflected is None
+
+
+def test_mirror_yaw_adjustment_changes_reflected_angle_by_twice_the_tilt() -> None:
+    mirror = PlaneMirror(
+        name="M1",
+        center_xyz_mm=(0.0, 0.0, 0.0),
+        normal_xyz=(0.0, -1.0, 0.0),
+        clear_radius_mm=12.0,
+    )
+    adjusted = adjusted_plane_mirror(
+        mirror,
+        adjustment=MirrorAdjustment(yaw_mrad=5.0, pitch_mrad=0.0),
+    )
+    ray = Ray3D(
+        origin_xyz_mm=(0.0, -25.0, 0.0),
+        direction_xyz=(0.0, 1.0, 0.0),
+        beam_radius_mm=0.5,
+    )
+
+    interaction, reflected = trace_plane_mirror(ray=ray, mirror=adjusted)
+
+    assert interaction.status == "hit"
+    assert reflected is not None
+    reflected_angle_mrad = (
+        math.atan2(
+            reflected.direction_xyz[0],
+            -reflected.direction_xyz[1],
+        )
+        * 1000.0
+    )
+    assert reflected_angle_mrad == pytest.approx(10.0, abs=0.001)
 
 
 def test_circular_aperture_distinguishes_pass_clip_and_block() -> None:

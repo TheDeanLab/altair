@@ -86,6 +86,14 @@ class PlaneMirror:
 
 
 @dataclass(frozen=True)
+class MirrorAdjustment:
+    """Physical pitch/yaw adjustment applied to a steering mirror."""
+
+    yaw_mrad: float = 0.0
+    pitch_mrad: float = 0.0
+
+
+@dataclass(frozen=True)
 class CircularAperture:
     """Finite circular aperture in an opaque body plane."""
 
@@ -245,6 +253,75 @@ def _normalize(vector: VectorTuple) -> VectorTuple:
     if not math.isfinite(length) or length <= 0.0:
         raise ValueError(f"vector length must be positive; got {length!r}")
     return (vector[0] / length, vector[1] / length, vector[2] / length)
+
+
+def _rotate_about_axis(
+    vector: VectorTuple, *, axis: VectorTuple, angle_rad: float
+) -> VectorTuple:
+    """Rotate a vector about an axis using Rodrigues' formula.
+
+    Parameters
+    ----------
+    vector
+        Vector to rotate.
+    axis
+        Rotation axis.
+    angle_rad
+        Rotation angle in radians.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Rotated vector.
+    """
+
+    unit_axis = _normalize(axis)
+    cos_angle = math.cos(angle_rad)
+    sin_angle = math.sin(angle_rad)
+    term_a = _scale(vector, cos_angle)
+    term_b = _scale(_cross(unit_axis, vector), sin_angle)
+    term_c = _scale(unit_axis, _dot(unit_axis, vector) * (1.0 - cos_angle))
+    return _add(_add(term_a, term_b), term_c)
+
+
+def adjusted_plane_mirror(
+    mirror: PlaneMirror, *, adjustment: MirrorAdjustment
+) -> PlaneMirror:
+    """Return a mirror with pitch/yaw applied to its surface normal.
+
+    Parameters
+    ----------
+    mirror
+        Base finite plane mirror.
+    adjustment
+        Pitch and yaw adjustment in milliradians.
+
+    Returns
+    -------
+    PlaneMirror
+        Mirror with adjusted normal and unchanged center/aperture.
+    """
+
+    adjusted_normal = _normalize(mirror.normal_xyz)
+    if adjustment.yaw_mrad:
+        adjusted_normal = _rotate_about_axis(
+            adjusted_normal,
+            axis=(0.0, 0.0, 1.0),
+            angle_rad=adjustment.yaw_mrad / 1000.0,
+        )
+    if adjustment.pitch_mrad:
+        adjusted_normal = _rotate_about_axis(
+            adjusted_normal,
+            axis=(0.0, 1.0, 0.0),
+            angle_rad=adjustment.pitch_mrad / 1000.0,
+        )
+    return PlaneMirror(
+        name=mirror.name,
+        center_xyz_mm=mirror.center_xyz_mm,
+        normal_xyz=_normalize(adjusted_normal),
+        clear_radius_mm=mirror.clear_radius_mm,
+        reflectivity=mirror.reflectivity,
+    )
 
 
 def _plane_axes(normal: VectorTuple) -> tuple[VectorTuple, VectorTuple]:

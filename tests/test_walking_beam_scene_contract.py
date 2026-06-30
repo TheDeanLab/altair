@@ -87,6 +87,7 @@ def test_scene_uses_consistent_display_exaggeration_for_beam_and_spots():
         params["spot_display_exaggeration"]
     )
     assert params["beam_path_offset_exaggeration"] > 1.0
+    assert params["mirror_display_exaggeration"] == pytest.approx(1.0)
 
 
 def test_scene_separates_physical_beam_size_from_rendered_readability():
@@ -427,6 +428,36 @@ def test_physical_storyboard_m2_step_reaches_and_centers_far_iris():
     assert m2_centered.blocked_at == ""
     assert iris1_radius < model.iris_radius_mm
     assert iris2_radius < 0.25
+
+
+def test_mirror_display_rotations_follow_physical_solver_adjustments():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    state = module._alignment_states(params)[0]
+    m1_adjustment, m2_adjustment = module._mirror_adjustments_for_state(
+        params,
+        model,
+        state,
+    )
+
+    m1_rotation = module._mirror_rotation_euler_for_state(params, model, state, "m1")
+    m2_rotation = module._mirror_rotation_euler_for_state(params, model, state, "m2")
+
+    assert m1_rotation == pytest.approx(
+        (
+            m1_adjustment.pitch_mrad / 1000.0,
+            0.0,
+            math.radians(params["m1_yaw_deg"]) + (m1_adjustment.yaw_mrad / 1000.0),
+        )
+    )
+    assert m2_rotation == pytest.approx(
+        (
+            m2_adjustment.pitch_mrad / 1000.0,
+            0.0,
+            math.radians(params["m2_yaw_deg"]) + (m2_adjustment.yaw_mrad / 1000.0),
+        )
+    )
 
 
 def test_folded_beam_path_shares_animated_m2_hit_point():

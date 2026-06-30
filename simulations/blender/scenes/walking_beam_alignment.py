@@ -140,7 +140,7 @@ DEFAULT_PARAMETERS: dict[str, Any] = {
     "initial_vertical_angle_mrad": -9.9,
     "beam_path_offset_exaggeration": 2.0,
     "spot_display_exaggeration": 2.0,
-    "mirror_display_exaggeration": 0.18,
+    "mirror_display_exaggeration": 1.0,
     "iris_source": ID25_IRIS.source_notes,
     "post_holder_source": PH2_POST_HOLDER.source_notes,
     "post_source": TR15_POST.source_notes,
@@ -639,6 +639,44 @@ def _mirror_adjustments_for_state(
         max_iterations=30,
     )
     return (solution.m1_adjustment, solution.m2_adjustment)
+
+
+def _mirror_rotation_euler_for_state(
+    params: Mapping[str, Any],
+    model: BeamWalkingModel,
+    state: BeamWalkingState,
+    component_name: str,
+) -> tuple[float, float, float]:
+    """Return a displayed mirror rotation from solved physical adjustments.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    model
+        Beam-walking model used for the storyboard.
+    state
+        Storyboard state to convert.
+    component_name
+        Mirror component key, either ``m1`` or ``m2``.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Blender Euler rotation in radians.
+    """
+
+    if component_name not in {"m1", "m2"}:
+        raise ValueError(f"Unsupported mirror component {component_name!r}")
+    adjustments = _mirror_adjustments_for_state(params, model, state)
+    adjustment = adjustments[0] if component_name == "m1" else adjustments[1]
+    scale = float(params["mirror_display_exaggeration"])
+    return (
+        (adjustment.pitch_mrad / 1000.0) * scale,
+        0.0,
+        math.radians(float(params[f"{component_name}_yaw_deg"]))
+        + ((adjustment.yaw_mrad / 1000.0) * scale),
+    )
 
 
 def _physical_trace_for_state(
@@ -1479,30 +1517,15 @@ def main(output_path: str | None = None) -> None:
         spot1.keyframe_insert(data_path="location", frame=state.frame)
         spot2.keyframe_insert(data_path="location", frame=state.frame)
 
-        mirror_scale = float(params["mirror_display_exaggeration"])
         keyframe_transform(
             m1,
             frame=state.frame,
-            rotation_euler=(
-                math.radians(state.vertical.m1_offset_mm * mirror_scale),
-                0.0,
-                math.radians(
-                    float(params["m1_yaw_deg"])
-                    + (state.horizontal.m1_offset_mm * mirror_scale)
-                ),
-            ),
+            rotation_euler=_mirror_rotation_euler_for_state(params, model, state, "m1"),
         )
         keyframe_transform(
             m2,
             frame=state.frame,
-            rotation_euler=(
-                math.radians(state.vertical.m2_angle_mrad * mirror_scale * 0.05),
-                0.0,
-                math.radians(
-                    float(params["m2_yaw_deg"])
-                    + (state.horizontal.m2_angle_mrad * mirror_scale * 0.05)
-                ),
-            ),
+            rotation_euler=_mirror_rotation_euler_for_state(params, model, state, "m2"),
         )
 
     for obj in (m1, m2, spot1, spot2, folded_beam, final_beam):

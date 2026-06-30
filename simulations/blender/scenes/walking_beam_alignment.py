@@ -27,10 +27,13 @@ from simulations.blender.altair_blender.beam_walking import (  # noqa: E402
     BeamWalkingModel,
     BeamWalkingState,
     CircularAperture,
+    MirrorAdjustment,
     PlaneMirror,
     Ray3D,
     RayTraceResult,
+    adjusted_plane_mirror,
     compute_beam_intercepts,
+    exact_alignment_state,
     iterative_alignment_sequence,
     trace_two_mirror_two_iris_system,
 )
@@ -61,6 +64,9 @@ class DownstreamBeamPath(NamedTuple):
     exit_xyz: tuple[float, float, float]
     visible_end_xyz: tuple[float, float, float]
     blocked_at: str
+    beam_visible: bool
+    iris1_visible: bool
+    iris2_visible: bool
 
 
 class BeamSegmentPath(NamedTuple):
@@ -599,6 +605,130 @@ def _nominal_physical_trace(params: Mapping[str, Any]) -> RayTraceResult:
     )
 
 
+def _mirror_adjustments_for_state(
+    model: BeamWalkingModel, state: BeamWalkingState
+) -> tuple[MirrorAdjustment, MirrorAdjustment]:
+    """Return physical mirror adjustments for a storyboard state.
+
+    Parameters
+    ----------
+    model
+        Beam-walking model used for the storyboard.
+    state
+        Storyboard state to convert.
+
+    Returns
+    -------
+    tuple[MirrorAdjustment, MirrorAdjustment]
+        M1 and M2 physical mirror adjustments.
+    """
+
+    aligned = exact_alignment_state(model, name="aligned_reference", frame=state.frame)
+    return (
+        MirrorAdjustment(
+            yaw_mrad=state.horizontal.m1_offset_mm - aligned.horizontal.m1_offset_mm,
+            pitch_mrad=state.vertical.m1_offset_mm - aligned.vertical.m1_offset_mm,
+        ),
+        MirrorAdjustment(
+            yaw_mrad=(state.horizontal.m2_angle_mrad - aligned.horizontal.m2_angle_mrad)
+            / 2.0,
+            pitch_mrad=(state.vertical.m2_angle_mrad - aligned.vertical.m2_angle_mrad)
+            / 2.0,
+        ),
+    )
+
+
+def _physical_trace_for_state(
+    params: Mapping[str, Any],
+    model: BeamWalkingModel,
+    state: BeamWalkingState,
+) -> RayTraceResult:
+    """Trace one storyboard state through finite scene elements.
+
+    Parameters
+    ----------
+    params
+        Scene parameter mapping.
+    model
+        Beam-walking model used for the storyboard.
+    state
+        Storyboard state to trace.
+
+    Returns
+    -------
+    RayTraceResult
+        Physical trace for the supplied state.
+    """
+
+    m1_adjustment, m2_adjustment = _mirror_adjustments_for_state(model, state)
+    return trace_two_mirror_two_iris_system(
+        source_ray=_nominal_source_ray(params),
+        m1=adjusted_plane_mirror(
+            _physical_mirror(params, "m1"),
+            adjustment=m1_adjustment,
+        ),
+        m2=adjusted_plane_mirror(
+            _physical_mirror(params, "m2"),
+            adjustment=m2_adjustment,
+        ),
+        iris1=_physical_iris(params, "iris_1"),
+        iris2=_physical_iris(params, "iris_2"),
+        downstream_length_mm=1.5 * float(params["hole_grid_spacing_mm"]),
+    )
+
+
+def _interaction_point_or_center(
+    trace: RayTraceResult,
+    *,
+    element_name: str,
+    fallback_xyz: tuple[float, float, float],
+) -> tuple[float, float, float]:
+    """Return an interaction point when present, otherwise a fallback center.
+
+    Parameters
+    ----------
+    trace
+        Physical trace to inspect.
+    element_name
+        Interaction element name.
+    fallback_xyz
+        Point used when the trace stopped before the element.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        Interaction point or fallback point.
+    """
+
+    for interaction in trace.interactions:
+        if interaction.element_name == element_name:
+            return interaction.point_xyz_mm
+    return fallback_xyz
+
+
+def _blocked_at_key(trace: RayTraceResult) -> str:
+    """Return the scene-local blocking key for a physical trace.
+
+    Parameters
+    ----------
+    trace
+        Physical trace to inspect.
+
+    Returns
+    -------
+    str
+        Empty string when unblocked, otherwise a scene-local element key.
+    """
+
+    return {
+        "": "",
+        "M1": "m1",
+        "M2": "m2",
+        "Iris 1": "iris_1",
+        "Iris 2": "iris_2",
+    }.get(trace.blocked_at, trace.blocked_at)
+
+
 def _walking_beam_model(params: Mapping[str, Any]) -> BeamWalkingModel:
     """Create the import-safe beam-walking model from scene defaults.
 
@@ -876,58 +1006,41 @@ def _downstream_beam_path_for_state(
     """
 
     centers = _component_centers(params)
-    beam_path = _beam_path_points(params)
-    intercepts = compute_beam_intercepts(model, state)
-    offset_scale = float(params["beam_path_offset_exaggeration"])
-
-    iris1_xyz = (
-        centers["iris_1"][0],
-        centers["iris_1"][1] + (intercepts.iris1.y_mm * offset_scale),
-        centers["iris_1"][2] + (intercepts.iris1.z_mm * offset_scale),
-    )
-    iris2_xyz = (
-        centers["iris_2"][0],
-        centers["iris_2"][1] + (intercepts.iris2.y_mm * offset_scale),
-        centers["iris_2"][2] + (intercepts.iris2.z_mm * offset_scale),
-    )
-    start_y, start_z = _lerp_transverse_at_x(
-        x_mm=beam_path[2].xyz[0],
-        x1_mm=iris1_xyz[0],
-        y1_mm=iris1_xyz[1],
-        z1_mm=iris1_xyz[2],
-        x2_mm=iris2_xyz[0],
-        y2_mm=iris2_xyz[1],
-        z2_mm=iris2_xyz[2],
-    )
-    exit_y, exit_z = _lerp_transverse_at_x(
-        x_mm=beam_path[3].xyz[0],
-        x1_mm=iris1_xyz[0],
-        y1_mm=iris1_xyz[1],
-        z1_mm=iris1_xyz[2],
-        x2_mm=iris2_xyz[0],
-        y2_mm=iris2_xyz[1],
-        z2_mm=iris2_xyz[2],
-    )
-    exit_xyz = (beam_path[3].xyz[0], exit_y, exit_z)
-    iris1_radius = math.hypot(intercepts.iris1.y_mm, intercepts.iris1.z_mm)
-    iris2_radius = math.hypot(intercepts.iris2.y_mm, intercepts.iris2.z_mm)
-    if iris1_radius > model.iris_radius_mm:
-        visible_end_xyz = iris1_xyz
-        blocked_at = "iris_1"
-    elif iris2_radius > model.iris_radius_mm:
-        visible_end_xyz = iris2_xyz
-        blocked_at = "iris_2"
+    trace = _physical_trace_for_state(params, model, state)
+    interactions_by_name = {
+        interaction.element_name: interaction for interaction in trace.interactions
+    }
+    if len(trace.segments) >= 3:
+        start_xyz = trace.segments[2].start_xyz_mm
+        beam_visible = True
     else:
-        visible_end_xyz = exit_xyz
-        blocked_at = ""
+        start_xyz = trace.segments[-1].start_xyz_mm
+        beam_visible = False
+
+    iris1_xyz = _interaction_point_or_center(
+        trace,
+        element_name="Iris 1",
+        fallback_xyz=centers["iris_1"],
+    )
+    iris2_xyz = _interaction_point_or_center(
+        trace,
+        element_name="Iris 2",
+        fallback_xyz=centers["iris_2"],
+    )
+    exit_xyz = trace.segments[-1].end_xyz_mm
+    visible_end_xyz = trace.segments[-1].end_xyz_mm
+    blocked_at = _blocked_at_key(trace)
 
     return DownstreamBeamPath(
-        start_xyz=(beam_path[2].xyz[0], start_y, start_z),
+        start_xyz=start_xyz,
         iris1_xyz=iris1_xyz,
         iris2_xyz=iris2_xyz,
         exit_xyz=exit_xyz,
         visible_end_xyz=visible_end_xyz,
         blocked_at=blocked_at,
+        beam_visible=beam_visible,
+        iris1_visible="Iris 1" in interactions_by_name,
+        iris2_visible="Iris 2" in interactions_by_name,
     )
 
 
@@ -945,7 +1058,7 @@ def _iris_spot_visibility(path: DownstreamBeamPath) -> tuple[bool, bool]:
         Visibility for Iris 1 and Iris 2 readout spots.
     """
 
-    return (True, path.blocked_at != "iris_1")
+    return (path.iris1_visible, path.iris2_visible)
 
 
 def _folded_beam_path_for_state(
@@ -971,11 +1084,14 @@ def _folded_beam_path_for_state(
         the downstream beam.
     """
 
-    beam_path = _beam_path_points(params)
-    downstream_path = _downstream_beam_path_for_state(params, model, state)
+    trace = _physical_trace_for_state(params, model, state)
+    if len(trace.segments) >= 2:
+        segment = trace.segments[1]
+    else:
+        segment = trace.segments[0]
     return BeamSegmentPath(
-        start_xyz=beam_path[1].xyz,
-        end_xyz=downstream_path.start_xyz,
+        start_xyz=segment.start_xyz_mm,
+        end_xyz=segment.end_xyz_mm,
     )
 
 
@@ -1308,9 +1424,13 @@ def main(output_path: str | None = None) -> None:
             start_xyz=downstream_path.start_xyz,
             end_xyz=downstream_path.visible_end_xyz,
         )
+        final_beam.hide_viewport = not downstream_path.beam_visible
+        final_beam.hide_render = not downstream_path.beam_visible
         final_beam.keyframe_insert(data_path="location", frame=state.frame)
         final_beam.keyframe_insert(data_path="rotation_euler", frame=state.frame)
         final_beam.keyframe_insert(data_path="scale", frame=state.frame)
+        final_beam.keyframe_insert(data_path="hide_viewport", frame=state.frame)
+        final_beam.keyframe_insert(data_path="hide_render", frame=state.frame)
         spot1_visible, spot2_visible = _iris_spot_visibility(downstream_path)
         spot1.hide_viewport = not spot1_visible
         spot1.hide_render = not spot1_visible

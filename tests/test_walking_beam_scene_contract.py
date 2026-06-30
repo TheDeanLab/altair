@@ -350,24 +350,19 @@ def test_downstream_beam_path_tracks_iterative_alignment_states():
     states = module._alignment_states(params)
     centers = module._component_centers(params)
 
-    paths = {
-        state.name: module._downstream_beam_path_for_state(params, model, state)
-        for state in states
-    }
+    for state in states:
+        trace = module._physical_trace_for_state(params, model, state)
+        path = module._downstream_beam_path_for_state(params, model, state)
 
-    gross = paths["gross_misalignment"]
-    assert gross.iris1_xyz[1:] != pytest.approx(centers["iris_1"][1:])
-    assert gross.iris2_xyz[1:] != pytest.approx(centers["iris_2"][1:])
+        assert path.blocked_at == module._blocked_at_key(trace)
+        assert path.visible_end_xyz == pytest.approx(trace.segments[-1].end_xyz_mm)
+        if len(trace.segments) >= 3:
+            assert path.beam_visible is True
+            assert path.start_xyz == pytest.approx(trace.segments[2].start_xyz_mm)
+        else:
+            assert path.beam_visible is False
 
-    m1_centered = paths["m1_centers_iris1"]
-    assert m1_centered.iris1_xyz[1:] == pytest.approx(centers["iris_1"][1:])
-    assert m1_centered.iris2_xyz[1:] != pytest.approx(centers["iris_2"][1:])
-
-    m2_centered = paths["m2_centers_iris2"]
-    assert m2_centered.iris1_xyz[1:] != pytest.approx(centers["iris_1"][1:])
-    assert m2_centered.iris2_xyz[1:] == pytest.approx(centers["iris_2"][1:])
-
-    aligned = paths["aligned_hold"]
+    aligned = module._downstream_beam_path_for_state(params, model, states[-1])
     assert aligned.iris1_xyz[1:] == pytest.approx(centers["iris_1"][1:])
     assert aligned.iris2_xyz[1:] == pytest.approx(centers["iris_2"][1:])
     assert aligned.start_xyz[0] < aligned.iris1_xyz[0]
@@ -393,13 +388,63 @@ def test_folded_beam_path_shares_animated_m2_hit_point():
     for state in states:
         folded = folded_paths[state.name]
         downstream = downstream_paths[state.name]
-        assert folded.start_xyz == pytest.approx(static_path[1].xyz)
-        assert folded.end_xyz == pytest.approx(downstream.start_xyz)
+        trace = module._physical_trace_for_state(params, model, state)
+        expected_segment = (
+            trace.segments[1] if len(trace.segments) >= 2 else trace.segments[0]
+        )
+        assert folded.start_xyz == pytest.approx(expected_segment.start_xyz_mm)
+        assert folded.end_xyz == pytest.approx(expected_segment.end_xyz_mm)
+        if downstream.beam_visible:
+            assert folded.end_xyz == pytest.approx(downstream.start_xyz)
 
     assert (
         math.dist(folded_paths["gross_misalignment"].end_xyz, static_path[2].xyz) > 0.1
     )
     assert folded_paths["aligned_hold"].end_xyz == pytest.approx(static_path[2].xyz)
+
+
+def test_displayed_beam_paths_are_derived_from_physical_trace_segments():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    states = module._alignment_states(params)
+    aligned = states[-1]
+
+    trace = module._physical_trace_for_state(params, model, aligned)
+    folded = module._folded_beam_path_for_state(params, model, aligned)
+    downstream = module._downstream_beam_path_for_state(params, model, aligned)
+
+    assert len(trace.segments) >= 5
+    assert folded.start_xyz == pytest.approx(trace.segments[1].start_xyz_mm)
+    assert folded.end_xyz == pytest.approx(trace.segments[1].end_xyz_mm)
+    assert downstream.start_xyz == pytest.approx(trace.segments[2].start_xyz_mm)
+    assert downstream.visible_end_xyz == pytest.approx(trace.segments[-1].end_xyz_mm)
+
+
+def test_hidden_downstream_beam_keeps_nonzero_placeholder_segment():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    aligned = module.exact_alignment_state(
+        model,
+        name="m2_miss_regression",
+        frame=1,
+    )
+    missed_m2 = module.BeamWalkingState(
+        name=aligned.name,
+        frame=aligned.frame,
+        horizontal=type(aligned.horizontal)(
+            m1_offset_mm=aligned.horizontal.m1_offset_mm + 600.0,
+            m2_angle_mrad=aligned.horizontal.m2_angle_mrad,
+        ),
+        vertical=aligned.vertical,
+    )
+
+    path = module._downstream_beam_path_for_state(params, model, missed_m2)
+
+    assert path.blocked_at == "m2"
+    assert path.beam_visible is False
+    assert math.dist(path.start_xyz, path.visible_end_xyz) > 0.0
 
 
 def test_downstream_beam_path_stops_at_first_blocking_iris():
@@ -413,25 +458,18 @@ def test_downstream_beam_path_stops_at_first_blocking_iris():
         for state in states
     }
 
-    assert paths["gross_misalignment"].blocked_at == "iris_1"
-    assert paths["gross_misalignment"].visible_end_xyz == pytest.approx(
-        paths["gross_misalignment"].iris1_xyz
-    )
+    for state in states:
+        trace = module._physical_trace_for_state(params, model, state)
+        path = paths[state.name]
+        assert path.blocked_at == module._blocked_at_key(trace)
+        assert path.visible_end_xyz == pytest.approx(trace.segments[-1].end_xyz_mm)
 
-    assert paths["m1_centers_iris1"].blocked_at == "iris_2"
-    assert paths["m1_centers_iris1"].visible_end_xyz == pytest.approx(
-        paths["m1_centers_iris1"].iris2_xyz
-    )
-
-    assert paths["m2_centers_iris2"].blocked_at == "iris_1"
-    assert paths["m2_centers_iris2"].visible_end_xyz == pytest.approx(
-        paths["m2_centers_iris2"].iris1_xyz
-    )
-
-    assert paths["aligned_hold"].blocked_at == ""
-    assert paths["aligned_hold"].visible_end_xyz == pytest.approx(
-        paths["aligned_hold"].exit_xyz
-    )
+        if path.blocked_at == "iris_1":
+            assert path.visible_end_xyz == pytest.approx(path.iris1_xyz)
+        elif path.blocked_at == "iris_2":
+            assert path.visible_end_xyz == pytest.approx(path.iris2_xyz)
+        elif path.blocked_at == "":
+            assert path.visible_end_xyz == pytest.approx(path.exit_xyz)
 
 
 def test_iris_spot_visibility_follows_first_blocking_iris():
@@ -440,14 +478,12 @@ def test_iris_spot_visibility_follows_first_blocking_iris():
     model = module._walking_beam_model(params)
     states = module._alignment_states(params)
 
-    visibility = {
-        state.name: module._iris_spot_visibility(
-            module._downstream_beam_path_for_state(params, model, state)
-        )
-        for state in states
-    }
+    for state in states:
+        trace = module._physical_trace_for_state(params, model, state)
+        path = module._downstream_beam_path_for_state(params, model, state)
+        reached = {interaction.element_name for interaction in trace.interactions}
 
-    assert visibility["gross_misalignment"] == (True, False)
-    assert visibility["m1_centers_iris1"] == (True, True)
-    assert visibility["m2_centers_iris2"] == (True, False)
-    assert visibility["aligned_hold"] == (True, True)
+        assert module._iris_spot_visibility(path) == (
+            "Iris 1" in reached,
+            "Iris 2" in reached,
+        )

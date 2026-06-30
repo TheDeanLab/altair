@@ -401,6 +401,34 @@ def test_physical_storyboard_m1_step_centers_near_iris():
     assert m1_radius < gross_radius
 
 
+def test_physical_storyboard_m2_step_reaches_and_centers_far_iris():
+    module = load_scene_module()
+    params = module.DEFAULT_PARAMETERS
+    model = module._walking_beam_model(params)
+    states = {state.name: state for state in module._alignment_states(params)}
+    m2_centered = module._downstream_beam_path_for_state(
+        params,
+        model,
+        states["m2_centers_iris2"],
+    )
+    centers = module._component_centers(params)
+
+    iris1_radius = math.hypot(
+        m2_centered.iris1_xyz[1] - centers["iris_1"][1],
+        m2_centered.iris1_xyz[2] - centers["iris_1"][2],
+    )
+    iris2_radius = math.hypot(
+        m2_centered.iris2_xyz[1] - centers["iris_2"][1],
+        m2_centered.iris2_xyz[2] - centers["iris_2"][2],
+    )
+
+    assert m2_centered.iris1_visible is True
+    assert m2_centered.iris2_visible is True
+    assert m2_centered.blocked_at == ""
+    assert iris1_radius < model.iris_radius_mm
+    assert iris2_radius < 0.25
+
+
 def test_folded_beam_path_shares_animated_m2_hit_point():
     module = load_scene_module()
     params = module.DEFAULT_PARAMETERS

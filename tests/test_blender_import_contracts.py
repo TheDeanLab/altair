@@ -184,6 +184,20 @@ def test_hardware_builders_expose_keyword_only_geometry_controls():
             )
 
 
+def test_mirror_mount_frame_sits_behind_flush_optic_surface():
+    geometry = importlib.import_module("simulations.blender.altair_blender.geometry")
+    prescriptions = importlib.import_module(
+        "simulations.blender.altair_blender.prescriptions"
+    )
+    mount = prescriptions.KM100CP_MOUNT
+
+    surface_x = geometry.mirror_optic_surface_local_x(mount)
+    frame_center_x = geometry.mirror_mount_frame_center_local_x(mount)
+
+    assert surface_x == pytest.approx(0.0)
+    assert frame_center_x - (mount.body_depth_mm / 2.0) == pytest.approx(surface_x)
+
+
 def test_iris_reticle_face_offsets_support_double_sided_targets():
     geometry = importlib.import_module("simulations.blender.altair_blender.geometry")
 

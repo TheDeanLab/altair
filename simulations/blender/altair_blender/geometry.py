@@ -1544,6 +1544,8 @@ def create_kinematic_mirror_mount(
         support_top_z = optical_axis_z_mm + frame_bottom_z - 1.0
     local_support_top_z = support_top_z - optical_axis_z_mm
     support_length = max(6.0, local_support_top_z - local_table_top_z)
+    frame_center_x = mirror_mount_frame_center_local_x(mount)
+    optic_depth_mm = 1.2
 
     _cylinder_object(
         f"{post.name} Mirror Support Post",
@@ -1572,7 +1574,11 @@ def create_kinematic_mirror_mount(
         collection=collection,
         parent=parent,
         dimensions=(mount.body_depth_mm, side_width, mount.clear_aperture_mm),
-        location=(0.0, -((mount.clear_aperture_mm + side_width) / 2.0), 0.0),
+        location=(
+            frame_center_x,
+            -((mount.clear_aperture_mm + side_width) / 2.0),
+            0.0,
+        ),
         material=metal,
     )
     _box_object(
@@ -1580,7 +1586,11 @@ def create_kinematic_mirror_mount(
         collection=collection,
         parent=parent,
         dimensions=(mount.body_depth_mm, side_width, mount.clear_aperture_mm),
-        location=(0.0, (mount.clear_aperture_mm + side_width) / 2.0, 0.0),
+        location=(
+            frame_center_x,
+            (mount.clear_aperture_mm + side_width) / 2.0,
+            0.0,
+        ),
         material=metal,
     )
     _box_object(
@@ -1588,7 +1598,7 @@ def create_kinematic_mirror_mount(
         collection=collection,
         parent=parent,
         dimensions=(mount.body_depth_mm, mount.body_width_mm, cap_height),
-        location=(0.0, 0.0, (mount.clear_aperture_mm + cap_height) / 2.0),
+        location=(frame_center_x, 0.0, (mount.clear_aperture_mm + cap_height) / 2.0),
         material=metal,
     )
     _box_object(
@@ -1596,7 +1606,11 @@ def create_kinematic_mirror_mount(
         collection=collection,
         parent=parent,
         dimensions=(mount.body_depth_mm, mount.body_width_mm, cap_height),
-        location=(0.0, 0.0, -((mount.clear_aperture_mm + cap_height) / 2.0)),
+        location=(
+            frame_center_x,
+            0.0,
+            -((mount.clear_aperture_mm + cap_height) / 2.0),
+        ),
         material=metal,
     )
     _box_object(
@@ -1612,8 +1626,12 @@ def create_kinematic_mirror_mount(
         collection=collection,
         parent=parent,
         radius_mm=mount.optic_diameter_mm / 2.0,
-        depth_mm=1.2,
-        location=(mirror_optic_surface_local_x(mount), 0.0, 0.0),
+        depth_mm=optic_depth_mm,
+        location=(
+            mirror_optic_surface_local_x(mount) + (optic_depth_mm / 2.0),
+            0.0,
+            0.0,
+        ),
         material=mirror,
         vertices=96,
         rotation=(0.0, math.radians(90.0), 0.0),
@@ -1667,3 +1685,23 @@ def mirror_optic_surface_local_x(
     """
 
     return 0.0
+
+
+def mirror_mount_frame_center_local_x(
+    mount: MirrorMountPrescription = KM100CP_MOUNT,
+) -> float:
+    """Return the mount-local X coordinate for the frame-rail centers.
+
+    Parameters
+    ----------
+    mount
+        Source-backed mirror-mount prescription.
+
+    Returns
+    -------
+    float
+        Local X coordinate that places the frame front face flush with the
+        visible mirror surface.
+    """
+
+    return mirror_optic_surface_local_x(mount) + (mount.body_depth_mm / 2.0)

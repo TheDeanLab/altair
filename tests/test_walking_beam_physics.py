@@ -6,6 +6,7 @@ from simulations.blender.altair_blender.beam_walking import (
     CircularAperture,
     PlaneMirror,
     Ray3D,
+    trace_two_mirror_two_iris_system,
     trace_circular_aperture,
     trace_plane_mirror,
 )
@@ -105,3 +106,117 @@ def test_circular_aperture_distinguishes_pass_clip_and_block() -> None:
     assert blocked_interaction.status == "blocked"
     assert blocked_interaction.clearance_margin_mm == pytest.approx(-2.25)
     assert blocked_ray is None
+
+
+def test_two_mirror_two_iris_trace_records_successful_chain() -> None:
+    diagonal_normal = (-(2**-0.5), 2**-0.5, 0.0)
+    source = Ray3D(
+        origin_xyz_mm=(-20.0, 0.0, 0.0),
+        direction_xyz=(1.0, 0.0, 0.0),
+        beam_radius_mm=0.5,
+    )
+    m1 = PlaneMirror(
+        name="M1",
+        center_xyz_mm=(0.0, 0.0, 0.0),
+        normal_xyz=diagonal_normal,
+        clear_radius_mm=12.0,
+    )
+    m2 = PlaneMirror(
+        name="M2",
+        center_xyz_mm=(0.0, 20.0, 0.0),
+        normal_xyz=diagonal_normal,
+        clear_radius_mm=12.0,
+    )
+    iris1 = CircularAperture(
+        name="Iris 1",
+        center_xyz_mm=(25.0, 20.0, 0.0),
+        normal_xyz=(-1.0, 0.0, 0.0),
+        aperture_radius_mm=1.25,
+        body_radius_mm=20.0,
+    )
+    iris2 = CircularAperture(
+        name="Iris 2",
+        center_xyz_mm=(50.0, 20.0, 0.0),
+        normal_xyz=(-1.0, 0.0, 0.0),
+        aperture_radius_mm=1.25,
+        body_radius_mm=20.0,
+    )
+
+    trace = trace_two_mirror_two_iris_system(
+        source_ray=source,
+        m1=m1,
+        m2=m2,
+        iris1=iris1,
+        iris2=iris2,
+    )
+
+    assert trace.blocked_at == ""
+    assert [interaction.element_name for interaction in trace.interactions] == [
+        "M1",
+        "M2",
+        "Iris 1",
+        "Iris 2",
+    ]
+    assert [interaction.status for interaction in trace.interactions] == [
+        "hit",
+        "hit",
+        "passed",
+        "passed",
+    ]
+    assert len(trace.segments) == 5
+    assert trace.segments[-1].start_xyz_mm == pytest.approx((50.0, 20.0, 0.0))
+    assert trace.segments[-1].end_xyz_mm[0] > 50.0
+
+
+def test_two_mirror_two_iris_trace_stops_at_missed_second_mirror() -> None:
+    diagonal_normal = (-(2**-0.5), 2**-0.5, 0.0)
+    source = Ray3D(
+        origin_xyz_mm=(-20.0, 0.0, 0.0),
+        direction_xyz=(1.0, 0.0, 0.0),
+        beam_radius_mm=0.5,
+    )
+    m1 = PlaneMirror(
+        name="M1",
+        center_xyz_mm=(0.0, 0.0, 0.0),
+        normal_xyz=diagonal_normal,
+        clear_radius_mm=12.0,
+    )
+    m2 = PlaneMirror(
+        name="M2",
+        center_xyz_mm=(0.0, 20.0, 13.0),
+        normal_xyz=diagonal_normal,
+        clear_radius_mm=12.0,
+    )
+    iris1 = CircularAperture(
+        name="Iris 1",
+        center_xyz_mm=(25.0, 20.0, 0.0),
+        normal_xyz=(-1.0, 0.0, 0.0),
+        aperture_radius_mm=1.25,
+        body_radius_mm=20.0,
+    )
+    iris2 = CircularAperture(
+        name="Iris 2",
+        center_xyz_mm=(50.0, 20.0, 0.0),
+        normal_xyz=(-1.0, 0.0, 0.0),
+        aperture_radius_mm=1.25,
+        body_radius_mm=20.0,
+    )
+
+    trace = trace_two_mirror_two_iris_system(
+        source_ray=source,
+        m1=m1,
+        m2=m2,
+        iris1=iris1,
+        iris2=iris2,
+    )
+
+    assert trace.blocked_at == "M2"
+    assert [interaction.element_name for interaction in trace.interactions] == [
+        "M1",
+        "M2",
+    ]
+    assert trace.interactions[-1].status == "missed_clear_aperture"
+    assert len(trace.segments) == 2
+    assert trace.segments[-1].end_xyz_mm == pytest.approx(
+        trace.interactions[-1].point_xyz_mm
+    )

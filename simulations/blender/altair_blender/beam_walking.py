@@ -110,6 +110,24 @@ class RayInteraction:
     clearance_margin_mm: float
 
 
+@dataclass(frozen=True)
+class BeamSegment:
+    """One physical beam segment between two trace points."""
+
+    start_xyz_mm: VectorTuple
+    end_xyz_mm: VectorTuple
+    power_fraction: float
+
+
+@dataclass(frozen=True)
+class RayTraceResult:
+    """Ordered result of tracing a beam through optical elements."""
+
+    interactions: tuple[RayInteraction, ...]
+    segments: tuple[BeamSegment, ...]
+    blocked_at: str
+
+
 def _dot(a: VectorTuple, b: VectorTuple) -> float:
     """Return the dot product of two 3D vectors.
 
@@ -493,6 +511,128 @@ def trace_circular_aperture(
             wavelength_nm=ray.wavelength_nm,
             power_fraction=transmitted_power,
         ),
+    )
+
+
+def _segment_to_interaction(ray: Ray3D, interaction: RayInteraction) -> BeamSegment:
+    """Return a beam segment from the ray origin to an interaction point.
+
+    Parameters
+    ----------
+    ray
+        Ray before the interaction.
+    interaction
+        Interaction reached by the ray.
+
+    Returns
+    -------
+    BeamSegment
+        Segment ending at the interaction point.
+    """
+
+    return BeamSegment(
+        start_xyz_mm=ray.origin_xyz_mm,
+        end_xyz_mm=interaction.point_xyz_mm,
+        power_fraction=ray.power_fraction,
+    )
+
+
+def _segment_after_ray(ray: Ray3D, *, length_mm: float) -> BeamSegment:
+    """Return a downstream segment that continues an unblocked ray.
+
+    Parameters
+    ----------
+    ray
+        Ray after the last interaction.
+    length_mm
+        Segment length to display.
+
+    Returns
+    -------
+    BeamSegment
+        Segment continuing downstream from the ray origin.
+    """
+
+    unit_direction = _normalize(ray.direction_xyz)
+    return BeamSegment(
+        start_xyz_mm=ray.origin_xyz_mm,
+        end_xyz_mm=_add(ray.origin_xyz_mm, _scale(unit_direction, length_mm)),
+        power_fraction=ray.power_fraction,
+    )
+
+
+def trace_two_mirror_two_iris_system(
+    *,
+    source_ray: Ray3D,
+    m1: PlaneMirror,
+    m2: PlaneMirror,
+    iris1: CircularAperture,
+    iris2: CircularAperture,
+    downstream_length_mm: float = 25.0,
+) -> RayTraceResult:
+    """Trace a beam through two mirrors followed by two irises.
+
+    Parameters
+    ----------
+    source_ray
+        Incoming ray before the first mirror.
+    m1
+        First steering mirror.
+    m2
+        Second steering mirror.
+    iris1
+        Near alignment iris.
+    iris2
+        Far alignment iris.
+    downstream_length_mm
+        Length of the displayed downstream segment after Iris 2 when the beam
+        is not blocked.
+
+    Returns
+    -------
+    RayTraceResult
+        Ordered interactions, physical segments, and blocking element name.
+    """
+
+    interactions: list[RayInteraction] = []
+    segments: list[BeamSegment] = []
+    current_ray = source_ray
+
+    for mirror in (m1, m2):
+        interaction, reflected_ray = trace_plane_mirror(
+            ray=current_ray,
+            mirror=mirror,
+        )
+        interactions.append(interaction)
+        segments.append(_segment_to_interaction(current_ray, interaction))
+        if reflected_ray is None:
+            return RayTraceResult(
+                interactions=tuple(interactions),
+                segments=tuple(segments),
+                blocked_at=interaction.element_name,
+            )
+        current_ray = reflected_ray
+
+    for aperture in (iris1, iris2):
+        interaction, transmitted_ray = trace_circular_aperture(
+            ray=current_ray,
+            aperture=aperture,
+        )
+        interactions.append(interaction)
+        segments.append(_segment_to_interaction(current_ray, interaction))
+        if transmitted_ray is None:
+            return RayTraceResult(
+                interactions=tuple(interactions),
+                segments=tuple(segments),
+                blocked_at=interaction.element_name,
+            )
+        current_ray = transmitted_ray
+
+    segments.append(_segment_after_ray(current_ray, length_mm=downstream_length_mm))
+    return RayTraceResult(
+        interactions=tuple(interactions),
+        segments=tuple(segments),
+        blocked_at="",
     )
 
 

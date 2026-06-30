@@ -37,8 +37,37 @@ Remaining limitations:
   not a diffraction pattern or realistic partial-beam spot shape.
 - Mirror knobs are represented as pitch/yaw angles rather than screw turns or a
   full kinematic mount mechanism.
-- Intermediate animation frames are Blender interpolation between ray-traced
-  keyframes; future work could sample every rendered frame through the solver.
+- Intermediate animation now uses sampled ray-traced keyframes between the six
+  instructional milestones, but it still does not solve every rendered frame.
+
+## Second Quality Loop Update: 2026-06-30
+
+A second autonomous quality loop addressed the latest visual and physical
+fidelity issues found in the walking-beam movies:
+
+- Mirror visual geometry and ray tracing now share the same optic reference
+  plane, while the KM100CP-style frame rails sit behind that plane so the mirror
+  face reads as flush with the mount front.
+- Beam rendering now uses five fixed trace-derived segment slots: incoming,
+  M1-to-M2, M2-to-Iris 1, Iris 1-to-Iris 2, and post-Iris 2.
+- The scene samples physical trace states between storyboard milestones so the
+  beam, spots, footprints, and mirror rotations update from geometric traces
+  throughout the animation.
+- Mirror hit footprints are circular trace-derived objects on M1 and M2,
+  replacing the earlier rectangular/slot-like M1 glow artifact.
+- Iris spots now encode passed, clipped, blocked, and unreached interactions;
+  clipped spots are larger and dimmer, and downstream beam radius reflects the
+  transmitted power fraction.
+- Iris reticles are front-only and muted so the reference ring no longer reads
+  as a beam spot in close-up views.
+- A `Top-Down Path Camera` and top-down movie output were added. The stacked
+  output now combines wide, iris close-up, and top-down views for diagnosis.
+
+Draft stills reviewed during this pass were rendered for frames 1, 36, 72, 108,
+144, and 168 under `/tmp/altair_walking_beam_iteration9`. After user feedback
+about recessed mirror faces, frame 72 was rerendered under
+`/tmp/altair_walking_beam_iteration9_flush_frame_72`; the top-down still showed
+flush mirror faces while preserving the continuous M1-to-M2-to-iris beam path.
 
 ## Latest Render Review: 2026-06-30
 

@@ -959,6 +959,22 @@ def solve_two_mirror_alignment(
     ]
 
     def evaluate(candidate: Sequence[float]) -> tuple[float, ...] | None:
+        """Return iris-intercept residuals for one mirror-adjustment vector.
+
+        Parameters
+        ----------
+        candidate
+            Sequence containing M1 yaw, M1 pitch, M2 yaw, and M2 pitch in
+            milliradians.
+
+        Returns
+        -------
+        tuple[float, ...] or None
+            Difference between actual and target iris intercepts, or ``None``
+            when the candidate mirror adjustments do not reach both iris
+            planes.
+        """
+
         adjusted_m1 = adjusted_plane_mirror(
             m1,
             adjustment=MirrorAdjustment(

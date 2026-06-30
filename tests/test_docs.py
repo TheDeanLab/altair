@@ -2,12 +2,18 @@ import re
 import unittest
 import subprocess
 import os
+from pathlib import Path
 
 
 class TestDocs(unittest.TestCase):
     def setUp(self):
-        os.chdir(os.path.join(os.getcwd(), "docs"))
+        self._original_cwd = os.getcwd()
+        docs_dir = Path(__file__).resolve().parents[1] / "docs"
+        os.chdir(docs_dir)
         print("Current Directory:", os.getcwd())
+
+    def tearDown(self):
+        os.chdir(self._original_cwd)
 
     def test_sphinx_build(self):
         cmd = [

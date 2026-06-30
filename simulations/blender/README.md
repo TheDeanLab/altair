@@ -31,6 +31,21 @@ card aperture and return spots, and a slow hero camera move for a polished
 single-view movie. Minimal in-scene labels identify the aperture card, doublet,
 mount, and two return reflections without adding narration or external editing.
 
+## Walking-Beam Scene
+
+`scenes/walking_beam_alignment.py` generates a teaching scene for walking a
+laser beam with two steering mirrors and two irises. The scene uses an
+import-safe finite-aperture ray trace from the source through M1, M2, Iris 1,
+and Iris 2. Beam segments, mirror footprints, iris spots, blocking/clipping
+state, and mirror display rotations are derived from that trace.
+
+The tutorial sequence starts misaligned, uses M1 to center the near iris, uses
+M2 to center the far iris, then alternates through two refinements until both
+irises are centered. Rendered views include wide, iris close-up, hero, top-down,
+and stacked diagnostics. The top-down view is particularly useful for checking
+that the folded M1-to-M2 path is continuous and that the post-M2 direction is
+unambiguous.
+
 ## Fidelity Notes
 
 `altair_blender/prescriptions.py` stores the source-backed model constants. The
@@ -113,16 +128,28 @@ simulations/blender/scripts/render_achromat_back_reflection.sh --draft --dry-run
 simulations/blender/scripts/render_achromat_back_reflection.sh --preview --dry-run
 ```
 
+Render the walking-beam scene with:
+
+```bash
+simulations/blender/scripts/render_walking_beam_alignment.sh
+```
+
+For key-frame still review:
+
+```bash
+simulations/blender/scripts/render_walking_beam_alignment_stills.sh --draft --frame 72 output/walking-beam-frame-72
+```
+
 ## Test
 
 Run non-Blender checks from the repository root:
 
 ```bash
-uv run pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_achromat_scene_contract.py tests/test_blender_render_script.py
+uv run pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_achromat_scene_contract.py tests/test_blender_render_script.py tests/test_walking_beam_physics.py tests/test_walking_beam_scene_contract.py tests/test_walking_beam_render_script.py
 ```
 
 If `uv run` is not suitable in the local environment, use:
 
 ```bash
-pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_achromat_scene_contract.py tests/test_blender_render_script.py
+pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_achromat_scene_contract.py tests/test_blender_render_script.py tests/test_walking_beam_physics.py tests/test_walking_beam_scene_contract.py tests/test_walking_beam_render_script.py
 ```

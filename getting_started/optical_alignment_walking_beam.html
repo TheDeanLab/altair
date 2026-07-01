@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walking A Beam Through Two Irises &mdash; altair  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Getting Started" href="getting_started.html" />
+    <link rel="prev" title="Back-Reflection Alignment" href="optical_alignment_back_reflections.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            altair
+              <img src="../_static/compass.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/background.html">Overview of Subcellular Light-Sheet Microscope Technologies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design_principles/required_software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware/index.html">Room and Hardware Considerations</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="optical_alignment_basics.html">Basics of Optical Alignment</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="optical_alignment_basics.html#available-tutorials">Available Tutorials</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="optical_alignment_back_reflections.html">Back-Reflection Alignment</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Walking A Beam Through Two Irises</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goal">Goal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#why-this-works">Why This Works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-geometry">Setup Geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-by-step-protocol">Step-By-Step Protocol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="optical_alignment_basics.html#tentative-tutorial-roadmap">Tentative Tutorial Roadmap</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Altair-SPIM v1</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../design_principles/design_process.html">Design Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physical_assembly/physical_assembly.html">Microscope Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system_characterization/system_characterization.html">System Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imaging/imaging.html">Imaging Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../live_cell/live_cell.html">Live-Cell Imaging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Altair-ASLM/CTASLM/SPIM v1</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ASLM/CTASLM Baseplate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ASLM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ASLM/CTASLM Baseplate Example Images</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Altair-dvOPM</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_overview/dvopm_overview.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_design/dvopm_design.html">Design Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">DV-OPM Baseplate Assembly &amp; Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_characterization/dvopm_characterization.html">Altair DV-OPM Characterization</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">altair</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="optical_alignment_basics.html">Basics of Optical Alignment</a></li>
+      <li class="breadcrumb-item active">Walking A Beam Through Two Irises</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting_started/optical_alignment_walking_beam.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="walking-a-beam-through-two-irises">
+<span id="optical-alignment-walking-beam"></span><h1>Walking A Beam Through Two Irises<a class="headerlink" href="#walking-a-beam-through-two-irises" title="Permalink to this heading"></a></h1>
+<section id="goal">
+<h2>Goal<a class="headerlink" href="#goal" title="Permalink to this heading"></a></h2>
+<p>The goal is to make a laser beam pass through the centers of two same-height
+irises after two steering mirrors. The first iris defines the near point on the
+desired optical axis. The second iris defines the far point. When the beam is
+centered on both irises, the beam position and angle match the line selected by
+those two apertures.</p>
+<p>This is a geometric alignment method. It does not require the downstream optic
+to be installed yet, which makes it useful when setting beam height, preparing a
+beam expander path, or establishing a clean reference line across an optical
+table.</p>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Walking-Beam Alignment Simulation</div>
+<p class="sd-card-text">This simulation shows a Z-fold made from two kinematic mirror mounts and two
+same-height irises on a 25.4 mm table-hole row. The wide view shows the two
+mirrors walking the beam onto the iris row. The close-up view shows the near
+and far iris readouts during each correction. The top-down panel shows why
+the method controls both lateral beam position and propagation angle.</p>
+<video controls preload="metadata" style="width:100%;">
+  <source src="../_static/optical_alignment/videos/walking_beam_alignment_stacked.mp4" type="video/mp4">
+  Your browser does not support embedded video.
+</video><p class="sd-card-text"><a class="reference external" href="../_static/optical_alignment/videos/walking_beam_alignment_stacked.mp4">Download the walking-beam alignment movie</a></p>
+<p class="sd-card-text">The top-down view is useful when checking whether the beam path remains
+continuous from mirror to mirror and then through both irises.</p>
+<video controls preload="metadata" style="width:100%;">
+  <source src="../_static/optical_alignment/videos/walking_beam_alignment_top_down.mp4" type="video/mp4">
+  Your browser does not support embedded video.
+</video><p class="sd-card-text"><a class="reference external" href="../_static/optical_alignment/videos/walking_beam_alignment_top_down.mp4">Download the top-down walking-beam movie</a></p>
+</div>
+</div>
+</section>
+<section id="why-this-works">
+<h2>Why This Works<a class="headerlink" href="#why-this-works" title="Permalink to this heading"></a></h2>
+<p>A straight beam is fully specified by two points. Two irises therefore define
+the desired path: the beam must pass through the first aperture and then through
+the second aperture without clipping.</p>
+<p>The two mirrors provide two coupled controls. A first-mirror adjustment changes
+where the beam lands at the near iris and also changes the downstream angle. A
+second-mirror adjustment changes the downstream angle and therefore moves the
+far iris spot strongly. Because the controls are coupled, a single pass is
+rarely perfect. Alternating between the near iris and the far iris converges on
+the line through both aperture centers.</p>
+<p>Use small iris openings only after rough alignment is close. Starting with a
+larger opening prevents accidental clipping and makes it easier to see which
+mirror adjustment is moving the beam in the intended direction.</p>
+</section>
+<section id="setup-geometry">
+<h2>Setup Geometry<a class="headerlink" href="#setup-geometry" title="Permalink to this heading"></a></h2>
+<p>Use a low-power visible alignment beam, wear appropriate laser safety eyewear,
+and place beam blocks wherever the rough beam or mirror reflections could leave
+the intended table path.</p>
+<p>Place Iris 1 as close as reasonably possible to the second steering mirror. This
+near iris gives a sensitive readout of the beam position just after the mirror
+pair. Place Iris 2 farther downstream on the same desired path. A longer
+distance between the two irises makes angular error easier to see, so the final
+alignment is more accurate when the far iris is placed farther away.</p>
+<p>A table-hole row is a convenient reference for a straight horizontal path. When
+using the holes as a geometric reference, place each mirror so that the mirror
+surface is centered on the intended turning point of the hole pattern. The
+outside of the mirror mount is not the optical reference; the reflective surface
+is.</p>
+<p>Before beginning, set the mirror actuators near the middle of their travel.
+This leaves adjustment range in both directions. Also center the beam on both
+mirror surfaces during rough placement. If the beam starts near an edge of a
+mirror, later corrections can clip the beam or force the actuator to the end of
+its range.</p>
+<p>Right-angle reflections are convenient because they make the geometry easy to
+read on a rectangular optical table, but they are not required. Two steering
+mirrors are sufficient to laterally translate a beam onto a new parallel path.</p>
+</section>
+<section id="step-by-step-protocol">
+<h2>Step-By-Step Protocol<a class="headerlink" href="#step-by-step-protocol" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Set both irises to the same height and place them on the desired beam path.
+Put Iris 1 close to Mirror 2 and Iris 2 farther downstream on the same
+reference line.</p></li>
+<li><p>Open both irises enough that the rough beam can be found safely without
+clipping.</p></li>
+<li><p>Place two steering mirrors before the first iris. Start with the mirror
+actuators near mid-travel, the beam centered on both mirror faces, and the
+reflective surfaces located on the intended table-hole turning points.</p></li>
+<li><p>Roughly steer the beam so that it reaches the first iris and continues toward
+the second iris.</p></li>
+<li><p>Adjust the first mirror to center the near iris. Watch the beam spot at
+Iris 1 and use small, deliberate mirror motions.</p></li>
+<li><p>Adjust the second mirror to center the far iris. Watch the beam spot at
+Iris 2 and bring it to the same-height aperture center.</p></li>
+<li><p>Return to the first mirror and re-center Iris 1. The second-mirror change
+usually perturbs the near iris slightly.</p></li>
+<li><p>Return to the second mirror and re-center Iris 2.</p></li>
+<li><p>Iterate until both iris spots stay centered after each correction.</p></li>
+<li><p>Reduce the iris openings and repeat the final corrections. Stop when the
+beam passes cleanly through both apertures at the working aperture size.</p></li>
+</ol>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading"></a></h2>
+<p>If Iris 1 centers but Iris 2 moves far away, the mirror corrections are too
+large or the initial Z-fold geometry is too coarse. Open the far iris, make a
+rough second-mirror correction, and then restart with smaller movements.</p>
+<p>If Iris 2 centers but Iris 1 no longer transmits, return to the first mirror.
+This is the normal coupling between the two controls, not a sign that the
+method failed.</p>
+<p>If the beam clips both irises at different heights, recheck the mechanical
+height of the iris centers before continuing. Walking the beam cannot fix a
+reference line defined by apertures at different heights.</p>
+<p>If the beam shape changes or becomes crescent-shaped at an iris, the beam is
+clipping. Open the iris, recover a full round spot, and only then close the
+aperture again.</p>
+<p>If a mirror actuator runs out of range, do not keep forcing the correction with
+the knob. Recenter the actuator, reposition the mirror mount so the beam is
+again near the center of the mirror, and restart the rough alignment.</p>
+<p>If the beam is centered on both irises but walks across a mirror surface, the
+mechanical layout is probably not centered on the intended turning points. Move
+the mount so the reflective surface, not the mount body, coincides with the
+reference geometry, then repeat the alignment.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="optical_alignment_back_reflections.html" class="btn btn-neutral float-left" title="Back-Reflection Alignment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Dean Lab, UT Southwestern Medical Center.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

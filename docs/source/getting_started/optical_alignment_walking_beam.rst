@@ -23,7 +23,8 @@ table.
    This simulation shows a Z-fold made from two kinematic mirror mounts and two
    same-height irises on a 25.4 mm table-hole row. The wide view shows the two
    mirrors walking the beam onto the iris row. The close-up view shows the near
-   and far iris readouts during each correction.
+   and far iris readouts during each correction. The top-down panel shows why
+   the method controls both lateral beam position and propagation angle.
 
    .. raw:: html
 
@@ -33,6 +34,18 @@ table.
       </video>
 
    `Download the walking-beam alignment movie <../_static/optical_alignment/videos/walking_beam_alignment_stacked.mp4>`_
+
+   The top-down view is useful when checking whether the beam path remains
+   continuous from mirror to mirror and then through both irises.
+
+   .. raw:: html
+
+      <video controls preload="metadata" style="width:100%;">
+        <source src="../_static/optical_alignment/videos/walking_beam_alignment_top_down.mp4" type="video/mp4">
+        Your browser does not support embedded video.
+      </video>
+
+   `Download the top-down walking-beam movie <../_static/optical_alignment/videos/walking_beam_alignment_top_down.mp4>`_
 
 
 Why This Works
@@ -54,17 +67,49 @@ larger opening prevents accidental clipping and makes it easier to see which
 mirror adjustment is moving the beam in the intended direction.
 
 
+Setup Geometry
+==============
+
+Use a low-power visible alignment beam, wear appropriate laser safety eyewear,
+and place beam blocks wherever the rough beam or mirror reflections could leave
+the intended table path.
+
+Place Iris 1 as close as reasonably possible to the second steering mirror. This
+near iris gives a sensitive readout of the beam position just after the mirror
+pair. Place Iris 2 farther downstream on the same desired path. A longer
+distance between the two irises makes angular error easier to see, so the final
+alignment is more accurate when the far iris is placed farther away.
+
+A table-hole row is a convenient reference for a straight horizontal path. When
+using the holes as a geometric reference, place each mirror so that the mirror
+surface is centered on the intended turning point of the hole pattern. The
+outside of the mirror mount is not the optical reference; the reflective surface
+is.
+
+Before beginning, set the mirror actuators near the middle of their travel.
+This leaves adjustment range in both directions. Also center the beam on both
+mirror surfaces during rough placement. If the beam starts near an edge of a
+mirror, later corrections can clip the beam or force the actuator to the end of
+its range.
+
+Right-angle reflections are convenient because they make the geometry easy to
+read on a rectangular optical table, but they are not required. Two steering
+mirrors are sufficient to laterally translate a beam onto a new parallel path.
+
+
 Step-By-Step Protocol
 =====================
 
 1. Set both irises to the same height and place them on the desired beam path.
-   A table-hole row is a convenient reference for a straight horizontal path.
+   Put Iris 1 close to Mirror 2 and Iris 2 farther downstream on the same
+   reference line.
 
 2. Open both irises enough that the rough beam can be found safely without
    clipping.
 
-3. Place two steering mirrors before the first iris. A Z-fold is often
-   convenient because the outgoing beam can travel straight down the iris row.
+3. Place two steering mirrors before the first iris. Start with the mirror
+   actuators near mid-travel, the beam centered on both mirror faces, and the
+   reflective surfaces located on the intended table-hole turning points.
 
 4. Roughly steer the beam so that it reaches the first iris and continues toward
    the second iris.
@@ -104,3 +149,12 @@ reference line defined by apertures at different heights.
 If the beam shape changes or becomes crescent-shaped at an iris, the beam is
 clipping. Open the iris, recover a full round spot, and only then close the
 aperture again.
+
+If a mirror actuator runs out of range, do not keep forcing the correction with
+the knob. Recenter the actuator, reposition the mirror mount so the beam is
+again near the center of the mirror, and restart the rough alignment.
+
+If the beam is centered on both irises but walks across a mirror surface, the
+mechanical layout is probably not centered on the intended turning points. Move
+the mount so the reflective surface, not the mount body, coincides with the
+reference geometry, then repeat the alignment.

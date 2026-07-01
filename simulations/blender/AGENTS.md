@@ -38,6 +38,36 @@ Altair educational optics-alignment videos.
 - The current ray model traces geometric surface reflections but does not model
   wavelength-dependent refraction through the cemented doublet or coating
   Fresnel coefficients.
+- The walking-beam scene now uses one continuous finite-aperture geometric ray
+  chain from laser to M1 to M2 to Iris 1 to Iris 2. Animated beam segments, iris
+  spots, blocking, and mirror display rotations should remain derived from that
+  trace.
+- Walking-beam beam objects are five stable trace-derived display slots:
+  `incoming`, `m1_to_m2`, `m2_to_iris1`, `iris1_to_iris2`, and `post_iris2`.
+  Do not replace them with hand-positioned special-case geometry.
+- Animated traced beams should use `optics.create_beam_curve_between` and
+  `optics.keyframe_beam_curve_between` so start and end points are constrained
+  directly. Avoid sparse Euler-rotated cylinders for propagated beams because
+  Blender can interpolate through an equivalent but visually wrong rotation.
+- Walking-beam animation uses sampled physical trace states between the six
+  caption/storyboard milestones. Keep captions tied to the named milestones,
+  but recompute beam geometry, mirror footprints, and iris spots from sampled
+  traces for smoother motion.
+- Walking-beam storyboard states still use an abstract target-offset model for
+  the teaching sequence, but `beam_walking.solve_two_mirror_alignment` converts
+  those targets into physical M1/M2 pitch-yaw adjustments. Do not reintroduce
+  hand-positioned beam segments or mirror rotations that bypass the solver.
+- Walking-beam iris visuals distinguish `passed`, `clipped`, `blocked`, and
+  `not_reached` states. Clipped downstream power is intentionally dimmed and
+  represented as a larger spot; reticles should stay muted and front-only so
+  they do not read as beam spots.
+- Kinematic mirror optics should appear flush with the front face of the mirror
+  mount. The physical ray-trace surface remains the optic reference plane; the
+  mount frame should sit behind that plane.
+- The default walking-beam misalignment is intentionally moderate: gross
+  alignment clips/stops at Iris 1, M1 centers Iris 1, M2 reaches and centers
+  Iris 2, then two refinements converge. Larger errors may be physically valid,
+  but can hide downstream tutorial targets behind upstream apertures.
 - Use minimal in-scene labels for teaching videos when they clarify the setup.
   Keep labels unobtrusive and reusable through `geometry.create_scene_label`.
 
@@ -66,6 +96,14 @@ adds a hero movie. Its default render mode is `final` for Cycles output; use
 `RENDER_MODE=preview` for full-pipeline EEVEE iteration.
 Keep the render preset machinery in `altair_blender.scene` reusable for future
 videos instead of hard-coding engine settings in scene scripts.
+
+For walking-beam renders, use
+`simulations/blender/scripts/render_walking_beam_alignment.sh`. Full and
+preview runs emit wide, iris close-up, hero, top-down, and stacked movies.
+Draft mode intentionally renders only the iris close-up timing check. Use
+`simulations/blender/scripts/render_walking_beam_alignment_stills.sh` for quick
+contact-sheet review of key frames; the stacked still combines wide, iris
+close-up, and top-down views.
 
 In the verified Blender 5.1.2 runtime, `CYCLES` can be assigned as
 `scene.render.engine` even when the render-engine enum list only reports

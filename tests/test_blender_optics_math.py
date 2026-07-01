@@ -12,6 +12,13 @@ from simulations.blender.altair_blender.optics import (
     validate_positive,
 )
 from simulations.blender.altair_blender.prescriptions import AC254_100_A
+from simulations.blender.altair_blender.beam_walking import (
+    DEFAULT_WALKING_BEAM_MODEL,
+    alignment_error_magnitude,
+    beam_passes_irises,
+    compute_beam_intercepts,
+    iterative_alignment_sequence,
+)
 
 
 def test_compute_return_spots_zero_alignment_centers_both_spots():
@@ -243,3 +250,64 @@ def test_sequential_ray_trace_returns_escaped_source_and_downstream_branches():
         and branch.path[-1] == "rear_sf5_air:transmitted"
         for branch in escaped
     )
+
+
+def test_walking_beam_gross_misalignment_misses_both_irises():
+    sequence = iterative_alignment_sequence(DEFAULT_WALKING_BEAM_MODEL)
+    gross = compute_beam_intercepts(DEFAULT_WALKING_BEAM_MODEL, sequence[0])
+
+    assert sequence[0].name == "gross_misalignment"
+    assert not beam_passes_irises(DEFAULT_WALKING_BEAM_MODEL, gross)
+    assert math.hypot(gross.iris1.y_mm, gross.iris1.z_mm) > (
+        DEFAULT_WALKING_BEAM_MODEL.iris_radius_mm
+    )
+    assert math.hypot(gross.iris2.y_mm, gross.iris2.z_mm) > (
+        DEFAULT_WALKING_BEAM_MODEL.iris_radius_mm
+    )
+
+
+def test_walking_beam_m1_states_center_iris1():
+    sequence = iterative_alignment_sequence(DEFAULT_WALKING_BEAM_MODEL)
+
+    for state_name in ("m1_centers_iris1", "m1_refinement"):
+        state = next(state for state in sequence if state.name == state_name)
+        intercepts = compute_beam_intercepts(DEFAULT_WALKING_BEAM_MODEL, state)
+        assert intercepts.iris1.y_mm == pytest.approx(0.0, abs=1e-9)
+        assert intercepts.iris1.z_mm == pytest.approx(0.0, abs=1e-9)
+
+
+def test_walking_beam_m2_states_center_iris2():
+    sequence = iterative_alignment_sequence(DEFAULT_WALKING_BEAM_MODEL)
+
+    for state_name in ("m2_centers_iris2", "m2_refinement"):
+        state = next(state for state in sequence if state.name == state_name)
+        intercepts = compute_beam_intercepts(DEFAULT_WALKING_BEAM_MODEL, state)
+        assert intercepts.iris2.y_mm == pytest.approx(0.0, abs=1e-9)
+        assert intercepts.iris2.z_mm == pytest.approx(0.0, abs=1e-9)
+
+
+def test_walking_beam_iterative_error_decreases_to_zero():
+    sequence = iterative_alignment_sequence(DEFAULT_WALKING_BEAM_MODEL)
+    errors = [
+        alignment_error_magnitude(
+            compute_beam_intercepts(DEFAULT_WALKING_BEAM_MODEL, state)
+        )
+        for state in sequence
+    ]
+
+    assert errors[2] < errors[0]
+    assert errors[3] < errors[2]
+    assert errors[4] < errors[3]
+    assert errors[-1] == pytest.approx(0.0, abs=1e-9)
+
+
+def test_walking_beam_final_ray_passes_through_both_iris_centers():
+    sequence = iterative_alignment_sequence(DEFAULT_WALKING_BEAM_MODEL)
+    final = compute_beam_intercepts(DEFAULT_WALKING_BEAM_MODEL, sequence[-1])
+
+    assert sequence[-1].name == "aligned_hold"
+    assert beam_passes_irises(DEFAULT_WALKING_BEAM_MODEL, final)
+    assert final.iris1.y_mm == pytest.approx(0.0, abs=1e-9)
+    assert final.iris1.z_mm == pytest.approx(0.0, abs=1e-9)
+    assert final.iris2.y_mm == pytest.approx(0.0, abs=1e-9)
+    assert final.iris2.z_mm == pytest.approx(0.0, abs=1e-9)

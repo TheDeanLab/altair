@@ -38,6 +38,9 @@ laser beam with two steering mirrors and two irises. The scene uses an
 import-safe finite-aperture ray trace from the source through M1, M2, Iris 1,
 and Iris 2. Beam segments, mirror footprints, iris spots, blocking/clipping
 state, and mirror display rotations are derived from that trace.
+Animated beam segments are rendered as endpoint-keyframed curve objects, not
+Euler-rotated cylinders, so the visible beam remains constrained by the traced
+start and end points between storyboard samples.
 
 The tutorial sequence starts misaligned, uses M1 to center the near iris, uses
 M2 to center the far iris, then alternates through two refinements until both
@@ -145,11 +148,11 @@ simulations/blender/scripts/render_walking_beam_alignment_stills.sh --draft --fr
 Run non-Blender checks from the repository root:
 
 ```bash
-uv run pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_achromat_scene_contract.py tests/test_blender_render_script.py tests/test_walking_beam_physics.py tests/test_walking_beam_scene_contract.py tests/test_walking_beam_render_script.py
+uv run pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_blender_endpoint_beams.py tests/test_achromat_scene_contract.py tests/test_blender_render_script.py tests/test_walking_beam_physics.py tests/test_walking_beam_scene_contract.py tests/test_walking_beam_render_script.py
 ```
 
 If `uv run` is not suitable in the local environment, use:
 
 ```bash
-pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_achromat_scene_contract.py tests/test_blender_render_script.py tests/test_walking_beam_physics.py tests/test_walking_beam_scene_contract.py tests/test_walking_beam_render_script.py
+pytest tests/test_blender_optics_math.py tests/test_blender_import_contracts.py tests/test_blender_endpoint_beams.py tests/test_achromat_scene_contract.py tests/test_blender_render_script.py tests/test_walking_beam_physics.py tests/test_walking_beam_scene_contract.py tests/test_walking_beam_render_script.py
 ```

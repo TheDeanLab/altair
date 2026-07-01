@@ -39,11 +39,16 @@ Altair educational optics-alignment videos.
   wavelength-dependent refraction through the cemented doublet or coating
   Fresnel coefficients.
 - The walking-beam scene now uses one continuous finite-aperture geometric ray
-  chain from laser to M1 to M2 to Iris 1 to Iris 2. Beam cylinders, iris spots,
-  blocking, and mirror display rotations should remain derived from that trace.
+  chain from laser to M1 to M2 to Iris 1 to Iris 2. Animated beam segments, iris
+  spots, blocking, and mirror display rotations should remain derived from that
+  trace.
 - Walking-beam beam objects are five stable trace-derived display slots:
   `incoming`, `m1_to_m2`, `m2_to_iris1`, `iris1_to_iris2`, and `post_iris2`.
-  Do not replace them with hand-positioned special-case cylinders.
+  Do not replace them with hand-positioned special-case geometry.
+- Animated traced beams should use `optics.create_beam_curve_between` and
+  `optics.keyframe_beam_curve_between` so start and end points are constrained
+  directly. Avoid sparse Euler-rotated cylinders for propagated beams because
+  Blender can interpolate through an equivalent but visually wrong rotation.
 - Walking-beam animation uses sampled physical trace states between the six
   caption/storyboard milestones. Keep captions tied to the named milestones,
   but recompute beam geometry, mirror footprints, and iris spots from sampled

@@ -85,11 +85,16 @@ def set_linear_interpolation(obj: Any) -> None:
     Parameters
     ----------
     obj
-        Blender object whose action keyframes should be linearized.
+        Blender object whose object and data-block action keyframes should be
+        linearized.
     """
 
-    if obj.animation_data is None or obj.animation_data.action is None:
-        return
-    for fcurve in _iter_action_fcurves(obj.animation_data.action):
-        for keyframe in fcurve.keyframe_points:
-            keyframe.interpolation = "LINEAR"
+    animation_owners = (obj, getattr(obj, "data", None))
+    for owner in animation_owners:
+        if owner is None:
+            continue
+        if owner.animation_data is None or owner.animation_data.action is None:
+            continue
+        for fcurve in _iter_action_fcurves(owner.animation_data.action):
+            for keyframe in fcurve.keyframe_points:
+                keyframe.interpolation = "LINEAR"

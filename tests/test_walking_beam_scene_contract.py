@@ -3,7 +3,9 @@ from __future__ import annotations
 import importlib.util
 import math
 from pathlib import Path
+from types import SimpleNamespace
 import sys
+from typing import ClassVar
 
 import pytest
 
@@ -656,6 +658,23 @@ def test_displayed_beam_segments_expose_full_trace_slots():
     ]
     assert clipped_segments[3].power_fraction == pytest.approx(0.5)
     assert clipped_segments[4].power_fraction == pytest.approx(0.5)
+
+
+def test_display_beam_power_scales_endpoint_curve_radius_without_transforming_length():
+    module = load_scene_module()
+
+    class FakeBeam(dict[str, object]):
+        data: ClassVar[SimpleNamespace] = SimpleNamespace(bevel_depth=1.2)
+        scale: tuple[float, float, float] = (1.0, 1.0, 99.0)
+
+    beam = FakeBeam()
+    beam["beam_base_radius_mm"] = 1.2
+
+    module._apply_display_beam_power(beam, 0.25)
+
+    assert beam.data.bevel_depth == pytest.approx(0.6)
+    assert beam.scale == (1.0, 1.0, 99.0)
+    assert beam["power_fraction"] == pytest.approx(0.25)
 
 
 def test_hidden_downstream_beam_keeps_nonzero_placeholder_segment():

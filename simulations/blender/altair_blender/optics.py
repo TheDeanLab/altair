@@ -1111,6 +1111,171 @@ def set_beam_between(
     beam.scale = (1.0, 1.0, length)
 
 
+def _beam_curve_points(beam: Any) -> tuple[Any, Any]:
+    """Return the two endpoint controls for a curve beam object.
+
+    Parameters
+    ----------
+    beam
+        Blender curve object created by :func:`create_beam_curve_between`.
+
+    Returns
+    -------
+    tuple[object, object]
+        Start and end spline point controls.
+    """
+
+    try:
+        spline = beam.data.splines[0]
+        start_point = spline.points[0]
+        end_point = spline.points[1]
+    except (AttributeError, IndexError) as exc:
+        raise ValueError("beam must be a two-point curve beam object") from exc
+    return start_point, end_point
+
+
+def create_beam_curve_between(
+    *,
+    name: str,
+    start_xyz: tuple[float, float, float],
+    end_xyz: tuple[float, float, float],
+    radius_mm: float,
+    material: Any,
+    collection: Any,
+    bevel_resolution: int = 6,
+) -> Any:
+    """Create an endpoint-driven glowing beam curve between two scene points.
+
+    This representation is intended for animated traced beams. The object
+    transform remains at identity; animation should keyframe the two curve
+    endpoints with :func:`keyframe_beam_curve_between`.
+
+    Parameters
+    ----------
+    name
+        Beam object name.
+    start_xyz
+        Beam start point in scene coordinates.
+    end_xyz
+        Beam end point in scene coordinates.
+    radius_mm
+        Rendered curve radius in millimeters.
+    material
+        Blender material assigned to the beam.
+    collection
+        Blender collection that should contain the beam.
+    bevel_resolution
+        Number of bevel samples around the rendered beam tube.
+
+    Returns
+    -------
+    object
+        Blender curve object for the endpoint-driven beam.
+    """
+
+    from .scene import get_bpy
+
+    validate_positive("radius_mm", radius_mm)
+    if bevel_resolution < 0:
+        raise ValueError(
+            f"bevel_resolution must be nonnegative; got {bevel_resolution}"
+        )
+
+    bpy = get_bpy()
+    curve = bpy.data.curves.new(name=f"{name} Curve", type="CURVE")
+    curve.dimensions = "3D"
+    curve.resolution_u = 1
+    curve.bevel_depth = radius_mm
+    curve.bevel_resolution = bevel_resolution
+    curve.fill_mode = "FULL"
+    spline = curve.splines.new("POLY")
+    spline.points.add(1)
+
+    beam = bpy.data.objects.new(name, curve)
+    beam.data.materials.append(material)
+    beam["beam_base_radius_mm"] = radius_mm
+    collection.objects.link(beam)
+    set_beam_curve_between(beam=beam, start_xyz=start_xyz, end_xyz=end_xyz)
+    return beam
+
+
+def set_beam_curve_between(
+    *,
+    beam: Any,
+    start_xyz: tuple[float, float, float],
+    end_xyz: tuple[float, float, float],
+) -> None:
+    """Set endpoint coordinates for an endpoint-driven curve beam.
+
+    Parameters
+    ----------
+    beam
+        Blender curve object created by :func:`create_beam_curve_between`.
+    start_xyz
+        Beam start point in scene coordinates.
+    end_xyz
+        Beam end point in scene coordinates.
+    """
+
+    direction = _sub(end_xyz, start_xyz)
+    length = math.sqrt(_dot(direction, direction))
+    validate_positive("beam_length", length)
+
+    start_point, end_point = _beam_curve_points(beam)
+    start_point.co = (start_xyz[0], start_xyz[1], start_xyz[2], 1.0)
+    end_point.co = (end_xyz[0], end_xyz[1], end_xyz[2], 1.0)
+
+
+def keyframe_beam_curve_between(
+    *,
+    beam: Any,
+    start_xyz: tuple[float, float, float],
+    end_xyz: tuple[float, float, float],
+    frame: int,
+) -> None:
+    """Set and keyframe endpoint coordinates for a curve beam.
+
+    Parameters
+    ----------
+    beam
+        Blender curve object created by :func:`create_beam_curve_between`.
+    start_xyz
+        Beam start point in scene coordinates.
+    end_xyz
+        Beam end point in scene coordinates.
+    frame
+        Timeline frame where endpoint coordinates should be keyframed.
+    """
+
+    set_beam_curve_between(beam=beam, start_xyz=start_xyz, end_xyz=end_xyz)
+    start_point, end_point = _beam_curve_points(beam)
+    start_point.keyframe_insert(data_path="co", frame=frame)
+    end_point.keyframe_insert(data_path="co", frame=frame)
+
+
+def beam_curve_endpoints(
+    beam: Any,
+) -> tuple[tuple[float, float, float], tuple[float, float, float]]:
+    """Return endpoint coordinates from an endpoint-driven curve beam.
+
+    Parameters
+    ----------
+    beam
+        Blender curve object created by :func:`create_beam_curve_between`.
+
+    Returns
+    -------
+    tuple[tuple[float, float, float], tuple[float, float, float]]
+        Start and end coordinates in scene units.
+    """
+
+    start_point, end_point = _beam_curve_points(beam)
+    return (
+        (float(start_point.co[0]), float(start_point.co[1]), float(start_point.co[2])),
+        (float(end_point.co[0]), float(end_point.co[1]), float(end_point.co[2])),
+    )
+
+
 def create_return_spot(
     *,
     name: str,

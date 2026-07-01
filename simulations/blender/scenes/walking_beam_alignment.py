@@ -360,7 +360,11 @@ def _reflect_direction(
     length = math.sqrt(sum(component * component for component in reflected))
     if length <= 0.0:
         raise ValueError("Reflected direction must have positive length.")
-    return tuple(component / length for component in reflected)
+    return (
+        reflected[0] / length,
+        reflected[1] / length,
+        reflected[2] / length,
+    )
 
 
 def _mirror_plane_point(
@@ -428,7 +432,11 @@ def _ray_plane_intersection(
         )
         / denominator
     )
-    return tuple(origin[index] + (distance * direction[index]) for index in range(3))
+    return (
+        origin[0] + (distance * direction[0]),
+        origin[1] + (distance * direction[1]),
+        origin[2] + (distance * direction[2]),
+    )
 
 
 def _mirror_face_point_at_y(
@@ -1395,11 +1403,14 @@ def _downstream_beam_path_from_trace(
     interactions_by_name = {
         interaction.element_name: interaction for interaction in trace.interactions
     }
-    if len(trace.segments) >= 3:
-        start_xyz = trace.segments[2].start_xyz_mm
+    segments = list(trace.segments)
+    if not segments:
+        raise ValueError("Trace must contain at least one segment.")
+    if len(segments) >= 3:
+        start_xyz = segments[2].start_xyz_mm
         beam_visible = True
     else:
-        start_xyz = trace.segments[-1].start_xyz_mm
+        start_xyz = segments[-1].start_xyz_mm
         beam_visible = False
 
     iris1_xyz = _interaction_point_or_center(
@@ -1412,8 +1423,8 @@ def _downstream_beam_path_from_trace(
         element_name="Iris 2",
         fallback_xyz=centers["iris_2"],
     )
-    exit_xyz = trace.segments[-1].end_xyz_mm
-    visible_end_xyz = trace.segments[-1].end_xyz_mm
+    exit_xyz = segments[-1].end_xyz_mm
+    visible_end_xyz = segments[-1].end_xyz_mm
     blocked_at = _blocked_at_key(trace)
 
     return DownstreamBeamPath(
@@ -1654,14 +1665,48 @@ def _apply_display_beam_power(beam: Any, power_fraction: float) -> None:
     Parameters
     ----------
     beam
-        Blender cylinder object representing one beam segment.
+        Blender object representing one beam segment.
     power_fraction
         Segment power fraction from the physical trace.
     """
 
     radial_scale = _beam_power_radius_scale(power_fraction)
-    beam.scale = (radial_scale, radial_scale, beam.scale[2])
+    base_radius = beam.get("beam_base_radius_mm")
+    beam_data = getattr(beam, "data", None)
+    if (
+        base_radius is not None
+        and beam_data is not None
+        and hasattr(beam_data, "bevel_depth")
+    ):
+        setattr(beam_data, "bevel_depth", float(base_radius) * radial_scale)
+    else:
+        beam.scale = (radial_scale, radial_scale, beam.scale[2])
     beam["power_fraction"] = power_fraction
+
+
+def _keyframe_display_beam_power(beam: Any, *, frame: int) -> None:
+    """Keyframe the rendered radius control for a beam object.
+
+    Parameters
+    ----------
+    beam
+        Blender object representing one beam segment.
+    frame
+        Timeline frame where the rendered radius should be keyframed.
+    """
+
+    base_radius = beam.get("beam_base_radius_mm")
+    beam_data = getattr(beam, "data", None)
+    keyframe_insert = getattr(beam_data, "keyframe_insert", None)
+    if (
+        base_radius is not None
+        and beam_data is not None
+        and hasattr(beam_data, "bevel_depth")
+        and callable(keyframe_insert)
+    ):
+        keyframe_insert(data_path="bevel_depth", frame=frame)
+    else:
+        beam.keyframe_insert(data_path="scale", frame=frame)
 
 
 def _apply_iris_spot_visual(
@@ -1725,10 +1770,13 @@ def _folded_beam_path_for_state(
     """
 
     trace = _physical_trace_for_state(params, model, state)
-    if len(trace.segments) >= 2:
-        segment = trace.segments[1]
+    segments = list(trace.segments)
+    if not segments:
+        raise ValueError("Trace must contain at least one segment.")
+    if len(segments) >= 2:
+        segment = segments[1]
     else:
-        segment = trace.segments[0]
+        segment = segments[0]
     return BeamSegmentPath(
         start_xyz=segment.start_xyz_mm,
         end_xyz=segment.end_xyz_mm,
@@ -1888,7 +1936,9 @@ def main(output_path: str | None = None) -> None:
     from simulations.blender.altair_blender.optics import (
         SpotOffset,
         create_beam_between,
+        create_beam_curve_between,
         create_return_spot,
+        keyframe_beam_curve_between,
         set_beam_between,
         validate_positive,
     )
@@ -2033,7 +2083,7 @@ def main(output_path: str | None = None) -> None:
     first_footprints = _mirror_footprints_for_state(params, model, trace_states[0])
     beam_segment_objects = []
     for display_segment in first_display_segments:
-        beam_obj = create_beam_between(
+        beam_obj = create_beam_curve_between(
             name=f"Beam Segment: {display_segment.name}",
             start_xyz=display_segment.start_xyz,
             end_xyz=display_segment.end_xyz,
@@ -2094,17 +2144,16 @@ def main(output_path: str | None = None) -> None:
             display_segments,
             strict=True,
         ):
-            set_beam_between(
+            keyframe_beam_curve_between(
                 beam=beam_obj,
                 start_xyz=display_segment.start_xyz,
                 end_xyz=display_segment.end_xyz,
+                frame=state.frame,
             )
             beam_obj.hide_viewport = not display_segment.visible
             beam_obj.hide_render = not display_segment.visible
             _apply_display_beam_power(beam_obj, display_segment.power_fraction)
-            beam_obj.keyframe_insert(data_path="location", frame=state.frame)
-            beam_obj.keyframe_insert(data_path="rotation_euler", frame=state.frame)
-            beam_obj.keyframe_insert(data_path="scale", frame=state.frame)
+            _keyframe_display_beam_power(beam_obj, frame=state.frame)
             beam_obj.keyframe_insert(data_path="hide_viewport", frame=state.frame)
             beam_obj.keyframe_insert(data_path="hide_render", frame=state.frame)
         for spot_visual, component_name in zip(
@@ -2207,8 +2256,11 @@ def main(output_path: str | None = None) -> None:
         )
 
     if params["show_storyboard_captions"]:
-        caption_location = tuple(
-            float(component) for component in params["storyboard_caption_location_mm"]
+        caption_location_parameter = params["storyboard_caption_location_mm"]
+        caption_location = (
+            float(caption_location_parameter[0]),
+            float(caption_location_parameter[1]),
+            float(caption_location_parameter[2]),
         )
         caption_size = float(params["storyboard_caption_size_mm"])
         caption_objects = {

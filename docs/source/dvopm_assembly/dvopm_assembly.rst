@@ -7,126 +7,173 @@ DV-OPM Baseplate Assembly & Alignment
 Detection Train Assembly
 ________________________
 
-The detection assembly consists of a Mitakon Speedmaster 65 mm f/1.4 photographic lens serving as the primary objective (O1), followed by a filter wheel, a 90° folding mirror, a Nikon AF-S NIKKOR 85 mm f/1.4G lens serving as the secondary objective (O2), and a CMOS camera (Ximea MU196MR) for image acquisition. In contrast to conventional oblique plane microscopy (OPM) systems employing an objective lens and tube lens, this configuration relies solely on two coupled photographic lenses with careful alignment. Without tube lenses, the overall resolution of the system is limited by the pixel size of the detection camera; hence, the Ximea MU196MR was selected for its 1.4 µm pixel pitch. All optical elements were precisely calculated, pre-aligned, and mounted onto a custom baseplate, resulting in a mechanically constrained configuration that requires minimal alignment.
+The detection assembly consists of a Mitakon Speedmaster 65 mm f/1.4 photographic lens serving as the primary objective (O1), followed by a 32 mm, 6-position emission filter wheel, a 90° folding mirror, a Nikon AF-S NIKKOR 85 mm f/1.4G lens serving as the secondary objective (O2), and a Ximea MU196MR-ON camera. The mechanical sequence matters because the filter wheel and the KCB2 right-angle mirror mount set the constrained spacing between O1 and O2. Once those components are installed and aligned, the remaining parts attach through fixed adapter interfaces and require comparatively little adjustment.
 
-Due to the spatial and mechanical constraints of each optical element, as well as the non-telecentricity of the two photographic lenses, the relative spacing between them was predetermined and optimized using Zemax simulations to ensure optimal imaging performance.
+Assembly proceeds in the following order:
 
-The alignment procedure is centered around the filter wheel, which serves as the primary optical reference. Alignment begins with establishing a reference beam for the baseplate.
+1. Review the side and top baseplate schematics to identify the mounting holes for the filter wheel, KCB2 mirror mount, LS-50 stage, and MT1B camera stage.
+2. Install the 2" fold mirror in the KCB2 mount, then fasten the KCB2 to the detection baseplate.
+3. Load the emission filters into the FW-0002-6 filter wheel, attach the C60-FW adapter, and fasten the filter wheel to the baseplate.
+4. Build a downward-propagating collimated reference beam from an elevated platform.
+5. Use the reference beam to align the KCB2 mirror so that the incoming vertical beam is reflected along the O2 axis with correct tip, tilt, and 45° fold geometry.
+6. Install the O1-side adapter stack between the C60-FW adapter and the Mitakon lens.
+7. Install the O2-side SM2 adapter stack, camera stages, modified camera, and Nikon lens.
+8. Use the reference beam through the filter wheel, KCB2, and O2 to set the MT1B camera focus position.
+9. Mount the completed detection train to the LS-50 vertical stage for integration under the sample stage.
 
-**Setting up the reference beam:**
+Detection Baseplate Hole Map
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Place the laser source on an elevated platform above the baseplate so that the beam propagates downward onto the baseplate.
-2. Generate a collimated beam from the source using a collimator. A reflective collimator (Thorlabs RC08APC-P01) was used here to produce a beam diameter of 7.3 mm.
-3. Direct the collimated beam downward using a 45° folding mirror. A 1" right-angle kinematic mount (Thorlabs KCB1) was used to reflect the beam downward toward the detection assembly.
-4. Mount both the collimator and the folding mirror on translation stages to allow fine positioning of the beam.
-5. Install two irises along the propagation path.
-6. Place a flat mirror on the optical table at the beam incidence point to check for back-reflection.
-7. Iteratively adjust the tip, tilt, and rotation of the 1" mirror to ensure the back-reflected beam passes through both irises.
-8. Once complete, this establishes a straight and stable reference beam for downstream alignment.
+The side face of the L-shaped detection baseplate carries the filter wheel, the KCB2 fold mirror mount, and the LS-50 vertical stage interface. The horizontal face carries the MT1B linear stage used for camera focus adjustment.
+
+.. figure:: Images/Det_side_schematic.jpg
+   :align: center
+   :width: 100%
+   :alt: Side schematic of the detection baseplate showing holes for the KCB2 mirror mount, filter wheel, and LS-50 stage.
+
+   **Figure 1:** Side schematic of the detection baseplate. The colored holes indicate the KCB2 mirror mount, filter wheel, and LS-50 stage mounting locations.
+
+.. figure:: Images/det_top_schematic.jpg
+   :align: center
+   :width: 100%
+   :alt: Top schematic of the detection baseplate showing MT1B translation stage mounting holes.
+
+   **Figure 2:** Top schematic of the detection baseplate. The highlighted holes are used to mount the MT1B translation stage for camera focus adjustment.
+
+KCB2 Mirror Installation
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Install the 2" fold mirror in the KCB2 right-angle kinematic mirror mount before attaching the mount to the baseplate. The manuscript parts list specifies a `PF20-03-P01 protected silver mirror <https://www.thorlabs.com/thorproduct.cfm?partnumber=PF20-03-P01>`_ in a `KCB2 right-angle kinematic mirror mount <https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=2792&pn=KCB2>`_. Thorlabs specifies that the KCB2 is rear-loaded and secures a 2" optic with a nylon-tipped setscrew. Tighten the setscrew only enough to hold the optic securely; excessive force can distort or damage the mirror.
+
+With the mirror installed, place the KCB2 at the indicated side-face location on the detection baseplate and fasten it from the side using a 1/4"-20 screw. While tightening the screw, place a circular bubble level on the top center of the KCB2 body. Keep the mount level as the screw is brought down to final torque. This step does not complete optical alignment, but it prevents the mount from being clamped into the baseplate with a large mechanical roll error.
+
+Filter Wheel Installation
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Load the required emission filters into the FW-0002-6 filter wheel before mounting it to the baseplate. Follow the filter-loading procedure in the `ASI FW-1000 filter wheel manual <https://asiimaging.com/docs/fw_1000>`_, which covers the relevant ASI filter-wheel loading procedure; the manual describes current side-loading filter wheels, use of the ring-load tool, filter orientation, and balanced loading of filter positions. In this implementation, the filter wheel was equipped with Semrock filters for the green (515/30-32), red (595/31-32), and far-red (670/30-32) channels.
+
+After the filters are installed, screw the C60-FW adapter onto the top side of the filter wheel. Position the filter wheel on the detection baseplate at the indicated side-face mounting holes. As with the KCB2, use a circular bubble level at several positions on the filter wheel housing while tightening the mounting screws. The goal is for the filter wheel to sit flat against the baseplate, because it defines the mechanical entrance reference for O1 and the downstream fold mirror.
+
+.. figure:: Images/det_kcb_fw.jpg
+   :align: center
+   :width: 100%
+   :alt: Filter wheel and KCB2 mirror mount installed on the side of the detection baseplate.
+
+   **Figure 3:** Filter wheel and KCB2 mirror mount installed at their predetermined side-face locations on the detection baseplate. Showed in the above picture in two different views.
+
+Reference Beam Setup
+^^^^^^^^^^^^^^^^^^^^
+
+The KCB2 mirror alignment is easiest if the detection baseplate is aligned to a straight, collimated reference beam that propagates downward from above. The logic is the same as standard two-iris beam walking, but adapted to a vertical reference leg. Thorlabs provides a useful `beam-alignment video and written guide <https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=12211&tabname=Best+Practices>`_ for the two-iris method; the steps below describe the geometry used for this detection baseplate.
+
+1. Place a laser source and collimator on an elevated platform above the detection baseplate. In our setup, a reflective collimator was used to produce a broad collimated reference beam.
+2. Use a 1" right-angle kinematic mirror mount to fold the elevated horizontal beam downward toward the detection baseplate.
+3. Mount the collimator and the fold mirror on translation stages so the beam position can be tuned without disturbing the baseplate.
+4. Place two irises in the reference-beam path. Keep the iris orientation fixed during alignment so that any small decentering of the iris aperture does not move the reference.
+5. Place a flat mirror at the downward beam incidence point on the optical table or baseplate plane.
+6. Adjust the elevated fold mirror until the back-reflected beam retraces the incoming path through both irises. When the back-reflection remains centered through both irises, the downward beam is normal to the flat mirror and can be used as a vertical reference beam.
+
+.. figure:: Images/ref_beam.png
+   :align: center
+   :width: 65%
+   :alt: Elevated reference-beam setup used to direct a collimated beam downward toward the detection baseplate.
+
+   **Figure 4:** Elevated reference-beam setup used to direct a collimated beam downward toward the detection baseplate.
 
 .. figure:: Images/iris_tube.png
    :align: center
-   :width: 50%
-   :alt: Reference beam with irises mounted on translation stages.
+   :width: 65%
+   :alt: Reference-beam alignment path with irises mounted for beam-centering checks.
 
-   **Figure 1:** Reference beam with irises mounted on translation stages.
-
-.. figure:: Images/iris_check_alignment.png
-   :align: center
-   :width: 50%
-   :alt: Checking beam symmetry at the irises.
-
-   **Figure 2:** Verify that the beam is centered on each iris aperture.
+   **Figure 5:** Irises used to define and verify the reference-beam path.
 
 .. figure:: Images/flat_mirror.png
    :align: center
    :width: 75%
-   :alt: Flat mirror installed for back-reflection alignment check.
+   :alt: Flat mirror used for back-reflection alignment of the downward reference beam.
 
-   **Figure 3:** Installation of a flat mirror for back-reflection alignment verification.
+   **Figure 6:** Flat mirror used to check that the downward reference beam retroreflects through the alignment irises.
 
-.. figure:: Images/iris_not_align.png
-   :align: center
-   :width: 75%
-   :alt: Example of a misaligned reference beam.
+KCB2 Mirror Alignment
+^^^^^^^^^^^^^^^^^^^^^
 
-   **Figure 4:** Example of a misaligned reference beam. The beam does not pass through the iris aperture.
+After the reference beam is established, use it to align the KCB2 mirror. The goal is not to measure the mirror angle with a protractor; the correct 45° fold is defined optically. A vertical reference beam entering through the filter-wheel side should reflect from the KCB2 and propagate along the horizontal O2 axis.
 
-
-The next step is to configure the photographic lenses. Because neither lens is telecentric, correct setup is critical for minimizing aberrations and achieving optimal performance.
-
-O2 must be operated with its focus locked at infinity and its aperture fully open. Setting O2 to infinity focus immobilizes the internal focusing groups, fixing the effective focal length and the locations of the entrance and exit pupils.
-
-.. figure:: Images/o2_focus.png
-   :align: center
-   :width: 50%
-   :alt: O2 focus ring locked to infinity.
-
-   **Figure 5:** Lock the focus of O2 to infinity by rotating its focus adjustment ring.
-
-Because the Nikon AF-S NIKKOR 85 mm f/1.4G does not include a mechanical aperture ring, the aperture must be opened manually. This can be accomplished by inserting a thin, rigid piece of material (e.g., hard cardboard) into the aperture control lever on the rear bayonet face of the lens. This fully opens the aperture and allows the lens to be stepped up to the camera.
-
-.. figure:: Images/o2_aperture.png
-   :align: center
-   :width: 75%
-   :alt: O2 aperture opened with a cardboard shim.
-
-   **Figure 6:** Open O2's aperture by inserting a cardboard shim into the aperture control lever on the rear of the lens.
-
-The focus of O1 does not critically affect overall system performance and may be left at an arbitrary setting. However, O1 includes a mechanical aperture ring that allows the effective NA to be adjusted. The system can in principle be operated at full aperture (NA = 0.36). Due to the non-telecentric, non-corrected nature of the photographic lenses and the fact that the filter wheel aperture in the current configuration is smaller than the back pupil of O1, operating at full NA will introduce significant astigmatism without a corresponding improvement in resolution. It is therefore recommended to set O1 to a reduced aperture.
-
-
-**Assembling the baseplate:**
-
-1. Install a 2" mirror into a 2" kinematic mount (Thorlabs KCB2) and mount the filter wheel at its predetermined position on the custom baseplate.
-2. Place a ground-glass diffuser or pinhole at the entrance aperture of the filter wheel.
-3. Position the baseplate so that the reference beam passes straight through the pinhole. Light should be visible exiting the baseplate on the far side.
-4. Install a mirror in a 4" lens tube and check for back-reflection while adjusting the tip and tilt of the kinematic mirror to establish a straight beam path for the exiting beam.
-
-.. figure:: Images/baseplate_mounting.png
-   :align: center
-   :width: 50%
-   :alt: Filter wheel and kinematic mirror mount installed on the baseplate.
-
-   **Figure 7:** Filter wheel and kinematic mirror mount installed at their predetermined positions on the custom baseplate.
+1. Position the detection baseplate so that the downward reference beam passes through the filter wheel entrance aperture and reaches the KCB2 mirror.
+2. Place a ground-glass diffuser, pinhole, or alignment target at the filter-wheel entrance to confirm that the reference beam is centered.
+3. Thread the SM2 alignment tube or temporary mirror-tube assembly into the KCB2 exit port. Use it as a visual target for the horizontal exit beam and, when needed, as a back-reflection check.
+4. Adjust the KCB2 tip and tilt controls until the reflected beam is centered through the exit port and retraces the intended path.
+5. Tighten the KCB2 adjuster locks gently and re-check beam centering. Locking can slightly shift the mount, so this should be done iteratively.
 
 .. figure:: Images/filter_entrance.png
    :align: center
    :width: 75%
-   :alt: Center alignment demonstrated by translating the reference beam through the filter wheel entrance.
+   :alt: Reference beam centered through the filter-wheel entrance aperture.
 
-   **Figure 8:** Center alignment demonstrated by translating the reference beam through the filter wheel entrance aperture.
+   **Figure 7:** Centering the reference beam through the filter-wheel entrance aperture before aligning the KCB2 mirror.
 
 .. figure:: Images/mirror_tubes.png
    :align: center
-   :width: 50%
-   :alt: Mirror mounted on a lens tube for back-reflection alignment check.
-
-   **Figure 9:** Mirror mounted on a lens tube used to verify alignment of the kinematic mount via back-reflection.
-
-.. figure:: Images/misaligned_filter.png
-   :align: center
    :width: 75%
-   :alt: Example of a misaligned mirror mount showing off-axis back-reflection.
+   :alt: Temporary mirror-tube assembly used for KCB2 back-reflection alignment.
 
-   **Figure 10:** Example of a misaligned beam: adjusting the tip and tilt of the kinematic mirror shifts the back-reflection off-axis.
+   **Figure 8:** Temporary mirror-tube assembly used to verify the KCB2 output axis by back-reflection.
 
 .. figure:: Images/aligned_filter.png
    :align: center
-   :width: 50%
-   :alt: Example of an aligned mirror mount with on-axis back-reflection.
+   :width: 75%
+   :alt: Aligned KCB2 mirror showing coaxial return of the reference beam.
 
-   **Figure 11:** Example of an aligned beam: back-reflection is coaxial with the incident beam after tip/tilt correction of the kinematic mirror.
+   **Figure 9:** Aligned KCB2 mirror after tip/tilt adjustment. The back-reflection is coaxial with the incident reference beam.
 
+O1 Adapter Stack
+^^^^^^^^^^^^^^^^
 
-Once the beam path is established, install O2 in a reversed configuration and mount the camera to locate the optimal focus position. Rotate the camera to approximately 45° so that its entrance pupil is parallel to O2. Illuminate O2 with a large-diameter beam (ideally filling its back aperture) and translate the axial stage until a sharp focus is observed on the camera using its acquisition software. Insert neutral-density filters if necessary to avoid sensor saturation.
+Once the filter wheel and KCB2 are aligned, assemble the O1-side adapter stack. Insert the custom machined 38 mm to SM2 adapter into the C60-FW adapter and tighten the C60-FW locking screws to hold the custom adapter. Thread the SM2A53 adapter onto the custom adapter. On the Mitakon O1 lens, install the 72 mm to 52 mm step-down ring, then couple the lens to the SM2A53-side adapter stack.
+
+The Mitakon O1 aperture ring sets the effective detection NA. Although the lens can be opened further, the implemented microscope is operated at NA = 0.18 to reduce aberrations across the field and because the filter-wheel aperture becomes a practical limiting aperture in the current geometry. The O1 focus setting is not a sensitive alignment parameter for this relay, so the aperture setting is more important than the exact focus-ring position during assembly.
+
+Camera And O2 Preparation
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Prepare the camera before installing O2. The Ximea MU196MR-ON sensor cover glass was professionally removed by Pacific Crest Imaging. This step should be performed by a sensor-modification service rather than attempted during microscope assembly. After the cover glass is removed, replace the factory sensor cap with the custom machined cap. The custom cap preserves the usable field when the camera is later rotated relative to the optical axis.
+
+Mount the MT1B linear stage to the two highlighted holes on the horizontal detection baseplate. Mount the RP005 rotation stage on top of the MT1B. Then mount the custom machined camera holder on the RP005 rotation stage and fasten the Ximea camera into the holder. Keep the camera unrotated for the O2 focus-position step below; the final sensor angle is adjusted later during system alignment.
+
+Before mounting O2, set the Nikon lens focus to infinity and fully open its aperture. Infinity focus fixes the internal focusing group position, and opening the aperture prevents the Nikon lens from clipping the relay or unintentionally setting the detection NA. The Nikon AF-S NIKKOR 85 mm f/1.4G does not have an external aperture ring, so the rear aperture lever must be held open manually. A thin, rigid shim can be used to hold the lever open, taking care not to touch the rear optical surface.
+
+.. figure:: Images/o2_focus.png
+   :align: center
+   :width: 75%
+   :alt: Nikon O2 lens focus ring set to infinity.
+
+   **Figure 10:** Set the Nikon O2 focus ring to infinity before mounting the lens.
+
+.. figure:: Images/o2_aperture.png
+   :align: center
+   :width: 75%
+   :alt: Nikon O2 aperture held open with a shim at the rear aperture lever.
+
+   **Figure 11:** Open the Nikon O2 aperture by holding the rear aperture lever in the fully open position.
+
+O2 Installation And Camera Focus
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Install the O2-side adapter stack on the Nikon lens: first add the 77 mm to 52 mm step-down ring, then the 52 mm to 52 mm coupler, and then the SM2A52 adapter. Thread the prepared Nikon lens assembly into the SM2-threaded exit port of the KCB2 mount.
+
+Use the same reference beam to set the camera focus position. Send the beam through the filter-wheel opening, KCB2 mirror, and O2 toward the camera. This check can be done with O1 removed if the Mitakon lens blocks convenient access to the filter-wheel entrance; do not disturb the C60-FW adapter or KCB2 alignment. Add neutral-density filters at the beginning of the reference beam path to avoid saturating the sensor. View the live beam image in Ximea CamTool or ``navigate`` if the acquisition configuration has already been set up. With the camera still facing straight, translate the MT1B linear stage until the spot on the camera is as small and tightly focused as possible. Lock the MT1B stage after the focus position is found.
 
 .. figure:: Images/o2_camera.png
    :align: center
-   :width: 50%
-   :alt: Setup for locating the optimal camera focus position relative to O2.
+   :width: 65%
+   :alt: O2 and camera setup used to locate the focused reference beam on the camera sensor.
 
-   **Figure 12:** Setup for locating the optimal focus position of the camera relative to O2.
+   **Figure 12:** O2 and camera setup used to locate the MT1B focus position with the reference beam.
+
+LS-50 Stage Mounting
+^^^^^^^^^^^^^^^^^^^^
+
+The detection train is now assembled and internally aligned. The final mechanical step is to mount the detection baseplate to the LS-50 vertical stage so that the complete detection module can be positioned under the sample stage. Use the two upper LS-50 mounting screws on the side of the detection baseplate and the third screw at the lower-right LS-50 mounting position. After fastening the stage, verify that the detection baseplate moves vertically without mechanical interference and that the filter wheel, KCB2 mount, O2 lens, and camera holder remain rigidly fixed relative to one another.
 
 ---------------
 
@@ -138,7 +185,7 @@ Breakdown of Baseplate Holes
 
 The baseplate includes a series of holes for mounting the various optical components of the illumination train. Most of the optical components are mounted on Thorlabs Polaris Post with Polaris mounts, with a few exceptions. And there are some holes which purely for alignment purposes and would not be used once done with the alignment process. The following figure is a breakdown of the holes on the baseplate and their intended use:
 
-.. figure:: Images/Illumination_Baseplate_Top_Schematic.jpg
+.. figure:: Images/Illum_base_steps_2.jpg
    :alt: A schematic of the baseplate labelled their intended use or optical components.
    :align: center
    :width: 100%
@@ -502,5 +549,3 @@ The following figure shows the front view of the complete assembly where the D-S
     :alt: Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
 
     **Figure 36:** Final assembly of the stage with the detection module mounted on it, and the stage placed over the illumination train.
-
-------------------

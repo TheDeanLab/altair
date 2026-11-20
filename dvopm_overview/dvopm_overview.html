@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction &mdash; altair  documentation</title>
+  <title>Altair-dvOPM Overview &mdash; altair  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
@@ -21,10 +21,11 @@
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script src="../_static/design-tabs.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Design Process" href="../dvopm_design/dvopm_design.html" />
+    <link rel="next" title="Design, Simulation" href="../dvopm_design/dvopm_design.html" />
     <link rel="prev" title="ASLM/CTASLM Baseplate Example Images" href="../baseplate2_exampleimages/baseplate2_exampleimages.html" /> 
 </head>
 
@@ -74,12 +75,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Altair-dvOPM</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Altair-dvOPM Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#direct-view-opm">Direct-View OPM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#system-architecture">System Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optical-geometry">Optical Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-snapshot">Performance Snapshot</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../dvopm_design/dvopm_design.html">Design Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_design/dvopm_design.html">Design, Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_baseplate_design/dvopm_baseplate_design.html">Baseplate Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">DV-OPM Baseplate Assembly &amp; Alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_characterization/dvopm_characterization.html">Altair DV-OPM Characterization</a></li>
 </ul>
@@ -98,7 +102,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Introduction</li>
+      <li class="breadcrumb-item active">Altair-dvOPM Overview</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/dvopm_overview/dvopm_overview.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -108,34 +112,49 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="introduction">
-<span id="dvopmoverview-home"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h1>
+  <section id="altair-dvopm-overview">
+<span id="dvopmoverview-home"></span><h1>Altair-dvOPM Overview<a class="headerlink" href="#altair-dvopm-overview" title="Permalink to this heading"></a></h1>
 <section id="direct-view-opm">
 <h2>Direct-View OPM<a class="headerlink" href="#direct-view-opm" title="Permalink to this heading"></a></h2>
-<p>Direct-View Oblique Plane Microscopy (dvOPM) is an oblique-plane light-sheet microscopy technique designed for mesoscopic fluorescence imaging of extended specimens. In this approach, an oblique imaging plane within the sample is optically sectioned using a light sheet and directly projected onto a camera sensor.</p>
-<p>Conventional oblique-plane microscopy systems typically rely on a tertiary imaging objective to re-image the tilted plane onto the detector. In contrast, dvOPM eliminates this requirement by forming the remote image directly on the camera sensor using a simplified relay. This reduces optical complexity and system footprint while preserving the optical sectioning capability of light-sheet microscopy.</p>
-<p>As a result, dvOPM enables imaging over large fields of view with optical sectioning in a compact and accessible optical configuration.</p>
+<p>Direct-view oblique plane microscopy (dvOPM) is an oblique-plane light-sheet imaging architecture designed for mesoscopic fluorescence imaging. In this approach, fluorescence from an obliquely illuminated plane is detected through a remote-image-space geometry and projected directly onto a camera sensor.</p>
+<p>Direct-view OPM was introduced by Lamb <em>et al.</em> as a way to eliminate the tertiary imaging system used in conventional oblique plane microscopy. Instead of re-imaging the tilted intermediate image with an additional objective, the camera is placed directly in the remote image space. This avoids a major scaling bottleneck for large-field, low-NA OPM while preserving the optical sectioning and volumetric throughput advantages of light-sheet microscopy.</p>
+<p>Altair-dvOPM builds on that direct-view architecture by using fast photographic lenses with externally accessible pupils. This simplifies the remaining pupil-coupling requirement, removes the need for an additional pupil-mapping relay, and translates dvOPM into an open-access, baseplate-mounted instrument with detailed CAD files, lens models, bills of materials, and assembly instructions.</p>
 </section>
 <hr class="docutils" />
 <section id="system-architecture">
 <h2>System Architecture<a class="headerlink" href="#system-architecture" title="Permalink to this heading"></a></h2>
-<p>A typical dvOPM system consists of separate illumination and detection optical paths arranged around a shared sample region. The illumination path generates an oblique light sheet that intersects the specimen, while the detection path collects fluorescence from the illuminated plane and relays the tilted image onto a camera sensor.</p>
-<p>In general implementations, the detection path is formed using microscope objectives and relay optics, often requiring multiple objectives to re-image the oblique plane. The illumination path is typically implemented separately from the detection optics, particularly when using low numerical aperture objectives that do not support integrated light-sheet delivery. The system is commonly operated in a stage-scanning configuration, where the sample is translated through the stationary illumination and detection planes to acquire volumetric data.</p>
-<p>The Altair dvOPM presented here follows this overall architecture while implementing a specific realization of the system as described below.</p>
-<p>The detection subsystem is implemented as a remote-imaging relay using a pair of photographic lenses with external pupils. An emission filter wheel (FW1000, Applied Scientific Instrumentation) is positioned within the relay to enable fluorescence imaging. The image is formed directly onto a compact camera (Ximea MU196MR-ON) with a pixel size of 1.4 µm. The entire detection assembly is mounted on a modular baseplate and attached to a motorized linear translation stage, allowing the detection train to be positioned relative to the specimen.</p>
-<p>The illumination subsystem is implemented as a separate optical train. It begins with a Powell lens, followed by a sequence of three achromatic doublets that relay and shape the beam. A resonant galvo is incorporated within the illumination path, and the resulting beam forms a micron-scale light sheet that is launched obliquely into the specimen.</p>
-<p>The system operates in a stage-scanning geometry, where the sample is translated through the stationary illumination and detection planes. The illumination and detection subsystems are mounted as independent modular baseplates on the optical table, while the stage is positioned above them.</p>
+<p>The Altair-dvOPM system consists of separate detection and illumination modules arranged around a shared open-top sample region. The illumination path generates an oblique light sheet that intersects the specimen, while the detection path collects fluorescence from the illuminated plane and forms the oblique image directly on the camera sensor.</p>
+<p>The detection subsystem uses a Mitakon Speedmaster 65 mm f/1.4 photographic lens as the primary lens and a Nikon AF-S NIKKOR 85 mm f/1.4G photographic lens as the secondary lens. An emission filter wheel (FW1000, Applied Scientific Instrumentation) and fold mirror are positioned between the lenses, and the remote image is recorded by a compact Ximea MU196MR-ON camera with 1.4 µm pixels. The detection path is mounted on a custom baseplate and vertically positioned with a motorized linear stage for focusing relative to the specimen.</p>
+<p>The illumination subsystem is implemented as an independent optical train. It begins with a fiber-collimated laser beam and a Powell lens, followed by achromatic relay optics, a mechanical slit for controlling illumination numerical aperture, and a 4 kHz resonant galvanometer for rapid angular pivoting of the light sheet. After light-sheet formation, the beam is folded vertically and launched externally through the coverslip at an oblique angle.</p>
+<p>The system operates in a stage-scanning geometry: the detection and illumination modules remain fixed, and the sample is translated through the stationary oblique imaging plane to acquire volumes. This separates optical alignment from volumetric acquisition and makes large tiled acquisitions possible without repeatedly moving the optical subsystems.</p>
+</section>
+<hr class="docutils" />
+<section id="optical-geometry">
+<h2>Optical Geometry<a class="headerlink" href="#optical-geometry" title="Permalink to this heading"></a></h2>
 <figure class="align-center" id="id1">
 <img alt="Schematic of the Altair DV-OPM system." src="../_images/Geometry_diagram.jpg" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> Schematic Geometry of the Altair DV-OPM system.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> Schematic geometry of the Altair-dvOPM system.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
-<p>The above the schematic illustrates the optical geometry of the system, showing the relative arrangement of the illumination and detection paths around the sample region and the axes defining the oblqiue plane and the stage coordinates.
-The illumination light-sheet is launched externally through the coverslip at an angle of approximately 20◦ and refracts to approximately 45◦ upon entering the aqueous specimen. Fluorescence from the obliquely illuminated plane is collected in the epi-direction by the photographic-lens-based detection path. Unprimed axes denote the stage coordinate system, in which Y is the sample-scanning direction, Z is the specimen-depth direction and X is parallel to the long axis of the light-sheet. Primed axes denote the oblique image coordinate system recorded by the camera, in which Y′ is the light-sheet propagation direction, X′ is the long
-axis of the light-sheet and Z′ defines the light-sheet thickness. The stage X axis corresponds to the image X′ axis. Thus, each camera frame captures an X′Y′ oblique plane, while volumetric imaging is performed by translating the specimen along stage Y . Following acquisition, image stacks are computationally sheared and rotated into the stage coordinate frame for visualization.</p>
+<p>The illumination light sheet is launched externally through the coverslip at an angle of approximately 20° and refracts to approximately 45° upon entering the aqueous specimen. Fluorescence from the obliquely illuminated plane is collected in the epi-direction by the photographic-lens-based detection path.</p>
+<p>Unprimed axes denote the stage coordinate system: <span class="math notranslate nohighlight">\(Y\)</span> is the sample-scanning direction, <span class="math notranslate nohighlight">\(Z\)</span> is the specimen-depth direction, and <span class="math notranslate nohighlight">\(X\)</span> is parallel to the long axis of the light sheet. Primed axes denote the oblique image coordinate system recorded by the camera: <span class="math notranslate nohighlight">\(Y'\)</span> is the light-sheet propagation direction, <span class="math notranslate nohighlight">\(X'\)</span> is the long axis of the light sheet, and <span class="math notranslate nohighlight">\(Z'\)</span> defines the light-sheet thickness. The stage <span class="math notranslate nohighlight">\(X\)</span> axis corresponds to the image <span class="math notranslate nohighlight">\(X'\)</span> axis.</p>
+<p>Each camera frame captures an <span class="math notranslate nohighlight">\(X'Y'\)</span> oblique plane. Volumetric imaging is performed by translating the specimen along stage <span class="math notranslate nohighlight">\(Y\)</span>; following acquisition, image stacks are computationally sheared and rotated into the stage coordinate frame for visualization.</p>
+</section>
 <hr class="docutils" />
-<p>The detailed optical design and implementation of the detection and illumination subsystems are described in the following section.</p>
+<section id="performance-snapshot">
+<h2>Performance Snapshot<a class="headerlink" href="#performance-snapshot" title="Permalink to this heading"></a></h2>
+<p>The assembled Altair-dvOPM system provides the following experimentally characterized performance:</p>
+<ul class="simple">
+<li><p>Magnification: approximately 1.307×</p></li>
+<li><p>Instantaneous field of view: approximately 5.4 × 2.8 mm in <span class="math notranslate nohighlight">\(X'Y'\)</span></p></li>
+<li><p>Detection numerical aperture: 0.18 used, with 0.25 maximum available from the photographic-lens pair</p></li>
+<li><p>Measured bead FWHM resolution: 2.55 ± 0.19 µm, 3.36 ± 0.19 µm, and 17.75 ± 1.40 µm along <span class="math notranslate nohighlight">\(X'\)</span>, <span class="math notranslate nohighlight">\(Y'\)</span>, and <span class="math notranslate nohighlight">\(Z'\)</span></p></li>
+<li><p>Measured light-sheet thickness: 16.02 µm FWHM along <span class="math notranslate nohighlight">\(Z'\)</span></p></li>
+<li><p>Measured light-sheet lateral extent: approximately 6.0 mm along <span class="math notranslate nohighlight">\(X'\)</span></p></li>
+</ul>
+<p>The following sections describe the optical design, baseplate implementation, assembly procedure, alignment workflow, and characterization measurements in greater detail.
+The detailed optical design and implementation of the detection and illumination subsystems are described in the following section.</p>
 </section>
 </section>
 
@@ -144,7 +163,7 @@ axis of the light-sheet and Z′ defines the light-sheet thickness. The stage X 
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../baseplate2_exampleimages/baseplate2_exampleimages.html" class="btn btn-neutral float-left" title="ASLM/CTASLM Baseplate Example Images" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../dvopm_design/dvopm_design.html" class="btn btn-neutral float-right" title="Design Process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../dvopm_design/dvopm_design.html" class="btn btn-neutral float-right" title="Design, Simulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

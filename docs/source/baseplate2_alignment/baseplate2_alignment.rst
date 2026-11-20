@@ -794,6 +794,12 @@ Step 7: Beam Walking 5
 
 Add the RFO back in, then adjust the XY on the RFO mount until the back reflections from the RFO are aligned (same method: put a pinhole card behind the RFO and center the pinhole on the beam).
 
+.. card:: Achromat Back-Reflection Alignment
+
+   The general method for centering back reflections on an aperture card is described in
+   :ref:`Back-Reflection Alignment <optical_alignment_back_reflections>`. Use that procedure here to align the RFO before
+   continuing with the baseplate-specific beam-walking steps.
+
 .. figure:: Images/alignment/PCBaseplateV2LaserAlignment5.png
     :align: center
     :alt: Beam Walking 5

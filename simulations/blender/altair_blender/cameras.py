@@ -1,0 +1,183 @@
+"""Camera helpers for Blender optics alignment scenes."""
+
+from __future__ import annotations
+
+import math
+from typing import Any
+
+from .scene import get_bpy
+
+
+def _look_at(camera: Any, target: tuple[float, float, float]) -> float:
+    """Aim a camera at a target point and return the focus distance.
+
+    Parameters
+    ----------
+    camera
+        Blender camera object to rotate.
+    target
+        World-space point the camera should face.
+
+    Returns
+    -------
+    float
+        Distance from the camera to the target point.
+    """
+
+    from mathutils import Vector  # pyright: ignore[reportMissingImports]
+
+    direction = Vector(target) - camera.location
+    camera.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
+    return direction.length
+
+
+def create_wide_camera(
+    *,
+    target: tuple[float, float, float] = (70.0, 0.0, 15.0),
+    distance_mm: float = 280.0,
+    elevation_mm: float = 90.0,
+    frame_start: int | None = None,
+    frame_end: int | None = None,
+    end_target: tuple[float, float, float] | None = None,
+    end_distance_mm: float | None = None,
+    end_elevation_mm: float | None = None,
+) -> Any:
+    """Create the wide setup camera used for the full optical layout.
+
+    Parameters
+    ----------
+    target
+        World-space point the camera should frame.
+    distance_mm
+        Y-axis distance from the target in millimeters.
+    elevation_mm
+        Height above the target in millimeters.
+    frame_start
+        Optional first frame for camera animation.
+    frame_end
+        Optional last frame for camera animation.
+    end_target
+        Optional target point for the final animated frame.
+    end_distance_mm
+        Optional final Y-axis distance from the end target.
+    end_elevation_mm
+        Optional final elevation above the end target.
+
+    Returns
+    -------
+    object
+        Blender camera object.
+    """
+
+    bpy = get_bpy()
+    start_location = (
+        target[0],
+        target[1] - distance_mm,
+        target[2] + elevation_mm,
+    )
+    bpy.ops.object.camera_add(
+        location=start_location,
+    )
+    camera = bpy.context.object
+    camera.name = "Wide Setup Camera"
+    camera.data.lens = 35
+    camera.data.dof.use_dof = True
+    camera.data.dof.focus_distance = _look_at(camera, target)
+    if frame_start is not None and frame_end is not None:
+        camera.keyframe_insert(data_path="location", frame=frame_start)
+        camera.keyframe_insert(data_path="rotation_euler", frame=frame_start)
+
+        final_target = end_target or target
+        camera.location = (
+            final_target[0],
+            final_target[1] - (end_distance_mm or distance_mm),
+            final_target[2] + (end_elevation_mm or elevation_mm),
+        )
+        camera.data.dof.focus_distance = _look_at(camera, final_target)
+        camera.keyframe_insert(data_path="location", frame=frame_end)
+        camera.keyframe_insert(data_path="rotation_euler", frame=frame_end)
+
+    bpy.context.scene.camera = camera
+    return camera
+
+
+def create_card_closeup_camera(
+    *, card_x_mm: float, optical_axis_z_mm: float = 15.0
+) -> Any:
+    """Create a close-up camera aimed at the aperture card.
+
+    Parameters
+    ----------
+    card_x_mm
+        X position of the aperture card in millimeters.
+    optical_axis_z_mm
+        Optical-axis height in millimeters.
+
+    Returns
+    -------
+    object
+        Blender camera object.
+    """
+
+    bpy = get_bpy()
+    bpy.ops.object.camera_add(
+        location=(card_x_mm - 24.0, -28.0, optical_axis_z_mm + 5.0),
+        rotation=(math.radians(78.0), 0.0, math.radians(-38.0)),
+    )
+    camera = bpy.context.object
+    camera.name = "Card Close-Up Camera"
+    camera.data.lens = 80
+    camera.data.dof.use_dof = True
+    camera.data.dof.focus_distance = 30.0
+    return camera
+
+
+def create_hero_camera(
+    *,
+    target: tuple[float, float, float] = (55.0, 0.0, 22.0),
+    frame_start: int = 1,
+    frame_end: int = 168,
+    focus_distance_mm: float | None = None,
+) -> Any:
+    """Create a slow animated camera for the polished single-view movie.
+
+    Parameters
+    ----------
+    target
+        World-space point the camera should frame.
+    frame_start
+        First animation frame.
+    frame_end
+        Last animation frame.
+    focus_distance_mm
+        Optional fixed depth-of-field focus distance.
+
+    Returns
+    -------
+    object
+        Blender camera object.
+    """
+
+    bpy = get_bpy()
+    start_location = (target[0] - 20.0, target[1] - 210.0, target[2] + 60.0)
+    end_location = (target[0] + 24.0, target[1] - 195.0, target[2] + 52.0)
+    bpy.ops.object.camera_add(location=start_location)
+    camera = bpy.context.object
+    camera.name = "Hero Camera"
+    camera.data.lens = 42
+    camera.data.dof.use_dof = True
+    camera.data.dof.aperture_fstop = 7.1
+
+    camera.location = start_location
+    distance = _look_at(camera, target)
+    camera.data.dof.focus_distance = focus_distance_mm or distance
+    camera.keyframe_insert(data_path="location", frame=frame_start)
+    camera.keyframe_insert(data_path="rotation_euler", frame=frame_start)
+
+    camera.location = end_location
+    distance = _look_at(camera, target)
+    camera.data.dof.focus_distance = focus_distance_mm or distance
+    camera.keyframe_insert(data_path="location", frame=frame_end)
+    camera.keyframe_insert(data_path="rotation_euler", frame=frame_end)
+
+    return camera

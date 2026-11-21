@@ -21,17 +21,17 @@ The implemented relay uses a 65 mm Mitakon Zhongyi Speedmaster lens as the prima
 
 .. math::
 
-   M = \frac{f_\mathrm{O2}}{f_\mathrm{O1}} = \frac{85\ \text{mm}}{65\ \text{mm}} \approx 1.307
+   M = \frac{f_\mathrm{O2}}{f_\mathrm{O1}} = \frac{85\ \text{mm}}{65\ \text{mm}} \approx 1.308
 
 This magnification is close to the :math:`n_\mathrm{water}/n_\mathrm{air}` condition needed to minimize remote-refocusing aberrations for aqueous specimens. The photographic-lens pair has a maximum effective numerical aperture of approximately 0.25, but the implemented system is operated at an effective detection NA of 0.18 to reduce aberrations and improve image quality across the field of view.
 
-The detection module also needs to support practical fluorescence imaging and fit beneath the open-top stage geometry. If the relay were designed only around pupil conjugation, O1 and O2 would be separated by 35.3 mm. In the physical instrument, however, a 32 mm, 6-position emission filter wheel (FW1000, Applied Scientific Instrumentation) and a 2" fold mirror with its mount must fit between O1 and O2. These components set the minimum buildable O1-O2 spacing at approximately 144.3 mm. The implemented configuration is therefore a mechanically constrained optical design: during optimization, the O1-O2 distance could increase beyond this lower bound if optical performance improved, but it could not become shorter than the distance required by the filter wheel and fold-mirror assembly. The optical consequences of this buildable spacing are evaluated in the Zemax analysis below.
+The detection module also needs to support practical fluorescence imaging and fit beneath the open-top stage geometry. If the relay were designed only around pupil conjugation, O1 and O2 would be separated by 35.3 mm. In the physical instrument, however, a 32 mm, 6-position emission filter wheel (FW-0002-6, Applied Scientific Instrumentation) and a 2" fold mirror with its mount must fit between O1 and O2. These components set the minimum buildable O1-O2 spacing at approximately 144.3 mm. The implemented configuration is therefore a mechanically constrained optical design: during optimization, the O1-O2 distance could increase beyond this lower bound if optical performance improved, but it could not become shorter than the distance required by the filter wheel and fold-mirror assembly. The optical consequences of this buildable spacing are evaluated in the Zemax analysis below.
 
-Image acquisition is performed using a Ximea MU196MR-ON camera with a 1.4 µm pixel size and an active sensor area of 7.2 mm × 5.4 mm. The camera is mounted so that its position and angle can be tuned relative to the tilted image plane. With a magnification of 1.307×, the long sensor dimension corresponds to an object-space field of view of approximately:
+Image acquisition is performed using a Ximea MU196MR-ON camera with a 1.4 µm pixel size and an active sensor area of 7.2 mm × 5.4 mm. The camera is mounted so that its position and angle can be tuned relative to the tilted image plane. With a magnification of 1.308×, the long sensor dimension corresponds to an object-space field of view of approximately:
 
 .. math::
 
-   \frac{7.2\ \text{mm}}{1.307} \approx 5.5\ \text{mm}
+   \frac{7.2\ \text{mm}}{1.308} \approx 5.5\ \text{mm}
 
 This long-axis field defines the required illumination coverage along :math:`X'`. In the assembled microscope, the instantaneous imaging field is approximately 5.4 mm × 2.8 mm in :math:`X'Y'`, so the illumination subsystem was designed to generate a light sheet that extends beyond the camera-limited field.
 
@@ -188,7 +188,7 @@ Resolution was quantified using the MTF20 criterion, defined as the spatial freq
 
    \mathrm{Resolution} = \frac{1000}{f_{\mathrm{image}} \cdot M}
 
-where :math:`f_{\mathrm{image}}` is the spatial frequency at MTF20 in lp/mm, :math:`M = 1.307` is the system magnification, and the factor of 1000 converts millimeters to micrometers.
+where :math:`f_{\mathrm{image}}` is the spatial frequency at MTF20 in lp/mm, :math:`M = 1.308` is the system magnification, and the factor of 1000 converts millimeters to micrometers.
 
 For the implemented relay, the optimized center-field simulated resolutions were:
 

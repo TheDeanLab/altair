@@ -20,7 +20,7 @@ ___________________
 
 The Altair-dvOPM system consists of separate detection and illumination modules arranged around a shared open-top sample region. The illumination path generates an oblique light sheet that intersects the specimen, while the detection path collects fluorescence from the illuminated plane and forms the oblique image directly on the camera sensor.
 
-The detection subsystem uses a Mitakon Speedmaster 65 mm f/1.4 photographic lens as the primary lens and a Nikon AF-S NIKKOR 85 mm f/1.4G photographic lens as the secondary lens. An emission filter wheel (FW1000, Applied Scientific Instrumentation) and fold mirror are positioned between the lenses, and the remote image is recorded by a compact Ximea MU196MR-ON camera with 1.4 µm pixels. The detection path is mounted on a custom baseplate and vertically positioned with a motorized linear stage for focusing relative to the specimen.
+The detection subsystem uses a Mitakon Speedmaster 65 mm f/1.4 photographic lens as the primary lens and a Nikon AF-S NIKKOR 85 mm f/1.4G photographic lens as the secondary lens. A 32 mm, 6-position emission filter wheel (FW-0002-6, Applied Scientific Instrumentation) and fold mirror are positioned between the lenses, and the remote image is recorded by a compact Ximea MU196MR-ON camera with 1.4 µm pixels. The detection path is mounted on a custom baseplate and vertically positioned with a motorized linear stage for focusing relative to the specimen.
 
 The illumination subsystem is implemented as an independent optical train. It begins with a fiber-collimated laser beam and a Powell lens, followed by achromatic relay optics, a mechanical slit for controlling illumination numerical aperture, and a 4 kHz resonant galvanometer for rapid angular pivoting of the light sheet. After light-sheet formation, the beam is folded vertically and launched externally through the coverslip at an oblique angle.
 
@@ -33,7 +33,7 @@ ________________
 
 .. figure:: Images/Geometry_diagram.jpg
     :align: center
-    :alt: Schematic of the Altair DV-OPM system.
+    :alt: Schematic of the Altair-dvOPM system.
 
     **Figure 1:** Schematic geometry of the Altair-dvOPM system.
 
@@ -50,7 +50,7 @@ ____________________
 
 The assembled Altair-dvOPM system provides the following experimentally characterized performance:
 
-- Magnification: approximately 1.307×
+- Magnification: approximately 1.308×
 - Instantaneous field of view: approximately 5.4 × 2.8 mm in :math:`X'Y'`
 - Detection numerical aperture: 0.18 used, with 0.25 maximum available from the photographic-lens pair
 - Measured bead FWHM resolution: 2.55 ± 0.19 µm, 3.36 ± 0.19 µm, and 17.75 ± 1.40 µm along :math:`X'`, :math:`Y'`, and :math:`Z'`

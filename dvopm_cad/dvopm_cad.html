@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAD Files and Machined Parts &mdash; altair  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Altair-dvOPM Assembly and Alignment" href="../dvopm_assembly/dvopm_assembly.html" />
+    <link rel="prev" title="Baseplate Design" href="../dvopm_baseplate_design/dvopm_baseplate_design.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            altair
+              <img src="../_static/compass.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/background.html">Overview of Subcellular Light-Sheet Microscope Technologies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design_principles/required_software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware/index.html">Room and Hardware Considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/optical_alignment_basics.html">Basics of Optical Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../future/index.html">Future Releases</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Altair-SPIM v1</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../design_principles/design_process.html">Design Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physical_assembly/physical_assembly.html">Microscope Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system_characterization/system_characterization.html">System Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imaging/imaging.html">Imaging Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../live_cell/live_cell.html">Live-Cell Imaging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Altair-ASLM/CTASLM/SPIM v1</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2/baseplate2.html">Altair ASLM/CTASLM Baseplate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_alignment/baseplate2_alignment.html">ASLM/CTASLM Baseplate Assembly &amp; Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseplate2_exampleimages/baseplate2_exampleimages.html">ASLM/CTASLM Baseplate Example Images</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Altair-dvOPM</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_overview/dvopm_overview.html">Altair-dvOPM Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_design/dvopm_design.html">Design, Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_baseplate_design/dvopm_baseplate_design.html">Baseplate Design</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CAD Files and Machined Parts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cad-packages">CAD Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manufacturing-notes">Manufacturing Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detection-module">Detection Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#illumination-module">Illumination Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sample-holder">Sample Holder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#package-check-before-machining">Package Check Before Machining</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">Altair-dvOPM Assembly and Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_characterization/dvopm_characterization.html">Altair-dvOPM Characterization</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">altair</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CAD Files and Machined Parts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dvopm_cad/dvopm_cad.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cad-files-and-machined-parts">
+<span id="dvopmcad-home"></span><h1>CAD Files and Machined Parts<a class="headerlink" href="#cad-files-and-machined-parts" title="Permalink to this heading"></a></h1>
+<p>This page identifies the custom Altair-dvOPM parts that must be machined and distinguishes them from the vendor models and assembly dependencies included in the complete CAD package. It is intended as a manufacturing handoff and pre-assembly checklist; the engineering bill of materials remains in <a class="reference internal" href="../dvopm_baseplate_design/dvopm_baseplate_design.html"><span class="doc">Baseplate Design</span></a>.</p>
+<section id="cad-packages">
+<h2>CAD Packages<a class="headerlink" href="#cad-packages" title="Permalink to this heading"></a></h2>
+<p>The <a class="reference external" href="https://github.com/TheDeanLab/altair/tree/main/downloads/dvOPM/CAD/Final%20Assembly%20and%20Dependent%20Files">complete CAD assembly and dependency folder</a> contains the Autodesk Inventor system assembly, subsystem assemblies, custom components, vendor models, project files, and their dependencies. Download the repository to preserve the folder structure required to open the complete system assembly and inspect component relationships.</p>
+<p>The complete assembly folder is <strong>not</strong> a machining list. It contains many commercial components that should be purchased rather than manufactured. Only the STEP files listed below from <code class="docutils literal notranslate"><span class="pre">Final</span> <span class="pre">Machined</span> <span class="pre">Parts</span></code> are designated for machining.</p>
+</section>
+<section id="manufacturing-notes">
+<h2>Manufacturing Notes<a class="headerlink" href="#manufacturing-notes" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Machine each listed STEP file in the stated quantity.</p></li>
+<li><p>When a PDF drawing is provided, send both the STEP model and drawing to the machine shop. The drawing contains thread callouts that may not be communicated completely by the STEP geometry.</p></li>
+<li><p>We machined the custom components from 6061-T6x aluminum with a general machining tolerance of <span class="math notranslate nohighlight">\(\pm0.005\)</span> inches and recommend the same specification for reproduction. Any dimensions or thread callouts stated explicitly in a supplied drawing take precedence.</p></li>
+<li><p>Confirm that the STEP file and drawing describe the same revision before ordering. Do not substitute similarly named files from the older <code class="docutils literal notranslate"><span class="pre">To</span> <span class="pre">Machine</span></code> folder.</p></li>
+<li><p>Quantities marked as configuration-dependent should be confirmed against the selected Powell-lens mounting configuration before release.</p></li>
+</ul>
+</section>
+<section id="detection-module">
+<h2>Detection Module<a class="headerlink" href="#detection-module" title="Permalink to this heading"></a></h2>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Detection-module machined parts</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 23.0%" />
+<col style="width: 8.0%" />
+<col style="width: 39.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Part</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Manufacturing files</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Detection Baseplate</p></td>
+<td><p>1</p></td>
+<td><p>L-shaped structural baseplate that registers the filter wheel, KCB2 fold-mirror mount, camera-positioning stages, and detection-module LS-50 mounting interface.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/6a2c6affae01f945a9f07083192e76f4/Detection%20Baseplate.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a>; <a class="reference download internal" download="" href="../_downloads/cd51d471f427d76fcc14ca4a1fb7c78e/Detection%20Baseplate.pdf"><code class="xref download docutils literal notranslate"><span class="pre">threaded-part</span> <span class="pre">drawing</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>38 mm to SM2 Adapter</p></td>
+<td><p>1</p></td>
+<td><p>Couples the O1-side C60-FW/filter-wheel interface to the SM2 adapter stack.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/5115f217dca455a5960919cafeafb817/38mm%20to%20SM2%20Adapter.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a>; <a class="reference download internal" download="" href="../_downloads/c4d929aa44e3f3c6e02cfd999ab6f254/38mm%20to%20SM2%20Adapter.pdf"><code class="xref download docutils literal notranslate"><span class="pre">threaded-part</span> <span class="pre">drawing</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Camera Holder</p></td>
+<td><p>1</p></td>
+<td><p>Secures the Ximea MU196MR-ON camera to the RP005 rotation stage above the MT1B focus stage.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/79ea7b71b190a1b2c8192fbed8614c5d/Camera%20Holder.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Camera Cap</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the factory camera cap after sensor-cover-glass removal and preserves clearance when the camera is rotated.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/57ffdf0a4876b0853b7c6a4e5dc8182c/Camera%20Cap.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a>; <a class="reference download internal" download="" href="../_downloads/1a131134d1641483453c4b2741e12b8a/Camera%20Cap.pdf"><code class="xref download docutils literal notranslate"><span class="pre">threaded-part</span> <span class="pre">drawing</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="illumination-module">
+<h2>Illumination Module<a class="headerlink" href="#illumination-module" title="Permalink to this heading"></a></h2>
+<p>Two functional side-plate variants are provided. The standard side plate places the D-shaped launch mirror at the nominal position used in the assembly. The second plate is 1.5 cm shorter, which leaves a slightly greater propagation distance from the point where the beam leaves the D-shaped mirror to the illumination focal plane. Because the launched beam is oblique, the focal plane is correspondingly farther from the mirror termination in both the vertical and lateral directions. Either variant can be used, and the user can select or adapt the plate according to the required focal-plane position and mechanical clearance.</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Illumination-module machined parts</span><a class="headerlink" href="#id2" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 23.0%" />
+<col style="width: 8.0%" />
+<col style="width: 39.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Part</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Manufacturing files</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Illumination Baseplate</p></td>
+<td><p>1</p></td>
+<td><p>Main registered baseplate for the folded illumination relay, Powell-lens positioning assembly, slit, and final upward-fold assembly.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/7cbd3e2d900fe975d1941d2b66195fac/Illumination%20Baseplate.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a>; <a class="reference download internal" download="" href="../_downloads/d5b6e3f11f453703dd20ff2fe6678a62/Illumination%20Baseplate.pdf"><code class="xref download docutils literal notranslate"><span class="pre">threaded-part</span> <span class="pre">drawing</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Side Plate</p></td>
+<td><p>1</p></td>
+<td><p>Standard side-plate variant that carries the D-shaped launch mirror at the nominal assembly position and establishes the final oblique illumination geometry.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/6db6b4988e5bc7483264673b3dfba3ba/Side%20Plate.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Side Plate, 1.5 cm Shorter</p></td>
+<td><p>1</p></td>
+<td><p>Shortened functional variant that places the illumination focal plane slightly farther from the mirror termination in both height and lateral position. Only the selected side plate is installed in the assembled microscope.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/3e6e3c1280c40464e96a6a9e5f488968/Side%20plate%201.5cm%20Shorter.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Galvo Holder to Polaris Mount</p></td>
+<td><p>1</p></td>
+<td><p>Holds the resonant galvo and provides its registered connection to the Polaris mounting stack.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/787833f3217347622f25d5611bd6778c/GalvoHoldertoPolarisMount.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a>; <a class="reference download internal" download="" href="../_downloads/ad93d399b5963c7424735970a34e7db3/GalvoHoldertoPolarisMount%203-8.pdf"><code class="xref download docutils literal notranslate"><span class="pre">threaded-part</span> <span class="pre">drawing</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Mount for Slit VA100CP</p></td>
+<td><p>1</p></td>
+<td><p>Connects the VA100CP mechanical slit to its registered Polaris post.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/990b6a6382c1c4cca3a9fb2e5cc2829c/Mount%20for%20Slit%20VA100CP.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>M145-to-K1S4 Polaris Post Height Adjustment, approximately 0.75 inch</p></td>
+<td><p>2</p></td>
+<td><p>Provides the custom 0.75-inch height offset used by the registered K1S4 mirror-mount stacks.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/8771e62ce352eed1a9d3c1dc7f2fca25/M145toK1S4PolarisPost_HeightAdjustment_approx_0p75inch.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Polaris Post Height Adjustment, 0.25 inch</p></td>
+<td><p>2</p></td>
+<td><p>Provides the custom 0.25-inch height offset used by the registered K1S4 mirror-mount stacks.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/1db609fed6f91a048176bfdb8c1e9d24/PolarisPost_HeightAdjustment_0p25inch.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>K1XY Polaris Post Height Adjustment, 0.5 inch</p></td>
+<td><p>1</p></td>
+<td><p>Establishes the required height of the K1XY fiber-collimator mounting stack.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/18ccab5635cf833942022c8e5470235f/K1XYPolarisPost_HeightAdjustment_0p5in.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>LNR25M-to-Polaris Adapter</p></td>
+<td><p>1</p></td>
+<td><p>Registers the Polaris post carrying the POLARIS-1XY/Powell-lens assembly to the LNR25M translation stage in Powell configuration 1.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/666f13738fe814a7886ed913627eec8a/LNR25MtoPolarisAdapter.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Polaris Post-to-1XY Height Adjustment, approximately 0.5 inch</p></td>
+<td><p>1, configuration-dependent</p></td>
+<td><p>Height adapter for a Polaris-post/POLARIS-1XY mounting stack. Confirm whether this part is required by the selected Powell-lens stage configuration before ordering.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/9c1409bd1a7a71183f69b03420e3df7f/PolarisPostto1XY_HeightAdjustment_approx0p5inch.stp.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sample-holder">
+<h2>Sample Holder<a class="headerlink" href="#sample-holder" title="Permalink to this heading"></a></h2>
+<p>The sample holder is supplied as a two-part assembly. Machine one matching base-and-cover pair for each holder required by the laboratory.</p>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Sample-holder machined parts</span><a class="headerlink" href="#id3" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 23.0%" />
+<col style="width: 8.0%" />
+<col style="width: 39.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Part</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Manufacturing files</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Sample Holder Base</p></td>
+<td><p>1 per holder</p></td>
+<td><p>Lower body of the sample-holder assembly; provides the stage interface and central specimen-access opening.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/79c31a3e3c747fb9fb2fef32a49629b1/Sample%20Holder%20Base.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a>; <a class="reference download internal" download="" href="../_downloads/e2fd9606716850362d60c80ad1080e74/Sample%20Holder%20Base.pdf"><code class="xref download docutils literal notranslate"><span class="pre">threaded-part</span> <span class="pre">drawing</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Sample Holder Cover Top</p></td>
+<td><p>1 per holder</p></td>
+<td><p>Matching upper retainer for the sample-holder base.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/fbf8a1b7a569d05ec8fe37ff290cec34/Sample%20Holder%20Cover%20Top.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-check-before-machining">
+<h2>Package Check Before Machining<a class="headerlink" href="#package-check-before-machining" title="Permalink to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The manufacturing folder includes two functional illumination side-plate alternatives: the standard side plate and a version shortened by 1.5 cm. Only one side plate is installed in the microscope. Machine both supplied STEP files as listed, then select or adapt the variant that provides the required focal-plane position and clearance for the final assembly.</p>
+</div>
+<p>The following items should be confirmed before requesting a quotation:</p>
+<ul class="simple">
+<li><p>The side-plate variant selected for the final assembly has been identified.</p></li>
+<li><p>The selected Powell-lens configuration and its required adapters have been identified.</p></li>
+<li><p>The desired number of sample-holder base-and-cover pairs has been specified.</p></li>
+<li><p>Each threaded part is accompanied by its matching PDF drawing.</p></li>
+<li><p>The machine shop receives files only from the current <code class="docutils literal notranslate"><span class="pre">Final</span> <span class="pre">Machined</span> <span class="pre">Parts</span></code> folder.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../dvopm_baseplate_design/dvopm_baseplate_design.html" class="btn btn-neutral float-left" title="Baseplate Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../dvopm_assembly/dvopm_assembly.html" class="btn btn-neutral float-right" title="Altair-dvOPM Assembly and Alignment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Dean Lab, UT Southwestern Medical Center.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

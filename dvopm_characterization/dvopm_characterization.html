@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Altair DV-OPM Characterization &mdash; altair  documentation</title>
+  <title>Altair-dvOPM Characterization &mdash; altair  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
@@ -25,7 +25,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="DV-OPM Baseplate Assembly &amp; Alignment" href="../dvopm_assembly/dvopm_assembly.html" /> 
+    <link rel="prev" title="Altair-dvOPM Assembly and Alignment" href="../dvopm_assembly/dvopm_assembly.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -77,10 +77,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_overview/dvopm_overview.html">Altair-dvOPM Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_design/dvopm_design.html">Design, Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_baseplate_design/dvopm_baseplate_design.html">Baseplate Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">DV-OPM Baseplate Assembly &amp; Alignment</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Altair DV-OPM Characterization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#beam-characterization">Beam Characterization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#resolution-quantification">Resolution Quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_cad/dvopm_cad.html">CAD Files and Machined Parts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">Altair-dvOPM Assembly and Alignment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Altair-dvOPM Characterization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#illumination-characterization">Illumination Characterization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#measurement-setup">Measurement Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#beam-analysis-method">Beam Analysis Method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#measured-illumination-performance">Measured Illumination Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#resolution-characterization">Resolution Characterization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sample-preparation-and-acquisition">Sample Preparation and Acquisition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resolution-analysis-method">Resolution Analysis Method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#measured-resolution-performance">Measured Resolution Performance</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -99,7 +110,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Altair DV-OPM Characterization</li>
+      <li class="breadcrumb-item active">Altair-dvOPM Characterization</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/dvopm_characterization/dvopm_characterization.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -109,63 +120,111 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="altair-dv-opm-characterization">
-<span id="dvopmcharacterization-home"></span><h1>Altair DV-OPM Characterization<a class="headerlink" href="#altair-dv-opm-characterization" title="Permalink to this heading"></a></h1>
-<p>To characterize the performance of the Altair DV-OPM, we evaluated the illumination train by imaging the light-sheet profile, and we quantified the system resolution using 1 µm fluorescent beads.</p>
+  <section id="altair-dvopm-characterization">
+<span id="dvopmcharacterization-home"></span><h1>Altair-dvOPM Characterization<a class="headerlink" href="#altair-dvopm-characterization" title="Permalink to this heading"></a></h1>
+<p>This section describes the experimental measurements used to characterize the assembled Altair-dvOPM. The illumination measurement quantifies the light-sheet thickness, lateral extent, and propagation in air. The detection measurement uses fluorescent beads to estimate three-dimensional imaging resolution and its variation across the field of view.</p>
+<p>The coordinate notation follows the <a class="reference internal" href="../dvopm_overview/dvopm_overview.html"><span class="doc">system overview</span></a>. In the oblique image coordinate system, <span class="math notranslate nohighlight">\(X'\)</span> is the long lateral axis of the light sheet, <span class="math notranslate nohighlight">\(Y'\)</span> is the light-sheet propagation direction, and <span class="math notranslate nohighlight">\(Z'\)</span> is the sheet-thickness direction.</p>
 <hr class="docutils" />
-<section id="beam-characterization">
-<h2>Beam Characterization<a class="headerlink" href="#beam-characterization" title="Permalink to this heading"></a></h2>
-<p>To characterize the illumination beam profile, we imaged the light sheet in air while translating the camera through a series of axial positions along the propagation direction, <span class="math notranslate nohighlight">\(Y'\)</span>. A fixed lateral region near the center of the sheet was selected so that the thickness measurement was obtained from the same representative region at each axial position.</p>
-<p>For each axial plane, the background-corrected intensity profile along the sheet-thickness direction, <span class="math notranslate nohighlight">\(Z'\)</span>, was extracted and fit with a Gaussian function. The fitted Gaussian standard deviation, <span class="math notranslate nohighlight">\(\sigma\)</span>, was converted to full width at half maximum (FWHM) using</p>
+<section id="illumination-characterization">
+<h2>Illumination Characterization<a class="headerlink" href="#illumination-characterization" title="Permalink to this heading"></a></h2>
+<section id="measurement-setup">
+<h3>Measurement Setup<a class="headerlink" href="#measurement-setup" title="Permalink to this heading"></a></h3>
+<p>The illumination beam was measured directly in air after the final achromatic doublet, L4. For this measurement, the beam was not redirected upward by the final folding optics. Instead, it passed through neutral-density filters and propagated directly onto the sensor of a Ximea MU196MR-ON camera mounted on an MP-285 motorized stage.</p>
+<p>Images were acquired around the beam focal plane at <span class="math notranslate nohighlight">\(10~\mu\mathrm{m}\)</span> increments along <span class="math notranslate nohighlight">\(Y'\)</span>. The camera region of interest retained the full horizontal dimension of the light sheet so that sheet thickness and lateral extent could be evaluated from the same acquisition.</p>
+</section>
+<section id="beam-analysis-method">
+<h3>Beam Analysis Method<a class="headerlink" href="#beam-analysis-method" title="Permalink to this heading"></a></h3>
+<p>Sheet thickness was measured from vertical intensity profiles along <span class="math notranslate nohighlight">\(Z'\)</span>. To reduce sensitivity to an individual camera column, the analysis used the average profile from a 21-column window centered on a selected column within the central region of the beam. The same column window was applied to every axial frame.</p>
+<p>For each frame, the background-corrected vertical profile was fit with a Gaussian. The fitted standard deviation in pixels, <span class="math notranslate nohighlight">\(\sigma_{\mathrm{px}}\)</span>, was converted to FWHM using the calibrated camera sampling of <span class="math notranslate nohighlight">\(1.4~\mu\mathrm{m\,pixel^{-1}}\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\mathrm{FWHM} = 2\sqrt{2\ln 2}\,\sigma \approx 2.355\sigma\]</div>
-<p>after applying the camera pixel size calibration.</p>
-<p>The FWHM was then converted to the Gaussian beam waist, <span class="math notranslate nohighlight">\(w\)</span>, using</p>
+\[\mathrm{FWHM} = 2.35\,\sigma_{\mathrm{px}}\left(1.4~\mu\mathrm{m\,pixel^{-1}}\right).\]</div>
+<p>The focal plane was defined as the axial frame with the minimum fitted FWHM. The Gaussian <span class="math notranslate nohighlight">\(1/e^2\)</span> intensity radius, <span class="math notranslate nohighlight">\(w_0\)</span>, was calculated from that minimum:</p>
 <div class="math notranslate nohighlight">
-\[w = \frac{\mathrm{FWHM}}{\sqrt{2\ln 2}}\]</div>
-<p>where <span class="math notranslate nohighlight">\(w\)</span> corresponds to the <span class="math notranslate nohighlight">\(1/e^2\)</span> intensity radius of the beam.</p>
-<p>The best-focus plane was defined as the axial position corresponding to the minimum FWHM. At this plane, we measured a minimum FWHM of <span class="math notranslate nohighlight">\(17.1~\mu\mathrm{m}\)</span>, corresponding to a beam waist of <span class="math notranslate nohighlight">\(w_0 = 14.53~\mu\mathrm{m}\)</span>.</p>
-<p>The usable axial extent of the light sheet was determined experimentally from the measured waist profile as the axial range over which</p>
+\[w_0 = \frac{\mathrm{FWHM}}{\sqrt{2\ln 2}} \approx \frac{\mathrm{FWHM}}{1.177}.\]</div>
+<p>The Rayleigh length was then calculated at <span class="math notranslate nohighlight">\(\lambda=561~\mathrm{nm}\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[w(Y') \leq \sqrt{2}\,w_0\]</div>
-<p>yielding a usable distance of approximately <span class="math notranslate nohighlight">\(2.00~\mathrm{mm}\)</span>.</p>
+\[z_R = \frac{\pi w_0^2}{\lambda}.\]</div>
+<p>Lateral illumination uniformity was evaluated independently from a horizontal line profile along <span class="math notranslate nohighlight">\(X'\)</span>. The profile was background-corrected, centered relative to the image center, and normalized to its peak intensity.</p>
+</section>
+<section id="measured-illumination-performance">
+<h3>Measured Illumination Performance<a class="headerlink" href="#measured-illumination-performance" title="Permalink to this heading"></a></h3>
+<p>The measured minimum light-sheet thickness was <span class="math notranslate nohighlight">\(16.02~\mu\mathrm{m}\)</span> FWHM along <span class="math notranslate nohighlight">\(Z'\)</span>. This corresponds to <span class="math notranslate nohighlight">\(w_0=13.60~\mu\mathrm{m}\)</span>. The calculated Rayleigh length was <span class="math notranslate nohighlight">\(z_R=1.04~\mathrm{mm}\)</span>, giving <span class="math notranslate nohighlight">\(2z_R=2.07~\mathrm{mm}\)</span>. At <span class="math notranslate nohighlight">\(Y'=\pm z_R\)</span>, the Gaussian-beam relation predicts a waist of <span class="math notranslate nohighlight">\(\sqrt{2}w_0=19.24~\mu\mathrm{m}\)</span>.</p>
+<p>The light sheet extended approximately <span class="math notranslate nohighlight">\(6.0~\mathrm{mm}\)</span> along <span class="math notranslate nohighlight">\(X'\)</span>. The normalized lateral profile in Figure 1C reports the measured intensity variation across this extent; it should not be interpreted as a uniform-intensity specification. Figure 1D shows the measured waist as a function of propagation distance, while Figure 1E shows the corresponding normalized peak intensity.</p>
 <figure class="align-center" id="id1">
-<img alt="Sheet profile characterization." src="../_images/Axial_Thickness_Intensity.jpg" />
+<a class="reference internal image-reference" href="../_images/Illumination_Characterization.jpg"><img alt="Experimental characterization of light-sheet thickness, lateral extent, propagation, and intensity." src="../_images/Illumination_Characterization.jpg" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> Characterization of the light-sheet profile in air along the axial direction.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
-<p>At the best-focus plane, we additionally characterized the spatial distribution of the sheet. A representative image was used to visualize the light-sheet morphology and its lateral extent along <span class="math notranslate nohighlight">\(X'\)</span>. The normalized background-corrected intensity profile along <span class="math notranslate nohighlight">\(Z'\)</span> was used to quantify the sheet thickness, while the lateral intensity profile along <span class="math notranslate nohighlight">\(X'\)</span> was calculated by summing the background-corrected intensity along <span class="math notranslate nohighlight">\(Z'\)</span> at each lateral position. This provided a measure of the illumination uniformity across the approximately <span class="math notranslate nohighlight">\(6.5~\mathrm{mm}\)</span> lateral extent of the sheet.</p>
-<figure class="align-center" id="id2">
-<img alt="Sheet profile characterization at focal plane." src="../_images/Focal_Plane.jpg" />
-<figcaption>
-<p><span class="caption-text"><strong>Figure 2:</strong> Characterization of the light-sheet profile in air at the best-focus plane. A. Camera image of the light sheet at the best-focus plane. B. Normalized intensity profile along the sheet-thickness direction, <span class="math notranslate nohighlight">\(Z'\)</span>. C. Normalized intensity profile along the lateral direction, <span class="math notranslate nohighlight">\(X'\)</span>.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> Experimental illumination characterization. <strong>A.</strong> Camera image of the light sheet near the focal plane; scale bar, <span class="math notranslate nohighlight">\(500~\mu\mathrm{m}\)</span>. <strong>B.</strong> Background-corrected thickness profile along <span class="math notranslate nohighlight">\(Z'\)</span> and Gaussian fit, giving a minimum FWHM of <span class="math notranslate nohighlight">\(16.02~\mu\mathrm{m}\)</span> and <span class="math notranslate nohighlight">\(w_0=13.60~\mu\mathrm{m}\)</span>. <strong>C.</strong> Background-corrected, normalized lateral intensity profile along <span class="math notranslate nohighlight">\(X'\)</span>. <strong>D.</strong> Measured beam waist as a function of propagation distance <span class="math notranslate nohighlight">\(Y'\)</span>; the calculated Rayleigh range is <span class="math notranslate nohighlight">\(2z_R=2.07~\mathrm{mm}\)</span>. <strong>E.</strong> Normalized peak intensity as a function of <span class="math notranslate nohighlight">\(Y'\)</span>.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-<section id="resolution-quantification">
-<h2>Resolution Quantification<a class="headerlink" href="#resolution-quantification" title="Permalink to this heading"></a></h2>
-<p>To quantify the imaging resolution of the system, we imaged 1 µm fluorescent beads embedded in agarose.</p>
-<p>Beads were imaged at different axial positions along the propagation direction, <span class="math notranslate nohighlight">\(Y'\)</span>, and the FWHM of the bead images was measured along the lateral and axial directions to quantify system resolution across the field of view.</p>
-<p>To prepare the fluorescent bead sample, 1 µm YG fluorescent nanospheres were diluted 1:1000 in deionized water and sonicated for 3 minutes to minimize aggregation. The resulting solution was subsequently mixed at a 1:100 dilution ratio with 2% low-melting-point agarose for volumetric imaging.</p>
-<figure class="align-center" id="id3">
-<img alt="Bead characterization." src="../_images/Beads_All.jpg" />
+</section>
+<hr class="docutils" />
+<section id="resolution-characterization">
+<h2>Resolution Characterization<a class="headerlink" href="#resolution-characterization" title="Permalink to this heading"></a></h2>
+<section id="sample-preparation-and-acquisition">
+<h3>Sample Preparation and Acquisition<a class="headerlink" href="#sample-preparation-and-acquisition" title="Permalink to this heading"></a></h3>
+<p>Resolution was evaluated using <span class="math notranslate nohighlight">\(1~\mu\mathrm{m}\)</span> green fluorescent beads embedded in agarose on a coverslip-bottom Petri dish. The bead stock was diluted 1:1000 in deionized water and sonicated for 3 minutes to reduce aggregation. The resulting suspension was then diluted 1:100 into 2% low-melting-point agarose for volumetric imaging.</p>
+<p>The beads were excited with 488-nm light, and fluorescence was collected through a Semrock FF01-515/30-32 emission filter. Volumetric stacks were acquired by scanning the agarose volume through the stationary illumination sheet over a <span class="math notranslate nohighlight">\(400~\mu\mathrm{m}\)</span> range with a <span class="math notranslate nohighlight">\(2~\mu\mathrm{m}\)</span> step size.</p>
+</section>
+<section id="resolution-analysis-method">
+<h3>Resolution Analysis Method<a class="headerlink" href="#resolution-analysis-method" title="Permalink to this heading"></a></h3>
+<p>The acquired stacks were deskewed using BigStitcher in ImageJ. The three-dimensional point-spread-function measurements were then calculated with custom MATLAB code using the following procedure:</p>
+<ol class="arabic simple">
+<li><p>Detect candidate beads by intensity thresholding and localize their centroids in the three-dimensional volume.</p></li>
+<li><p>Extract a sub-volume centered on each detected bead.</p></li>
+<li><p>Fit the bead intensity distribution with a Gaussian model along <span class="math notranslate nohighlight">\(X'\)</span>, <span class="math notranslate nohighlight">\(Y'\)</span>, and <span class="math notranslate nohighlight">\(Z'\)</span> and calculate the FWHM along each axis.</p></li>
+<li><p>Divide the beads into eight spatial bins across the field of view.</p></li>
+<li><p>Calculate the median FWHM in each bin independently for each axis.</p></li>
+<li><p>Report the mean and standard deviation of the eight bin-wise medians.</p></li>
+</ol>
+<p>This bin-wise analysis evaluates both aggregate resolution and lateral variation across the field. The reported standard deviations therefore describe variation among the eight spatial-bin medians, not variation among all individual bead measurements.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/Beads_Single.jpg"><img alt="Representative fluorescent bead shown in two orthogonal oblique-image views." src="../_images/Beads_Single.jpg" style="width: 65%;" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 3:</strong> Images of 1 µm fluorescent beads embedded in agarose and imaged with the Altair DV-OPM. A. Maximum-intensity projection of the bead sample in the <span class="math notranslate nohighlight">\(X'Y'\)</span> plane. B. Maximum-intensity projection of the bead sample in the <span class="math notranslate nohighlight">\(X'Z'\)</span> plane.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 2:</strong> Representative <span class="math notranslate nohighlight">\(1~\mu\mathrm{m}\)</span> fluorescent bead shown in the <span class="math notranslate nohighlight">\(X'Y'\)</span> and <span class="math notranslate nohighlight">\(Y'Z'\)</span> planes.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
+</section>
+<section id="measured-resolution-performance">
+<h3>Measured Resolution Performance<a class="headerlink" href="#measured-resolution-performance" title="Permalink to this heading"></a></h3>
+<p>A total of <span class="math notranslate nohighlight">\(n=302\)</span> beads were included in the spatially binned analysis. The resulting FWHM values are summarized in Figure 3. Across the eight bin-wise medians, the measured resolution was:</p>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Measured bead-image FWHM</span><a class="headerlink" href="#id3" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Axis</p></th>
+<th class="head"><p>Mean FWHM</p></th>
+<th class="head"><p>Standard deviation across bin medians</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(X'\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2.55~\mu\mathrm{m}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0.19~\mu\mathrm{m}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(Y'\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(3.36~\mu\mathrm{m}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0.19~\mu\mathrm{m}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(Z'\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(17.75~\mu\mathrm{m}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(1.40~\mu\mathrm{m}\)</span></p></td>
+</tr>
+</tbody>
+</table>
 <figure class="align-center" id="id4">
-<img alt="Bead characterization profiles." src="../_images/Beads_Single.jpg" />
+<a class="reference internal image-reference" href="../_images/Median_FWHM_final.svg"><img alt="Median bead-image FWHM in eight spatial bins across the field of view." src="../_images/Median_FWHM_final.svg" width="85%" /></a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 4:</strong> Zoomed-in image of a single fluorescent bead shown in the <span class="math notranslate nohighlight">\(X'Y'\)</span> and <span class="math notranslate nohighlight">\(X'Z'\)</span> planes.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure 3:</strong> Median FWHM measured from <span class="math notranslate nohighlight">\(1~\mu\mathrm{m}\)</span> fluorescent beads in each of eight spatial bins across the field of view. Values are reported in micrometers along <span class="math notranslate nohighlight">\(X'\)</span>, <span class="math notranslate nohighlight">\(Y'\)</span>, and <span class="math notranslate nohighlight">\(Z'\)</span>.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
-<p>We measured the full width at half maximum (FWHM) from images of 1 µm fluorescent beads (<span class="math notranslate nohighlight">\(n = 302\)</span> beads). The measurements were grouped into eight grids based on lateral position across the field of view, and the median FWHM values for each section are reported in micrometers along the <span class="math notranslate nohighlight">\(X'\)</span>, <span class="math notranslate nohighlight">\(Y'\)</span>, and <span class="math notranslate nohighlight">\(Z'\)</span> directions.</p>
-<figure class="align-center" id="id5">
-<img alt="Bead characterization profiles." src="../_images/Median_FWHM_final.svg" /><figcaption>
-<p><span class="caption-text"><strong>Figure 5:</strong> Median FWHM values measured from images of 1 µm fluorescent beads, grouped by lateral position across the field of view.</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
+<p>The assembled microscope provided a nominal magnification of approximately <span class="math notranslate nohighlight">\(1.308\times\)</span> over an approximately <span class="math notranslate nohighlight">\(5.4\times2.8~\mathrm{mm}\)</span> instantaneous field of view. The bead measurements did not show the field-edge loss of tangential resolution predicted by the implemented-spacing simulation. This means that the predicted peripheral degradation was not resolved in this bead dataset; it does not establish that the simulated sensitivity is absent under all imaging conditions.</p>
+<p>The detection simulations were performed at 561 nm, whereas the experimental resolution was measured using green fluorescent beads excited at 488 nm and detected through the 515/30-32 emission band. Performance at the extremes of the visible wavelength range has not yet been systematically characterized.</p>
+</section>
 </section>
 </section>
 
@@ -173,7 +232,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../dvopm_assembly/dvopm_assembly.html" class="btn btn-neutral float-left" title="DV-OPM Baseplate Assembly &amp; Alignment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../dvopm_assembly/dvopm_assembly.html" class="btn btn-neutral float-left" title="Altair-dvOPM Assembly and Alignment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

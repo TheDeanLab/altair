@@ -48,6 +48,8 @@ Because the relay uses longer focal length lenses, the physical optical path bec
 
 Near the end of the illumination path, the beam must leave the planar relay geometry and be directed upward toward the sample. This is achieved using a vertical inversion mirror followed by a final inclined mirror that launches the beam toward the specimen at approximately 20° relative to the stage. This final section is particularly important, as it represents the point where the optical relay geometry and the physical stage geometry intersect. The baseplate and mounting configuration must therefore preserve not only the lens spacings, but also the correct beam height and launch angle.
 
+Two functional side-plate variants are provided for the D-shaped launch mirror. The standard plate places the mirror at the nominal assembly position. A second plate is 1.5 cm shorter, leaving a slightly greater oblique propagation distance between the mirror termination and the illumination focal plane; the focal plane is therefore farther from the mirror in both height and lateral position. Either plate can be used or adapted to suit the required focal-plane position and mechanical clearance. Manufacturing files for both variants are listed in :doc:`../dvopm_cad/dvopm_cad`.
+
 The illumination baseplate design thus extends beyond simply placing optical elements in sequence. It must coordinate planar relay optics, beam folding, vertical redirection, final launch geometry, and stage height constraints within a single mechanically stable system. As a result, this subsystem represents one of the most integration-intensive aspects of the overall instrument design.
 
 .. figure:: ../dvopm_design/Images/Illumination_Baseplate_Isometric.png
@@ -91,15 +93,15 @@ The complete system assembly can therefore be understood as the integration of t
 Engineering Bill of Materials
 _____________________________
 
-Baseplate design is also the point where the optical layout becomes a build package. For that reason, the engineering bill of materials (EBOM) is included here as a procurement-level summary of the detection and illumination trains, including optics, optomechanics, stages, controllers, and custom machined parts.
+Baseplate design is also the point where the optical layout becomes a build package. For that reason, the engineering bill of materials (EBOM) is included here as a procurement-level summary of the detection and illumination trains, including optics, optomechanics, stages, controllers, and custom machined parts. The complete assembly folder, individual manufacturing files, required quantities, and purpose of each custom component are provided in :doc:`../dvopm_cad/dvopm_cad`.
 
-The following EBOM tables are reproduced from manuscript Supplementary Tables S1 and S2. Listed costs are approximate unit prices at the time of manuscript preparation and are subject to change by vendor, availability, and configuration. Totals are calculated as quantity multiplied by unit cost for each listed line item, excluding the laser source. The laser is listed for completeness but is not included in the illumination train total.
+The following EBOM tables list the components used in the detection and illumination trains. Costs are approximate and may change with vendor, availability, and configuration. Totals are calculated as quantity multiplied by unit cost for each listed line item. The laser source is listed for completeness, but its cost is not included in the illumination train total.
 
-.. collapse:: Detection Train EBOM (total: $25,872.60)
+.. collapse:: Detection Train EBOM (total: $27,595.12)
 
-    Detection train total (Qty x Unit Cost): **$25,872.60**.
+    Detection train total (Qty x Unit Cost): **$27,595.12**.
 
-    .. list-table:: Table S1. Detection train EBOM.
+    .. list-table:: Table S2. Detection train EBOM.
        :header-rows: 1
        :widths: 24 14 8 12 42
     
@@ -126,18 +128,38 @@ The following EBOM tables are reproduced from manuscript Supplementary Tables S1
        * - MU196MR-ON
          - Ximea
          - 1
-         - $900.00
+         - $1100.00
          - Monochrome camera, AR2020 sensor
-       * - FW-1000
+       * - FW-0002-6
          - ASI
          - 1
          - $3700.00
          - High-speed motorized filter wheel
-       * - PF20-03-G01
+       * - FF01-442/42-32
+         - Semrock
+         - 1
+         - $380.63
+         - DAPI emission filter
+       * - FF01-670/30-32
+         - Semrock
+         - 1
+         - $380.63
+         - Far-red filter
+       * - FF01-515/30-32
+         - Semrock
+         - 1
+         - $380.63
+         - Green filter
+       * - FF01-595/31-32
+         - Semrock
+         - 1
+         - $380.63
+         - Red filter
+       * - PF20-03-P01
          - Thorlabs
          - 1
          - $115.68
-         - Ø2" protected aluminum mirror
+         - Ø2" protected silver mirror
        * - **Optomechanics**
          -
          -
@@ -249,11 +271,11 @@ The following EBOM tables are reproduced from manuscript Supplementary Tables S1
          - $200.00
          - Redesigned camera cap
 
-.. collapse:: Illumination Train EBOM (total excluding laser: $25,796.87)
+.. collapse:: Illumination Train EBOM (total excluding laser: $32,673.87)
 
-    Illumination train total, excluding laser source (Qty x Unit Cost): **$25,796.87**.
+    Illumination train total, excluding laser source (Qty x Unit Cost): **$32,673.87**.
 
-    .. list-table:: Table S2. Illumination train EBOM.
+    .. list-table:: Table S3. Illumination train EBOM.
        :header-rows: 1
        :widths: 24 14 8 12 42
     
@@ -282,13 +304,13 @@ The following EBOM tables are reproduced from manuscript Supplementary Tables S1
          - 1
          - $95.34
          - Achromatic doublet lens, f = 300 mm
-       * - PF10-03
+       * - PF10-03-P01
          - Thorlabs
          - 7
          - $36.89
-         - Ø1" protected aluminum mirror
+         - Ø1" protected silver mirror
        * - LOCP-8.9R10-2.0
-         - LaserLine
+         - Laserline
          - 1
          - $240.00
          - Powell lens for line generation
@@ -357,7 +379,7 @@ The following EBOM tables are reproduced from manuscript Supplementary Tables S1
          - 1
          - $321.57
          - Variable mechanical slit
-       * - CFC11P-A
+       * - CFC11A-A
          - Thorlabs
          - 1
          - $338.29
@@ -392,7 +414,7 @@ The following EBOM tables are reproduced from manuscript Supplementary Tables S1
          -
          -
          -
-       * - XP10X & XP10-CI
+       * - XP10X & XP10-C1
          - Thorlabs
          - 1
          - $710.00
@@ -427,6 +449,16 @@ The following EBOM tables are reproduced from manuscript Supplementary Tables S1
          - 1
          - $1186.00
          - PCIe module
+       * - PXIe-6259
+         - NI
+         - 1
+         - $3472.00
+         - Multifunction I/O card (779778-01)
+       * - PXI-6733
+         - NI
+         - 1
+         - $3405.00
+         - Analog output card (778512-01)
        * - **Machined Parts**
          -
          -

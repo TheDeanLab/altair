@@ -24,7 +24,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="DV-OPM Baseplate Assembly &amp; Alignment" href="../dvopm_assembly/dvopm_assembly.html" />
+    <link rel="next" title="CAD Files and Machined Parts" href="../dvopm_cad/dvopm_cad.html" />
     <link rel="prev" title="Design, Simulation" href="../dvopm_design/dvopm_design.html" /> 
 </head>
 
@@ -83,8 +83,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#engineering-bill-of-materials">Engineering Bill of Materials</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">DV-OPM Baseplate Assembly &amp; Alignment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dvopm_characterization/dvopm_characterization.html">Altair DV-OPM Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_cad/dvopm_cad.html">CAD Files and Machined Parts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">Altair-dvOPM Assembly and Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_characterization/dvopm_characterization.html">Altair-dvOPM Characterization</a></li>
 </ul>
 
         </div>
@@ -142,6 +143,7 @@
 <p>The illumination path is implemented as a sequence of mounted optical elements arranged primarily on a common planar baseplate. This reflects a key design decision: the use of longer focal length achromatic doublets allows the lenses to be kept in a consistent orientation on the same baseplate while still providing sufficient propagation distance to shape the beam into the required light sheet at the stage.</p>
 <p>Because the relay uses longer focal length lenses, the physical optical path becomes relatively long. To prevent the footprint from becoming impractically large, the beam is folded using mirrors in the physical system. This beam folding is therefore not an incidental feature, but a direct mechanical consequence of the long-focal-length design choice made to satisfy both optical and integration requirements.</p>
 <p>Near the end of the illumination path, the beam must leave the planar relay geometry and be directed upward toward the sample. This is achieved using a vertical inversion mirror followed by a final inclined mirror that launches the beam toward the specimen at approximately 20° relative to the stage. This final section is particularly important, as it represents the point where the optical relay geometry and the physical stage geometry intersect. The baseplate and mounting configuration must therefore preserve not only the lens spacings, but also the correct beam height and launch angle.</p>
+<p>Two functional side-plate variants are provided for the D-shaped launch mirror. The standard plate places the mirror at the nominal assembly position. A second plate is 1.5 cm shorter, leaving a slightly greater oblique propagation distance between the mirror termination and the illumination focal plane; the focal plane is therefore farther from the mirror in both height and lateral position. Either plate can be used or adapted to suit the required focal-plane position and mechanical clearance. Manufacturing files for both variants are listed in <a class="reference internal" href="../dvopm_cad/dvopm_cad.html"><span class="doc">CAD Files and Machined Parts</span></a>.</p>
 <p>The illumination baseplate design thus extends beyond simply placing optical elements in sequence. It must coordinate planar relay optics, beam folding, vertical redirection, final launch geometry, and stage height constraints within a single mechanically stable system. As a result, this subsystem represents one of the most integration-intensive aspects of the overall instrument design.</p>
 <figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="../_images/Illumination_Baseplate_Isometric.png"><img alt="CAD rendering of the illumination path baseplate; isometric view" src="../_images/Illumination_Baseplate_Isometric.png" style="width: 100%;" /></a>
@@ -174,12 +176,12 @@
 <hr class="docutils" />
 <section id="engineering-bill-of-materials">
 <h2>Engineering Bill of Materials<a class="headerlink" href="#engineering-bill-of-materials" title="Permalink to this heading"></a></h2>
-<p>Baseplate design is also the point where the optical layout becomes a build package. For that reason, the engineering bill of materials (EBOM) is included here as a procurement-level summary of the detection and illumination trains, including optics, optomechanics, stages, controllers, and custom machined parts.</p>
-<p>The following EBOM tables are reproduced from manuscript Supplementary Tables S1 and S2. Listed costs are approximate unit prices at the time of manuscript preparation and are subject to change by vendor, availability, and configuration. Totals are calculated as quantity multiplied by unit cost for each listed line item, excluding the laser source. The laser is listed for completeness but is not included in the illumination train total.</p>
-<details class="summary-detection-train-ebom-total-25-872-60">
-<summary>Detection Train EBOM (total: $25,872.60)</summary><p>Detection train total (Qty x Unit Cost): <strong>$25,872.60</strong>.</p>
+<p>Baseplate design is also the point where the optical layout becomes a build package. For that reason, the engineering bill of materials (EBOM) is included here as a procurement-level summary of the detection and illumination trains, including optics, optomechanics, stages, controllers, and custom machined parts. The complete assembly folder, individual manufacturing files, required quantities, and purpose of each custom component are provided in <a class="reference internal" href="../dvopm_cad/dvopm_cad.html"><span class="doc">CAD Files and Machined Parts</span></a>.</p>
+<p>The following EBOM tables list the components used in the detection and illumination trains. Costs are approximate and may change with vendor, availability, and configuration. Totals are calculated as quantity multiplied by unit cost for each listed line item. The laser source is listed for completeness, but its cost is not included in the illumination train total.</p>
+<details class="summary-detection-train-ebom-total-27-595-12">
+<summary>Detection Train EBOM (total: $27,595.12)</summary><p>Detection train total (Qty x Unit Cost): <strong>$27,595.12</strong>.</p>
 <table class="docutils align-default" id="id6">
-<caption><span class="caption-text">Table S1. Detection train EBOM.</span><a class="headerlink" href="#id6" title="Permalink to this table"></a></caption>
+<caption><span class="caption-text">Table S2. Detection train EBOM.</span><a class="headerlink" href="#id6" title="Permalink to this table"></a></caption>
 <colgroup>
 <col style="width: 24.0%" />
 <col style="width: 14.0%" />
@@ -217,20 +219,44 @@
 <tr class="row-odd"><td><p>MU196MR-ON</p></td>
 <td><p>Ximea</p></td>
 <td><p>1</p></td>
-<td><p>$900.00</p></td>
+<td><p>$1100.00</p></td>
 <td><p>Monochrome camera, AR2020 sensor</p></td>
 </tr>
-<tr class="row-even"><td><p>FW-1000</p></td>
+<tr class="row-even"><td><p>FW-0002-6</p></td>
 <td><p>ASI</p></td>
 <td><p>1</p></td>
 <td><p>$3700.00</p></td>
 <td><p>High-speed motorized filter wheel</p></td>
 </tr>
-<tr class="row-odd"><td><p>PF20-03-G01</p></td>
+<tr class="row-odd"><td><p>FF01-442/42-32</p></td>
+<td><p>Semrock</p></td>
+<td><p>1</p></td>
+<td><p>$380.63</p></td>
+<td><p>DAPI emission filter</p></td>
+</tr>
+<tr class="row-even"><td><p>FF01-670/30-32</p></td>
+<td><p>Semrock</p></td>
+<td><p>1</p></td>
+<td><p>$380.63</p></td>
+<td><p>Far-red filter</p></td>
+</tr>
+<tr class="row-odd"><td><p>FF01-515/30-32</p></td>
+<td><p>Semrock</p></td>
+<td><p>1</p></td>
+<td><p>$380.63</p></td>
+<td><p>Green filter</p></td>
+</tr>
+<tr class="row-even"><td><p>FF01-595/31-32</p></td>
+<td><p>Semrock</p></td>
+<td><p>1</p></td>
+<td><p>$380.63</p></td>
+<td><p>Red filter</p></td>
+</tr>
+<tr class="row-odd"><td><p>PF20-03-P01</p></td>
 <td><p>Thorlabs</p></td>
 <td><p>1</p></td>
 <td><p>$115.68</p></td>
-<td><p>Ø2” protected aluminum mirror</p></td>
+<td><p>Ø2” protected silver mirror</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Optomechanics</strong></p></td>
 <td></td>
@@ -366,10 +392,10 @@
 </tr>
 </tbody>
 </table>
-</details><details class="summary-illumination-train-ebom-total-excluding-laser-25-796-87">
-<summary>Illumination Train EBOM (total excluding laser: $25,796.87)</summary><p>Illumination train total, excluding laser source (Qty x Unit Cost): <strong>$25,796.87</strong>.</p>
+</details><details class="summary-illumination-train-ebom-total-excluding-laser-32-673-87">
+<summary>Illumination Train EBOM (total excluding laser: $32,673.87)</summary><p>Illumination train total, excluding laser source (Qty x Unit Cost): <strong>$32,673.87</strong>.</p>
 <table class="docutils align-default" id="id7">
-<caption><span class="caption-text">Table S2. Illumination train EBOM.</span><a class="headerlink" href="#id7" title="Permalink to this table"></a></caption>
+<caption><span class="caption-text">Table S3. Illumination train EBOM.</span><a class="headerlink" href="#id7" title="Permalink to this table"></a></caption>
 <colgroup>
 <col style="width: 24.0%" />
 <col style="width: 14.0%" />
@@ -410,14 +436,14 @@
 <td><p>$95.34</p></td>
 <td><p>Achromatic doublet lens, f = 300 mm</p></td>
 </tr>
-<tr class="row-even"><td><p>PF10-03</p></td>
+<tr class="row-even"><td><p>PF10-03-P01</p></td>
 <td><p>Thorlabs</p></td>
 <td><p>7</p></td>
 <td><p>$36.89</p></td>
-<td><p>Ø1” protected aluminum mirror</p></td>
+<td><p>Ø1” protected silver mirror</p></td>
 </tr>
 <tr class="row-odd"><td><p>LOCP-8.9R10-2.0</p></td>
-<td><p>LaserLine</p></td>
+<td><p>Laserline</p></td>
 <td><p>1</p></td>
 <td><p>$240.00</p></td>
 <td><p>Powell lens for line generation</p></td>
@@ -500,7 +526,7 @@
 <td><p>$321.57</p></td>
 <td><p>Variable mechanical slit</p></td>
 </tr>
-<tr class="row-odd"><td><p>CFC11P-A</p></td>
+<tr class="row-odd"><td><p>CFC11A-A</p></td>
 <td><p>Thorlabs</p></td>
 <td><p>1</p></td>
 <td><p>$338.29</p></td>
@@ -542,7 +568,7 @@
 <td></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p>XP10X &amp; XP10-CI</p></td>
+<tr class="row-even"><td><p>XP10X &amp; XP10-C1</p></td>
 <td><p>Thorlabs</p></td>
 <td><p>1</p></td>
 <td><p>$710.00</p></td>
@@ -583,6 +609,18 @@
 <td><p>1</p></td>
 <td><p>$1186.00</p></td>
 <td><p>PCIe module</p></td>
+</tr>
+<tr class="row-odd"><td><p>PXIe-6259</p></td>
+<td><p>NI</p></td>
+<td><p>1</p></td>
+<td><p>$3472.00</p></td>
+<td><p>Multifunction I/O card (779778-01)</p></td>
+</tr>
+<tr class="row-even"><td><p>PXI-6733</p></td>
+<td><p>NI</p></td>
+<td><p>1</p></td>
+<td><p>$3405.00</p></td>
+<td><p>Analog output card (778512-01)</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Machined Parts</strong></p></td>
 <td></td>
@@ -648,7 +686,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../dvopm_design/dvopm_design.html" class="btn btn-neutral float-left" title="Design, Simulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../dvopm_assembly/dvopm_assembly.html" class="btn btn-neutral float-right" title="DV-OPM Baseplate Assembly &amp; Alignment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../dvopm_cad/dvopm_cad.html" class="btn btn-neutral float-right" title="CAD Files and Machined Parts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

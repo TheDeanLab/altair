@@ -84,8 +84,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_design/dvopm_design.html">Design, Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dvopm_baseplate_design/dvopm_baseplate_design.html">Baseplate Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">DV-OPM Baseplate Assembly &amp; Alignment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dvopm_characterization/dvopm_characterization.html">Altair DV-OPM Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_cad/dvopm_cad.html">CAD Files and Machined Parts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_assembly/dvopm_assembly.html">Altair-dvOPM Assembly and Alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dvopm_characterization/dvopm_characterization.html">Altair-dvOPM Characterization</a></li>
 </ul>
 
         </div>
@@ -124,7 +125,7 @@
 <section id="system-architecture">
 <h2>System Architecture<a class="headerlink" href="#system-architecture" title="Permalink to this heading"></a></h2>
 <p>The Altair-dvOPM system consists of separate detection and illumination modules arranged around a shared open-top sample region. The illumination path generates an oblique light sheet that intersects the specimen, while the detection path collects fluorescence from the illuminated plane and forms the oblique image directly on the camera sensor.</p>
-<p>The detection subsystem uses a Mitakon Speedmaster 65 mm f/1.4 photographic lens as the primary lens and a Nikon AF-S NIKKOR 85 mm f/1.4G photographic lens as the secondary lens. An emission filter wheel (FW1000, Applied Scientific Instrumentation) and fold mirror are positioned between the lenses, and the remote image is recorded by a compact Ximea MU196MR-ON camera with 1.4 µm pixels. The detection path is mounted on a custom baseplate and vertically positioned with a motorized linear stage for focusing relative to the specimen.</p>
+<p>The detection subsystem uses a Mitakon Speedmaster 65 mm f/1.4 photographic lens as the primary lens and a Nikon AF-S NIKKOR 85 mm f/1.4G photographic lens as the secondary lens. A 32 mm, 6-position emission filter wheel (FW-0002-6, Applied Scientific Instrumentation) and fold mirror are positioned between the lenses, and the remote image is recorded by a compact Ximea MU196MR-ON camera with 1.4 µm pixels. The detection path is mounted on a custom baseplate and vertically positioned with a motorized linear stage for focusing relative to the specimen.</p>
 <p>The illumination subsystem is implemented as an independent optical train. It begins with a fiber-collimated laser beam and a Powell lens, followed by achromatic relay optics, a mechanical slit for controlling illumination numerical aperture, and a 4 kHz resonant galvanometer for rapid angular pivoting of the light sheet. After light-sheet formation, the beam is folded vertically and launched externally through the coverslip at an oblique angle.</p>
 <p>The system operates in a stage-scanning geometry: the detection and illumination modules remain fixed, and the sample is translated through the stationary oblique imaging plane to acquire volumes. This separates optical alignment from volumetric acquisition and makes large tiled acquisitions possible without repeatedly moving the optical subsystems.</p>
 </section>
@@ -132,7 +133,7 @@
 <section id="optical-geometry">
 <h2>Optical Geometry<a class="headerlink" href="#optical-geometry" title="Permalink to this heading"></a></h2>
 <figure class="align-center" id="id1">
-<img alt="Schematic of the Altair DV-OPM system." src="../_images/Geometry_diagram.jpg" />
+<img alt="Schematic of the Altair-dvOPM system." src="../_images/Geometry_diagram.jpg" />
 <figcaption>
 <p><span class="caption-text"><strong>Figure 1:</strong> Schematic geometry of the Altair-dvOPM system.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
@@ -146,7 +147,7 @@
 <h2>Performance Snapshot<a class="headerlink" href="#performance-snapshot" title="Permalink to this heading"></a></h2>
 <p>The assembled Altair-dvOPM system provides the following experimentally characterized performance:</p>
 <ul class="simple">
-<li><p>Magnification: approximately 1.307×</p></li>
+<li><p>Magnification: approximately 1.308×</p></li>
 <li><p>Instantaneous field of view: approximately 5.4 × 2.8 mm in <span class="math notranslate nohighlight">\(X'Y'\)</span></p></li>
 <li><p>Detection numerical aperture: 0.18 used, with 0.25 maximum available from the photographic-lens pair</p></li>
 <li><p>Measured bead FWHM resolution: 2.55 ± 0.19 µm, 3.36 ± 0.19 µm, and 17.75 ± 1.40 µm along <span class="math notranslate nohighlight">\(X'\)</span>, <span class="math notranslate nohighlight">\(Y'\)</span>, and <span class="math notranslate nohighlight">\(Z'\)</span></p></li>

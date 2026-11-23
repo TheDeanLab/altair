@@ -284,7 +284,7 @@ The source-side reference axis is 3.75" above the top surface of the baseplate. 
 Place two aperture assemblies as far apart as possible along the straight source-side path, with one near the Powell-lens location and the other at the far end of the baseplate. Either of the following aperture assemblies can be used:
 
 - Mount a `P2000K1 2 mm pinhole <https://www.thorlabs.com/thorproduct.cfm?partnumber=P2000K1>`_, or another SM1-threaded adjustable iris, in a POLARIS-1XY on a 2.5" post.
-- Mount an `ID12 iris <https://www.thorlabs.com/thorproduct.cfm?partnumber=ID12>`_ on a 3.25" post using the `custom ID12-to-Polaris adapter <https://github.com/TheDeanLab/altair/tree/main/downloads/common/cad>`_.
+- Mount an `ID12 iris <https://www.thorlabs.com/thorproduct.cfm?partnumber=ID12>`_ in a custom fixed-height ID12-to-Polaris post. Use the 3.75" version for the initial reference axis and the 2.75" version for the lower folded-relay axis. Manufacturing files for both heights are provided in :doc:`../dvopm_cad/dvopm_cad`.
 
 Set both aperture centers to 3.75" above the baseplate and fasten the aperture assemblies in place.
 

@@ -9,9 +9,9 @@ This page identifies the custom Altair-dvOPM parts that must be machined and dis
 CAD Packages
 ____________
 
-The `complete CAD assembly and dependency folder <https://github.com/TheDeanLab/altair/tree/main/downloads/dvOPM/CAD/Final%20Assembly%20and%20Dependent%20Files>`_ contains the Autodesk Inventor system assembly, subsystem assemblies, custom components, vendor models, project files, and their dependencies. Download the repository to preserve the folder structure required to open the complete system assembly and inspect component relationships.
+`Final Complete System Assembly.iam <https://github.com/TheDeanLab/altair/blob/main/downloads/dvOPM/CAD/Final%20Assembly%20and%20Dependent%20Files/Final%20Complete%20System%20Assembly.iam>`_ is the Autodesk Inventor assembly for the complete system. The relevant subsystem assemblies, custom components, vendor models, project files, and dependencies are provided in the same `CAD dependency folder <https://github.com/TheDeanLab/altair/tree/main/downloads/dvOPM/CAD/Final%20Assembly%20and%20Dependent%20Files>`_. Download the repository while preserving this folder structure before opening the system assembly.
 
-The complete assembly folder is **not** a machining list. It contains many commercial components that should be purchased rather than manufactured. Only the STEP files listed below from ``Final Machined Parts`` are designated for machining.
+The complete assembly folder is **not** a machining list. It contains many commercial components that should be purchased rather than manufactured. Only the STEP files listed below from the `Final Machined Parts folder <https://github.com/TheDeanLab/altair/tree/main/downloads/dvOPM/CAD/Final%20Machined%20Parts>`_ are designated for machining.
 
 Manufacturing Notes
 ___________________
@@ -95,6 +95,14 @@ Two functional side-plate variants are provided. The standard side plate places 
      - 1
      - Establishes the required height of the K1XY fiber-collimator mounting stack.
      - :download:`STEP <../../../downloads/dvOPM/CAD/Final Machined Parts/K1XYPolarisPost_HeightAdjustment_0p5in.stp>`
+   * - ID12-to-Polaris Fixed Iris Post, 3.75-inch axis height
+     - 2 or as needed
+     - Holds an ID12 iris at the fixed 3.75-inch optical-axis height used to establish the initial source reference and first corner fold.
+     - :download:`STEP <../../../downloads/dvOPM/CAD/Final Machined Parts/IDA12toPolarisAdapter_3.75.stp>`
+   * - ID12-to-Polaris Fixed Iris Post, 2.75-inch axis height
+     - 2 or as needed
+     - Holds an ID12 iris at the fixed 2.75-inch optical-axis height used to align the galvo, inverting mirror, and lower folded relay.
+     - :download:`STEP <../../../downloads/dvOPM/CAD/Final Machined Parts/IDA12toPolarisAdapter_2.75.stp>`
    * - LNR25M-to-Polaris Adapter
      - 1
      - Registers the Polaris post carrying the POLARIS-1XY/Powell-lens assembly to the LNR25M translation stage in Powell configuration 1.
@@ -137,6 +145,7 @@ The following items should be confirmed before requesting a quotation:
 
 - The side-plate variant selected for the final assembly has been identified.
 - The selected Powell-lens configuration and its required adapters have been identified.
+- The required quantities of the 3.75-inch and 2.75-inch fixed iris posts have been specified.
 - The desired number of sample-holder base-and-cover pairs has been specified.
 - Each threaded part is accompanied by its matching PDF drawing.
 - The machine shop receives files only from the current ``Final Machined Parts`` folder.

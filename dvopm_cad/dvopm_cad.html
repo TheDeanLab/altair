@@ -120,8 +120,8 @@
 <p>This page identifies the custom Altair-dvOPM parts that must be machined and distinguishes them from the vendor models and assembly dependencies included in the complete CAD package. It is intended as a manufacturing handoff and pre-assembly checklist; the engineering bill of materials remains in <a class="reference internal" href="../dvopm_baseplate_design/dvopm_baseplate_design.html"><span class="doc">Baseplate Design</span></a>.</p>
 <section id="cad-packages">
 <h2>CAD Packages<a class="headerlink" href="#cad-packages" title="Permalink to this heading"></a></h2>
-<p>The <a class="reference external" href="https://github.com/TheDeanLab/altair/tree/main/downloads/dvOPM/CAD/Final%20Assembly%20and%20Dependent%20Files">complete CAD assembly and dependency folder</a> contains the Autodesk Inventor system assembly, subsystem assemblies, custom components, vendor models, project files, and their dependencies. Download the repository to preserve the folder structure required to open the complete system assembly and inspect component relationships.</p>
-<p>The complete assembly folder is <strong>not</strong> a machining list. It contains many commercial components that should be purchased rather than manufactured. Only the STEP files listed below from <code class="docutils literal notranslate"><span class="pre">Final</span> <span class="pre">Machined</span> <span class="pre">Parts</span></code> are designated for machining.</p>
+<p><a class="reference external" href="https://github.com/TheDeanLab/altair/blob/main/downloads/dvOPM/CAD/Final%20Assembly%20and%20Dependent%20Files/Final%20Complete%20System%20Assembly.iam">Final Complete System Assembly.iam</a> is the Autodesk Inventor assembly for the complete system. The relevant subsystem assemblies, custom components, vendor models, project files, and dependencies are provided in the same <a class="reference external" href="https://github.com/TheDeanLab/altair/tree/main/downloads/dvOPM/CAD/Final%20Assembly%20and%20Dependent%20Files">CAD dependency folder</a>. Download the repository while preserving this folder structure before opening the system assembly.</p>
+<p>The complete assembly folder is <strong>not</strong> a machining list. It contains many commercial components that should be purchased rather than manufactured. Only the STEP files listed below from the <a class="reference external" href="https://github.com/TheDeanLab/altair/tree/main/downloads/dvOPM/CAD/Final%20Machined%20Parts">Final Machined Parts folder</a> are designated for machining.</p>
 </section>
 <section id="manufacturing-notes">
 <h2>Manufacturing Notes<a class="headerlink" href="#manufacturing-notes" title="Permalink to this heading"></a></h2>
@@ -233,6 +233,16 @@
 <td><p>Establishes the required height of the K1XY fiber-collimator mounting stack.</p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/18ccab5635cf833942022c8e5470235f/K1XYPolarisPost_HeightAdjustment_0p5in.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
 </tr>
+<tr class="row-even"><td><p>ID12-to-Polaris Fixed Iris Post, 3.75-inch axis height</p></td>
+<td><p>2 or as needed</p></td>
+<td><p>Holds an ID12 iris at the fixed 3.75-inch optical-axis height used to establish the initial source reference and first corner fold.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/8ab1903d51592585e5eef864a8050045/IDA12toPolarisAdapter_3.75.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>ID12-to-Polaris Fixed Iris Post, 2.75-inch axis height</p></td>
+<td><p>2 or as needed</p></td>
+<td><p>Holds an ID12 iris at the fixed 2.75-inch optical-axis height used to align the galvo, inverting mirror, and lower folded relay.</p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/b0decd8ea16dce9b90df06e3308d797d/IDA12toPolarisAdapter_2.75.stp"><code class="xref download docutils literal notranslate"><span class="pre">STEP</span></code></a></p></td>
+</tr>
 <tr class="row-even"><td><p>LNR25M-to-Polaris Adapter</p></td>
 <td><p>1</p></td>
 <td><p>Registers the Polaris post carrying the POLARIS-1XY/Powell-lens assembly to the LNR25M translation stage in Powell configuration 1.</p></td>
@@ -288,6 +298,7 @@
 <ul class="simple">
 <li><p>The side-plate variant selected for the final assembly has been identified.</p></li>
 <li><p>The selected Powell-lens configuration and its required adapters have been identified.</p></li>
+<li><p>The required quantities of the 3.75-inch and 2.75-inch fixed iris posts have been specified.</p></li>
 <li><p>The desired number of sample-holder base-and-cover pairs has been specified.</p></li>
 <li><p>Each threaded part is accompanied by its matching PDF drawing.</p></li>
 <li><p>The machine shop receives files only from the current <code class="docutils literal notranslate"><span class="pre">Final</span> <span class="pre">Machined</span> <span class="pre">Parts</span></code> folder.</p></li>

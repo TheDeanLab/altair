@@ -58,4 +58,3 @@ The assembled Altair-dvOPM system provides the following experimentally characte
 - Measured light-sheet lateral extent: approximately 6.0 mm along :math:`X'`
 
 The following sections describe the optical design, baseplate implementation, assembly procedure, alignment workflow, and characterization measurements in greater detail.
-The detailed optical design and implementation of the detection and illumination subsystems are described in the following section.

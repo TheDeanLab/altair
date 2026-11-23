@@ -105,7 +105,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#powell-lens-assembly">Powell Lens Assembly</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#mechanical-slit-assembly">Mechanical Slit Assembly</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#final-illumination-alignment-check">Final Illumination Alignment Check</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#system-integration-and-assembly-completion">System Integration and Assembly Completion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#system-integration-and-assembly-completion">System Integration and Assembly Completion</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initial-integrated-system-alignment">Initial Integrated-System Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#microscope-control-and-image-acquisition">Microscope Control and Image Acquisition</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#assembly-completion-checklist">Assembly Completion Checklist</a></li>
 </ul>
 </li>
@@ -254,7 +258,7 @@
 <section id="o1-adapter-stack">
 <h3>O1 Adapter Stack<a class="headerlink" href="#o1-adapter-stack" title="Permalink to this heading"></a></h3>
 <p>Once the filter wheel and KCB2 are aligned, assemble the O1-side adapter stack. Insert the custom machined 38 mm to SM2 adapter into the C60-FW adapter and tighten the C60-FW locking screws to hold the custom adapter. Thread the SM2A53 adapter onto the custom adapter. On the Mitakon O1 lens, install the 72 mm to 52 mm step-down ring, then couple the lens to the SM2A53-side adapter stack.</p>
-<p>Set the Mitakon O1 aperture to the position corresponding to the implemented detection NA of 0.18.</p>
+<p>Rotate the aperture-control ring on the Mitakon O1 lens to the position corresponding to the implemented detection NA of 0.18.</p>
 </section>
 <section id="camera-and-o2-preparation">
 <h3>Camera And O2 Preparation<a class="headerlink" href="#camera-and-o2-preparation" title="Permalink to this heading"></a></h3>
@@ -264,6 +268,7 @@
 <p>Cover-glass removal exposes the image sensor and can permanently damage the camera. Have this modification performed by a professional sensor-modification service rather than attempting it during microscope assembly.</p>
 </div>
 <p>Mount the MT1B linear stage to the two highlighted holes on the horizontal detection baseplate. Mount the RP005 rotation stage on top of the MT1B. Then mount the custom machined camera holder on the RP005 rotation stage and fasten the Ximea camera into the holder. Keep the camera unrotated for the O2 focus-position step below; the final sensor angle is adjusted later during system alignment.</p>
+<p>The custom camera holder also accepts a coverslip at the plane conjugate to the sample-space coverslip. Slide the coverslip into the holder before final alignment, and use the same coverslip thickness used in the sample space.</p>
 <figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../_images/det_mt1b_rp_holder.jpg"><img alt="MT1B linear stage, RP005 rotation stage, and custom camera holder assembled on the detection baseplate." src="../_images/det_mt1b_rp_holder.jpg" style="width: 100%;" /></a>
 <figcaption>
@@ -413,11 +418,11 @@
 <p>The galvo and the K1S4 immediately after it restore the required beam orientation and establish the lower folded-relay axis.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Lower the corner K1S4 and the far-end aperture from 3.75” to 2.75” without changing either component’s lateral position. Do not recenter the aperture to follow a misaligned beam.</p>
+<p>Lower the corner K1S4 and the far-end aperture from 3.75” to 2.75” without changing either component’s lateral position. For an aperture held in a POLARIS-1XY, install the custom height spacer that places the aperture center at 2.75” and leave the 1XY controls fixed. For an ID12 aperture, replace the 3.75” custom post with the 2.75” custom post in the same registered position. Do not recenter the aperture to follow a misaligned beam.</p>
 </div>
 <ol class="arabic simple">
 <li><p>Lower the previously aligned corner K1S4 from 3.75” to 2.75”.</p></li>
-<li><p>Lower the fixed far-end aperture from 3.75” to 2.75” without changing its lateral position.</p></li>
+<li><p>Lower the fixed far-end aperture from 3.75” to 2.75” by changing its height spacer or fixed-height ID12 post, as described above, without changing its lateral position.</p></li>
 <li><p>Place another fixed aperture at a 2.75” center height near the corner K1S4.</p></li>
 <li><p>Register the custom galvo holder on its 3” Polaris post using the dowel pins and mounting screw.</p></li>
 <li><p>Insert the CRS 4 kHz galvanometer with its reflective surface facing the incoming beam. Engage the clamp screws lightly enough that the galvo can still be rotated.</p></li>
@@ -453,17 +458,17 @@
 <p class="admonition-title">Important</p>
 <p>The reference beam and aligned folding mirrors remain fixed during lens installation. Do not steer the reference beam to compensate for a decentered lens.</p>
 </div>
+</section>
+<section id="upward-fold-alignment">
+<h3>Upward Fold Alignment<a class="headerlink" href="#upward-fold-alignment" title="Permalink to this heading"></a></h3>
+<p>Remove the terminal temporary aperture and install the final K1S4 with its PF10-03-P01 mirror. This mirror directs the completed relay upward toward the D-shaped launch mirror.</p>
+<p>Mount the custom vertical-target adapter to the side of the baseplate and place a <a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=DG10-1500-H1-MD">DG10-1500-H1-MD alignment target</a> in its top opening. Adjust the final K1S4 tip and tilt until the upward beam is centered on the target. Check the target at two heights, when possible, to distinguish beam position from propagation direction.</p>
 <figure class="align-center" id="id20">
 <a class="reference internal image-reference" href="../_images/Mirrors_Lenses.JPG"><img alt="Illumination baseplate with the folding mirrors, achromatic relay lenses, final K1S4, and slit installed." src="../_images/Mirrors_Lenses.JPG" style="width: 100%;" /></a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure 20:</strong> Illumination baseplate with the folding mirrors, achromatic relay lenses, final K1S4 upward-fold assembly, and VA100CP slit installed.</span><a class="headerlink" href="#id20" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
-</section>
-<section id="upward-fold-alignment">
-<h3>Upward Fold Alignment<a class="headerlink" href="#upward-fold-alignment" title="Permalink to this heading"></a></h3>
-<p>Remove the terminal temporary aperture and install the final K1S4 with its PF10-03-P01 mirror. This mirror directs the completed relay upward toward the D-shaped launch mirror.</p>
-<p>Mount the custom vertical-target adapter to the side of the baseplate and place a <a class="reference external" href="https://www.thorlabs.com/thorproduct.cfm?partnumber=DG10-1500-H1-MD">DG10-1500-H1-MD alignment target</a> in its top opening. Adjust the final K1S4 tip and tilt until the upward beam is centered on the target. Check the target at two heights, when possible, to distinguish beam position from propagation direction.</p>
 <figure class="align-center" id="id21">
 <img alt="Alignment target above the terminal K1S4 used to verify the upward beam." src="../_images/K1XY_RG_K1S4_Ms_Ls_K1S4_Align_Step_7f.png" />
 <figcaption>
@@ -578,7 +583,7 @@ Powell Lens into AD9F Assembly</div>
 </ol>
 <p>Figure 28 shows the completed illumination assembly. Light-sheet thickness, extent, and uniformity are evaluated later during characterization.</p>
 <figure class="align-center" id="id28">
-<a class="reference internal image-reference" href="../_images/Illumination_Only_Assembly.png"><img alt="Completed illumination baseplate assembly with the relay and launch components installed." src="../_images/Illumination_Only_Assembly.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="dvopm_assembly/Images/Illumination_Only_Assembly.PNG"><img alt="Completed illumination baseplate assembly with the relay and launch components installed." src="dvopm_assembly/Images/Illumination_Only_Assembly.PNG" style="width: 100%;" /></a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure 28:</strong> Completed illumination train with the folded relay, Powell-lens assembly, slit, upward fold, and side plate installed.</span><a class="headerlink" href="#id28" title="Permalink to this image"></a></p>
 </figcaption>
@@ -600,6 +605,25 @@ Powell Lens into AD9F Assembly</div>
 <p class="admonition-title">Important</p>
 <p>Establish mechanical clearance before commanding motorized motion over the full travel range. Stop the stage immediately if any component approaches O1, the D-shaped mirror, the side plate, or the detection baseplate.</p>
 </div>
+<section id="initial-integrated-system-alignment">
+<h4>Initial Integrated-System Alignment<a class="headerlink" href="#initial-integrated-system-alignment" title="Permalink to this heading"></a></h4>
+<p>After the illumination module, detection module, and sample stage are mechanically integrated, perform an initial alignment using a test sample:</p>
+<ol class="arabic simple">
+<li><p>Rotate the camera to approximately 45 degrees using the RP005 rotation stage. This is an initial setting; the final angle is refined while viewing the sample.</p></li>
+<li><p>Place the test sample in the sample holder and bring the illumination sheet to the sample at reduced excitation power.</p></li>
+<li><p>Coarsely position the detection module so that O1 is directly beneath and approximately concentric with the focused illumination sheet. Use the PT1B adjustment and, if needed, the offset of the MSAP90 right-angle bracket on the detection LS-50 stage to place the detection module beneath the illumination focus.</p></li>
+<li><p>Observe the live camera image and adjust the detection-module position until the illuminated sample becomes visible. Use the detection LS-50 focusing stage to keep the sample in focus while making the coarse positioning adjustments.</p></li>
+<li><p>Refine the RP005 camera rotation while readjusting focus as needed. Iterate camera rotation and focus until the sample is visible across the full camera field and remains in focus across the field of view.</p></li>
+</ol>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Make the initial module-position, focus, and camera-rotation adjustments iteratively. A change in the detection-module position or camera angle can require a corresponding focus correction.</p>
+</div>
+</section>
+<section id="microscope-control-and-image-acquisition">
+<h4>Microscope Control and Image Acquisition<a class="headerlink" href="#microscope-control-and-image-acquisition" title="Permalink to this heading"></a></h4>
+<p>The integrated microscope is controlled and images are acquired using <a class="reference external" href="https://thedeanlab.github.io/navigate/index.html">navigate</a>. The ASI sample stage, detection focusing stage, and emission filter wheel communicate with the TG8-BASIC Tiger controller over the serial connection. The Tiger controller is configured with TGCOM, TGFW, and two TGDCM2 cards for communication, filter-wheel control, and stage motion.</p>
+<p>The PXIe-1073 chassis, PXIe-6259 multifunction I/O card, and PXI-6733 analog-output card provide the analog and digital signals used for the laser, camera triggering, resonant galvo, and other synchronized devices. <code class="docutils literal notranslate"><span class="pre">navigate</span></code> coordinates the Tiger-controlled ASI hardware with the NI-generated timing and camera acquisition during alignment and imaging.</p>
 <figure class="align-center" id="id29">
 <img alt="Complete microscope assembly with the sample stage above the illumination and detection modules." src="../_images/Complete_System.png" />
 <figcaption>
@@ -614,13 +638,14 @@ Powell Lens into AD9F Assembly</div>
 </figcaption>
 </figure>
 </section>
+</section>
 <section id="assembly-completion-checklist">
 <h3>Assembly Completion Checklist<a class="headerlink" href="#assembly-completion-checklist" title="Permalink to this heading"></a></h3>
-<p>The optomechanical assembly is ready for system alignment when all of the following checks pass:</p>
+<p>The optomechanical assembly and initial integrated-system alignment are complete when all of the following checks pass:</p>
 <ul class="simple">
 <li><p>The detection filter wheel and KCB2 are seated flat against the detection baseplate, and the KCB2 adjuster locks are engaged after alignment.</p></li>
-<li><p>O1 is set to NA = 0.18. O2 is set to infinity focus and its aperture is held fully open.</p></li>
-<li><p>The MT1B camera-focus position is locked. The RP005 remains available for the later camera-angle alignment.</p></li>
+<li><p>O1 is set to NA = 0.18 using its aperture-control ring. O2 is set to infinity focus and its aperture is held fully open.</p></li>
+<li><p>The MT1B camera-focus position is locked, and the RP005 camera angle has been refined using the test sample.</p></li>
 <li><p>The detection baseplate is fastened to its LS-50 stage at all three designated mounting points.</p></li>
 <li><p>All five illumination-baseplate pedestal posts are secured, and the baseplate does not rock.</p></li>
 <li><p>The galvo clamp is secure, the three B1F mounts remain fixed, and the adjustable K1S4 mounts retain the aligned beam path after their locks are engaged.</p></li>
@@ -629,6 +654,7 @@ Powell Lens into AD9F Assembly</div>
 <li><p>The temporary alignment apertures and vertical target have been removed from positions occupied by the completed optical train.</p></li>
 <li><p>The illumination side plate is fully seated on its dowel pins and the bonded D-shaped mirror is unobstructed.</p></li>
 <li><p>The sample-stage structure and detection module complete their intended travel without mechanical contact.</p></li>
+<li><p>The illuminated test sample is visible and remains in focus across the full camera field of view.</p></li>
 </ul>
 </section>
 </section>

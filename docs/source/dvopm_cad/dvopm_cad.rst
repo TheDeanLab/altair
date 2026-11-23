@@ -19,7 +19,7 @@ ___________________
 - Machine each listed STEP file in the stated quantity.
 - When a PDF drawing is provided, send both the STEP model and drawing to the machine shop. The drawing contains thread callouts that may not be communicated completely by the STEP geometry.
 - We machined the custom components from 6061-T6x aluminum with a general machining tolerance of :math:`\pm0.005` inches and recommend the same specification for reproduction. Any dimensions or thread callouts stated explicitly in a supplied drawing take precedence.
-- Confirm that the STEP file and drawing describe the same revision before ordering. Do not substitute similarly named files from the older ``To Machine`` folder.
+- Confirm that each STEP file and its drawing describe the same revision before ordering. Use only the files supplied in the current ``Final Machined Parts`` folder.
 - Quantities marked as configuration-dependent should be confirmed against the selected Powell-lens mounting configuration before release.
 
 Detection Module
@@ -98,11 +98,11 @@ Two functional side-plate variants are provided. The standard side plate places 
    * - ID12-to-Polaris Fixed Iris Post, 3.75-inch axis height
      - 2 or as needed
      - Holds an ID12 iris at the fixed 3.75-inch optical-axis height used to establish the initial source reference and first corner fold.
-     - :download:`STEP <../../../downloads/dvOPM/CAD/Final Machined Parts/IDA12toPolarisAdapter_3.75.stp>`
+     - :download:`STEP <../../../downloads/dvOPM/CAD/Final Machined Parts/IDA12toPolarisAdapter_3.75.stp>`; :download:`threaded-part drawing <../../../downloads/dvOPM/CAD/Final Machined Parts/IDA12toPolarisAdapter_3.75.pdf>`
    * - ID12-to-Polaris Fixed Iris Post, 2.75-inch axis height
      - 2 or as needed
      - Holds an ID12 iris at the fixed 2.75-inch optical-axis height used to align the galvo, inverting mirror, and lower folded relay.
-     - :download:`STEP <../../../downloads/dvOPM/CAD/Final Machined Parts/IDA12toPolarisAdapter_2.75.stp>`
+     - :download:`STEP <../../../downloads/dvOPM/CAD/Final Machined Parts/IDA12toPolarisAdapter_2.75.stp>`; :download:`threaded-part drawing <../../../downloads/dvOPM/CAD/Final Machined Parts/IDA12toPolarisAdapter_2.75.pdf>`
    * - LNR25M-to-Polaris Adapter
      - 1
      - Registers the Polaris post carrying the POLARIS-1XY/Powell-lens assembly to the LNR25M translation stage in Powell configuration 1.

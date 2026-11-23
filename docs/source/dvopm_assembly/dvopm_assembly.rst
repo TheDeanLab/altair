@@ -137,7 +137,7 @@ O1 Adapter Stack
 
 Once the filter wheel and KCB2 are aligned, assemble the O1-side adapter stack. Insert the custom machined 38 mm to SM2 adapter into the C60-FW adapter and tighten the C60-FW locking screws to hold the custom adapter. Thread the SM2A53 adapter onto the custom adapter. On the Mitakon O1 lens, install the 72 mm to 52 mm step-down ring, then couple the lens to the SM2A53-side adapter stack.
 
-Set the Mitakon O1 aperture to the position corresponding to the implemented detection NA of 0.18.
+Rotate the aperture-control ring on the Mitakon O1 lens to the position corresponding to the implemented detection NA of 0.18.
 
 Camera And O2 Preparation
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -149,6 +149,8 @@ Prepare the camera before installing O2. For the implemented microscope, the Xim
    Cover-glass removal exposes the image sensor and can permanently damage the camera. Have this modification performed by a professional sensor-modification service rather than attempting it during microscope assembly.
 
 Mount the MT1B linear stage to the two highlighted holes on the horizontal detection baseplate. Mount the RP005 rotation stage on top of the MT1B. Then mount the custom machined camera holder on the RP005 rotation stage and fasten the Ximea camera into the holder. Keep the camera unrotated for the O2 focus-position step below; the final sensor angle is adjusted later during system alignment.
+
+The custom camera holder also accepts a coverslip at the plane conjugate to the sample-space coverslip. Slide the coverslip into the holder before final alignment, and use the same coverslip thickness used in the sample space.
 
 .. figure:: Images/det_mt1b_rp_holder.jpg
    :align: center
@@ -324,10 +326,10 @@ The galvo and the K1S4 immediately after it restore the required beam orientatio
 
 .. important::
 
-   Lower the corner K1S4 and the far-end aperture from 3.75" to 2.75" without changing either component's lateral position. Do not recenter the aperture to follow a misaligned beam.
+   Lower the corner K1S4 and the far-end aperture from 3.75" to 2.75" without changing either component's lateral position. For an aperture held in a POLARIS-1XY, install the custom height spacer that places the aperture center at 2.75" and leave the 1XY controls fixed. For an ID12 aperture, replace the 3.75" custom post with the 2.75" custom post in the same registered position. Do not recenter the aperture to follow a misaligned beam.
 
 1. Lower the previously aligned corner K1S4 from 3.75" to 2.75".
-2. Lower the fixed far-end aperture from 3.75" to 2.75" without changing its lateral position.
+2. Lower the fixed far-end aperture from 3.75" to 2.75" by changing its height spacer or fixed-height ID12 post, as described above, without changing its lateral position.
 3. Place another fixed aperture at a 2.75" center height near the corner K1S4.
 4. Register the custom galvo holder on its 3" Polaris post using the dowel pins and mounting screw.
 5. Insert the CRS 4 kHz galvanometer with its reflective surface facing the incoming beam. Engage the clamp screws lightly enough that the galvo can still be rotated.
@@ -366,19 +368,19 @@ Orient each doublet as shown in the optical schematic and CAD assembly. The lens
 
    The reference beam and aligned folding mirrors remain fixed during lens installation. Do not steer the reference beam to compensate for a decentered lens.
 
-.. figure:: Images/Mirrors_Lenses.JPG
-   :align: center
-   :width: 100%
-   :alt: Illumination baseplate with the folding mirrors, achromatic relay lenses, final K1S4, and slit installed.
-
-   **Figure 20:** Illumination baseplate with the folding mirrors, achromatic relay lenses, final K1S4 upward-fold assembly, and VA100CP slit installed.
-
 Upward Fold Alignment
 ^^^^^^^^^^^^^^^^^^^^^
 
 Remove the terminal temporary aperture and install the final K1S4 with its PF10-03-P01 mirror. This mirror directs the completed relay upward toward the D-shaped launch mirror.
 
 Mount the custom vertical-target adapter to the side of the baseplate and place a `DG10-1500-H1-MD alignment target <https://www.thorlabs.com/thorproduct.cfm?partnumber=DG10-1500-H1-MD>`_ in its top opening. Adjust the final K1S4 tip and tilt until the upward beam is centered on the target. Check the target at two heights, when possible, to distinguish beam position from propagation direction.
+
+.. figure:: Images/Mirrors_Lenses.JPG
+   :align: center
+   :width: 100%
+   :alt: Illumination baseplate with the folding mirrors, achromatic relay lenses, final K1S4, and slit installed.
+
+   **Figure 20:** Illumination baseplate with the folding mirrors, achromatic relay lenses, final K1S4 upward-fold assembly, and VA100CP slit installed.
 
 .. figure:: Images/K1XY_RG_K1S4_Ms_Ls_K1S4_Align_Step_7f.png
    :align: center
@@ -520,7 +522,7 @@ Before coupling the illumination module to the microscope, perform a complete lo
 
 Figure 28 shows the completed illumination assembly. Light-sheet thickness, extent, and uniformity are evaluated later during characterization.
 
-.. figure:: Images/Illumination_Only_Assembly.png
+.. figure:: Images/Illumination_Only_Assembly.PNG
    :align: center
    :alt: Completed illumination baseplate assembly with the relay and launch components installed.
    :width: 100%
@@ -545,6 +547,28 @@ Complete the mechanical integration in the following order:
 
    Establish mechanical clearance before commanding motorized motion over the full travel range. Stop the stage immediately if any component approaches O1, the D-shaped mirror, the side plate, or the detection baseplate.
 
+Initial Integrated-System Alignment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After the illumination module, detection module, and sample stage are mechanically integrated, perform an initial alignment using a test sample:
+
+1. Rotate the camera to approximately 45 degrees using the RP005 rotation stage. This is an initial setting; the final angle is refined while viewing the sample.
+2. Place the test sample in the sample holder and bring the illumination sheet to the sample at reduced excitation power.
+3. Coarsely position the detection module so that O1 is directly beneath and approximately concentric with the focused illumination sheet. Use the PT1B adjustment and, if needed, the offset of the MSAP90 right-angle bracket on the detection LS-50 stage to place the detection module beneath the illumination focus.
+4. Observe the live camera image and adjust the detection-module position until the illuminated sample becomes visible. Use the detection LS-50 focusing stage to keep the sample in focus while making the coarse positioning adjustments.
+5. Refine the RP005 camera rotation while readjusting focus as needed. Iterate camera rotation and focus until the sample is visible across the full camera field and remains in focus across the field of view.
+
+.. important::
+
+   Make the initial module-position, focus, and camera-rotation adjustments iteratively. A change in the detection-module position or camera angle can require a corresponding focus correction.
+
+Microscope Control and Image Acquisition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The integrated microscope is controlled and images are acquired using `navigate <https://thedeanlab.github.io/navigate/index.html>`_. The ASI sample stage, detection focusing stage, and emission filter wheel communicate with the TG8-BASIC Tiger controller over the serial connection. The Tiger controller is configured with TGCOM, TGFW, and two TGDCM2 cards for communication, filter-wheel control, and stage motion.
+
+The PXIe-1073 chassis, PXIe-6259 multifunction I/O card, and PXI-6733 analog-output card provide the analog and digital signals used for the laser, camera triggering, resonant galvo, and other synchronized devices. ``navigate`` coordinates the Tiger-controlled ASI hardware with the NI-generated timing and camera acquisition during alignment and imaging.
+
 .. figure:: Images/Complete_System.png
    :align: center
    :alt: Complete microscope assembly with the sample stage above the illumination and detection modules.
@@ -562,11 +586,11 @@ Figure 30 shows the front-view launch geometry. The final K1S4 directs the beam 
 Assembly Completion Checklist
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The optomechanical assembly is ready for system alignment when all of the following checks pass:
+The optomechanical assembly and initial integrated-system alignment are complete when all of the following checks pass:
 
 - The detection filter wheel and KCB2 are seated flat against the detection baseplate, and the KCB2 adjuster locks are engaged after alignment.
-- O1 is set to NA = 0.18. O2 is set to infinity focus and its aperture is held fully open.
-- The MT1B camera-focus position is locked. The RP005 remains available for the later camera-angle alignment.
+- O1 is set to NA = 0.18 using its aperture-control ring. O2 is set to infinity focus and its aperture is held fully open.
+- The MT1B camera-focus position is locked, and the RP005 camera angle has been refined using the test sample.
 - The detection baseplate is fastened to its LS-50 stage at all three designated mounting points.
 - All five illumination-baseplate pedestal posts are secured, and the baseplate does not rock.
 - The galvo clamp is secure, the three B1F mounts remain fixed, and the adjustable K1S4 mounts retain the aligned beam path after their locks are engaged.
@@ -575,3 +599,4 @@ The optomechanical assembly is ready for system alignment when all of the follow
 - The temporary alignment apertures and vertical target have been removed from positions occupied by the completed optical train.
 - The illumination side plate is fully seated on its dowel pins and the bonded D-shaped mirror is unobstructed.
 - The sample-stage structure and detection module complete their intended travel without mechanical contact.
+- The illuminated test sample is visible and remains in focus across the full camera field of view.

@@ -522,7 +522,7 @@ Before coupling the illumination module to the microscope, perform a complete lo
 
 Figure 28 shows the completed illumination assembly. Light-sheet thickness, extent, and uniformity are evaluated later during characterization.
 
-.. figure:: Images/Illumination_Only_Assembly.PNG
+.. figure:: Images/Illumination_Only_Assembly.png
    :align: center
    :alt: Completed illumination baseplate assembly with the relay and launch components installed.
    :width: 100%
